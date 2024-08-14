@@ -1,10 +1,11 @@
 import { PropsWithChildren } from 'react';
+
 interface ButtonProps extends PropsWithChildren {
   onClick: () => void;
 }
 
-export default function Button(props: ButtonProps) {
-  const { onClick, children } = props;
+export default function MenuButton(props: ButtonProps) {
+  const { onClick } = props;
 
   return (
     <button type='button' onClick={onClick}>

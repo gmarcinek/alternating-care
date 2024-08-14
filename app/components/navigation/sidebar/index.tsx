@@ -39,7 +39,7 @@ const Sidebar = (props: SidebarProps) => {
             </Link>
           </li>
           <li>
-            <Link href='/callendar' onClick={toggle}>
+            <Link href='/calendar' onClick={toggle}>
               <p>Kalendarz</p>
             </Link>
           </li>

@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import PageContainer from './components/PageContainer/PageContainer';
 
 export default function Home() {

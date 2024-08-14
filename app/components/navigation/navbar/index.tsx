@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Logo from './Logo';
-import Button from './Button';
+import MenuButton from './MenuButton';
 
 interface NavbarProps {
   toggle: () => void;
@@ -20,7 +20,7 @@ const Navbar = (props: NavbarProps) => {
               <Link href='/'>
                 <p>Podsumowanie</p>
               </Link>
-              <Link href='/callendar'>
+              <Link href='/calendar'>
                 <p>Kalendarz</p>
               </Link>
               <Link href='/settings'>
@@ -28,7 +28,7 @@ const Navbar = (props: NavbarProps) => {
               </Link>
             </ul>
           </div>
-          <Button onClick={toggle}>Menu</Button>
+          <MenuButton onClick={toggle}>Menu</MenuButton>
         </div>
       </div>
     </div>
