@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState } from 'react';
+import { PropsWithChildren } from 'react';
 import '../../globals.css';
 
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
