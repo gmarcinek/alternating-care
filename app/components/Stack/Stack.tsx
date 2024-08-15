@@ -1,5 +1,5 @@
-import React from 'react';
 import type { CSSProperties, PropsWithChildren } from 'react';
+import React from 'react';
 
 type StackAlignment = 'start' | 'end' | 'between' | 'center';
 type StackDirection = 'horizontal' | 'vertical';

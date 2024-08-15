@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
+import { PropsWithChildren } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import AppRoot from './AppRoot';
-import { PropsWithChildren, useState } from 'react';
-import { initDB } from './components/db/indexedDB';
-
+import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -17,6 +17,13 @@ export default function RootLayout(props: PropsWithChildren) {
     <html lang='pl'>
       <body className={inter.className}>
         <AppRoot>{props.children}</AppRoot>
+        <ToastContainer
+          position='bottom-left'
+          hideProgressBar
+          closeOnClick
+          pauseOnHover
+          closeButton={false}
+        />
       </body>
     </html>
   );
