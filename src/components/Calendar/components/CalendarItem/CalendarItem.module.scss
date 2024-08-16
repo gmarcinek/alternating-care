@@ -1,0 +1,54 @@
+.calendarItem {
+    display: flex;
+    flex: 1;
+    color: #494949;
+    padding: 1rem;
+    background: rgb(255, 255, 255);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
+    min-height: 80px;
+
+    &.isTaoday {
+        background: #fff1f1;
+    }
+
+    &.isWeekend {
+        background: #d1d1d1;
+    }
+
+    &.pad16 {
+        padding: 16px;
+    }
+
+    &.pad12 {
+        padding: 16px;
+    }
+
+    &.pad8 {
+        padding: 16px;
+    }
+
+    &.pad4 {
+        padding: 16px;
+    }
+
+    &.pad2 {
+        padding: 16px;
+    }
+
+
+    .font8 {
+        font-size: 8px;
+    }
+
+    .font10 {
+        font-size: 10px;
+    }
+    .font12 {
+        font-size: 12px;
+    }
+
+    .hiden {
+        display: none;
+    }
+}
+
