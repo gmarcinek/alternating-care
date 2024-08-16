@@ -18,7 +18,7 @@ const inputClasses =
 
 export default function SettingsPage() {
   const { mutateAsync, isPending } = useFormPutUserMutation();
-  const [users, setUsers] = useState<AppUser[] | []>([]);
+  const [users] = useState<AppUser[] | []>([]);
   const [formData, setFormData] = useState<AppUser>({
     id: '',
     name: '',
