@@ -29,11 +29,11 @@ export function Calendar(props: CalendarProps) {
   }, [rowSize]);
 
   return (
-    <Stack gap={gapSize}>
+    <Stack gap={0}>
       {weeks.map((week, weekIndex) => {
         return (
           <Stack
-            gap={gapSize}
+            gap={0}
             key={`week-of-${week[0].date}-${weekIndex}`}
             direction='horizontal'
           >

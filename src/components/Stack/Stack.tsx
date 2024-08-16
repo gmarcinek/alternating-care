@@ -3,7 +3,7 @@ import React from 'react';
 
 type StackAlignment = 'start' | 'end' | 'between' | 'center';
 type StackDirection = 'horizontal' | 'vertical';
-export type StackGap = 2 | 4 | 8 | 12 | 16 | 20 | 24 | 32 | 48 | 64;
+export type StackGap = 0 | 2 | 4 | 8 | 12 | 16 | 20 | 24 | 32 | 48 | 64;
 
 interface StackProps extends PropsWithChildren {
   direction?: StackDirection;

@@ -85,4 +85,5 @@ function getDaysBetweenDates(start: string | Dayjs, end: string | Dayjs) {
     }, startDate);
 
   return days;
+  // return days.length % 2 !== 0 ? days.slice(0, days.length - 7) : days;
 }

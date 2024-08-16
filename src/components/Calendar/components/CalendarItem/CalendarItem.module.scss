@@ -3,9 +3,10 @@
     flex: 1;
     color: #494949;
     padding: 1rem;
+    margin: 0.5rem;
     background: rgb(255, 255, 255);
-    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
-    min-height: 80px;
+    min-height: 40px;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
 
     &.isTaoday {
         background: #fff1f1;
@@ -15,40 +16,120 @@
         background: #d1d1d1;
     }
 
+    // PADDING
     &.pad16 {
         padding: 16px;
     }
 
     &.pad12 {
-        padding: 16px;
+        padding: 12px;
     }
 
     &.pad8 {
-        padding: 16px;
+        padding: 8px;
     }
 
     &.pad4 {
-        padding: 16px;
+        padding: 4px;
     }
 
     &.pad2 {
-        padding: 16px;
+        padding: 2px;
     }
 
-
-    .font8 {
-        font-size: 8px;
+    // MARGIN
+    &.mar16 {
+        margin: 16px;
+    }
+    &.mar12 {
+        margin: 12px;
+    }
+    &.mar8 {
+        margin: 8px;
+    }
+    &.mar4 {
+        margin: 4px;
+    }
+    &.mar2 {
+        margin: 2px;
+    }
+    &.mar1 {
+        margin: 1px;
     }
 
-    .font10 {
-        font-size: 10px;
+    // WIDTH
+    &.maxWidth1 {
+       max-width: 100%;
     }
-    .font12 {
-        font-size: 12px;
+    &.maxWidth2 {
+       max-width: 50%;
+    }
+    &.maxWidth3 {
+       max-width: 33.3333%;
+    }
+    &.maxWidth4 {
+       max-width: 25%;
+    }
+    &.maxWidth5 {
+       max-width: 20%;
+    }
+    &.maxWidth6 {
+       max-width: calc(100% / 6);
+    }
+    &.maxWidth7 {
+       max-width: calc(100% / 7);
+    }
+    &.maxWidth8 {
+       max-width: calc(100% / 8);
+    }
+    &.maxWidth9 {
+       max-width: calc(100% / 9);
+    }
+    &.maxWidth10 {
+       max-width: 10%;
+    }
+    &.maxWidth11 {
+       max-width: calc(100% / 11);
+    }
+    &.maxWidth12 {
+       max-width: calc(100% / 12);
+    }
+    &.maxWidth13 {
+       max-width: calc(100% / 13);
+    }
+    &.maxWidth14 {
+       max-width: calc(100% / 14);
     }
 
+    // FONT
+    
     .hiden {
         display: none;
     }
-}
 
+    .textItem {
+        font-size: 16px;
+        line-height: 20px;
+        
+        &.font12 {
+            font-size: 12px;
+            line-height: 16px
+        }
+        &.font10 {
+            font-size: 10px;
+            line-height: 14px
+        }
+        &.font8 {
+            font-size: 8px;
+            line-height: 12px;
+        }
+        &.font7 {
+            font-size: 7px;
+            line-height: 10px;
+        }    
+        &.font6 {
+            font-size: 6px;
+            line-height: 8px;
+        }
+    }
+}
