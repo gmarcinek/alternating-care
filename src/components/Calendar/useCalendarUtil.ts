@@ -5,41 +5,88 @@ import { useMemo } from 'react';
 
 interface UseCalendarUtilProps {
   startDate: string;
-  countingRange: number;
+  rowSize: number;
 }
 
 export const useCalendarUtil = (props: UseCalendarUtilProps) => {
-  const { countingRange, startDate } = props;
+  const { startDate, rowSize } = props;
+  const baseDate = dayjs(startDate);
 
-  const api = useMemo(() => {
-    const today = dayjs().format(dateFormat);
-
+  const splits = useMemo(() => {
     return {
-      today,
-      calendarDates: toRangeDates(startDate),
+      row1: toFullWeeksDates(baseDate, baseDate.add(3, 'month')),
+      row7: toFullMonthsDates(baseDate, baseDate.add(12, 'month')),
+      row10: toRowXDates(baseDate, baseDate.add(11, 'month'), 10),
+      row14: toRowXDates(baseDate, baseDate.add(12, 'month'), 14),
     };
   }, [startDate]);
+
+  const api = useMemo(() => {
+    switch (rowSize) {
+      case 1:
+        return {
+          calendarDates: splits.row1,
+        };
+      case 7:
+        return {
+          calendarDates: splits.row7,
+        };
+      case 10:
+        return {
+          calendarDates: splits.row10,
+        };
+      case 14:
+        return {
+          calendarDates: splits.row14,
+        };
+
+      default:
+        return {
+          calendarDates: splits.row7,
+        };
+    }
+  }, [startDate, rowSize, splits]);
 
   return {
     ...api,
   };
 };
 
-export function toRangeDates(start: string | Dayjs) {
-  const startDate = dayjs(start);
-  const startDateFirstDayOfTheMonth = startDate
-    .startOf('month')
-    .clone()
-    .startOf('week');
-  const endDate = startDate
-    .add(6, 'months')
-    .endOf('month')
-    .clone()
+export function toRowXDates(
+  start: string | Dayjs,
+  end: string | Dayjs,
+  x: number
+) {
+  const startDate = dayjs(start).startOf('week');
+  const endDate = dayjs(end);
+  const diff = startDate.diff(endDate, 'day');
+  const offset = Math.abs(diff % x);
+  const result = getDaysBetweenDates(startDate, endDate);
+  result.splice(result.length - offset, offset);
+
+  return result;
+}
+
+export function toFullWeeksDates(start: string | Dayjs, end: string | Dayjs) {
+  const startDate = dayjs(start).startOf('week');
+  const endDate = dayjs(end)
     .endOf('week')
     .clone()
-    .add(1, 'day');
+    .add(1, 'week')
+    .startOf('week');
 
-  return getDaysBetweenDates(startDateFirstDayOfTheMonth, endDate);
+  return getDaysBetweenDates(startDate, endDate);
+}
+
+export function toFullMonthsDates(start: string | Dayjs, end: string | Dayjs) {
+  const startDate = dayjs(start).startOf('month').clone().startOf('week');
+  const endDate = dayjs(end)
+    .endOf('month')
+    .clone()
+    .add(1, 'week')
+    .startOf('week');
+
+  return getDaysBetweenDates(startDate, endDate);
 }
 
 function getDaysBetweenDates(start: string | Dayjs, end: string | Dayjs) {
@@ -70,14 +117,10 @@ function getDaysBetweenDates(start: string | Dayjs, end: string | Dayjs) {
       if (startDate === indexDay) {
         days.push({
           date: startDate.format(dateFormat),
-          day: startDate.format('D'),
-          weekday: startDate.format('dd'),
         });
       } else {
         days.push({
           date: indexDay.format(dateFormat),
-          day: indexDay.format('D'),
-          weekday: indexDay.format('dd'),
         });
       }
 
@@ -85,5 +128,4 @@ function getDaysBetweenDates(start: string | Dayjs, end: string | Dayjs) {
     }, startDate);
 
   return days;
-  // return days.length % 2 !== 0 ? days.slice(0, days.length - 7) : days;
 }

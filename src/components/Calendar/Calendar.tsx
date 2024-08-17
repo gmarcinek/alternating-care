@@ -3,23 +3,22 @@ import { splitEvenly } from '@/src/utils/array';
 import { NUMBER_SEVEN } from '@/src/utils/number';
 import { useBreakpoints } from '@/src/utils/useBreakpoints';
 import { useMemo } from 'react';
-import { CalendarItemBody14 } from './components/CalendarItemBody14/CalendarItemBody14';
 import { CalendarItemBodySingle } from './components/CalendarItemBodySingle/CalendarItemBodySingle';
+import { CalendarItemBodyTwoWeeks } from './components/CalendarItemBodyTwoWeeks/CalendarItemBodyTwoWeeks';
 import { CalendarItemBodyWeek } from './components/CalendarItemBodyWeek/CalendarItemBodyWeek';
 import { useCalendarUtil } from './useCalendarUtil';
 
 interface CalendarProps {
-  countingRange: number;
   startDate: string;
   rowSize: number;
 }
 
 export function Calendar(props: CalendarProps) {
-  const { countingRange, startDate, rowSize = NUMBER_SEVEN } = props;
+  const { startDate, rowSize = NUMBER_SEVEN } = props;
 
   const { calendarDates } = useCalendarUtil({
-    countingRange,
     startDate,
+    rowSize,
   });
 
   const { isBigDesktop, isDesktop, isMobile, isTablet } = useBreakpoints();
@@ -56,8 +55,11 @@ export function Calendar(props: CalendarProps) {
                   return <CalendarItemBodySingle day={day} key={day.date} />;
                 case 7:
                   return <CalendarItemBodyWeek day={day} key={day.date} />;
+                case 10:
+                case 14:
+                  return <CalendarItemBodyTwoWeeks day={day} key={day.date} />;
                 default:
-                  return <CalendarItemBody14 day={day} key={day.date} />;
+                  return <CalendarItemBodyTwoWeeks day={day} key={day.date} />;
               }
             })}
           </Stack>

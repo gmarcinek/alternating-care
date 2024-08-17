@@ -16,12 +16,15 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
   const { isBigDesktop, isDesktop, isTablet } = useBreakpoints();
   const currentDate = dayjs(day.date);
 
-  const { isToday, isFirstOfTheMonth } = useMemo(() => {
+  const { isToday, isFirstOfTheMonth, isLastOfTheMonth } = useMemo(() => {
     return {
       isToday: currentDate.format(dateFormat) === dayjs().format(dateFormat),
       isFirstOfTheMonth:
         currentDate.format(dateFormat) ===
         currentDate.startOf('month').format(dateFormat),
+      isLastOfTheMonth:
+        currentDate.format(dateFormat) ===
+        currentDate.endOf('month').format(dateFormat),
     };
   }, [currentDate]);
 
@@ -35,6 +38,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
     [styles.isWeekend]: [6, 0].includes(currentDate.day()),
     [styles.isTaoday]: isToday,
     [styles.isFirstOfTheMonth]: isFirstOfTheMonth,
+    [styles.isLastOfTheMonth]: isLastOfTheMonth,
   });
 
   return (
@@ -60,7 +64,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
 
         {(isTablet || isDesktop || isBigDesktop) && (
           <div>
-            <svg
+            {/* <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
               height='24'
@@ -73,7 +77,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
             >
               <path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' />
               <path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' />
-            </svg>
+            </svg> */}
           </div>
         )}
       </Stack>

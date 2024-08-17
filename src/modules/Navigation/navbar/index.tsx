@@ -12,7 +12,6 @@ interface NavbarProps {
 
 const Navbar = (props: NavbarProps) => {
   const { toggle, user } = props;
-  console.log(user);
 
   return (
     <div className='sticky top-0 z-50 h-20 w-full bg-white shadow-lg shadow-slate-200/50'>

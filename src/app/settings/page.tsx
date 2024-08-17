@@ -38,7 +38,6 @@ export default function SettingsPage() {
     event.preventDefault();
 
     const { name, startDate, countingRange, id } = formData;
-    console.log(formData);
 
     const payload: AppUser = {
       id: crypto.randomBytes(16).toString('hex'),

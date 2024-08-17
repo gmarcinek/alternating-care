@@ -1,24 +1,32 @@
 import { Stack } from '@/src/components/Stack/Stack';
 import { CalendarDay } from '@/src/modules/db/types';
 import { dateFormat } from '@/src/utils/dates';
+import { useBreakpoints } from '@/src/utils/useBreakpoints';
 import useElementSize from '@custom-react-hooks/use-element-size';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
-import styles from './CalendarItemBodyTwooWeeks.module.scss';
+import styles from './CalendarItemBodyTwoWeeks.module.scss';
 
 interface CalendarItemBodyTwooWeeksProps {
   day: CalendarDay;
 }
 
-export function CalendarItemBodyTwooWeeks(
+export function CalendarItemBodyTwoWeeks(
   props: CalendarItemBodyTwooWeeksProps
 ) {
   const { day } = props;
   const [setRef, size] = useElementSize();
   const currentDate = dayjs(day.date);
-  const isToday = useMemo(() => {
-    return currentDate.format(dateFormat) === dayjs().format(dateFormat);
+  const { isBigDesktop, isDesktop, isTablet, isMobile } = useBreakpoints();
+
+  const { isToday, isFirstOfTheMonth } = useMemo(() => {
+    return {
+      isToday: currentDate.format(dateFormat) === dayjs().format(dateFormat),
+      isFirstOfTheMonth:
+        currentDate.format(dateFormat) ===
+        currentDate.startOf('month').format(dateFormat),
+    };
   }, [currentDate]);
 
   const { label } = useMemo(() => {
@@ -28,9 +36,7 @@ export function CalendarItemBodyTwooWeeks(
   }, [currentDate]);
 
   const textClasses = classNames(styles.textItem, {
-    [styles.font16]: size.width <= 300,
-    [styles.font10]: size.width <= 200,
-    [styles.font8]: size.width <= 80,
+    [styles.hiden]: isMobile,
   });
 
   const itemClasses = classNames(styles.calendarItem, {
@@ -40,12 +46,16 @@ export function CalendarItemBodyTwooWeeks(
 
   return (
     <div className={itemClasses} ref={setRef}>
-      <Stack className={label}>
+      <Stack className={label} gap={2}>
         <div className={textClasses}>{label}</div>
-        <div>
-          <strong>{currentDate.format('DD')}</strong>
+        <Stack
+          gap={2}
+          direction={isMobile ? 'vertical' : 'horizontal'}
+          className={styles.content}
+        >
+          <strong>{currentDate.format('D')}</strong>
           <small>{currentDate.format('/MM')}</small>
-        </div>
+        </Stack>
       </Stack>
     </div>
   );

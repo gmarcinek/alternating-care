@@ -12,10 +12,12 @@
     }
 
     &.isWeekend {
-        background: #d1d1d1;
+        background: #e1e1e1;
     }
 
     &.isTaoday {
-        background: #fff1f1;
+        position: relative;
+        background: #ff4f4f;
+        color: #ffffff;
     }
 }

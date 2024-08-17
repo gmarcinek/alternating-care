@@ -5,9 +5,11 @@ import { useInitDb } from '@/src/modules/db/db';
 import { useFormReadUsersMutation } from '@/src/modules/db/users/useFormReadUsersMutation';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pl';
+import weekday from 'dayjs/plugin/weekday';
 import { PropsWithChildren, useMemo } from 'react';
 import { AppContext, AppContextData, defaultUser } from './AppContext';
 
+dayjs.extend(weekday);
 dayjs.locale('pl');
 
 export default function AppRoot(props: PropsWithChildren) {

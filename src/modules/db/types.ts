@@ -18,7 +18,5 @@ export interface CalendarEvent {
 }
 
 export interface CalendarDay {
-  day: string;
-  weekday: string;
   date: string;
 }

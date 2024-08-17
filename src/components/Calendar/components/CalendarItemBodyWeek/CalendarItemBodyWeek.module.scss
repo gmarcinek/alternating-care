@@ -13,15 +13,27 @@
     }
 
     &.isWeekend {
-        background: #d1d1d1;
+        background-color: #e1e1e1;
+        color: #616161;
     }
 
     &.isTaoday {
-        background: #fff1f1;
+        position: relative;
+        background: #ff4f4f;
+        color: #ffffff;
     }
-
+    
     &.isFirstOfTheMonth {
         color: #e70000;
+
+    }
+
+    &.isLastOfTheMonth {
+        position: relative;
+    }
+
+    &.isSelected {
+        filter: brightness(0.75);
     }
 
     .date {
