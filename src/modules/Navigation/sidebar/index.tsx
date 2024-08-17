@@ -35,7 +35,7 @@ const Sidebar = (props: SidebarProps) => {
         <ul className='sidebar-nav text-center text-xl leading-relaxed'>
           <li>
             <Link href='/' onClick={toggle}>
-              <p>Podsumowanie</p>
+              <p>Planer</p>
             </Link>
           </li>
           <li>

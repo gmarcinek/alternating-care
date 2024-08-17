@@ -5,12 +5,15 @@ import PageContainer from '@/src/components/PageContainer/PageContainer';
 import { Stack } from '@/src/components/Stack/Stack';
 import { useFormReadUsersMutation } from '@/src/modules/db/users/useFormReadUsersMutation';
 import { dateFormat } from '@/src/utils/dates';
+import { useBreakpoints } from '@/src/utils/useBreakpoints';
+import { Checkbox } from '@nextui-org/checkbox';
 import { Divider } from '@nextui-org/divider';
 import { Slider } from '@nextui-org/slider';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 
 export default function CalendarPage() {
+  const { isMobile } = useBreakpoints();
   const { data, isPending } = useFormReadUsersMutation();
   const [sliderValue, setSliderValue] = useState(7);
   const startDate = dayjs().format(dateFormat);
@@ -58,15 +61,21 @@ export default function CalendarPage() {
 
   return (
     <PageContainer>
-      <Stack gap={48}>
+      <Stack gap={32}>
         <h2>
           Cześć <span>{user?.name}</span>
         </h2>
 
-        <Stack direction='horizontal'>
+        <Stack>
+          <Checkbox>Dziel na tygodnie</Checkbox>
+          <Checkbox>Pokaż weekendy</Checkbox>
+          <Checkbox>Pokaż opiekę</Checkbox>
+          <Divider orientation='vertical' />
+        </Stack>
+
+        <Stack className='b-white sticky top-16 z-40 h-10 w-full bg-gray-100 pt-5'>
           <Slider
-            className='max-w-xl'
-            size='md'
+            size={isMobile ? 'lg' : 'md'}
             step={1}
             color='danger'
             marks={marks}
@@ -82,7 +91,7 @@ export default function CalendarPage() {
 
         <Divider className='my-0' />
 
-        <Calendar startDate={startDate} rowSize={sliderValue} />
+        <Calendar startDate={startDate} rowSize={sliderValue} isWeekSpleated />
       </Stack>
     </PageContainer>
   );

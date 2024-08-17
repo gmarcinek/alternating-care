@@ -16,14 +16,12 @@ export const useFormReadUsersMutation = (
   }
 ) => {
   const { onError, onSuccess } = props;
-  const [isPending, setIsPending] = useState(false);
+  const [isPending, setIsPending] = useState(true);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
   const [data, setData] = useState<AppUser[]>([]);
 
   const initiateDb = useCallback(async () => {
-    setIsPending(true);
-
     const db = await openDB<AlternatingCareDBSchema>(dbName, dbVersion);
 
     if (!db) {

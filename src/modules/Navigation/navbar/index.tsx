@@ -14,14 +14,14 @@ const Navbar = (props: NavbarProps) => {
   const { toggle, user } = props;
 
   return (
-    <div className='sticky top-0 z-50 h-20 w-full bg-white shadow-lg shadow-slate-200/50'>
+    <div className='sticky top-0 z-50 h-16 w-full bg-white shadow-lg shadow-slate-200/50'>
       <div className='container-fluid h-full px-4'>
         <div className='flex h-full items-center justify-between'>
           <div className='flex h-full items-center justify-between gap-x-8 divide-x divide-slate-300'>
             <Logo />
             <ul className='hidden gap-x-6 pl-8 md:flex'>
               <Link href='/'>
-                <p>Podsumowanie</p>
+                <p>Planer</p>
               </Link>
               <Link href='/calendar'>
                 <p>Kalendarz</p>

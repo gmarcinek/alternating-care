@@ -2,6 +2,7 @@ import { Stack, StackGap } from '@/src/components/Stack/Stack';
 import { splitEvenly } from '@/src/utils/array';
 import { NUMBER_SEVEN } from '@/src/utils/number';
 import { useBreakpoints } from '@/src/utils/useBreakpoints';
+import dayjs from 'dayjs';
 import { useMemo } from 'react';
 import { CalendarItemBodySingle } from './components/CalendarItemBodySingle/CalendarItemBodySingle';
 import { CalendarItemBodyTwoWeeks } from './components/CalendarItemBodyTwoWeeks/CalendarItemBodyTwoWeeks';
@@ -11,11 +12,12 @@ import { useCalendarUtil } from './useCalendarUtil';
 interface CalendarProps {
   startDate: string;
   rowSize: number;
+  isWeeksSpleted: boolean;
 }
 
 export function Calendar(props: CalendarProps) {
-  const { startDate, rowSize = NUMBER_SEVEN } = props;
-
+  const { startDate, rowSize = NUMBER_SEVEN, isWeeksSpleted } = props;
+  console.log('isWeeksSpleted', isWeeksSpleted);
   const { calendarDates } = useCalendarUtil({
     startDate,
     rowSize,
@@ -43,26 +45,40 @@ export function Calendar(props: CalendarProps) {
     <Stack gap={gap}>
       {weeks.map((week, weekIndex) => {
         return (
-          <Stack
-            gap={gap}
-            key={`week-of-${week[0].date}-${weekIndex}`}
-            direction='horizontal'
-            contentAlignment='between'
-          >
-            {week.map((day) => {
-              switch (rowSize) {
-                case 1:
-                  return <CalendarItemBodySingle day={day} key={day.date} />;
-                case 7:
-                  return <CalendarItemBodyWeek day={day} key={day.date} />;
-                case 10:
-                case 14:
-                  return <CalendarItemBodyTwoWeeks day={day} key={day.date} />;
-                default:
-                  return <CalendarItemBodyTwoWeeks day={day} key={day.date} />;
-              }
-            })}
-          </Stack>
+          <div key={`week-of-${week[0].date}-${weekIndex}`}>
+            {rowSize !== 1 && isWeeksSpleted && (
+              <small className='mt-3'>
+                <strong>{dayjs(week[0].date).format('DD.MM')}</strong> -{' '}
+                {dayjs(week.at(week.length - 1)?.date ?? '').format(
+                  'DD.MM - YYYY'
+                )}
+              </small>
+            )}
+            <Stack
+              gap={gap}
+              key={`week-of-${week[0].date}-${weekIndex}`}
+              direction='horizontal'
+              contentAlignment='between'
+            >
+              {week.map((day) => {
+                switch (rowSize) {
+                  case 1:
+                    return <CalendarItemBodySingle day={day} key={day.date} />;
+                  case 7:
+                    return <CalendarItemBodyWeek day={day} key={day.date} />;
+                  case 10:
+                  case 14:
+                    return (
+                      <CalendarItemBodyTwoWeeks day={day} key={day.date} />
+                    );
+                  default:
+                    return (
+                      <CalendarItemBodyTwoWeeks day={day} key={day.date} />
+                    );
+                }
+              })}
+            </Stack>
+          </div>
         );
       })}
     </Stack>

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout(props: PropsWithChildren) {
   return (
-    <html lang='pl'>
+    <html lang='pl' className='bg-gray-100'>
       <body className={inter.className}>
         <AppRoot>{props.children}</AppRoot>
         <ToastContainer
