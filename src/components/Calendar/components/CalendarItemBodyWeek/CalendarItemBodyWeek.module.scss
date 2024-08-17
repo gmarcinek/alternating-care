@@ -1,0 +1,47 @@
+.calendarItem {
+    display: flex;
+    flex: 1;
+    color: #494949;
+    padding: 0.25rem 0 0.25rem 0.5rem;
+    background: rgb(255, 255, 255);
+    
+    font-size: 12px;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+    
+    .hiden {
+        display: none;
+    }
+
+    &.isWeekend {
+        background: #d1d1d1;
+    }
+
+    &.isTaoday {
+        background: #fff1f1;
+    }
+
+    &.isFirstOfTheMonth {
+        color: #e70000;
+    }
+
+    .date {
+        font-size: 14px;
+    }
+    .month {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 768px) {
+    .calendarItem {
+        font-size: 16px;
+        padding: 0.5rem;
+
+        .date {
+            font-size: 18px;
+        }
+        .month {
+            font-size: 14px;
+        }
+    }
+}

@@ -33,7 +33,7 @@ export const Stack: React.FC<StackProps> = ({
 
   const computedStyle: CSSProperties = {
     display: 'flex',
-    flex: '1 0 100%',
+    flex: '1',
     flexDirection,
     justifyContent,
     gap: `${gap}px`,
