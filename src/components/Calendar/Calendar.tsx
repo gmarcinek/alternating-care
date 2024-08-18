@@ -1,3 +1,5 @@
+'use client';
+
 import { Stack, StackGap } from '@/src/components/Stack/Stack';
 import { splitEvenly } from '@/src/utils/array';
 import { NUMBER_SEVEN } from '@/src/utils/number';
@@ -12,12 +14,12 @@ import { useCalendarUtil } from './useCalendarUtil';
 interface CalendarProps {
   startDate: string;
   rowSize: number;
-  isWeeksSpleted: boolean;
+  isWeekSpleated: boolean;
 }
 
 export function Calendar(props: CalendarProps) {
-  const { startDate, rowSize = NUMBER_SEVEN, isWeeksSpleted } = props;
-  console.log('isWeeksSpleted', isWeeksSpleted);
+  const { startDate, rowSize = NUMBER_SEVEN, isWeekSpleated } = props;
+
   const { calendarDates } = useCalendarUtil({
     startDate,
     rowSize,
@@ -39,19 +41,22 @@ export function Calendar(props: CalendarProps) {
       weeks,
       gap,
     };
-  }, [rowSize, calendarDates, isMobile, isTablet, isDesktop, isBigDesktop]);
+  }, [rowSize, calendarDates, isMobile, isTablet, isDesktop]);
 
   return (
     <Stack gap={gap}>
       {weeks.map((week, weekIndex) => {
         return (
           <div key={`week-of-${week[0].date}-${weekIndex}`}>
-            {rowSize !== 1 && isWeeksSpleted && (
+            {rowSize !== 1 && isWeekSpleated && (
               <small className='mt-3'>
-                <strong>{dayjs(week[0].date).format('DD.MM')}</strong> -{' '}
-                {dayjs(week.at(week.length - 1)?.date ?? '').format(
-                  'DD.MM - YYYY'
-                )}
+                Tydzień: {dayjs(week[0].date).week()} /
+                {dayjs(week[0].date).format('YYYY')}
+                <strong>
+                  {dayjs(week[0].date).format('DD.MM')}
+                  {'-'}
+                  {dayjs(week.at(week.length - 1)?.date ?? '').format('DD.MM')}
+                </strong>
               </small>
             )}
             <Stack
@@ -92,6 +97,7 @@ interface ToGapSizeProps {
   isDesktop: boolean;
   isBigDesktop: boolean;
 }
+
 function toGapSize(props: ToGapSizeProps): StackGap {
   const { isBigDesktop, isDesktop, isMobile, isTablet, rowSize } = props;
 
@@ -143,5 +149,5 @@ function toGapSize(props: ToGapSizeProps): StackGap {
     }
   }
 
-  return 2;
+  return 16;
 }

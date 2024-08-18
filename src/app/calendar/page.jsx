@@ -16,6 +16,7 @@ export default function CalendarPage() {
   const { isMobile } = useBreakpoints();
   const { data, isPending } = useFormReadUsersMutation();
   const [sliderValue, setSliderValue] = useState(7);
+  const [isWeekSpleated, setIsWeekSpleated] = useState(false);
   const startDate = dayjs().format(dateFormat);
 
   const handleSliderChange = useCallback(
@@ -67,13 +68,15 @@ export default function CalendarPage() {
         </h2>
 
         <Stack>
-          <Checkbox>Dziel na tygodnie</Checkbox>
+          <Checkbox onValueChange={setIsWeekSpleated}>
+            Dziel na tygodnie
+          </Checkbox>
           <Checkbox>Pokaż weekendy</Checkbox>
           <Checkbox>Pokaż opiekę</Checkbox>
           <Divider orientation='vertical' />
         </Stack>
 
-        <Stack className='b-white sticky top-16 z-40 h-10 w-full bg-gray-100 pt-5'>
+        <Stack className='sticky top-16 z-40 h-10 bg-gray-100 pb-2 pt-5'>
           <Slider
             size={isMobile ? 'lg' : 'md'}
             step={1}
@@ -86,12 +89,13 @@ export default function CalendarPage() {
             onChange={handleSliderChange}
             aria-label='slider'
           />
-          <Divider orientation='vertical' />
         </Stack>
 
-        <Divider className='my-0' />
-
-        <Calendar startDate={startDate} rowSize={sliderValue} isWeekSpleated />
+        <Calendar
+          startDate={startDate}
+          rowSize={sliderValue}
+          isWeekSpleated={isWeekSpleated}
+        />
       </Stack>
     </PageContainer>
   );
