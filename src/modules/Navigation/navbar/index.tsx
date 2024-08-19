@@ -20,11 +20,11 @@ const Navbar = (props: NavbarProps) => {
           <div className='flex h-full items-center justify-between gap-x-8 divide-x divide-slate-300'>
             <Logo />
             <ul className='hidden gap-x-6 pl-8 md:flex'>
-              <Link href='/'>
-                <p>Plan</p>
-              </Link>
               <Link href='/week'>
                 <p>Tydzień</p>
+              </Link>
+              <Link href='/month'>
+                <p>Plan</p>
               </Link>
               <Link href='/calendar'>
                 <p>Edycja</p>

@@ -21,6 +21,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
     isWeekendsVisible,
     isTodayVisible,
     alternatingDates,
+    displayStrategy,
   } = useCalenderContext();
   const { isMobile } = useBreakpoints();
 

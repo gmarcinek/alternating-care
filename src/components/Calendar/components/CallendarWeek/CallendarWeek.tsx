@@ -2,6 +2,7 @@
 
 import { Stack, StackGap } from '@/src/components/Stack/Stack';
 import { CalendarDay } from '@/src/modules/db/types';
+import dayjs from 'dayjs';
 import { useCalenderContext } from '../../Calendar.context';
 import { CalendarItemBodySingle } from '../CalendarItemBodySingle/CalendarItemBodySingle';
 import { CalendarItemBodyTwoWeeks } from '../CalendarItemBodyTwoWeeks/CalendarItemBodyTwoWeeks';
@@ -12,11 +13,13 @@ import CalendarWeekInfoSection from '../CalendarWeekInfoSection/CalendarWeekInfo
 interface CallendarWeekProps {
   week: CalendarDay[];
   gap: StackGap;
+  monthIndex: number;
 }
 
 export function CallendarWeek(props: CallendarWeekProps) {
-  const { week, gap } = props;
+  const { week, gap, monthIndex } = props;
   const { rowSize, isWeeksSplitted } = useCalenderContext();
+
   return (
     <Stack gap={8}>
       {rowSize !== 1 && isWeeksSplitted && (
@@ -25,6 +28,12 @@ export function CallendarWeek(props: CallendarWeekProps) {
 
       <Stack gap={gap} direction='horizontal' contentAlignment='between'>
         {week.map((day) => {
+          if (monthIndex !== dayjs(day.date).month()) {
+            return (
+              <div style={{ flex: 1, background: 'rgb(236 237 238)' }}></div>
+            );
+          }
+
           switch (rowSize) {
             case 1:
               return <CalendarItemBodySingle day={day} key={day.date} />;

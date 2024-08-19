@@ -7,6 +7,7 @@ export interface CalenderContextData {
   isAlternatingVisible: boolean;
   isWeekendsVisible: boolean;
   alternatingDates: string[];
+  displayStrategy: 'continous' | 'separateMonths';
 }
 
 export const CalenderContext = createContext<CalenderContextData>({
@@ -16,6 +17,7 @@ export const CalenderContext = createContext<CalenderContextData>({
   isAlternatingVisible: true,
   isWeekendsVisible: true,
   alternatingDates: [],
+  displayStrategy: 'continous',
 });
 
 export const useCalenderContext = () => {

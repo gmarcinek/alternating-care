@@ -25,13 +25,20 @@ export default function Week() {
         </h2>
 
         <Calendar
-          startDate={dayjs(startDate).startOf('week')}
-          endDate={dayjs(startDate).add(1, 'week').format(dateFormat)}
+          startDate={dayjs(startDate).startOf('month').clone().startOf('week')}
+          endDate={dayjs(startDate)
+            .endOf('month')
+            .clone()
+            .endOf('week')
+            .clone()
+            .add(1, 'week')
+            .startOf('week')
+            .format(dateFormat)}
           rowSize={7}
           isTodayVisible
-          isWeeksSplitted
           isWeekendsVisible
           isAlternatingVisible
+          displayStrategy='separateMonths'
           alternatingDates={[
             '2024-08-03',
             '2024-08-04',
