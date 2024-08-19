@@ -6,6 +6,8 @@ import { Divider } from '@nextui-org/react';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
+import { useCalenderContext } from '../../Calendar.context';
+import CalendarItemStatusContainer from '../CalendarItemStatusContainer/CalendarItemStatusContainer';
 import styles from './CalendarItemBodySingle.module.scss';
 
 interface CalendarItemBodySingleProps {
@@ -16,7 +18,7 @@ export function CalendarItemBodySingle(props: CalendarItemBodySingleProps) {
   const { day } = props;
   const [setRef, size] = useElementSize();
   const currentDate = dayjs(day.date);
-
+  const { isTodayVisible } = useCalenderContext();
   const { isToday, isFirstOfTheMonth } = useMemo(() => {
     return {
       isToday: currentDate.format(dateFormat) === dayjs().format(dateFormat),
@@ -44,24 +46,29 @@ export function CalendarItemBodySingle(props: CalendarItemBodySingleProps) {
   });
 
   return (
-    <Stack>
-      {isFirstOfTheMonth && (
-        <>
-          <Divider className='my-0' />
-          <Stack direction='horizontal' contentAlignment='start'>
-            <h3>{currentDate.format('MMMM YYYY')}</h3>
+    <CalendarItemStatusContainer
+      isToday={isToday}
+      isTodayVisible={isTodayVisible}
+    >
+      <Stack>
+        {isFirstOfTheMonth && (
+          <>
+            <Divider className='my-0' />
+            <Stack direction='horizontal' contentAlignment='start'>
+              <h3>{currentDate.format('MMMM YYYY')}</h3>
+            </Stack>
+            <Divider className='my-0' />
+          </>
+        )}
+        <div className={itemClasses} ref={setRef}>
+          <Stack className={label}>
+            <div className={textClasses}>
+              <span>{label}</span>
+            </div>
           </Stack>
-          <Divider className='my-0' />
-        </>
-      )}
-      <div className={itemClasses} ref={setRef}>
-        <Stack className={label}>
-          <div className={textClasses}>
-            <span>{label}</span>
-          </div>
-        </Stack>
-      </div>
-    </Stack>
+        </div>
+      </Stack>
+    </CalendarItemStatusContainer>
   );
 }
 

@@ -5,9 +5,11 @@ import PageContainer from '@/src/components/PageContainer/PageContainer';
 import { Stack } from '@/src/components/Stack/Stack';
 import { useFormReadUsersMutation } from '@/src/modules/db/users/useFormReadUsersMutation';
 import { dateFormat } from '@/src/utils/dates';
+import { useBreakpoints } from '@/src/utils/useBreakpoints';
 import dayjs from 'dayjs';
 
-export default function Home() {
+export default function Week() {
+  const { isMobile } = useBreakpoints();
   const { data, isPending } = useFormReadUsersMutation();
   const startDate = dayjs().format(dateFormat);
 
@@ -23,12 +25,13 @@ export default function Home() {
         <h2>
           Cześć <span>{user?.name}</span>
         </h2>
+
         <Calendar
-          startDate={startDate}
-          endDate={dayjs(startDate).add(4, 'week').format(dateFormat)}
+          startDate={dayjs(startDate).startOf('week')}
+          endDate={dayjs(startDate).add(1, 'week').format(dateFormat)}
           rowSize={7}
           isTodayVisible
-          isWeeksSplitted={false}
+          isWeeksSplitted
           isWeekendsVisible
           isAlternatingVisible
           alternatingDates={[
@@ -78,7 +81,6 @@ export default function Home() {
             '2024-10-09',
           ]}
         />
-        <h3>Lista wszystkich wydarzeń na 4 tygodnie</h3>
       </Stack>
     </PageContainer>
   );

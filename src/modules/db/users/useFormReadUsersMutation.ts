@@ -29,18 +29,22 @@ export const useFormReadUsersMutation = (
     }
 
     // actions
-    const data = await db.getAll('users');
-    setData(data);
+    const users = await db.getAll('users');
+    setData(users);
     db.close();
 
-    return data;
+    return users;
   }, []);
 
   useEffect(() => {
+    let isSubscribed = true;
+
     initiateDb()
       .then((data) => {
-        setIsSuccess(true);
-        onSuccess?.(data);
+        if (isSubscribed) {
+          setIsSuccess(true);
+          onSuccess?.(data);
+        }
       })
       .catch((error) => {
         setIsError(true);
@@ -49,6 +53,10 @@ export const useFormReadUsersMutation = (
       .finally(() => {
         setIsPending(false);
       });
+
+    return () => {
+      isSubscribed = false;
+    };
   }, []);
 
   return {

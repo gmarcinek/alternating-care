@@ -16,7 +16,12 @@ export default function CalendarPage() {
   const { isMobile } = useBreakpoints();
   const { data, isPending } = useFormReadUsersMutation();
   const [sliderValue, setSliderValue] = useState(7);
-  const [isWeekSpleated, setIsWeekSpleated] = useState(false);
+
+  const [isTodayVisible, setIsTodayVisible] = useState(true);
+  const [isWeeksSplitted, setIsWeeksSplitted] = useState(false);
+  const [isWeekendsVisible, setIsWeekendsVisible] = useState(true);
+  const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
+
   const startDate = dayjs().format(dateFormat);
 
   const handleSliderChange = useCallback(
@@ -55,28 +60,47 @@ export default function CalendarPage() {
   ];
 
   if (isPending) {
-    return <>ładowanie</>;
+    return <PageContainer>Ładowanie</PageContainer>;
   }
 
   const user = data.at(0);
 
   return (
     <PageContainer>
-      <Stack gap={32}>
+      <Stack gap={24}>
         <h2>
           Cześć <span>{user?.name}</span>
         </h2>
 
-        <Stack>
-          <Checkbox onValueChange={setIsWeekSpleated}>
-            Dziel na tygodnie
-          </Checkbox>
-          <Checkbox>Pokaż weekendy</Checkbox>
-          <Checkbox>Pokaż opiekę</Checkbox>
-          <Divider orientation='vertical' />
-        </Stack>
+        <Stack className='sticky top-16 z-10 h-10 bg-gray-100 pb-2 pt-5'>
+          <Stack direction='horizontal'>
+            <Checkbox
+              defaultSelected={isTodayVisible}
+              onValueChange={setIsTodayVisible}
+            >
+              Dziś
+            </Checkbox>
+            <Checkbox
+              defaultSelected={isWeeksSplitted}
+              onValueChange={setIsWeeksSplitted}
+            >
+              Plan
+            </Checkbox>
+            <Checkbox
+              defaultSelected={isWeekendsVisible}
+              onValueChange={setIsWeekendsVisible}
+            >
+              Weekendy
+            </Checkbox>
+            <Checkbox
+              defaultSelected={isAlternatingVisible}
+              onValueChange={setIsAlternatingVisible}
+            >
+              Opieka
+            </Checkbox>
+            <Divider orientation='vertical' />
+          </Stack>
 
-        <Stack className='sticky top-16 z-40 h-10 bg-gray-100 pb-2 pt-5'>
           <Slider
             size={isMobile ? 'lg' : 'md'}
             step={1}
@@ -94,7 +118,56 @@ export default function CalendarPage() {
         <Calendar
           startDate={startDate}
           rowSize={sliderValue}
-          isWeekSpleated={isWeekSpleated}
+          isTodayVisible={isTodayVisible}
+          isWeeksSplitted={isWeeksSplitted}
+          isWeekendsVisible={isWeekendsVisible}
+          isAlternatingVisible={isAlternatingVisible}
+          alternatingDates={[
+            '2024-08-03',
+            '2024-08-04',
+            '2024-08-05',
+            '2024-08-06',
+            '2024-08-07',
+            '2024-08-08',
+            '2024-08-09',
+            '2024-08-10',
+            '2024-08-11',
+            '2024-08-12',
+            '2024-08-13',
+            '2024-08-14',
+
+            '2024-08-25',
+            '2024-08-26',
+            '2024-08-27',
+            '2024-08-28',
+            '2024-08-29',
+            '2024-08-30',
+            '2024-08-31',
+            '2024-09-01',
+            '2024-09-02',
+            '2024-09-03',
+            '2024-09-04',
+
+            '2024-09-13',
+            '2024-09-14',
+            '2024-09-15',
+            '2024-09-16',
+            '2024-09-17',
+            '2024-09-18',
+            '2024-09-19',
+            '2024-09-20',
+
+            '2024-09-30',
+            '2024-10-01',
+            '2024-10-02',
+            '2024-10-03',
+            '2024-10-04',
+            '2024-10-05',
+            '2024-10-06',
+            '2024-10-07',
+            '2024-10-08',
+            '2024-10-09',
+          ]}
         />
       </Stack>
     </PageContainer>

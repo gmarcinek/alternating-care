@@ -21,10 +21,13 @@ const Navbar = (props: NavbarProps) => {
             <Logo />
             <ul className='hidden gap-x-6 pl-8 md:flex'>
               <Link href='/'>
-                <p>Planer</p>
+                <p>Plan</p>
+              </Link>
+              <Link href='/week'>
+                <p>Tydzień</p>
               </Link>
               <Link href='/calendar'>
-                <p>Kalendarz</p>
+                <p>Edycja</p>
               </Link>
               <Link href='/settings'>
                 <p>Ustawienia</p>

@@ -6,6 +6,8 @@ import useElementSize from '@custom-react-hooks/use-element-size';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
+import { useCalenderContext } from '../../Calendar.context';
+import CalendarItemStatusContainer from '../CalendarItemStatusContainer/CalendarItemStatusContainer';
 import styles from './CalendarItemBodyTwoWeeks.module.scss';
 
 interface CalendarItemBodyTwooWeeksProps {
@@ -18,14 +20,23 @@ export function CalendarItemBodyTwoWeeks(
   const { day } = props;
   const [setRef, size] = useElementSize();
   const currentDate = dayjs(day.date);
-  const { isBigDesktop, isDesktop, isTablet, isMobile } = useBreakpoints();
+  const {
+    isAlternatingVisible,
+    isWeekendsVisible,
+    isTodayVisible,
+    alternatingDates,
+  } = useCalenderContext();
+  const { isTablet, isMobile } = useBreakpoints();
 
-  const { isToday, isFirstOfTheMonth } = useMemo(() => {
+  const { isToday, isFirstOfTheMonth, isLastOfTheMonth } = useMemo(() => {
     return {
       isToday: currentDate.format(dateFormat) === dayjs().format(dateFormat),
       isFirstOfTheMonth:
         currentDate.format(dateFormat) ===
         currentDate.startOf('month').format(dateFormat),
+      isLastOfTheMonth:
+        currentDate.format(dateFormat) ===
+        currentDate.endOf('month').format(dateFormat),
     };
   }, [currentDate]);
 
@@ -39,25 +50,50 @@ export function CalendarItemBodyTwoWeeks(
     [styles.hiden]: isMobile,
   });
 
+  const isWeekend = isWeekendsVisible && [6, 0].includes(currentDate.day());
+  const isAlternating =
+    isAlternatingVisible && alternatingDates.includes(day.date);
+
   const itemClasses = classNames(styles.calendarItem, {
-    [styles.isWeekend]: [6, 0].includes(currentDate.day()),
-    [styles.isTaoday]: isToday,
+    [styles.isWeekend]: isWeekend,
+    [styles.isToday]: isTodayVisible && isToday,
+    [styles.isFirstOfTheMonth]: isFirstOfTheMonth,
+    [styles.isLastOfTheMonth]: isLastOfTheMonth,
+    [styles.isAlternating]: isAlternating,
   });
 
   return (
-    <div className={itemClasses} ref={setRef}>
-      <Stack className={label} gap={2}>
-        <div className={textClasses}>{label}</div>
-        <Stack
-          gap={2}
-          direction={isMobile ? 'vertical' : 'horizontal'}
-          className={styles.content}
-        >
-          <strong>{currentDate.format('D')}</strong>
-          <small>{currentDate.format('/MM')}</small>
+    <CalendarItemStatusContainer
+      isAlternating={isAlternating}
+      isWeekend={isWeekend}
+      isToday={isToday}
+      isTodayVisible={isTodayVisible}
+      isFirstOfTheMonth={isFirstOfTheMonth}
+      isLastOfTheMonth={isLastOfTheMonth}
+    >
+      <div className={itemClasses} ref={setRef}>
+        <Stack className={label} gap={2}>
+          <div className={textClasses}>{label}</div>
+          <Stack
+            gap={isTablet || isMobile ? 0 : 2}
+            direction={isMobile ? 'vertical' : 'horizontal'}
+            className={styles.content}
+          >
+            {isFirstOfTheMonth && !isTablet && !isMobile ? (
+              <h3 style={{ color: 'inherit' }}>
+                {currentDate.format('D')}
+                <small>{currentDate.format('.MM')}</small>
+              </h3>
+            ) : (
+              <>
+                <strong>{currentDate.format('D')}</strong>
+                <small>{currentDate.format('/MM')}</small>
+              </>
+            )}
+          </Stack>
         </Stack>
-      </Stack>
-    </div>
+      </div>
+    </CalendarItemStatusContainer>
   );
 }
 

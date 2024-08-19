@@ -3,12 +3,12 @@ import { dateFormat } from '@/src/utils/dates';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
 
-interface UseCalendarUtilProps {
+interface UseCalendarDatesProps {
   startDate: string;
   rowSize: number;
 }
 
-export const useCalendarUtil = (props: UseCalendarUtilProps) => {
+export const useCalendarDates = (props: UseCalendarDatesProps) => {
   const { startDate, rowSize } = props;
   const baseDate = dayjs(startDate);
 
@@ -21,35 +21,26 @@ export const useCalendarUtil = (props: UseCalendarUtilProps) => {
     };
   }, [startDate]);
 
-  const api = useMemo(() => {
+  const calendarDates = useMemo(() => {
     switch (rowSize) {
       case 1:
-        return {
-          calendarDates: splits.row1,
-        };
+        return splits.row1;
+
       case 7:
-        return {
-          calendarDates: splits.row7,
-        };
+        return splits.row7;
+
       case 10:
-        return {
-          calendarDates: splits.row10,
-        };
+        return splits.row10;
+
       case 14:
-        return {
-          calendarDates: splits.row14,
-        };
+        return splits.row14;
 
       default:
-        return {
-          calendarDates: splits.row7,
-        };
+        return splits.row7;
     }
   }, [startDate, rowSize, splits]);
 
-  return {
-    ...api,
-  };
+  return calendarDates;
 };
 
 export function toRowXDates(
@@ -57,7 +48,10 @@ export function toRowXDates(
   end: string | Dayjs,
   x: number
 ) {
-  const startDate = dayjs(start).startOf('week');
+  const startDate = dayjs(start)
+    .startOf('week')
+    .subtract(1, 'week')
+    .startOf('week');
   const endDate = dayjs(end);
   const diff = startDate.diff(endDate, 'day');
   const offset = Math.abs(diff % x);
@@ -89,7 +83,10 @@ export function toFullMonthsDates(start: string | Dayjs, end: string | Dayjs) {
   return getDaysBetweenDates(startDate, endDate);
 }
 
-function getDaysBetweenDates(start: string | Dayjs, end: string | Dayjs) {
+export function getDaysBetweenDates(
+  start: string | Dayjs,
+  end: string | Dayjs
+) {
   const days: CalendarDay[] = [];
   const startDate = dayjs(start);
   const endDate = dayjs(end);

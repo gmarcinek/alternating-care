@@ -11,7 +11,7 @@ const Sidebar = (props: SidebarProps) => {
   return (
     <>
       <div
-        className='sidebar-container fixed left-0 z-10 grid h-full w-full justify-center overflow-hidden bg-white pt-[120px]'
+        className='sidebar-container fixed left-0 z-40 grid h-full w-full justify-center overflow-hidden bg-white pt-[120px]'
         style={{
           opacity: `${isOpen ? '1' : '0'}`,
           top: ` ${isOpen ? '0' : '-100%'}`,
@@ -35,17 +35,22 @@ const Sidebar = (props: SidebarProps) => {
         <ul className='sidebar-nav text-center text-xl leading-relaxed'>
           <li>
             <Link href='/' onClick={toggle}>
-              <p>Planer</p>
+              <h3>Plan</h3>
+            </Link>
+          </li>
+          <li>
+            <Link href='/week' onClick={toggle}>
+              <h3>Tydzień</h3>
             </Link>
           </li>
           <li>
             <Link href='/calendar' onClick={toggle}>
-              <p>Kalendarz</p>
+              <h3>Edycja</h3>
             </Link>
           </li>
           <li>
             <Link href='/settings' onClick={toggle}>
-              <p>Ustawienia</p>
+              <h3>Ustawienia</h3>
             </Link>
           </li>
         </ul>

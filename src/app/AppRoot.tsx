@@ -17,6 +17,7 @@ dayjs.locale('pl');
 export default function AppRoot(props: PropsWithChildren) {
   const { isReady } = useInitDb();
   const { data, isSuccess } = useFormReadUsersMutation();
+
   const contextData: AppContextData = useMemo(() => {
     return {
       user: data.at(0) ?? { ...defaultUser },
