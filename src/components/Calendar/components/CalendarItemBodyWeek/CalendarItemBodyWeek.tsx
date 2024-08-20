@@ -1,11 +1,11 @@
 import { Stack } from '@/src/components/Stack/Stack';
 import { CalendarDay } from '@/src/modules/db/types';
 import { dateFormat } from '@/src/utils/dates';
-import { useBreakpoints } from '@/src/utils/useBreakpoints';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
 import { useCalenderContext } from '../../Calendar.context';
+import { useDayContainerBreakPoint } from '../../useDayContainerBreakPoint';
 import CalendarItemStatusContainer from '../CalendarItemStatusContainer/CalendarItemStatusContainer';
 import styles from './CalendarItemBodyWeek.module.scss';
 
@@ -21,9 +21,11 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
     isWeekendsVisible,
     isTodayVisible,
     alternatingDates,
-    displayStrategy,
+    rowSize,
+    containerWidth,
   } = useCalenderContext();
-  const { isMobile } = useBreakpoints();
+
+  const { style } = useDayContainerBreakPoint(rowSize, containerWidth);
 
   const { isToday, isFirstOfTheMonth, isLastOfTheMonth } = useMemo(() => {
     return {
@@ -64,9 +66,9 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
       isFirstOfTheMonth={isFirstOfTheMonth}
       isLastOfTheMonth={isLastOfTheMonth}
     >
-      <div className={itemClasses}>
+      <div className={itemClasses} style={style.style}>
         <Stack gap={2} direction='horizontal'>
-          <Stack gap={2}>
+          <Stack gap={0}>
             <div>{label}</div>
 
             <Stack direction='horizontal' contentAlignment='start'>

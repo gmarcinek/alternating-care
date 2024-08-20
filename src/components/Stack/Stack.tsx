@@ -1,5 +1,5 @@
 import type { CSSProperties, PropsWithChildren } from 'react';
-import React from 'react';
+import { forwardRef } from 'react';
 
 type StackAlignment = 'start' | 'end' | 'between' | 'center';
 type StackDirection = 'horizontal' | 'vertical';
@@ -13,36 +13,39 @@ interface StackProps extends PropsWithChildren {
   className?: string;
 }
 
-export const Stack: React.FC<StackProps> = ({
-  direction = 'vertical',
-  gap = 16,
-  contentAlignment,
-  style,
-  className,
-  children,
-}) => {
-  const flexDirection = direction === 'horizontal' ? 'row' : 'column';
-  const justifyContent = contentAlignment
-    ? {
-        start: 'flex-start',
-        end: 'flex-end',
-        between: 'space-between',
-        center: 'center',
-      }[contentAlignment]
-    : undefined;
+export const Stack = forwardRef<HTMLDivElement, StackProps>(
+  (props: StackProps, ref) => {
+    const {
+      direction = 'vertical',
+      gap = 16,
+      contentAlignment,
+      style,
+      className,
+      children,
+    } = props;
+    const flexDirection = direction === 'horizontal' ? 'row' : 'column';
+    const justifyContent = contentAlignment
+      ? {
+          start: 'flex-start',
+          end: 'flex-end',
+          between: 'space-between',
+          center: 'center',
+        }[contentAlignment]
+      : undefined;
 
-  const computedStyle: CSSProperties = {
-    display: 'flex',
-    flex: '1',
-    flexDirection,
-    justifyContent,
-    gap: `${gap}px`,
-    ...style,
-  };
+    const computedStyle: CSSProperties = {
+      display: 'flex',
+      flex: '1',
+      flexDirection,
+      justifyContent,
+      gap: `${gap}px`,
+      ...style,
+    };
 
-  return (
-    <div style={computedStyle} className={className}>
-      {children}
-    </div>
-  );
-};
+    return (
+      <div style={computedStyle} className={className} ref={ref}>
+        {children}
+      </div>
+    );
+  }
+);

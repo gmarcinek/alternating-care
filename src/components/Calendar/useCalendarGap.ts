@@ -2,21 +2,78 @@ import { useBreakpoints } from '@/src/utils/useBreakpoints';
 import { useMemo } from 'react';
 import { StackGap } from '../Stack/Stack';
 
-export const useCalendarGap = (rowSize: number) => {
+export const useCalendarGap = (rowSize: number, width?: number) => {
   const { isDesktop, isMobile, isTablet, isBigDesktop } = useBreakpoints();
 
   const gap = useMemo(() => {
-    return toGapSize({
+    if (width) {
+      return toGapSizeByContainerSize(rowSize, width);
+    }
+
+    return toGapSizeByRowSize({
       isBigDesktop,
       isDesktop,
       isMobile,
       isTablet,
       rowSize,
     });
-  }, [isBigDesktop, isDesktop, isMobile, isTablet, rowSize]);
+  }, [isBigDesktop, isDesktop, isMobile, isTablet, rowSize, width]);
 
   return gap;
 };
+
+function toGapSizeByContainerSize(rowSize: number, width: number) {
+  const size608 = 608;
+  const size736 = 736;
+  const size992 = 992;
+  // const size1248 = 1248;
+  const size1504 = 1504;
+
+  if (width <= size608) {
+    switch (rowSize) {
+      case 1:
+        return 12;
+      case 7:
+        return 4;
+      case 14:
+        return 2;
+    }
+  }
+
+  if (width <= size736) {
+    switch (rowSize) {
+      case 1:
+        return 12;
+      case 7:
+        return 12;
+      case 14:
+        return 4;
+    }
+  }
+
+  if (width <= size992) {
+    switch (rowSize) {
+      case 1:
+        return 16;
+      case 7:
+        return 12;
+      case 14:
+        return 8;
+    }
+  }
+
+  if (width <= size1504) {
+    switch (rowSize) {
+      case 1:
+        return 16;
+      case 7:
+        return 12;
+      case 14:
+        return 8;
+    }
+  }
+  return 16;
+}
 
 interface ToGapSizeProps {
   rowSize: number;
@@ -26,7 +83,7 @@ interface ToGapSizeProps {
   isBigDesktop: boolean;
 }
 
-function toGapSize(props: ToGapSizeProps): StackGap {
+function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
   const { isBigDesktop, isDesktop, isMobile, isTablet, rowSize } = props;
 
   if (isMobile) {
@@ -35,7 +92,6 @@ function toGapSize(props: ToGapSizeProps): StackGap {
         return 12;
       case 7:
         return 4;
-      case 10:
       case 14:
         return 2;
     }
@@ -47,7 +103,6 @@ function toGapSize(props: ToGapSizeProps): StackGap {
         return 12;
       case 7:
         return 12;
-      case 10:
       case 14:
         return 4;
     }
@@ -59,7 +114,6 @@ function toGapSize(props: ToGapSizeProps): StackGap {
         return 16;
       case 7:
         return 12;
-      case 10:
       case 14:
         return 8;
     }
@@ -71,7 +125,6 @@ function toGapSize(props: ToGapSizeProps): StackGap {
         return 16;
       case 7:
         return 12;
-      case 10:
       case 14:
         return 8;
     }

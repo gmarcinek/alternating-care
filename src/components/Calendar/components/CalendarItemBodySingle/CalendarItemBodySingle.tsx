@@ -1,7 +1,6 @@
 import { Stack } from '@/src/components/Stack/Stack';
 import { CalendarDay } from '@/src/modules/db/types';
 import { dateFormat } from '@/src/utils/dates';
-import useElementSize from '@custom-react-hooks/use-element-size';
 import { Divider } from '@nextui-org/react';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
@@ -16,7 +15,7 @@ interface CalendarItemBodySingleProps {
 
 export function CalendarItemBodySingle(props: CalendarItemBodySingleProps) {
   const { day } = props;
-  const [setRef, size] = useElementSize();
+
   const currentDate = dayjs(day.date);
   const { isTodayVisible } = useCalenderContext();
   const { isToday, isFirstOfTheMonth } = useMemo(() => {
@@ -33,12 +32,6 @@ export function CalendarItemBodySingle(props: CalendarItemBodySingleProps) {
       label: toFormatedLabel(currentDate),
     };
   }, [currentDate]);
-
-  const textClasses = classNames(styles.textItem, {
-    [styles.font16]: size.width <= 300,
-    [styles.font10]: size.width <= 200,
-    [styles.font8]: size.width <= 80,
-  });
 
   const itemClasses = classNames(styles.calendarItem, {
     [styles.isWeekend]: [6, 0].includes(currentDate.day()),
@@ -60,9 +53,9 @@ export function CalendarItemBodySingle(props: CalendarItemBodySingleProps) {
             <Divider className='my-0' />
           </>
         )}
-        <div className={itemClasses} ref={setRef}>
+        <div className={itemClasses}>
           <Stack className={label}>
-            <div className={textClasses}>
+            <div>
               <span>{label}</span>
             </div>
           </Stack>

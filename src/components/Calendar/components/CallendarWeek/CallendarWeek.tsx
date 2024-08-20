@@ -45,11 +45,12 @@ export function CallendarWeek(props: CallendarWeekProps) {
                   key={`day-single-${day.date}`}
                 />
               );
+
             case 7:
               return (
                 <CalendarItemBodyWeek day={day} key={`day-wweek-${day.date}`} />
               );
-            case 10:
+
             case 14:
               return (
                 <CalendarItemBodyTwoWeeks
@@ -57,6 +58,7 @@ export function CallendarWeek(props: CallendarWeekProps) {
                   key={`day-two-wweeks-${day.date}`}
                 />
               );
+
             default:
               return (
                 <CalendarItemBodyTwoWeeks
