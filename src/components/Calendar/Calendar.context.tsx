@@ -3,7 +3,7 @@ import { createContext, useContext } from 'react';
 export interface CalenderContextData {
   rowSize: number;
   isTodayVisible: boolean;
-  isWeeksSplitted: boolean;
+  isPlanVisible: boolean;
   isAlternatingVisible: boolean;
   isWeekendsVisible: boolean;
   alternatingDates: string[];
@@ -13,7 +13,7 @@ export interface CalenderContextData {
 export const CalenderContext = createContext<CalenderContextData>({
   rowSize: 7,
   isTodayVisible: true,
-  isWeeksSplitted: false,
+  isPlanVisible: false,
   isAlternatingVisible: true,
   isWeekendsVisible: true,
   alternatingDates: [],

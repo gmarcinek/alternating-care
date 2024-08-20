@@ -15,7 +15,13 @@ export function CalendarMonths(props: CalendarMonthsProps) {
   return (
     <Stack gap={gap}>
       {months.map((month) => {
-        return <CalendarMonth gap={gap} month={month} />;
+        return (
+          <CalendarMonth
+            gap={gap}
+            month={month}
+            key={`year-${month.yearIndex}-month-${month.monthIndex}`}
+          />
+        );
       })}
     </Stack>
   );

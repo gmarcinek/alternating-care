@@ -18,7 +18,7 @@ interface CalendarProps {
   endDate?: string;
   rowSize: number;
   isTodayVisible: boolean;
-  isWeeksSplitted: boolean;
+  isPlanVisible: boolean;
   isWeekendsVisible: boolean;
   isAlternatingVisible: boolean;
   alternatingDates: string[];
@@ -27,10 +27,9 @@ interface CalendarProps {
 export function Calendar(props: CalendarProps) {
   const {
     startDate,
-
     rowSize = NUMBER_SEVEN,
     isTodayVisible,
-    isWeeksSplitted,
+    isPlanVisible,
     isAlternatingVisible,
     isWeekendsVisible,
     alternatingDates,
@@ -49,7 +48,7 @@ export function Calendar(props: CalendarProps) {
 
   const { weeks, months } = useMemo(() => {
     const weeks = splitEvenly(calendarDates, rowSize);
-    const months = segregateDatesMonthly(weeks);
+    const months = segregateDatesMonthly(calendarDates, rowSize);
 
     return {
       weeks,
@@ -61,7 +60,7 @@ export function Calendar(props: CalendarProps) {
     <CalenderContext.Provider
       value={{
         isTodayVisible,
-        isWeeksSplitted,
+        isPlanVisible,
         isAlternatingVisible,
         isWeekendsVisible,
         rowSize,
@@ -69,7 +68,9 @@ export function Calendar(props: CalendarProps) {
         displayStrategy,
       }}
     >
-      {displayStrategy === 'continous' ? (
+      {displayStrategy === 'separateMonths' && rowSize === 7 ? (
+        <CalendarMonths gap={gap} months={months} />
+      ) : (
         <Stack gap={gap}>
           {weeks.map((week, weekIndex) => {
             return (
@@ -81,9 +82,8 @@ export function Calendar(props: CalendarProps) {
             );
           })}
         </Stack>
-      ) : (
-        <CalendarMonths gap={gap} months={months} />
       )}
+      aaaaa
     </CalenderContext.Provider>
   );
 }

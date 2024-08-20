@@ -18,11 +18,11 @@
     }
     
     &.isAlternating {
-        background: #0d3e53;
+        background: #2d5465;
         color: #ffffff;
 
         &.isWeekend {
-            background: #0d3e53;
+            background: #2d5465;
         }
 
         &.isToday {
@@ -62,13 +62,12 @@
     .calendarItem {
         font-size: 16px;
         padding: 0.5rem;
-        line-height: inherit;
 
         .date {
-            font-size: 18px;
+            font-size: 16px;
         }
         .month {
-            font-size: 18px;
+            font-size: 16px;
         }
     }
 }

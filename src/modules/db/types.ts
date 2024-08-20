@@ -19,4 +19,5 @@ export interface CalendarEvent {
 
 export interface CalendarDay {
   date: string;
+  isOffset?: boolean;
 }

@@ -18,7 +18,9 @@ export default function CalendarPage() {
   const [sliderValue, setSliderValue] = useState(7);
 
   const [isTodayVisible, setIsTodayVisible] = useState(true);
-  const [isWeeksSplitted, setIsWeeksSplitted] = useState(false);
+  const [isPlanVisible, setIsPlanVisible] = useState(false);
+  const [isContiniousDisplayStrategy, setIsContiniousDisplayStrategy] =
+    useState(true);
   const [isWeekendsVisible, setIsWeekendsVisible] = useState(true);
   const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
 
@@ -72,8 +74,8 @@ export default function CalendarPage() {
           Cześć <span>{user?.name}</span>
         </h2>
 
-        <Stack className='sticky top-16 z-10 h-10 bg-gray-100 pb-2 pt-5'>
-          <Stack direction='horizontal'>
+        <Stack className='wrap sticky top-16 z-10 h-10 bg-gray-100 pb-2 pt-5'>
+          <Stack direction='horizontal' className='flex flex-wrap'>
             <Checkbox
               defaultSelected={isTodayVisible}
               onValueChange={setIsTodayVisible}
@@ -81,10 +83,17 @@ export default function CalendarPage() {
               Dziś
             </Checkbox>
             <Checkbox
-              defaultSelected={isWeeksSplitted}
-              onValueChange={setIsWeeksSplitted}
+              defaultSelected={isPlanVisible}
+              onValueChange={setIsPlanVisible}
             >
               Plan
+            </Checkbox>
+            <Checkbox
+              defaultSelected={isContiniousDisplayStrategy}
+              onValueChange={setIsContiniousDisplayStrategy}
+              isDisabled={sliderValue !== 7}
+            >
+              Łącz miesiące
             </Checkbox>
             <Checkbox
               defaultSelected={isWeekendsVisible}
@@ -102,7 +111,7 @@ export default function CalendarPage() {
           </Stack>
 
           <Slider
-            size={isMobile ? 'lg' : 'md'}
+            size={isMobile ? 'md' : 'lg'}
             step={1}
             color='danger'
             marks={marks}
@@ -119,9 +128,12 @@ export default function CalendarPage() {
           startDate={startDate}
           rowSize={sliderValue}
           isTodayVisible={isTodayVisible}
-          isWeeksSplitted={isWeeksSplitted}
+          isPlanVisible={isPlanVisible}
           isWeekendsVisible={isWeekendsVisible}
           isAlternatingVisible={isAlternatingVisible}
+          displayStrategy={
+            isContiniousDisplayStrategy ? 'continous' : 'separateMonths'
+          }
           alternatingDates={[
             '2024-08-03',
             '2024-08-04',

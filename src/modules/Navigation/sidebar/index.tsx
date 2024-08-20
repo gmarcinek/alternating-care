@@ -35,12 +35,17 @@ const Sidebar = (props: SidebarProps) => {
         <ul className='sidebar-nav text-center text-xl leading-relaxed'>
           <li>
             <Link href='/' onClick={toggle}>
-              <h3>Plan</h3>
+              <h3>Start</h3>
             </Link>
           </li>
           <li>
             <Link href='/week' onClick={toggle}>
               <h3>Tydzień</h3>
+            </Link>
+          </li>
+          <li>
+            <Link href='/month' onClick={toggle}>
+              <h3>Miesiąc</h3>
             </Link>
           </li>
           <li>

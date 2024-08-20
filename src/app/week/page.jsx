@@ -29,7 +29,7 @@ export default function Week() {
           endDate={dayjs(startDate).add(1, 'week').format(dateFormat)}
           rowSize={7}
           isTodayVisible
-          isWeeksSplitted
+          isPlanVisible
           isWeekendsVisible
           isAlternatingVisible
           alternatingDates={[

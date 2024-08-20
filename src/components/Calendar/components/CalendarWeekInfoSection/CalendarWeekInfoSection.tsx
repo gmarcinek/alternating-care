@@ -12,7 +12,7 @@ export default function CalendarWeekInfoSection(
   props: CalendarWeekInfoSectionProps
 ) {
   const { week } = props;
-  const { isWeeksSplitted, rowSize } = useCalenderContext();
+  const { isPlanVisible, rowSize } = useCalenderContext();
 
   const dayAlpha = week[0];
   const dayOmega = week[week.length - 1];
