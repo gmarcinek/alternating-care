@@ -2,7 +2,6 @@ import { Stack } from '@/src/components/Stack/Stack';
 import { CalendarDay } from '@/src/modules/db/types';
 import { dateFormat } from '@/src/utils/dates';
 import { useBreakpoints } from '@/src/utils/useBreakpoints';
-import useElementSize from '@custom-react-hooks/use-element-size';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
@@ -18,7 +17,6 @@ export function CalendarItemBodyTwoWeeks(
   props: CalendarItemBodyTwooWeeksProps
 ) {
   const { day } = props;
-  const [setRef, size] = useElementSize();
   const currentDate = dayjs(day.date);
   const {
     isAlternatingVisible,
@@ -71,7 +69,7 @@ export function CalendarItemBodyTwoWeeks(
       isFirstOfTheMonth={isFirstOfTheMonth}
       isLastOfTheMonth={isLastOfTheMonth}
     >
-      <div className={itemClasses} ref={setRef}>
+      <div className={itemClasses}>
         <Stack className={label} gap={2}>
           <div className={textClasses}>{label}</div>
           <Stack

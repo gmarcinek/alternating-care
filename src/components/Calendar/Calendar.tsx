@@ -1,14 +1,14 @@
 'use client';
 
-import { Stack } from '@/src/components/Stack/Stack';
 import { splitEvenly } from '@/src/utils/array';
 import { NUMBER_SEVEN } from '@/src/utils/number';
+import useElementSize from '@custom-react-hooks/use-element-size';
 import { useMemo } from 'react';
 import { CalenderContext } from './Calendar.context';
 import { segregateDatesMonthly } from './Calendar.helpers';
 import { DisplayStrategy } from './Calendar.types';
 import { CalendarMonths } from './components/CallendarMonths/CallendarMonths';
-import { CallendarWeek } from './components/CallendarWeek/CallendarWeek';
+import { CallendarUngruped } from './components/CallendarUngruped/CallendarUngruped';
 import { getDaysBetweenDates, useCalendarDates } from './useCalendarDates';
 import { useCalendarGap } from './useCalendarGap';
 
@@ -37,7 +37,11 @@ export function Calendar(props: CalendarProps) {
     endDate,
   } = props;
 
-  const gap = useCalendarGap(rowSize);
+  const isSeparateMonthsMode =
+    displayStrategy === 'separateMonths' && rowSize === 7;
+  const [setRef, size] = useElementSize();
+  const gap = useCalendarGap(rowSize, size.width);
+
   const calendarDates =
     endDate !== undefined
       ? getDaysBetweenDates(startDate, endDate)
@@ -56,34 +60,37 @@ export function Calendar(props: CalendarProps) {
     };
   }, [rowSize, calendarDates]);
 
+  const contextData = useMemo(() => {
+    return {
+      isTodayVisible,
+      isPlanVisible,
+      isAlternatingVisible,
+      isWeekendsVisible,
+      rowSize,
+      alternatingDates,
+      displayStrategy,
+      containerWidth: size.width,
+    };
+  }, [
+    isTodayVisible,
+    isPlanVisible,
+    isAlternatingVisible,
+    isWeekendsVisible,
+    rowSize,
+    alternatingDates,
+    displayStrategy,
+    size.width,
+  ]);
+
   return (
-    <CalenderContext.Provider
-      value={{
-        isTodayVisible,
-        isPlanVisible,
-        isAlternatingVisible,
-        isWeekendsVisible,
-        rowSize,
-        alternatingDates,
-        displayStrategy,
-      }}
-    >
-      {displayStrategy === 'separateMonths' && rowSize === 7 ? (
-        <CalendarMonths gap={gap} months={months} />
-      ) : (
-        <Stack gap={gap}>
-          {weeks.map((week, weekIndex) => {
-            return (
-              <CallendarWeek
-                key={`week-of-${week[0].date}-${weekIndex}`}
-                week={week}
-                gap={gap}
-              />
-            );
-          })}
-        </Stack>
-      )}
-      aaaaa
+    <CalenderContext.Provider value={contextData}>
+      <div ref={setRef}>
+        {isSeparateMonthsMode ? (
+          <CalendarMonths gap={gap} months={months} />
+        ) : (
+          <CallendarUngruped gap={gap} weeks={weeks} />
+        )}
+      </div>
     </CalenderContext.Provider>
   );
 }

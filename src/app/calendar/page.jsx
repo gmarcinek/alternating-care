@@ -34,8 +34,6 @@ export default function CalendarPage() {
         case 2:
           return setSliderValue(7);
         case 3:
-          return setSliderValue(10);
-        case 4:
           return setSliderValue(14);
       }
     },
@@ -52,12 +50,8 @@ export default function CalendarPage() {
       value: 2,
     },
     {
-      label: '10',
-      value: 3,
-    },
-    {
       label: '14',
-      value: 4,
+      value: 3,
     },
   ];
 
@@ -117,7 +111,7 @@ export default function CalendarPage() {
             marks={marks}
             showSteps
             minValue={1}
-            maxValue={4}
+            maxValue={3}
             defaultValue={2}
             onChange={handleSliderChange}
             aria-label='slider'

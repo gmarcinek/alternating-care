@@ -2,6 +2,7 @@ import { createContext, useContext } from 'react';
 
 export interface CalenderContextData {
   rowSize: number;
+  containerWidth: number;
   isTodayVisible: boolean;
   isPlanVisible: boolean;
   isAlternatingVisible: boolean;
@@ -11,6 +12,7 @@ export interface CalenderContextData {
 }
 
 export const CalenderContext = createContext<CalenderContextData>({
+  containerWidth: 0,
   rowSize: 7,
   isTodayVisible: true,
   isPlanVisible: false,
