@@ -1,15 +1,16 @@
 'use client';
 
-import { Calendar } from '@/src/components/Calendar/Calendar';
-import PageContainer from '@/src/components/PageContainer/PageContainer';
-import { Stack } from '@/src/components/Stack/Stack';
-import { useFormReadUsersMutation } from '@/src/modules/db/users/useFormReadUsersMutation';
-import { dateFormat } from '@/src/utils/dates';
+import { Calendar } from '@components/Calendar/Calendar';
+import PageContainer from '@components/PageContainer/PageContainer';
+import { Stack } from '@components/Stack/Stack';
+import { useFormReadUsersMutation } from '@modules/db/users/useFormReadUsersMutation';
+import { dateFormat } from '@utils/dates';
 import dayjs from 'dayjs';
 
 export default function Week() {
   const { data, isPending } = useFormReadUsersMutation();
   const startDate = dayjs().format(dateFormat);
+  const startDay = dayjs(startDate).startOf('month').clone().startOf('week');
 
   if (isPending) {
     return <PageContainer>Ładowanie</PageContainer>;
@@ -25,15 +26,8 @@ export default function Week() {
         </h2>
 
         <Calendar
-          startDate={dayjs(startDate).startOf('month').clone().startOf('week')}
-          endDate={dayjs(startDate)
-            .endOf('month')
-            .clone()
-            .endOf('week')
-            .clone()
-            .add(1, 'week')
-            .startOf('week')
-            .format(dateFormat)}
+          startDate={startDay.format(dateFormat)}
+          endDate={startDay.add(5, 'week').format(dateFormat)}
           rowSize={7}
           isTodayVisible
           isWeekendsVisible

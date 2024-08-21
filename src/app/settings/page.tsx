@@ -4,12 +4,12 @@ import crypto from 'crypto';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 
-import { Button } from '@/src/components/Button/Button';
-import PageContainer from '@/src/components/PageContainer/PageContainer';
-import { Stack } from '@/src/components/Stack/Stack';
-import { AppUser } from '@/src/modules/db/types';
-import { useFormPutUserMutation } from '@/src/modules/db/users/useFormPutUserMutation';
-import '@/src/styles/globals.css';
+import { Button } from '@components/Button/Button';
+import PageContainer from '@components/PageContainer/PageContainer';
+import { Stack } from '@components/Stack/Stack';
+import { AppUser } from '@modules/db/types';
+import { useFormPutUserMutation } from '@modules/db/users/useFormPutUserMutation';
+import '@styles/globals.css';
 
 const readOnlyClasses =
   'block rounded-md py-4 pl-4 pr-4 text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6';

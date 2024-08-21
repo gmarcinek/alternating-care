@@ -1,13 +1,13 @@
 'use client';
 
-import Navigation from '@/src/modules/Navigation';
-import { useInitDb } from '@/src/modules/db/db';
-import { useFormReadUsersMutation } from '@/src/modules/db/users/useFormReadUsersMutation';
+import { useInitDb } from '@modules/db/db';
+import { useFormReadUsersMutation } from '@modules/db/users/useFormReadUsersMutation';
+import Navigation from '@modules/Navigation';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pl';
 import arraySupport from 'dayjs/plugin/arraySupport';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
 import weekday from 'dayjs/plugin/weekday';
+import weekOfYear from 'dayjs/plugin/weekOfYear';
 import { PropsWithChildren, useMemo } from 'react';
 import { AppContext, AppContextData, defaultUser } from './AppContext';
 

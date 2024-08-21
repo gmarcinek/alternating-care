@@ -1,10 +1,10 @@
 'use client';
 
-import { Calendar } from '@/src/components/Calendar/Calendar';
-import PageContainer from '@/src/components/PageContainer/PageContainer';
-import { Stack } from '@/src/components/Stack/Stack';
-import { useFormReadUsersMutation } from '@/src/modules/db/users/useFormReadUsersMutation';
-import { dateFormat } from '@/src/utils/dates';
+import { Calendar } from '@components/Calendar/Calendar';
+import PageContainer from '@components/PageContainer/PageContainer';
+import { Stack } from '@components/Stack/Stack';
+import { useFormReadUsersMutation } from '@modules/db/users/useFormReadUsersMutation';
+import { dateFormat } from '@utils/dates';
 import dayjs from 'dayjs';
 
 export default function Home() {

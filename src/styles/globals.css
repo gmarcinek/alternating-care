@@ -3,43 +3,57 @@
 @tailwind utilities;
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    min-height: 100vh;
-    color: #666666;
+  min-height: 100vh;
+  color: #666666;
 }
 
-h1,h2,h3,h4,p {
-    color: #666666;
+h1,
+h2,
+h3,
+h4,
+p {
+  color: #666666;
 }
 
 h1,
 h2,
 h3 {
-    font-size: 1.5rem;
-    line-height: 1.75rem;
-    margin-bottom: 0.25rem;
-    font-weight: 300 !important;
+  font-size: 1.5rem;
+  line-height: 1.75rem;
+  margin-bottom: 0.25rem;
+  font-weight: 300 !important;
 }
-h4,p {
-    font-size: 1rem;
-    line-height: 20px;
-    margin-bottom: 0.25rem;
+h4,
+p {
+  font-size: 1rem;
+  line-height: 20px;
+  margin-bottom: 0.25rem;
 }
 
 @media (min-width: 1024px) {
-    h1 {
-        font-size: 2.5rem;
-        line-height: 2.75rem;
-    }
-    h2 {
-        font-size: 2rem;
-        line-height: 2.25rem;
-    }
-    h3 {
-        font-size: 1.25rem;
-        line-height: 1.5rem;
-    }
+  h1 {
+    font-size: 2.5rem;
+    line-height: 2.75rem;
+  }
+  h2 {
+    font-size: 2rem;
+    line-height: 2.25rem;
+  }
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+  }
+}
+
+/*  RETHEME */
+.bg-danger {
+  background-color: #ff4f4f;
+}
+
+.border-s-danger {
+  border-inline-start-color: #ff4f4f;
 }

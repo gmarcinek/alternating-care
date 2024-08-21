@@ -1,15 +1,39 @@
-.heading {
-    padding: 32px 0px 8px 0px;
+.calendarMonth {
+  padding-top: 0;
+  margin-bottom: 2px;
+  border-top: 1px solid #cfcfcf;
+
+  .heading {
+    padding: 0;
+    padding-bottom: 5px;
+    padding-top: 2px;
+    margin-bottom: 2px;
     display: flex;
     justify-content: center;
-    font-size: 2rem;
     font-weight: 300;
     align-items: center;
+    font-size: 1rem;
+    border-bottom: 1px solid #cfcfcf;
+  }
 
-    .smaller {
-        font-size: 1rem;
-        color: black;
-        font-weight: 600;
-    }
+  .year {
+    font-size: 1rem;
+    color: #ff4f4f;
+    font-weight: 600;
+  }
 }
 
+@media (min-width: 768px) {
+  .calendarMonth {
+    .heading {
+      padding-bottom: 8px;
+      padding-top: 4px;
+      margin-bottom: 2px;
+      font-size: 1.25rem;
+    }
+
+    .year {
+      font-size: 1.25rem;
+    }
+  }
+}

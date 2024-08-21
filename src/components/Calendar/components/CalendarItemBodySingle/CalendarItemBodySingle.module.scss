@@ -1,23 +1,29 @@
 .calendarItem {
-    display: flex;
-    flex: 1;
-    color: #494949;
-    padding: 1rem;
-    background: rgb(255, 255, 255);
-    min-height: 40px;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+  display: flex;
+  flex: 1;
+  color: #494949;
+  padding: 1rem;
+  background: rgb(255, 255, 255);
+  min-height: 40px;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 15px),
+    calc(100% - 15px) 100%,
+    0 100%
+  );
 
-    .hiden {
-        display: none;
-    }
+  .hiden {
+    display: none;
+  }
 
-    &.isWeekend {
-        background: #e1e1e1;
-    }
+  &.isWeekend {
+    background: #e1e1e1;
+  }
 
-    &.isTaoday {
-        position: relative;
-        background: #ff4f4f;
-        color: #ffffff;
-    }
+  &.isTaoday {
+    position: relative;
+    background: #ff4f4f;
+    color: #ffffff;
+  }
 }

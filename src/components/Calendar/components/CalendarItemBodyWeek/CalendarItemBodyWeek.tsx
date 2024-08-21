@@ -1,11 +1,12 @@
-import { Stack } from '@/src/components/Stack/Stack';
-import { CalendarDay } from '@/src/modules/db/types';
-import { dateFormat } from '@/src/utils/dates';
+import { Stack } from '@components/Stack/Stack';
+import { CalendarDay } from '@modules/db/types';
+import { dateFormat } from '@utils/dates';
+import { capitalizeFirstLetter } from '@utils/string';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
 import { useCalenderContext } from '../../Calendar.context';
-import { useDayContainerBreakPoint } from '../../useDayContainerBreakPoint';
+import { useDayContainerBreakPointStyles } from '../../useDayContainerBreakPoint';
 import CalendarItemStatusContainer from '../CalendarItemStatusContainer/CalendarItemStatusContainer';
 import styles from './CalendarItemBodyWeek.module.scss';
 
@@ -23,19 +24,17 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
     alternatingDates,
     rowSize,
     containerWidth,
+    displayStrategy,
   } = useCalenderContext();
 
-  const { style } = useDayContainerBreakPoint(rowSize, containerWidth);
+  const { style } = useDayContainerBreakPointStyles(rowSize, containerWidth);
 
-  const { isToday, isFirstOfTheMonth, isLastOfTheMonth } = useMemo(() => {
+  const { isToday, isFirstOfTheMonth } = useMemo(() => {
     return {
       isToday: currentDate.format(dateFormat) === dayjs().format(dateFormat),
       isFirstOfTheMonth:
         currentDate.format(dateFormat) ===
         currentDate.startOf('month').format(dateFormat),
-      isLastOfTheMonth:
-        currentDate.format(dateFormat) ===
-        currentDate.endOf('month').format(dateFormat),
     };
   }, [currentDate]);
 
@@ -52,8 +51,8 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
   const itemClasses = classNames(styles.calendarItem, {
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
-    [styles.isFirstOfTheMonth]: isFirstOfTheMonth,
-    [styles.isLastOfTheMonth]: isLastOfTheMonth,
+    [styles.isFirstOfTheMonth]:
+      displayStrategy === 'continous' && isFirstOfTheMonth,
     [styles.isAlternating]: isAlternating,
   });
 
@@ -64,19 +63,18 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
       isToday={isToday}
       isTodayVisible={isTodayVisible}
       isFirstOfTheMonth={isFirstOfTheMonth}
-      isLastOfTheMonth={isLastOfTheMonth}
     >
       <div className={itemClasses} style={style.style}>
-        <Stack gap={2} direction='horizontal'>
+        <Stack gap={0} direction='horizontal'>
           <Stack gap={0}>
-            <div>{label}</div>
+            <span>{label}</span>
 
-            <Stack direction='horizontal' contentAlignment='start'>
-              <span className={styles.date}>
+            <span className='mt-1'>
+              <>
                 <strong>{currentDate.format('D')}</strong>
-                <small>{currentDate.format('.MM')}</small>
-              </span>
-            </Stack>
+              </>
+              <small>{currentDate.format('.MM')}</small>
+            </span>
 
             <span className={styles.month}>
               <small>{currentDate.format('MMM')}</small>
@@ -89,6 +87,5 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
 }
 
 function toFormatedLabel(date: string | Dayjs) {
-  const formated = dayjs(date).format('dd');
-  return formated.charAt(0).toUpperCase() + formated.slice(1, formated.length);
+  return capitalizeFirstLetter(dayjs(date).format('dd'));
 }

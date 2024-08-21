@@ -1,7 +1,7 @@
-import { Stack } from '@/src/components/Stack/Stack';
-import { CalendarDay } from '@/src/modules/db/types';
-import { dateFormat } from '@/src/utils/dates';
-import { useBreakpoints } from '@/src/utils/useBreakpoints';
+import { Stack } from '@components/Stack/Stack';
+import { CalendarDay } from '@modules/db/types';
+import { dateFormat } from '@utils/dates';
+import { useBreakpoints } from '@utils/useBreakpoints';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
@@ -26,15 +26,12 @@ export function CalendarItemBodyTwoWeeks(
   } = useCalenderContext();
   const { isTablet, isMobile } = useBreakpoints();
 
-  const { isToday, isFirstOfTheMonth, isLastOfTheMonth } = useMemo(() => {
+  const { isToday, isFirstOfTheMonth } = useMemo(() => {
     return {
       isToday: currentDate.format(dateFormat) === dayjs().format(dateFormat),
       isFirstOfTheMonth:
         currentDate.format(dateFormat) ===
         currentDate.startOf('month').format(dateFormat),
-      isLastOfTheMonth:
-        currentDate.format(dateFormat) ===
-        currentDate.endOf('month').format(dateFormat),
     };
   }, [currentDate]);
 
@@ -56,7 +53,6 @@ export function CalendarItemBodyTwoWeeks(
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
     [styles.isFirstOfTheMonth]: isFirstOfTheMonth,
-    [styles.isLastOfTheMonth]: isLastOfTheMonth,
     [styles.isAlternating]: isAlternating,
   });
 
@@ -67,7 +63,6 @@ export function CalendarItemBodyTwoWeeks(
       isToday={isToday}
       isTodayVisible={isTodayVisible}
       isFirstOfTheMonth={isFirstOfTheMonth}
-      isLastOfTheMonth={isLastOfTheMonth}
     >
       <div className={itemClasses}>
         <Stack className={label} gap={2}>

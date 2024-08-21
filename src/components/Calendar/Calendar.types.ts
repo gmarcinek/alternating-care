@@ -1,4 +1,4 @@
-import { CalendarDay } from '@/src/modules/db/types';
+import { CalendarDay } from '@modules/db/types';
 
 export type DisplayStrategy = 'continous' | 'separateMonths';
 

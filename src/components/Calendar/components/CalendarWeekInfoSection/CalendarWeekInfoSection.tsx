@@ -1,6 +1,6 @@
 'use client';
 
-import { CalendarDay } from '@/src/modules/db/types';
+import { CalendarDay } from '@modules/db/types';
 import dayjs from 'dayjs';
 import { useCalenderContext } from '../../Calendar.context';
 

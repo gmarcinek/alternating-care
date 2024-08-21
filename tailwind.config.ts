@@ -18,8 +18,22 @@ const config: Config = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      inset: {
+        '8px': '8px',
+        '12px': '12px',
+        '16px': '16px',
+        '24px': '24px',
+        '32px': '32px',
+        '48px': '48px',
+        '64px': '64px',
+        '80px': '80px',
+      },
     },
   },
-  plugins: [nextui()],
+  plugins: [
+    nextui({
+      addCommonColors: true,
+    }),
+  ],
 };
 export default config;

@@ -1,8 +1,8 @@
 'use client';
 
-import { splitEvenly } from '@/src/utils/array';
-import { NUMBER_SEVEN } from '@/src/utils/number';
 import useElementSize from '@custom-react-hooks/use-element-size';
+import { splitEvenly } from '@utils/array';
+import { NUMBER_SEVEN } from '@utils/number';
 import { useMemo } from 'react';
 import { CalenderContext } from './Calendar.context';
 import { segregateDatesMonthly } from './Calendar.helpers';
@@ -22,6 +22,7 @@ interface CalendarProps {
   isWeekendsVisible: boolean;
   isAlternatingVisible: boolean;
   alternatingDates: string[];
+  className?: string;
 }
 
 export function Calendar(props: CalendarProps) {
@@ -35,6 +36,7 @@ export function Calendar(props: CalendarProps) {
     alternatingDates,
     displayStrategy = 'continous',
     endDate,
+    className,
   } = props;
 
   const isSeparateMonthsMode =
@@ -84,7 +86,11 @@ export function Calendar(props: CalendarProps) {
 
   return (
     <CalenderContext.Provider value={contextData}>
-      <div ref={setRef}>
+      <div
+        ref={setRef}
+        style={{ display: 'flex', flex: 1 }}
+        className={className}
+      >
         {isSeparateMonthsMode ? (
           <CalendarMonths gap={gap} months={months} />
         ) : (

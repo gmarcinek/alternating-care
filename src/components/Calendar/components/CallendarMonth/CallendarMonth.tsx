@@ -1,8 +1,7 @@
 'use client';
 
-import { Stack, StackGap } from '@/src/components/Stack/Stack';
-import { capitalizeFirstLetter } from '@/src/utils/string';
-import { Divider } from '@nextui-org/react';
+import { Stack, StackGap } from '@components/Stack/Stack';
+import { capitalizeFirstLetter } from '@utils/string';
 import dayjs from 'dayjs';
 import { useCalenderContext } from '../../Calendar.context';
 import { CalendarMonthType } from '../../Calendar.types';
@@ -21,16 +20,15 @@ export function CalendarMonth(props: CalendarMonthProps) {
   const { displayStrategy } = useCalenderContext();
 
   return (
-    <Stack gap={gap}>
+    <Stack gap={gap} className={styles.calendarMonth}>
       {displayStrategy === 'separateMonths' && (
         <section className={styles.heading}>
-          <h3>
-            {monthLabel}
-            <Divider orientation='vertical' />
-            <span className={styles.smaller}>
+          <div>
+            <span>{monthLabel}</span>
+            <span className={styles.year}>
               {dayjs(monthDate).format(' YYYY')}
             </span>
-          </h3>
+          </div>
         </section>
       )}
 

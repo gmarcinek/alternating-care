@@ -1,5 +1,5 @@
-import { CalendarDay } from '@/src/modules/db/types';
-import { dateFormat } from '@/src/utils/dates';
+import { CalendarDay } from '@modules/db/types';
+import { dateFormat } from '@utils/dates';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
 
