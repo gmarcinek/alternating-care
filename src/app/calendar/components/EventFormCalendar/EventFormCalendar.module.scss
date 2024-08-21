@@ -1,0 +1,36 @@
+.eventFormCalendar {
+  .p2 {
+    padding: 1.5rem;
+  }
+
+  .calendarContainer {
+    flex: 1;
+    display: flex;
+  }
+
+  .formContainer {
+    flex: 1;
+    display: none;
+    background: #fff;
+  }
+}
+
+@media (min-width: 1024px) {
+  .eventFormCalendar {
+    .p2 {
+      padding: 2rem;
+    }
+    .calendarContainer {
+      flex: 0 1 40%;
+      display: flex;
+    }
+
+    .formContainer {
+      flex: 0 1 60%;
+      display: flex;
+      background: #fff;
+      top: 7rem;
+      min-height: calc(100vh - 155px);
+    }
+  }
+}

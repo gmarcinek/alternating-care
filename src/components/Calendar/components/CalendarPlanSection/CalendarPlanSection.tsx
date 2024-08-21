@@ -1,6 +1,6 @@
 'use client';
 
-import { CalendarDay } from '@/src/modules/db/types';
+import { CalendarDay } from '@modules/db/types';
 import styles from './CalendarPlanSection.module.scss';
 
 interface CalendarPlanSectionProps {

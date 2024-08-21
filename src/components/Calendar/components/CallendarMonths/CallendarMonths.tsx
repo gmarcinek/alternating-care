@@ -1,6 +1,6 @@
 'use client';
 
-import { Stack, StackGap } from '@/src/components/Stack/Stack';
+import { Stack, StackGap } from '@components/Stack/Stack';
 import { forwardRef } from 'react';
 import { CalendarMonthType } from '../../Calendar.types';
 import { CalendarMonth } from '../CallendarMonth/CallendarMonth';

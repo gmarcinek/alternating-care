@@ -1,73 +1,57 @@
 .calendarItem {
-    display: flex;
-    flex: 1;
-    color: #494949;
-    padding: 0.25rem 0 0.25rem 0.5rem;
-    background: rgb(255, 255, 255);
-    
-    font-size: 12px;
-    line-height: initial;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
-    
-    .hiden {
-        display: none;
-    }
+  display: flex;
+  flex: 1;
+  color: #494949;
+  padding: 5px 0 5px 8px;
+  background: rgb(255, 255, 255);
+  cursor: crosshair;
+  user-select: none;
+
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 15px),
+    calc(100% - 15px) 100%,
+    0 100%
+  );
+
+  .hiden {
+    display: none;
+  }
+
+  &.isWeekend {
+    background: #d7d7d7;
+  }
+
+  &.isAlternating {
+    background: #2d5465;
+    color: #ffffff;
 
     &.isWeekend {
-        background: #d7d7d7;
-    }
-    
-    &.isAlternating {
-        background: #2d5465;
-        color: #ffffff;
-
-        &.isWeekend {
-            background: #2d5465;
-        }
-
-        &.isToday {
-            background: #ff4f4f;
-            color: #ffffff;
-        }
+      background: #2d5465;
     }
 
     &.isToday {
-        background: #ff4f4f;
-        color: #ffffff;
+      background: #ff4f4f;
+      color: #ffffff;
     }
-    
-    &.isFirstOfTheMonth {
-        color: #e94646;
-        padding-left: 10px;
-    }
+  }
 
-    &.isLastOfTheMnth {
-        position: relative;
-    }
+  &.isToday {
+    background: #ff4f4f;
+    color: #ffffff;
+  }
 
-    &.isSelected {
-        filter: brightness(0.75);
-    }
+  &.isFirstOfTheMonth {
+    color: #e94646;
+    padding-left: 10px;
+  }
 
-    .date {
-        font-size: 14px;
-    }
+  &.isLastOfTheMnth {
+    position: relative;
+  }
 
-    .month {
-        // font-size: 14px;
-    }
-}
-
-@media (min-width: 768px) {
-    .calendarItem {
-        // font-size: 16px;
-        // padding: 0.5rem;
-
-        .date {
-            font-size: 16px;
-        }
-        .month {
-            font-size: 16px;
-        }
-    }
+  &.isSelected {
+    filter: brightness(0.75);
+  }
 }

@@ -1,35 +1,25 @@
 'use client';
 
-import { Calendar } from '@/src/components/Calendar/Calendar';
-import PageContainer from '@/src/components/PageContainer/PageContainer';
-import { Stack } from '@/src/components/Stack/Stack';
-import { useFormReadUsersMutation } from '@/src/modules/db/users/useFormReadUsersMutation';
-import { dateFormat } from '@/src/utils/dates';
+import { Calendar } from '@components/Calendar/Calendar';
+import PageContainer from '@components/PageContainer/PageContainer';
+import { Stack } from '@components/Stack/Stack';
+import { dateFormat } from '@utils/dates';
 import dayjs from 'dayjs';
 
 export default function Week() {
-  const { data, isPending } = useFormReadUsersMutation();
   const startDate = dayjs().format(dateFormat);
-
-  if (isPending) {
-    return <PageContainer>Ładowanie</PageContainer>;
-  }
-
-  const user = data.at(0);
+  const startDay = dayjs(startDate).startOf('week');
 
   return (
     <PageContainer>
       <Stack gap={24}>
-        <h2>
-          Cześć <span>{user?.name}</span>
-        </h2>
+        <h1>Aktywny tydzień</h1>
 
         <Calendar
-          startDate={dayjs(startDate).startOf('week')}
-          endDate={dayjs(startDate).add(1, 'week').format(dateFormat)}
+          startDate={startDay}
+          endDate={startDay.add(7, 'day').format(dateFormat)}
           rowSize={7}
           isTodayVisible
-          isPlanVisible
           isWeekendsVisible
           isAlternatingVisible
           alternatingDates={[

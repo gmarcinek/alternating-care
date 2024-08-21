@@ -1,7 +1,7 @@
 'use client';
 
-import { Stack, StackGap } from '@/src/components/Stack/Stack';
-import { CalendarDay } from '@/src/modules/db/types';
+import { Stack, StackGap } from '@components/Stack/Stack';
+import { CalendarDay } from '@modules/db/types';
 import { forwardRef } from 'react';
 import { CallendarWeek } from '../CallendarWeek/CallendarWeek';
 

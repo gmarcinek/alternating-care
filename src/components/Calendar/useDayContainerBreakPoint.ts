@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
-import { StackGap } from '../Stack/Stack';
 
-export const useDayContainerBreakPoint = (rowSize: number, width: number) => {
+export const useDayContainerBreakPointStyles = (
+  rowSize: number,
+  width: number
+) => {
   const style = useMemo(() => {
     return {
       style: toFontSizeByContainerSize(rowSize, width),
@@ -14,10 +16,32 @@ export const useDayContainerBreakPoint = (rowSize: number, width: number) => {
 };
 
 function toFontSizeByContainerSize(rowSize: number, width: number) {
+  const size430 = 430;
   const size608 = 608;
   const size736 = 736;
   const size992 = 992;
   // const size1504 = 1504;
+
+  if (width <= size430) {
+    switch (rowSize) {
+      case 1:
+        return {
+          fontSize: '12px',
+          lineHeight: '14px',
+        };
+      case 7:
+        return {
+          fontSize: '12px',
+          lineHeight: '12px',
+          padding: ' 5px 0 5px 8px',
+        };
+      case 14:
+        return {
+          fontSize: 'inherit',
+          lineHeight: 'inherit',
+        };
+    }
+  }
 
   if (width <= size608) {
     switch (rowSize) {
@@ -28,8 +52,9 @@ function toFontSizeByContainerSize(rowSize: number, width: number) {
         };
       case 7:
         return {
-          fontSize: '12px',
+          fontSize: '13px',
           lineHeight: 'initial',
+          padding: '6px 0 6px 10px',
         };
       case 14:
         return {
@@ -50,7 +75,7 @@ function toFontSizeByContainerSize(rowSize: number, width: number) {
         return {
           fontSize: '16px',
           lineHeight: 'initial',
-          padding: '0.5rem',
+          padding: '8px 0 8px 12px',
         };
       case 14:
         return {
@@ -71,7 +96,7 @@ function toFontSizeByContainerSize(rowSize: number, width: number) {
       return {
         fontSize: '16px',
         lineHeight: '20px',
-        padding: '0.5rem',
+        padding: '8px 0 8px 12px',
       };
     case 14:
       return {
@@ -88,54 +113,4 @@ interface ToGapSizeProps {
   isTablet: boolean;
   isDesktop: boolean;
   isBigDesktop: boolean;
-}
-
-function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
-  const { isBigDesktop, isDesktop, isMobile, isTablet, rowSize } = props;
-
-  if (isMobile) {
-    switch (rowSize) {
-      case 1:
-        return 12;
-      case 7:
-        return 4;
-      case 14:
-        return 2;
-    }
-  }
-
-  if (isTablet) {
-    switch (rowSize) {
-      case 1:
-        return 12;
-      case 7:
-        return 12;
-      case 14:
-        return 4;
-    }
-  }
-
-  if (isDesktop) {
-    switch (rowSize) {
-      case 1:
-        return 16;
-      case 7:
-        return 12;
-      case 14:
-        return 8;
-    }
-  }
-
-  if (isBigDesktop) {
-    switch (rowSize) {
-      case 1:
-        return 16;
-      case 7:
-        return 12;
-      case 14:
-        return 8;
-    }
-  }
-
-  return 16;
 }

@@ -1,6 +1,6 @@
-import { CalendarDay } from '@/src/modules/db/types';
-import { splitEvenly } from '@/src/utils/array';
-import { dateFormat } from '@/src/utils/dates';
+import { CalendarDay } from '@modules/db/types';
+import { splitEvenly } from '@utils/array';
+import { dateFormat } from '@utils/dates';
 import dayjs from 'dayjs';
 import { CalendarMonthRawType, CalendarMonthType } from './Calendar.types';
 import { getDaysBetweenDates } from './useCalendarDates';

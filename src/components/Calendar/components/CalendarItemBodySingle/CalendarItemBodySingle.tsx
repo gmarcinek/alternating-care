@@ -1,7 +1,7 @@
-import { Stack } from '@/src/components/Stack/Stack';
-import { CalendarDay } from '@/src/modules/db/types';
-import { dateFormat } from '@/src/utils/dates';
+import { Stack } from '@components/Stack/Stack';
+import { CalendarDay } from '@modules/db/types';
 import { Divider } from '@nextui-org/react';
+import { dateFormat } from '@utils/dates';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';

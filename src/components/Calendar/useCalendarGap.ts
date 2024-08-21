@@ -1,4 +1,4 @@
-import { useBreakpoints } from '@/src/utils/useBreakpoints';
+import { useBreakpoints } from '@utils/useBreakpoints';
 import { useMemo } from 'react';
 import { StackGap } from '../Stack/Stack';
 
@@ -26,7 +26,6 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
   const size608 = 608;
   const size736 = 736;
   const size992 = 992;
-  // const size1248 = 1248;
   const size1504 = 1504;
 
   if (width <= size608) {
@@ -45,7 +44,7 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
       case 1:
         return 12;
       case 7:
-        return 12;
+        return 8;
       case 14:
         return 4;
     }

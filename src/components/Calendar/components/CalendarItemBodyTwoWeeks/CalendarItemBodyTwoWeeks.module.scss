@@ -1,92 +1,104 @@
 .calendarItem {
-    display: flex;
-    flex: 1;
-    color: #494949;
-    font-size: 11px;
-    line-height: 12px;
-    background: rgb(255, 255, 255);
-    padding: 2px 0px 0px 3px;
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%);
-    .hiden {
-        display: none;
-    }
+  display: flex;
+  flex: 1;
+  color: #494949;
+  font-size: 11px;
+  line-height: 12px;
+  background: rgb(255, 255, 255);
+  padding: 2px 0px 0px 3px;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 6px),
+    calc(100% - 6px) 100%,
+    0 100%
+  );
+  .hiden {
+    display: none;
+  }
+
+  &.isWeekend {
+    background: #d7d7d7;
+  }
+
+  &.isAlternating {
+    background: #0d3e53;
+    color: #ffffff;
 
     &.isWeekend {
-        background: #d7d7d7;
-    }
-    
-    &.isAlternating {
-        background: #0d3e53;
-        color: #ffffff;
-
-        &.isWeekend {
-            background: #0d3e53;
-        }
-
-        &.isToday {
-            background: #ff4f4f;
-            color: #ffffff;
-        }
+      background: #0d3e53;
     }
 
     &.isToday {
-        background: #ff4f4f;
-        color: #ffffff;
+      background: #ff4f4f;
+      color: #ffffff;
     }
-    
-    &.isFirstOfTheMonth {
-        color: #e94646;
-        padding-left: 7px;
-    }
+  }
 
-    &.isLastOfTheMnth {
-        position: relative;
-    }
+  &.isToday {
+    background: #ff4f4f;
+    color: #ffffff;
+  }
 
-    &.isSelected {
-        filter: brightness(0.75);
-    }
+  &.isFirstOfTheMonth {
+    color: #e94646;
+    padding-left: 7px;
+  }
 
-    .date {
-        font-size: 14px;
-    }
+  &.isLastOfTheMnth {
+    position: relative;
+  }
 
-    .month {
-        font-size: 14px;
-    }
+  &.isSelected {
+    filter: brightness(0.75);
+  }
+
+  .date {
+    font-size: 14px;
+  }
+
+  .month {
+    font-size: 14px;
+  }
 }
 
 @media (min-width: 768px) {
-    .calendarItem {
-        clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
-        font-size: 12px;
-        padding: 0.25rem;
+  .calendarItem {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - 10px),
+      calc(100% - 10px) 100%,
+      0 100%
+    );
+    font-size: 12px;
+    padding: 0.25rem;
 
-        &.isFirstOfTheMonth {
-            padding-left: 10px;
-        }
-        .content {
-            align-items: baseline;
-        }
-        .date {
-            font-size: 12px;
-        }
-        .month {
-            font-size: 10px;
-        }
+    &.isFirstOfTheMonth {
+      padding-left: 10px;
     }
+    .content {
+      align-items: baseline;
+    }
+    .date {
+      font-size: 12px;
+    }
+    .month {
+      font-size: 10px;
+    }
+  }
 }
 
 @media (min-width: 1024px) {
-    .calendarItem {
-        font-size: 12px;
-        padding: 0.5rem;
+  .calendarItem {
+    font-size: 12px;
+    padding: 0.5rem;
 
-        .date {
-            font-size: 18px;
-        }
-        .month {
-            font-size: 14px;
-        }
+    .date {
+      font-size: 18px;
     }
+    .month {
+      font-size: 14px;
+    }
+  }
 }

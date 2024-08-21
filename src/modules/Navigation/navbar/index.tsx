@@ -1,4 +1,4 @@
-import { Stack } from '@/src/components/Stack/Stack';
+import { Stack } from '@components/Stack/Stack';
 import { Avatar } from '@nextui-org/react';
 import Link from 'next/link';
 import { AppUser } from '../../db/types';
