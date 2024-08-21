@@ -200,7 +200,11 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
             <h3>Edytuj zawartość kalendarza</h3>
             {!isTablet && slider}
 
-            <Stack gap={8}>{checkboxes}</Stack>
+            <div>
+              <Stack gap={12} direction='horizontal'>
+                {checkboxes}
+              </Stack>
+            </div>
           </Stack>
         </div>
       </Stack>

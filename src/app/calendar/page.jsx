@@ -15,7 +15,7 @@ export default function CalendarPage() {
 
   return (
     <PageContainer>
-      <EventFormCalendar user={user.name} />
+      <EventFormCalendar user={user?.name} />
     </PageContainer>
   );
 }
