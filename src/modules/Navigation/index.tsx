@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppContext } from '@/app/AppContext';
+import { useAppContext } from '@app/AppContext';
 import { useState } from 'react';
 import Navbar from './navbar';
 import Sidebar from './sidebar';
