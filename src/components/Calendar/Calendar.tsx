@@ -1,10 +1,15 @@
 'use client';
 
 import useElementSize from '@custom-react-hooks/use-element-size';
+import { CalendarEvent } from '@modules/db/types';
 import { splitEvenly } from '@utils/array';
 import { NUMBER_SEVEN } from '@utils/number';
 import { useMemo } from 'react';
-import { CalenderContext } from './Calendar.context';
+import {
+  CalenderContext,
+  CalenderContextData,
+  OnDayClickHandler,
+} from './Calendar.context';
 import { segregateDatesMonthly } from './Calendar.helpers';
 import { DisplayStrategy } from './Calendar.types';
 import { CalendarMonths } from './components/CallendarMonths/CallendarMonths';
@@ -21,8 +26,10 @@ interface CalendarProps {
   isPlanVisible: boolean;
   isWeekendsVisible: boolean;
   isAlternatingVisible: boolean;
-  alternatingDates: string[];
+  events: CalendarEvent[];
   className?: string;
+  selection?: string | string[];
+  onDayClick?: OnDayClickHandler;
 }
 
 export function Calendar(props: CalendarProps) {
@@ -33,10 +40,12 @@ export function Calendar(props: CalendarProps) {
     isPlanVisible,
     isAlternatingVisible,
     isWeekendsVisible,
-    alternatingDates,
+    events,
     displayStrategy = 'continous',
     endDate,
     className,
+    onDayClick,
+    selection,
   } = props;
 
   const isSeparateMonthsMode =
@@ -62,16 +71,18 @@ export function Calendar(props: CalendarProps) {
     };
   }, [rowSize, calendarDates]);
 
-  const contextData = useMemo(() => {
+  const contextData = useMemo<CalenderContextData>(() => {
     return {
       isTodayVisible,
       isPlanVisible,
       isAlternatingVisible,
       isWeekendsVisible,
       rowSize,
-      alternatingDates,
+      events,
       displayStrategy,
       containerWidth: size.width,
+      onDayClick,
+      selection,
     };
   }, [
     isTodayVisible,
@@ -79,9 +90,11 @@ export function Calendar(props: CalendarProps) {
     isAlternatingVisible,
     isWeekendsVisible,
     rowSize,
-    alternatingDates,
+    events,
     displayStrategy,
     size.width,
+    onDayClick,
+    selection,
   ]);
 
   return (

@@ -4,8 +4,6 @@
   color: #494949;
   padding: 5px 0 5px 8px;
   background: rgb(255, 255, 255);
-  cursor: crosshair;
-  user-select: none;
 
   clip-path: polygon(
     0 0,
@@ -52,6 +50,7 @@
   }
 
   &.isSelected {
-    filter: brightness(0.75);
+    background: #e4a000 !important;
+    color: #ffffff !important;
   }
 }

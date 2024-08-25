@@ -1,17 +1,14 @@
 'use client';
 
 import { Stack, StackGap } from '@components/Stack/Stack';
-import { CalendarDay } from '@modules/db/types';
+import { CalendarDayType } from '@modules/db/types';
 import { useCalenderContext } from '../../Calendar.context';
-import { CalendarItemBodySingle } from '../CalendarItemBodySingle/CalendarItemBodySingle';
-import { CalendarItemBodyTwoWeeks } from '../CalendarItemBodyTwoWeeks/CalendarItemBodyTwoWeeks';
-import { CalendarItemBodyWeek } from '../CalendarItemBodyWeek/CalendarItemBodyWeek';
+import CalendarDay from '../CalendarDay/CalendarDay';
 import { CalendarPlanSection } from '../CalendarPlanSection/CalendarPlanSection';
 import CalendarWeekInfoSection from '../CalendarWeekInfoSection/CalendarWeekInfoSection';
-import styles from './CallendarWeek.module.scss';
 
 interface CallendarWeekProps {
-  week: CalendarDay[];
+  week: CalendarDayType[];
   gap: StackGap;
   monthIndex?: number;
 }
@@ -28,47 +25,12 @@ export function CallendarWeek(props: CallendarWeekProps) {
 
       <Stack gap={gap} direction='horizontal' contentAlignment='between'>
         {week.map((day, weekDayIndex) => {
-          if (day.isOffset) {
-            return (
-              <div
-                className={styles.emptyDay}
-                key={`empty-day-${day.date}-${weekDayIndex}`}
-              ></div>
-            );
-          }
-
-          switch (rowSize) {
-            case 1:
-              return (
-                <CalendarItemBodySingle
-                  day={day}
-                  key={`day-single-${day.date}`}
-                />
-              );
-
-            case 7:
-              return (
-                <CalendarItemBodyWeek day={day} key={`day-wweek-${day.date}`} />
-              );
-
-            case 14:
-              return (
-                <CalendarItemBodyTwoWeeks
-                  day={day}
-                  key={`day-two-wweeks-${day.date}`}
-                />
-              );
-
-            default:
-              return (
-                <CalendarItemBodyTwoWeeks
-                  day={day}
-                  key={`day-two-wweeks-default-${day.date}`}
-                />
-              );
-          }
+          return (
+            <CalendarDay day={day} key={`day-${day.date}-${weekDayIndex}`} />
+          );
         })}
       </Stack>
+
       {![1, 10, 14].includes(rowSize) && isPlanVisible && (
         <CalendarPlanSection week={week} />
       )}

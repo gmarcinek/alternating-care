@@ -1,5 +1,5 @@
 import { Stack } from '@components/Stack/Stack';
-import { CalendarDay } from '@modules/db/types';
+import { CalendarDayType, CalendarEventType } from '@modules/db/types';
 import { dateFormat } from '@utils/dates';
 import { capitalizeFirstLetter } from '@utils/string';
 import classNames from 'classnames';
@@ -7,11 +7,11 @@ import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
 import { useCalenderContext } from '../../Calendar.context';
 import { useDayContainerBreakPointStyles } from '../../useDayContainerBreakPoint';
-import CalendarItemStatusContainer from '../CalendarItemStatusContainer/CalendarItemStatusContainer';
+import { CalendarItemStatusContainer } from '../CalendarItemStatusContainer/CalendarItemStatusContainer';
 import styles from './CalendarItemBodyWeek.module.scss';
 
 interface CalendarItemBodyWeekProps {
-  day: CalendarDay;
+  day: CalendarDayType;
 }
 
 export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
@@ -21,10 +21,11 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
     isAlternatingVisible,
     isWeekendsVisible,
     isTodayVisible,
-    alternatingDates,
+    events,
     rowSize,
     containerWidth,
     displayStrategy,
+    selection,
   } = useCalenderContext();
 
   const { style } = useDayContainerBreakPointStyles(rowSize, containerWidth);
@@ -46,14 +47,21 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
 
   const isWeekend = isWeekendsVisible && [6, 0].includes(currentDate.day());
   const isAlternating =
-    isAlternatingVisible && alternatingDates.includes(day.date);
+    isAlternatingVisible &&
+    events
+      .map((item) => {
+        return item.type === CalendarEventType.Alternating && item.date;
+      })
+      .includes(day.date);
 
+  const selectedDays = (selection ?? []).toString().split(',');
   const itemClasses = classNames(styles.calendarItem, {
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
     [styles.isFirstOfTheMonth]:
       displayStrategy === 'continous' && isFirstOfTheMonth,
     [styles.isAlternating]: isAlternating,
+    [styles.isSelected]: [...selectedDays].includes(day.date),
   });
 
   return (

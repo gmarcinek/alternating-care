@@ -1,16 +1,16 @@
 import { Stack } from '@components/Stack/Stack';
-import { CalendarDay } from '@modules/db/types';
+import { CalendarDayType, CalendarEventType } from '@modules/db/types';
 import { dateFormat } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
 import { useCalenderContext } from '../../Calendar.context';
-import CalendarItemStatusContainer from '../CalendarItemStatusContainer/CalendarItemStatusContainer';
+import { CalendarItemStatusContainer } from '../CalendarItemStatusContainer/CalendarItemStatusContainer';
 import styles from './CalendarItemBodyTwoWeeks.module.scss';
 
 interface CalendarItemBodyTwooWeeksProps {
-  day: CalendarDay;
+  day: CalendarDayType;
 }
 
 export function CalendarItemBodyTwoWeeks(
@@ -18,12 +18,8 @@ export function CalendarItemBodyTwoWeeks(
 ) {
   const { day } = props;
   const currentDate = dayjs(day.date);
-  const {
-    isAlternatingVisible,
-    isWeekendsVisible,
-    isTodayVisible,
-    alternatingDates,
-  } = useCalenderContext();
+  const { isAlternatingVisible, isWeekendsVisible, isTodayVisible, events } =
+    useCalenderContext();
   const { isTablet, isMobile } = useBreakpoints();
 
   const { isToday, isFirstOfTheMonth } = useMemo(() => {
@@ -47,7 +43,12 @@ export function CalendarItemBodyTwoWeeks(
 
   const isWeekend = isWeekendsVisible && [6, 0].includes(currentDate.day());
   const isAlternating =
-    isAlternatingVisible && alternatingDates.includes(day.date);
+    isAlternatingVisible &&
+    events
+      .map((item) => {
+        return item.type === CalendarEventType.Alternating && item.date;
+      })
+      .includes(day.date);
 
   const itemClasses = classNames(styles.calendarItem, {
     [styles.isWeekend]: isWeekend,

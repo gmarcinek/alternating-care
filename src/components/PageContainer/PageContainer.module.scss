@@ -11,5 +11,11 @@
 @media (min-width: 1024px) {
   .pageContainer {
     margin-top: 3rem;
+
+    &.isFullWidth {
+      margin: 3rem 0 3rem 0;
+      width: 100%;
+      max-width: 100%;
+    }
   }
 }

@@ -1,11 +1,11 @@
 'use client';
 
-import { CalendarDay } from '@modules/db/types';
+import { CalendarDayType } from '@modules/db/types';
 import dayjs from 'dayjs';
 import { useCalenderContext } from '../../Calendar.context';
 
 interface CalendarWeekInfoSectionProps {
-  week: CalendarDay[];
+  week: CalendarDayType[];
 }
 
 export default function CalendarWeekInfoSection(

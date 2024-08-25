@@ -1,10 +1,10 @@
 'use client';
 
-import { CalendarDay } from '@modules/db/types';
+import { CalendarDayType } from '@modules/db/types';
 import styles from './CalendarPlanSection.module.scss';
 
 interface CalendarPlanSectionProps {
-  week: CalendarDay[];
+  week: CalendarDayType[];
 }
 
 export function CalendarPlanSection(props: CalendarPlanSectionProps) {

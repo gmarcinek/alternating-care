@@ -14,7 +14,7 @@ interface CalendarItemStatusContainerProps extends PropsWithChildren {
   isLastOfTheMonth?: boolean;
 }
 
-export default function CalendarItemStatusContainer(
+export function CalendarItemStatusContainer(
   props: CalendarItemStatusContainerProps
 ) {
   const {

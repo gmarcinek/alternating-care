@@ -1,12 +1,12 @@
 'use client';
 
 import { Stack, StackGap } from '@components/Stack/Stack';
-import { CalendarDay } from '@modules/db/types';
+import { CalendarDayType } from '@modules/db/types';
 import { forwardRef } from 'react';
 import { CallendarWeek } from '../CallendarWeek/CallendarWeek';
 
 interface CallendarUngrupedProps {
-  weeks: CalendarDay[][];
+  weeks: CalendarDayType[][];
   gap: StackGap;
 }
 

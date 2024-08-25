@@ -3,15 +3,23 @@ import classNames from 'classnames';
 import { PropsWithChildren } from 'react';
 import styles from './PageContainer.module.scss';
 
-export default function PageContainer(props: PropsWithChildren) {
+interface PageContainerProps extends PropsWithChildren {
+  isFullWidth?: boolean;
+}
+
+export default function PageContainer(props: PageContainerProps) {
+  const { isFullWidth, children } = props;
   const pageContainerClasses = classNames(
     styles.pageContainer,
-    'container mx-auto mb-10 flex flex-col px-4'
+    'container mx-auto mb-10 flex flex-col px-4',
+    {
+      [styles.isFullWidth]: isFullWidth,
+    }
   );
 
   return (
     <div className={pageContainerClasses}>
-      <Stack>{props.children}</Stack>
+      <Stack>{children}</Stack>
     </div>
   );
 }

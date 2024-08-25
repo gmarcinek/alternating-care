@@ -1,5 +1,10 @@
-import { createContext, useContext } from 'react';
+import { CalendarDayType, CalendarEvent } from '@modules/db/types';
+import { createContext, SyntheticEvent, useContext } from 'react';
 
+export type OnDayClickHandler = (
+  date: CalendarDayType,
+  event?: SyntheticEvent
+) => void;
 export interface CalenderContextData {
   rowSize: number;
   containerWidth: number;
@@ -7,8 +12,10 @@ export interface CalenderContextData {
   isPlanVisible: boolean;
   isAlternatingVisible: boolean;
   isWeekendsVisible: boolean;
-  alternatingDates: string[];
+  events: CalendarEvent[];
   displayStrategy: 'continous' | 'separateMonths';
+  onDayClick?: OnDayClickHandler;
+  selection?: string | string[];
 }
 
 export const CalenderContext = createContext<CalenderContextData>({
@@ -18,8 +25,10 @@ export const CalenderContext = createContext<CalenderContextData>({
   isPlanVisible: false,
   isAlternatingVisible: true,
   isWeekendsVisible: true,
-  alternatingDates: [],
+  events: [],
   displayStrategy: 'continous',
+  onDayClick: () => {},
+  selection: [],
 });
 
 export const useCalenderContext = () => {

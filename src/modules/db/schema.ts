@@ -1,7 +1,7 @@
 import { DBSchema } from 'idb';
 import {
   AppUser,
-  CalendarDay,
+  CalendarDayType,
   CalendarEvent,
   CalendarEventType,
 } from './types';
@@ -28,7 +28,7 @@ export interface AlternatingCareDBSchema extends DBSchema {
     };
   };
   days: {
-    value: CalendarDay;
+    value: CalendarDayType;
     key: string;
     indexes: {
       'by-id': string;

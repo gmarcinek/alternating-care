@@ -1,4 +1,4 @@
-import { CalendarDay } from '@modules/db/types';
+import { CalendarDayType } from '@modules/db/types';
 import { dateFormat } from '@utils/dates';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
@@ -83,7 +83,7 @@ export function getDaysBetweenDates(
   start: string | Dayjs,
   end: string | Dayjs
 ) {
-  const days: CalendarDay[] = [];
+  const days: CalendarDayType[] = [];
   const startDate = dayjs(start);
   const endDate = dayjs(end);
 

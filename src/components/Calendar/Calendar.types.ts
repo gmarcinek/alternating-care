@@ -1,15 +1,15 @@
-import { CalendarDay } from '@modules/db/types';
+import { CalendarDayType } from '@modules/db/types';
 
 export type DisplayStrategy = 'continous' | 'separateMonths';
 
 export interface CalendarMonthType {
   monthIndex: number;
   yearIndex: number;
-  weeks: CalendarDay[][];
+  weeks: CalendarDayType[][];
 }
 
 export interface CalendarMonthRawType {
   month: number;
   year: number;
-  days: CalendarDay[];
+  days: CalendarDayType[];
 }

@@ -8,6 +8,7 @@ export interface AppUser {
 export enum CalendarEventType {
   Alternating = 'ALTERNATING',
   Event = 'EVENT',
+  Select = 'SELECT',
 }
 
 export interface CalendarEvent {
@@ -17,7 +18,7 @@ export interface CalendarEvent {
   issuer: string;
 }
 
-export interface CalendarDay {
+export interface CalendarDayType {
   date: string;
   isOffset?: boolean;
 }

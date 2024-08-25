@@ -1,3 +1,9 @@
+.calendarDay {
+  flex: 1;
+  cursor: crosshair;
+  user-select: none;
+}
+
 .emptyDay {
   flex: 1;
   background: #fafafb;
