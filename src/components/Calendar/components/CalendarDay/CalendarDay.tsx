@@ -4,7 +4,7 @@ import { useCalenderContext } from '@components/Calendar/Calendar.context';
 import { CalendarDayType } from '@modules/db/types';
 import { Checkbox } from '@nextui-org/react';
 import classNames from 'classnames';
-import { PropsWithChildren, SyntheticEvent, useCallback, useMemo } from 'react';
+import { MouseEvent, PropsWithChildren, useCallback, useMemo } from 'react';
 import { CalendarItemBodySingle } from '../CalendarItemBodySingle/CalendarItemBodySingle';
 import { CalendarItemBodyTwoWeeks } from '../CalendarItemBodyTwoWeeks/CalendarItemBodyTwoWeeks';
 import { CalendarItemBodyWeek } from '../CalendarItemBodyWeek/CalendarItemBodyWeek';
@@ -25,7 +25,7 @@ export default function CalendarDay(props: CalendarDayProps) {
   }, [selection, day.date]);
 
   const handleDayClick = useCallback(
-    (event: SyntheticEvent<HTMLDivElement>) => {
+    (event: MouseEvent<HTMLDivElement>) => {
       onDayClick?.(day, event);
     },
     [onDayClick, day]

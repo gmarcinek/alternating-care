@@ -1,9 +1,9 @@
 import { CalendarDayType, CalendarEvent } from '@modules/db/types';
-import { createContext, SyntheticEvent, useContext } from 'react';
+import { createContext, MouseEvent, useContext } from 'react';
 
 export type OnDayClickHandler = (
   date: CalendarDayType,
-  event?: SyntheticEvent
+  event?: MouseEvent<Element>
 ) => void;
 export interface CalenderContextData {
   rowSize: number;

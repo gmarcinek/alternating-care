@@ -11,7 +11,11 @@ export const useSelection = (props: UseSelectionProps) => {
   const [selection, setSelection] = useState<Set<string>>(new Set());
 
   const handleOnDayClick = useCallback<OnDayClickHandler>(
-    (day) => {
+    (day, event) => {
+      // const isCtrlPressed = event?.ctrlKey;
+      // const isAltPressed = event?.altKey;
+      // const isShiftPressed = event?.shiftKey;
+
       setSelection((prev) => {
         const newSet = new Set(prev);
 

@@ -141,18 +141,40 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
               <Divider className='my-4' />
 
               <Stack>
+                <h3>Nowy plan</h3>
                 <input
                   type='text'
                   name='name'
                   placeholder='Nazwa'
                   className='block rounded-md border-0 py-4 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 />
-                <input
-                  type='text'
-                  name='name'
-                  placeholder='Typ'
+                <textarea
+                  placeholder='Opis wydarzenia'
                   className='block rounded-md border-0 py-4 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 />
+                <Stack direction='horizontal'>
+                  <label>
+                    Kolor tła
+                    <input
+                      type='color'
+                      name='background'
+                      placeholder='Kolor tła'
+                      defaultValue='#00A9FD'
+                      className='block border-0 text-gray-900 ring-1 ring-inset ring-gray-300'
+                    />
+                  </label>
+
+                  <label>
+                    Kolor tekstu
+                    <input
+                      type='color'
+                      name='textColor'
+                      defaultValue='#ffffff'
+                      placeholder='Kolor tekstu'
+                      className='block border-0 text-gray-900 ring-1 ring-inset ring-gray-300'
+                    />
+                  </label>
+                </Stack>
               </Stack>
 
               <Divider className='my-4' />
