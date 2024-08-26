@@ -44,10 +44,10 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
       setIsMultiSelectionMode(true);
     },
     {
-      onStart: (event) => console.log('Press started'),
-      onFinish: (event) => console.log('Long press finished'),
-      onCancel: (event) => console.log('Press cancelled'),
-      onMove: (event) => console.log('Detected mouse or touch movement'),
+      // onStart: (event) => console.log('Press started'),
+      // onFinish: (event) => console.log('Long press finished'),
+      // onCancel: (event) => console.log('Press cancelled'),
+      // onMove: (event) => console.log('Detected mouse or touch movement'),
       filterEvents: (event) => true, // All events can potentially trigger long press (same as 'undefined')
       threshold: 400, // In milliseconds
       captureEvent: true, // Event won't get cleared after React finish processing it
@@ -159,7 +159,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
 
               <Stack>
                 {selection.size !== 0 && (
-                  <h3>Istniejące wydarzenia w tym czasie</h3>
+                  <h3>Przegląd zaplanowanych wydarzeń</h3>
                 )}
                 {Array.from(selection).map((item, index) => {
                   return (

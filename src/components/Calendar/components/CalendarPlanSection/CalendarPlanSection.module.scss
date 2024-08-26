@@ -1,9 +1,12 @@
+@import '@styles/color.module.scss';
+@import '@styles/spacer.module.scss';
+
 .calendarPlanSection {
   display: flex;
   flex: 1;
-  padding: 1rem;
+  padding: $spacer-2;
 
-  background: #fff;
+  background: $white;
   min-height: 250px;
 
   clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);

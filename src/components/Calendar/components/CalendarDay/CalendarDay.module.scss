@@ -1,15 +1,16 @@
+@import '@styles/color.module.scss';
+
 .calendarDay {
   position: relative;
   flex: 1;
   cursor: crosshair;
-  user-select: none;
 
   .checkbox {
     position: absolute;
     top: 4px;
     right: 4px;
     z-index: 5;
-    background: #ffffff88;
+    background: $white-50; /* #ffffff88 -> $white-50 */
     width: 18px;
     height: 18px;
     margin: 0;
@@ -17,11 +18,17 @@
     padding-left: 1px;
     border-radius: 7px;
   }
+
+  * {
+    user-select: none;
+    -webkit-user-select: none; /* Dla Safari i iOS */
+    user-select: none; /* Dla innych przeglądarek */
+  }
 }
 
 .emptyDay {
   flex: 1;
-  background: #fafafb;
+  background: $neutral-gray-150; /* #fafafb -> $neutral-gray-100 */
   clip-path: polygon(
     0 0,
     100% 0,

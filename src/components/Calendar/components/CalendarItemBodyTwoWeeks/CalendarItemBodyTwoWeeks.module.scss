@@ -1,11 +1,15 @@
+@import '@styles/color.module.scss';
+@import '@styles/spacer.module.scss';
+
 .calendarItem {
   display: flex;
   flex: 1;
-  color: #494949;
+  color: $neutral-gray-900; /* #494949 -> $neutral-gray-900 */
   font-size: 11px;
   line-height: 12px;
-  background: rgb(255, 255, 255);
+  background: $neutral-gray-100; /* rgb(255, 255, 255) -> $neutral-gray-100 */
   padding: 2px 0px 0px 3px;
+
   clip-path: polygon(
     0 0,
     100% 0,
@@ -13,35 +17,36 @@
     calc(100% - 6px) 100%,
     0 100%
   );
+
   .hiden {
     display: none;
   }
 
   &.isWeekend {
-    background: #d7d7d7;
+    background: $neutral-gray-200; /* #d7d7d7 -> $neutral-gray-200 */
   }
 
   &.isAlternating {
-    background: #0d3e53;
-    color: #ffffff;
+    background: $blue-green-700; /* #0d3e53 -> $blue-green-700 */
+    color: $neutral-gray-100; /* #ffffff -> $neutral-gray-100 */
 
     &.isWeekend {
-      background: #0d3e53;
+      background: $blue-green-700; /* #0d3e53 -> $blue-green-700 */
     }
 
     &.isToday {
-      background: #ff4f4f;
-      color: #ffffff;
+      background: $red-500; /* #ff4f4f -> $red-500 */
+      color: $neutral-gray-100; /* #ffffff -> $neutral-gray-100 */
     }
   }
 
   &.isToday {
-    background: #ff4f4f;
-    color: #ffffff;
+    background: $red-500; /* #ff4f4f -> $red-500 */
+    color: $neutral-gray-100; /* #ffffff -> $neutral-gray-100 */
   }
 
   &.isFirstOfTheMonth {
-    color: #e94646;
+    color: $red-600; /* #e94646 -> $red-600 */
     padding-left: 7px;
   }
 

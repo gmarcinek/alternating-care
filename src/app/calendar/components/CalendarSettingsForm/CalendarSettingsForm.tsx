@@ -42,10 +42,11 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
         Dziś
       </Switch>
 
-      {isTablet && sliderValue !== 1 && (
+      {sliderValue !== 1 && (
         <Switch
           defaultSelected={isPlanVisible}
           onValueChange={setIsPlanVisible}
+          size='sm'
         >
           Plan
         </Switch>
@@ -56,8 +57,9 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
           defaultSelected={isContiniousDisplayStrategy}
           onValueChange={setIsContiniousDisplayStrategy}
           isDisabled={sliderValue !== 7}
+          size='sm'
         >
-          {!isContiniousDisplayStrategy ? 'Złącz' : 'Rozłącz'}
+          {'Łącz'}
         </Switch>
       )}
 
@@ -65,6 +67,7 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
         <Switch
           defaultSelected={isWeekendsVisible}
           onValueChange={setIsWeekendsVisible}
+          size='sm'
         >
           Weekend
         </Switch>
@@ -73,6 +76,7 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
       <Switch
         defaultSelected={isAlternatingVisible}
         onValueChange={setIsAlternatingVisible}
+        size='sm'
       >
         Opieka
       </Switch>

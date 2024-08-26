@@ -38,16 +38,7 @@ const Sidebar = (props: SidebarProps) => {
               <h3>Start</h3>
             </Link>
           </li>
-          <li>
-            <Link href='/week' onClick={toggle}>
-              <h3>Tydzień</h3>
-            </Link>
-          </li>
-          <li>
-            <Link href='/month' onClick={toggle}>
-              <h3>Miesiąc</h3>
-            </Link>
-          </li>
+
           <li>
             <Link href='/calendar' onClick={toggle}>
               <h3>Edycja</h3>

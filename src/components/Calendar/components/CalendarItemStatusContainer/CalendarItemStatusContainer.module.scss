@@ -1,32 +1,40 @@
+@import '@styles/color.module.scss';
+@import '@styles/transition.module.scss';
+@import '@styles/spacer.module.scss';
+
 .calendarItemStatusContainer {
   position: relative;
   flex: 1;
 
   &.isToday {
-    filter: drop-shadow(0px 0px 16px #ff4f4f);
+    filter: drop-shadow(0px 0px $spacer-16 $red-500);
     background: none;
     z-index: 1;
   }
 
   &.isSelected {
-    filter: drop-shadow(0px 0px 16px #00deb9);
+    filter: drop-shadow(0px 0px $spacer-16 $turquoise-500);
     background: none;
     z-index: 1;
   }
 
   &.isFirstOfTheMonth {
     position: relative;
-
     z-index: 1;
 
     &::before {
       position: absolute;
       content: '';
-      width: 4px;
+      width: $spacer-4;
       height: 100%;
       top: 0px;
-      background: #ff4f4f;
+      background: $red-500;
       z-index: 1;
     }
   }
+
+  transition:
+    background $transition-duration,
+    color $transition-duration,
+    filter $transition-duration $transition-timing-function;
 }

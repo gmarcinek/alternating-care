@@ -23,15 +23,11 @@ const Navbar = (props: NavbarProps) => {
               <Link href='/'>
                 <p>Start</p>
               </Link>
-              <Link href='/week'>
-                <p>Tydzień</p>
-              </Link>
-              <Link href='/month'>
-                <p>Miesiąc</p>
-              </Link>
+
               <Link href='/calendar'>
                 <p>Edycja</p>
               </Link>
+
               <Link href='/settings'>
                 <p>Ustawienia</p>
               </Link>

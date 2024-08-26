@@ -1,3 +1,8 @@
+@import '@styles/color.module.scss';
+@import '@styles/spacer.module.scss';
+
+$clip-path-bottom: 15px;
+
 .calendarItem {
   display: flex;
   flex: 1;
@@ -8,8 +13,8 @@
   clip-path: polygon(
     0 0,
     100% 0,
-    100% calc(100% - 15px),
-    calc(100% - 15px) 100%,
+    100% calc(100% - $clip-path-bottom),
+    calc(100% - $clip-path-bottom) 100%,
     0 100%
   );
 
@@ -23,7 +28,7 @@
 
   &.isTaoday {
     position: relative;
-    background: #ff4f4f;
+    background: $red-500;
     color: #ffffff;
   }
 }

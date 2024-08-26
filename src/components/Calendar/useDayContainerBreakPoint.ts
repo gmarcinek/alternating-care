@@ -19,7 +19,7 @@ function toFontSizeByContainerSize(rowSize: number, width: number) {
   const size430 = 430;
   const size608 = 608;
   const size736 = 736;
-  const size992 = 992;
+  // const size992 = 992;
   // const size1504 = 1504;
 
   if (width <= size430) {

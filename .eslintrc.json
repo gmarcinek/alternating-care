@@ -4,13 +4,19 @@
     "es2021": true
   },
   "extends": [
+    "next",
+    "prettier",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "next/core-web-vitals",
-    "next",
-    "prettier"
+    "plugin:@next/next/recommended"
   ],
+  "settings": {
+    "next": {
+      "rootDir": "src/app"
+    }
+  },
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
