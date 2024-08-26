@@ -2,16 +2,19 @@
 
 import { ALTERNATING_DATES } from '@app/calendar/constants';
 import { Calendar } from '@components/Calendar/Calendar';
-import { OnDayClickHandler } from '@components/Calendar/Calendar.context';
+import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
 import { Stack } from '@components/Stack/Stack';
+import { Divider } from '@nextui-org/react';
 import { dateFormat } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
+import { useLongPress } from 'use-long-press';
 import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsForm';
 import { CalendarSizeSlider } from '../CalendarSizeSlider/CalendarSizeSlider';
 import styles from './EventFormCalendar.module.scss';
+import { useSelection } from './useSelection';
 
 interface EventFormCalendarProps {
   userName: string;
@@ -19,8 +22,8 @@ interface EventFormCalendarProps {
 
 export const EventFormCalendar = (props: EventFormCalendarProps) => {
   const startDate = dayjs().format(dateFormat);
-  const { isMobile, isTablet } = useBreakpoints();
-  const [selection, setSelection] = useState<string | string[]>([]);
+  const { isTablet } = useBreakpoints();
+  const [isMultiSelectionMode, setIsMultiSelectionMode] = useState(false);
   const [sliderValue, setSliderValue] = useState(7);
   const [isTodayVisible, setIsTodayVisible] = useState(true);
   const [isPlanVisible, setIsPlanVisible] = useState(false);
@@ -29,11 +32,29 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
   const [isContiniousDisplayStrategy, setIsContiniousDisplayStrategy] =
     useState(false);
 
+  const { selection, handleOnDayClick } = useSelection({
+    isMultiSelectionMode,
+    setIsMultiSelectionMode,
+  });
+
   const formClasses = classNames(styles.formContainer, 'sticky t-20 z-10 h-1 ');
 
-  const handleOnDayClick = useCallback<OnDayClickHandler>((day) => {
-    setSelection(day.date);
-  }, []);
+  const bind = useLongPress(
+    () => {
+      setIsMultiSelectionMode(true);
+    },
+    {
+      onStart: (event) => console.log('Press started'),
+      onFinish: (event) => console.log('Long press finished'),
+      onCancel: (event) => console.log('Press cancelled'),
+      onMove: (event) => console.log('Detected mouse or touch movement'),
+      filterEvents: (event) => true, // All events can potentially trigger long press (same as 'undefined')
+      threshold: 400, // In milliseconds
+      captureEvent: true, // Event won't get cleared after React finish processing it
+      cancelOnMovement: 25, // Square side size (in pixels) inside which movement won't cancel long press
+      cancelOutsideElement: true, // Cancel long press when moved mouse / pointer outside element while pressing
+    }
+  );
 
   return (
     <Stack gap={0} className={styles.eventFormCalendar}>
@@ -54,8 +75,6 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
                 isAlternatingVisible={isAlternatingVisible}
                 setIsAlternatingVisible={setIsAlternatingVisible}
                 sliderValue={sliderValue}
-                isTablet={isTablet}
-                isMobile={isMobile}
               />
             </Stack>
           </Stack>
@@ -71,7 +90,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
       )}
 
       <Stack direction='horizontal' gap={24}>
-        <div className={styles.calendarContainer}>
+        <div className={styles.calendarContainer} {...bind()}>
           <Calendar
             startDate={startDate}
             rowSize={sliderValue}
@@ -84,7 +103,8 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
             }
             events={ALTERNATING_DATES}
             onDayClick={handleOnDayClick}
-            selection={selection}
+            selection={Array.from(selection)}
+            isMultiSelectionMode={isMultiSelectionMode}
           />
         </div>
 
@@ -115,9 +135,42 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
                   isAlternatingVisible={isAlternatingVisible}
                   setIsAlternatingVisible={setIsAlternatingVisible}
                   sliderValue={sliderValue}
-                  isTablet={isTablet}
-                  isMobile={isMobile}
                 />
+              </Stack>
+
+              <Divider className='my-4' />
+
+              <Stack>
+                <input
+                  type='text'
+                  name='name'
+                  placeholder='Nazwa'
+                  className='block rounded-md border-0 py-4 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                />
+                <input
+                  type='text'
+                  name='name'
+                  placeholder='Typ'
+                  className='block rounded-md border-0 py-4 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                />
+              </Stack>
+
+              <Divider className='my-4' />
+
+              <Stack>
+                {selection.size !== 0 && (
+                  <h3>Istniejące wydarzenia w tym czasie</h3>
+                )}
+                {Array.from(selection).map((item, index) => {
+                  return (
+                    <CalendarItem
+                      day={{
+                        date: item,
+                      }}
+                      key={`${item}-${index}`}
+                    />
+                  );
+                })}
               </Stack>
             </div>
           </Stack>

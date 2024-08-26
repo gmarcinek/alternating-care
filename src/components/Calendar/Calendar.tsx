@@ -28,8 +28,9 @@ interface CalendarProps {
   isAlternatingVisible: boolean;
   events: CalendarEvent[];
   className?: string;
-  selection?: string | string[];
+  selection?: string[];
   onDayClick?: OnDayClickHandler;
+  isMultiSelectionMode?: boolean;
 }
 
 export function Calendar(props: CalendarProps) {
@@ -40,6 +41,7 @@ export function Calendar(props: CalendarProps) {
     isPlanVisible,
     isAlternatingVisible,
     isWeekendsVisible,
+    isMultiSelectionMode,
     events,
     displayStrategy = 'continous',
     endDate,
@@ -83,6 +85,7 @@ export function Calendar(props: CalendarProps) {
       containerWidth: size.width,
       onDayClick,
       selection,
+      isMultiSelectionMode,
     };
   }, [
     isTodayVisible,
@@ -95,6 +98,7 @@ export function Calendar(props: CalendarProps) {
     size.width,
     onDayClick,
     selection,
+    isMultiSelectionMode,
   ]);
 
   return (

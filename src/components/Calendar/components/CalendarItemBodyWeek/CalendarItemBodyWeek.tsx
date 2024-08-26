@@ -30,6 +30,10 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
 
   const { style } = useDayContainerBreakPointStyles(rowSize, containerWidth);
 
+  const isSelected = useMemo(() => {
+    return (selection ?? []).toString().split(',').includes(day.date);
+  }, [selection, day.date]);
+
   const { isToday, isFirstOfTheMonth } = useMemo(() => {
     return {
       isToday: currentDate.format(dateFormat) === dayjs().format(dateFormat),
@@ -54,14 +58,13 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
       })
       .includes(day.date);
 
-  const selectedDays = (selection ?? []).toString().split(',');
   const itemClasses = classNames(styles.calendarItem, {
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
     [styles.isFirstOfTheMonth]:
       displayStrategy === 'continous' && isFirstOfTheMonth,
     [styles.isAlternating]: isAlternating,
-    [styles.isSelected]: [...selectedDays].includes(day.date),
+    [styles.isSelected]: isSelected,
   });
 
   return (
@@ -71,6 +74,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
       isToday={isToday}
       isTodayVisible={isTodayVisible}
       isFirstOfTheMonth={isFirstOfTheMonth}
+      isSelected={isSelected}
     >
       <div className={itemClasses} style={style.style}>
         <Stack gap={0} direction='horizontal'>

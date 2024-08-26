@@ -1,0 +1,15 @@
+.calendarItem {
+  display: flex;
+  flex: 1 0 64px;
+  color: #494949;
+  padding: 0.5rem;
+  background: rgb(236, 236, 236);
+
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% calc(100% - 15px),
+    calc(100% - 15px) 100%,
+    0 100%
+  );
+}

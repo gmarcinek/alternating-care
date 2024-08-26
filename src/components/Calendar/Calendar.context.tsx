@@ -16,6 +16,7 @@ export interface CalenderContextData {
   displayStrategy: 'continous' | 'separateMonths';
   onDayClick?: OnDayClickHandler;
   selection?: string | string[];
+  isMultiSelectionMode?: boolean;
 }
 
 export const CalenderContext = createContext<CalenderContextData>({
@@ -29,6 +30,7 @@ export const CalenderContext = createContext<CalenderContextData>({
   displayStrategy: 'continous',
   onDayClick: () => {},
   selection: [],
+  isMultiSelectionMode: false,
 });
 
 export const useCalenderContext = () => {

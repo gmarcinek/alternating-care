@@ -12,6 +12,7 @@ interface CalendarItemStatusContainerProps extends PropsWithChildren {
   isTodayVisible?: boolean;
   isFirstOfTheMonth?: boolean;
   isLastOfTheMonth?: boolean;
+  isSelected?: boolean;
 }
 
 export function CalendarItemStatusContainer(
@@ -24,18 +25,18 @@ export function CalendarItemStatusContainer(
     isToday,
     isTodayVisible,
     isFirstOfTheMonth,
-    isLastOfTheMonth,
+    isSelected,
   } = props;
 
   const { displayStrategy } = useCalenderContext();
 
   const containerClasses = classNames(styles.calendarItemStatusContainer, {
     [styles.isToday]: isTodayVisible && isToday,
+    [styles.isSelected]: isSelected,
     [styles.isAlternating]: isAlternating,
     [styles.isWeekend]: isWeekend,
     [styles.isFirstOfTheMonth]:
       displayStrategy === 'continous' && isFirstOfTheMonth,
-    [styles.isLastOfTheMonth]: isLastOfTheMonth,
   });
 
   return <div className={containerClasses}>{children}</div>;

@@ -1,4 +1,5 @@
-import { Checkbox } from '@nextui-org/react';
+import { Switch } from '@nextui-org/react';
+import { useBreakpoints } from '@utils/useBreakpoints';
 
 interface CalendarSettingsFormProps {
   isTodayVisible: boolean;
@@ -12,8 +13,6 @@ interface CalendarSettingsFormProps {
   isAlternatingVisible: boolean;
   setIsAlternatingVisible: (value: boolean) => void;
   sliderValue: number;
-  isTablet: boolean;
-  isMobile: boolean;
 }
 
 export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
@@ -29,52 +28,54 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
     isAlternatingVisible,
     setIsAlternatingVisible,
     sliderValue,
-    isTablet,
-    isMobile,
   } = props;
+
+  const { isMobile, isTablet } = useBreakpoints();
+
   return (
     <>
-      <Checkbox
+      <Switch
         defaultSelected={isTodayVisible}
         onValueChange={setIsTodayVisible}
+        size='sm'
       >
         Dziś
-      </Checkbox>
+      </Switch>
 
       {isTablet && sliderValue !== 1 && (
-        <Checkbox
+        <Switch
           defaultSelected={isPlanVisible}
           onValueChange={setIsPlanVisible}
         >
           Plan
-        </Checkbox>
+        </Switch>
       )}
 
       {sliderValue === 7 && (
-        <Checkbox
+        <Switch
           defaultSelected={isContiniousDisplayStrategy}
           onValueChange={setIsContiniousDisplayStrategy}
           isDisabled={sliderValue !== 7}
         >
           {!isContiniousDisplayStrategy ? 'Złącz' : 'Rozłącz'}
-        </Checkbox>
+        </Switch>
       )}
 
       {!isMobile && (
-        <Checkbox
+        <Switch
           defaultSelected={isWeekendsVisible}
           onValueChange={setIsWeekendsVisible}
         >
           Weekend
-        </Checkbox>
+        </Switch>
       )}
 
-      <Checkbox
+      <Switch
         defaultSelected={isAlternatingVisible}
         onValueChange={setIsAlternatingVisible}
       >
         Opieka
-      </Checkbox>
+      </Switch>
     </>
   );
 };

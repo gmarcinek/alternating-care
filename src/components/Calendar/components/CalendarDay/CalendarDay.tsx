@@ -2,8 +2,9 @@
 
 import { useCalenderContext } from '@components/Calendar/Calendar.context';
 import { CalendarDayType } from '@modules/db/types';
+import { Checkbox } from '@nextui-org/react';
 import classNames from 'classnames';
-import { PropsWithChildren, SyntheticEvent, useCallback } from 'react';
+import { PropsWithChildren, SyntheticEvent, useCallback, useMemo } from 'react';
 import { CalendarItemBodySingle } from '../CalendarItemBodySingle/CalendarItemBodySingle';
 import { CalendarItemBodyTwoWeeks } from '../CalendarItemBodyTwoWeeks/CalendarItemBodyTwoWeeks';
 import { CalendarItemBodyWeek } from '../CalendarItemBodyWeek/CalendarItemBodyWeek';
@@ -16,8 +17,12 @@ interface CalendarDayProps extends PropsWithChildren {
 export default function CalendarDay(props: CalendarDayProps) {
   const { day } = props;
   let render: JSX.Element | undefined = undefined;
-  const { rowSize, onDayClick, selection } = useCalenderContext();
-  const selectedDays = (selection ?? []).toString().split(',');
+  const { rowSize, onDayClick, isMultiSelectionMode, selection } =
+    useCalenderContext();
+
+  const isSelected = useMemo(() => {
+    return (selection ?? []).toString().split(',').includes(day.date);
+  }, [selection, day.date]);
 
   const handleDayClick = useCallback(
     (event: SyntheticEvent<HTMLDivElement>) => {
@@ -48,6 +53,17 @@ export default function CalendarDay(props: CalendarDayProps) {
 
   return (
     <div className={classes} onClick={handleDayClick}>
+      {isMultiSelectionMode && (
+        <Checkbox
+          className={styles.checkbox}
+          onClick={handleDayClick}
+          isSelected={isSelected}
+          defaultSelected={isSelected}
+          color='default'
+          size='sm'
+          aria-label={`multi select ${day.date}`}
+        />
+      )}
       {render}
     </div>
   );
