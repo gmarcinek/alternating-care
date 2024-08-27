@@ -6,7 +6,7 @@ export const useVibrate = () => {
       return;
     }
 
-    navigator.vibrate([200]);
+    navigator.vibrate(200);
   }, []);
 
   const api = useMemo(() => {
