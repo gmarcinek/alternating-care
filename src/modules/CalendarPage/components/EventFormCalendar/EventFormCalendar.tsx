@@ -1,12 +1,13 @@
 'use client';
 
-import { ALTERNATING_DATES } from '@app/calendar/constants';
 import { Calendar } from '@components/Calendar/Calendar';
 import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
 import { Stack } from '@components/Stack/Stack';
+import { ALTERNATING_DATES } from '@modules/CalendarPage/constants';
 import { Divider } from '@nextui-org/react';
 import { dateFormat } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
+import { useVibrate } from '@utils/useVibrate';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -38,6 +39,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
   });
 
   const formClasses = classNames(styles.formContainer, 'sticky t-20 z-10 h-1 ');
+  const { vibrateSoft } = useVibrate();
 
   const bind = useLongPress(
     () => {
@@ -45,11 +47,11 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
     },
     {
       // onStart: (event) => console.log('Press started'),
-      // onFinish: (event) => console.log('Long press finished'),
+      onFinish: (event) => vibrateSoft(),
       // onCancel: (event) => console.log('Press cancelled'),
       // onMove: (event) => console.log('Detected mouse or touch movement'),
       filterEvents: (event) => true, // All events can potentially trigger long press (same as 'undefined')
-      threshold: 400, // In milliseconds
+      threshold: 500, // In milliseconds
       captureEvent: true, // Event won't get cleared after React finish processing it
       cancelOnMovement: 25, // Square side size (in pixels) inside which movement won't cancel long press
       cancelOutsideElement: true, // Cancel long press when moved mouse / pointer outside element while pressing
@@ -61,7 +63,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
       {isTablet && (
         <>
           <Stack>
-            <h3>Edytuj zawartość kalendarza</h3>
+            <h3>Edycja zawartości kalendarza</h3>
             <Stack gap={8} direction='horizontal'>
               <CalendarSettingsForm
                 isTodayVisible={isTodayVisible}

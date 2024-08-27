@@ -1,6 +1,6 @@
 import { useBreakpoints } from '@utils/useBreakpoints';
 import { useMemo } from 'react';
-import { StackGap } from '../Stack/Stack';
+import { StackGap } from '../../Stack/Stack';
 
 export const useCalendarGap = (rowSize: number, width?: number) => {
   const { isDesktop, isMobile, isTablet, isBigDesktop } = useBreakpoints();

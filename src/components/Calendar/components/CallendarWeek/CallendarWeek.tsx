@@ -32,7 +32,7 @@ export function CallendarWeek(props: CallendarWeekProps) {
       </Stack>
 
       {![1, 10, 14].includes(rowSize) && isPlanVisible && (
-        <CalendarPlanSection week={week} />
+        <CalendarPlanSection />
       )}
     </Stack>
   );

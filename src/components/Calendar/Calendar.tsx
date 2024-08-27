@@ -14,8 +14,11 @@ import { segregateDatesMonthly } from './Calendar.helpers';
 import { DisplayStrategy } from './Calendar.types';
 import { CalendarMonths } from './components/CallendarMonths/CallendarMonths';
 import { CallendarUngruped } from './components/CallendarUngruped/CallendarUngruped';
-import { getDaysBetweenDates, useCalendarDates } from './useCalendarDates';
-import { useCalendarGap } from './useCalendarGap';
+import {
+  getDaysBetweenDates,
+  useCalendarDates,
+} from './hooks/useCalendarDates';
+import { useCalendarGap } from './hooks/useCalendarGap';
 
 interface CalendarProps {
   startDate: string;

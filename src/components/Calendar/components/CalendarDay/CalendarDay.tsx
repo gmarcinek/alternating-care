@@ -25,7 +25,7 @@ export default function CalendarDay(props: CalendarDayProps) {
   }, [selection, day.date]);
 
   const handleDayClick = useCallback(
-    (event: MouseEvent<HTMLDivElement>) => {
+    (event: MouseEvent) => {
       onDayClick?.(day, event);
     },
     [onDayClick, day]
@@ -52,8 +52,8 @@ export default function CalendarDay(props: CalendarDayProps) {
   const classes = classNames(styles.calendarDay);
 
   return (
-    <div className={classes} onClick={handleDayClick}>
-      {isMultiSelectionMode && (
+    <div className={classes} onMouseDown={handleDayClick}>
+      {isMultiSelectionMode && rowSize === 7 && (
         <Checkbox
           className={styles.checkbox}
           onClick={handleDayClick}

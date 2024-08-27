@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMemo } from 'react';
 import { useCalenderContext } from '../../Calendar.context';
-import { useDayContainerBreakPointStyles } from '../../useDayContainerBreakPoint';
+import { useDayContainerBreakPointStyles } from '../../hooks/useDayContainerBreakPoint';
 import { CalendarItemStatusContainer } from '../CalendarItemStatusContainer/CalendarItemStatusContainer';
 import styles from './CalendarItemBodyWeek.module.scss';
 

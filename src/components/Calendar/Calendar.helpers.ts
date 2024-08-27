@@ -3,7 +3,7 @@ import { splitEvenly } from '@utils/array';
 import { dateFormat } from '@utils/dates';
 import dayjs from 'dayjs';
 import { CalendarMonthRawType, CalendarMonthType } from './Calendar.types';
-import { getDaysBetweenDates } from './useCalendarDates';
+import { getDaysBetweenDates } from './hooks/useCalendarDates';
 
 type MonthsRaw = Record<string, CalendarMonthRawType>;
 export function segregateDatesMonthly(
