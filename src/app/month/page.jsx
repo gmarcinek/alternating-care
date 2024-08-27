@@ -1,9 +1,9 @@
 'use client';
 
-import { ALTERNATING_DATES } from '@app/calendar/constants';
 import { Calendar } from '@components/Calendar/Calendar';
 import PageContainer from '@components/PageContainer/PageContainer';
 import { Stack } from '@components/Stack/Stack';
+import { ALTERNATING_DATES } from '@modules/CalendarPage/constants';
 import { useFormReadUsersMutation } from '@modules/db/users/useFormReadUsersMutation';
 import { dateFormat } from '@utils/dates';
 import dayjs from 'dayjs';
