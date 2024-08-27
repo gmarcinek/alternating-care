@@ -15,11 +15,11 @@ interface UseSelectionProps {
   setIsMultiSelectionMode: Dispatch<SetStateAction<boolean>>;
 }
 
-export const useSelection = (props: UseSelectionProps) => {
+export const useSelection2 = (props: UseSelectionProps) => {
   const { isMultiSelectionMode, setIsMultiSelectionMode } = props;
   const [selection, setSelection] = useState<Set<string>>(new Set());
-
   const [lastClickedDay, setLastClickedDay] = useState<string | null>(null);
+  const [startTouchDay, setStartTouchDay] = useState<string | null>(null);
 
   const addDateRange = (
     newSet: Set<string>,
@@ -34,7 +34,7 @@ export const useSelection = (props: UseSelectionProps) => {
   };
 
   const defaultBehavior = useCallback(
-    (day: CalendarDayType, event: PointerEvent<Element>) => {
+    (day: CalendarDayType, event?: PointerEvent<Element>) => {
       const isShiftPressed = event?.shiftKey;
       const dayDate = day.date;
 
@@ -43,7 +43,6 @@ export const useSelection = (props: UseSelectionProps) => {
 
         if (isMultiSelectionMode) {
           if (isShiftPressed && lastClickedDay) {
-            // Tryb Shift w trybie multi: Zaznacz zakres dni od ostatnio klikniętego dnia do bieżącego dnia
             let startDate = dayjs(lastClickedDay);
             let endDate = dayjs(dayDate);
 
@@ -53,14 +52,11 @@ export const useSelection = (props: UseSelectionProps) => {
 
             addDateRange(newSet, startDate, endDate);
           } else {
-            // Zaznaczanie/dodawanie/usuwanie dni w trybie multi bez Shift
             if (newSet.has(dayDate)) {
               newSet.delete(dayDate);
-
-              // Jeśli wszystkie dni są odznaczone, wyłącz tryb multi i zresetuj lastClickedDay
               if (newSet.size === 0) {
                 setIsMultiSelectionMode(false);
-                setLastClickedDay(null); // Reset lastClickedDay
+                setLastClickedDay(null);
               }
             } else {
               newSet.add(dayDate);
@@ -68,7 +64,6 @@ export const useSelection = (props: UseSelectionProps) => {
           }
         } else {
           if (isShiftPressed && lastClickedDay) {
-            // Zaznaczanie zakresu dni w trybie pojedynczym
             let startDate = dayjs(lastClickedDay);
             let endDate = dayjs(dayDate);
 
@@ -78,21 +73,14 @@ export const useSelection = (props: UseSelectionProps) => {
 
             addDateRange(newSet, startDate, endDate);
           } else {
-            // Standardowe zaznaczanie w trybie pojedynczym
             if (newSet.has(dayDate)) {
-              // Jeśli kliknięto ten sam dzień, wyczyść zaznaczenie i zresetuj lastClickedDay
-              setLastClickedDay(null); // Reset lastClickedDay
+              setLastClickedDay(null);
               return new Set([]);
             }
-            // Zaznacz jeden dzień i wyczyść pozostałe
             return new Set([dayDate]);
           }
-
-          // Włącz tryb wielokrotnego zaznaczania, jeśli nie jest już aktywny
           setIsMultiSelectionMode(true);
         }
-
-        // Zaktualizuj zapamiętany dzień kliknięcia na obecny, jeśli coś zostało zaznaczone
         setLastClickedDay(dayDate);
 
         return newSet;
@@ -101,12 +89,44 @@ export const useSelection = (props: UseSelectionProps) => {
     [selection, isMultiSelectionMode, setIsMultiSelectionMode, lastClickedDay]
   );
 
+  // Obsługa przeciągania na urządzeniach mobilnych
+  const handleTouchStart = useCallback<OnDayPointerHandler>(
+    (day, event) => {
+      setStartTouchDay(day.date);
+      setLastClickedDay(day.date);
+      defaultBehavior(day);
+    },
+    [defaultBehavior]
+  );
+
+  const handleTouchMove = useCallback<OnDayPointerHandler>(
+    (day, event) => {
+      if (startTouchDay) {
+        let startDate = dayjs(startTouchDay);
+        let endDate = dayjs(day.date);
+
+        if (startDate.isAfter(endDate)) {
+          [startDate, endDate] = [endDate, startDate];
+        }
+
+        setSelection((prev) => {
+          const newSet = new Set(prev);
+          addDateRange(newSet, startDate, endDate);
+          return newSet;
+        });
+      }
+    },
+    [startTouchDay]
+  );
+
+  const handleTouchEnd = useCallback(() => {
+    setStartTouchDay(null);
+  }, []);
+
   const handleOnDayPointerDown = useCallback<OnDayPointerHandler>(
     (day, event) => {
-      setLastClickedDay(day.date);
-      const isCtrlPressed = event?.ctrlKey;
-      const isAltPressed = event?.altKey;
       const isShiftPressed = event?.shiftKey;
+      setLastClickedDay(day.date);
 
       if (isShiftPressed) {
         setIsMultiSelectionMode(true);
@@ -119,21 +139,18 @@ export const useSelection = (props: UseSelectionProps) => {
     [isMultiSelectionMode, setIsMultiSelectionMode, defaultBehavior]
   );
 
-  const handleOnDayPointerUp = useCallback<OnDayPointerHandler>(
-    (day, event) => {},
-    [isMultiSelectionMode, setIsMultiSelectionMode, defaultBehavior]
-  );
-
   const handleCancelMultiSelect = useCallback(() => {
     setIsMultiSelectionMode(false);
     setSelection(new Set());
-  }, [isMultiSelectionMode, setIsMultiSelectionMode, selection]);
+  }, [setIsMultiSelectionMode]);
 
   return {
     selection,
     setSelection,
     handleCancelMultiSelect,
-    handleOnDayPointerUp,
     handleOnDayPointerDown,
+    handleTouchStart,
+    handleTouchMove,
+    handleTouchEnd,
   };
 };

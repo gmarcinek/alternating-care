@@ -4,10 +4,10 @@ import { Calendar } from '@components/Calendar/Calendar';
 import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
 import { Stack } from '@components/Stack/Stack';
 import { ALTERNATING_DATES } from '@modules/CalendarPage/constants';
+import { Input, Textarea } from '@nextui-org/input';
 import { Divider } from '@nextui-org/react';
 import { dateFormat } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
-import { useVibrate } from '@utils/useVibrate';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useState } from 'react';
@@ -16,7 +16,6 @@ import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsFo
 import { CalendarSizeSlider } from '../CalendarSizeSlider/CalendarSizeSlider';
 import styles from './EventFormCalendar.module.scss';
 import { useSelection } from './useSelection';
-
 interface EventFormCalendarProps {
   userName: string;
 }
@@ -33,23 +32,19 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
   const [isContiniousDisplayStrategy, setIsContiniousDisplayStrategy] =
     useState(false);
 
-  const { selection, handleOnDayClick } = useSelection({
-    isMultiSelectionMode,
-    setIsMultiSelectionMode,
-  });
+  const { selection, handleOnDayPointerDown, handleOnDayPointerUp } =
+    useSelection({
+      isMultiSelectionMode,
+      setIsMultiSelectionMode,
+    });
 
   const formClasses = classNames(styles.formContainer, 'sticky t-20 z-10 h-1 ');
-  const { vibrateSoft } = useVibrate();
 
   const bind = useLongPress(
     () => {
       setIsMultiSelectionMode(true);
     },
     {
-      // onStart: (event) => console.log('Press started'),
-      onFinish: (event) => vibrateSoft(),
-      // onCancel: (event) => console.log('Press cancelled'),
-      // onMove: (event) => console.log('Detected mouse or touch movement'),
       filterEvents: (event) => true, // All events can potentially trigger long press (same as 'undefined')
       threshold: 500, // In milliseconds
       captureEvent: true, // Event won't get cleared after React finish processing it
@@ -104,7 +99,8 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
               isContiniousDisplayStrategy ? 'continous' : 'separateMonths'
             }
             events={ALTERNATING_DATES}
-            onDayClick={handleOnDayClick}
+            onDayPointerDown={handleOnDayPointerDown}
+            onDayPointerUp={handleOnDayPointerUp}
             selection={Array.from(selection)}
             isMultiSelectionMode={isMultiSelectionMode}
           />
@@ -140,19 +136,23 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
                 />
               </Stack>
 
-              <Divider className='my-4' />
+              <Divider className='my-8' />
 
               <Stack>
-                <h3>Nowy plan</h3>
-                <input
+                <h3 className='mt-0'>Nowy plan</h3>
+
+                <Input
                   type='text'
-                  name='name'
-                  placeholder='Nazwa'
-                  className='block rounded-md border-0 py-4 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                  label='Nazwa wydarzenia'
+                  radius='sm'
+                  variant='bordered'
+                  size='lg'
                 />
-                <textarea
-                  placeholder='Opis wydarzenia'
-                  className='block rounded-md border-0 py-4 pl-4 pr-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                <Textarea
+                  radius='sm'
+                  label='Opis wydarzenia'
+                  variant='bordered'
+                  size='lg'
                 />
                 <Stack direction='horizontal'>
                   <label>
@@ -179,7 +179,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
                 </Stack>
               </Stack>
 
-              <Divider className='my-4' />
+              <Divider className='my-8' />
 
               <Stack>
                 {selection.size !== 0 && (

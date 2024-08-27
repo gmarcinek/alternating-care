@@ -1,9 +1,8 @@
 import { CalendarDayType } from '@modules/db/types';
 import { splitEvenly } from '@utils/array';
-import { dateFormat } from '@utils/dates';
+import { dateFormat, getDaysBetweenDates } from '@utils/dates';
 import dayjs from 'dayjs';
 import { CalendarMonthRawType, CalendarMonthType } from './Calendar.types';
-import { getDaysBetweenDates } from './hooks/useCalendarDates';
 
 type MonthsRaw = Record<string, CalendarMonthRawType>;
 export function segregateDatesMonthly(

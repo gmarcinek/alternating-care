@@ -3,21 +3,20 @@
 import useElementSize from '@custom-react-hooks/use-element-size';
 import { CalendarEvent } from '@modules/db/types';
 import { splitEvenly } from '@utils/array';
+import { getDaysBetweenDates } from '@utils/dates';
 import { NUMBER_SEVEN } from '@utils/number';
 import { useMemo } from 'react';
 import {
   CalenderContext,
   CalenderContextData,
   OnDayClickHandler,
+  OnDayPointerHandler,
 } from './Calendar.context';
 import { segregateDatesMonthly } from './Calendar.helpers';
 import { DisplayStrategy } from './Calendar.types';
 import { CalendarMonths } from './components/CallendarMonths/CallendarMonths';
 import { CallendarUngruped } from './components/CallendarUngruped/CallendarUngruped';
-import {
-  getDaysBetweenDates,
-  useCalendarDates,
-} from './hooks/useCalendarDates';
+import { useCalendarDates } from './hooks/useCalendarDates';
 import { useCalendarGap } from './hooks/useCalendarGap';
 
 interface CalendarProps {
@@ -33,6 +32,8 @@ interface CalendarProps {
   className?: string;
   selection?: string[];
   onDayClick?: OnDayClickHandler;
+  onDayPointerDown?: OnDayPointerHandler;
+  onDayPointerUp?: OnDayPointerHandler;
   isMultiSelectionMode?: boolean;
 }
 
@@ -50,6 +51,8 @@ export function Calendar(props: CalendarProps) {
     endDate,
     className,
     onDayClick,
+    onDayPointerDown,
+    onDayPointerUp,
     selection,
   } = props;
 
@@ -87,6 +90,8 @@ export function Calendar(props: CalendarProps) {
       displayStrategy,
       containerWidth: size.width,
       onDayClick,
+      onDayPointerDown,
+      onDayPointerUp,
       selection,
       isMultiSelectionMode,
     };
@@ -100,6 +105,8 @@ export function Calendar(props: CalendarProps) {
     displayStrategy,
     size.width,
     onDayClick,
+    onDayPointerDown,
+    onDayPointerUp,
     selection,
     isMultiSelectionMode,
   ]);

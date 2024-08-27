@@ -4,7 +4,14 @@ import { useCalenderContext } from '@components/Calendar/Calendar.context';
 import { CalendarDayType } from '@modules/db/types';
 import { Checkbox } from '@nextui-org/react';
 import classNames from 'classnames';
-import { MouseEvent, PropsWithChildren, useCallback, useMemo } from 'react';
+import {
+  MouseEventHandler,
+  PointerEvent,
+  PointerEventHandler,
+  PropsWithChildren,
+  useCallback,
+  useMemo,
+} from 'react';
 import { CalendarItemBodySingle } from '../CalendarItemBodySingle/CalendarItemBodySingle';
 import { CalendarItemBodyTwoWeeks } from '../CalendarItemBodyTwoWeeks/CalendarItemBodyTwoWeeks';
 import { CalendarItemBodyWeek } from '../CalendarItemBodyWeek/CalendarItemBodyWeek';
@@ -17,18 +24,41 @@ interface CalendarDayProps extends PropsWithChildren {
 export default function CalendarDay(props: CalendarDayProps) {
   const { day } = props;
   let render: JSX.Element | undefined = undefined;
-  const { rowSize, onDayClick, isMultiSelectionMode, selection } =
-    useCalenderContext();
+  const {
+    rowSize,
+    onDayClick,
+    isMultiSelectionMode,
+    selection,
+    onDayPointerDown,
+    onDayPointerUp,
+  } = useCalenderContext();
 
   const isSelected = useMemo(() => {
     return (selection ?? []).toString().split(',').includes(day.date);
   }, [selection, day.date]);
 
-  const handleDayClick = useCallback(
-    (event: MouseEvent) => {
+  const isCheckboxVisible =
+    (isMultiSelectionMode && rowSize === 7) || isSelected;
+
+  const handleonOnDayClick = useCallback<MouseEventHandler<Element>>(
+    (event) => {
       onDayClick?.(day, event);
     },
     [onDayClick, day]
+  );
+
+  const handleonOnPointerDown = useCallback<PointerEventHandler<Element>>(
+    (event: PointerEvent) => {
+      onDayPointerDown?.(day, event);
+    },
+    [onDayPointerDown, day]
+  );
+
+  const handleonOnPointerUp = useCallback<PointerEventHandler<Element>>(
+    (event: PointerEvent) => {
+      onDayPointerUp?.(day, event);
+    },
+    [onDayPointerUp, day]
   );
 
   if (day.isOffset) {
@@ -52,11 +82,15 @@ export default function CalendarDay(props: CalendarDayProps) {
   const classes = classNames(styles.calendarDay);
 
   return (
-    <div className={classes} onMouseDown={handleDayClick}>
-      {isMultiSelectionMode && rowSize === 7 && (
+    <div
+      className={classes}
+      onPointerDown={handleonOnPointerDown}
+      onPointerUp={handleonOnPointerUp}
+      onClick={handleonOnDayClick}
+    >
+      {isCheckboxVisible && (
         <Checkbox
           className={styles.checkbox}
-          onClick={handleDayClick}
           isSelected={isSelected}
           defaultSelected={isSelected}
           color='default'

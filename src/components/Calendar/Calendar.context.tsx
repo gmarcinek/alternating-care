@@ -1,10 +1,16 @@
 import { CalendarDayType, CalendarEvent } from '@modules/db/types';
-import { createContext, MouseEvent, useContext } from 'react';
+import { createContext, MouseEvent, PointerEvent, useContext } from 'react';
 
 export type OnDayClickHandler = (
   date: CalendarDayType,
   event?: MouseEvent<Element>
 ) => void;
+
+export type OnDayPointerHandler = (
+  date: CalendarDayType,
+  event: PointerEvent<Element>
+) => void;
+
 export interface CalenderContextData {
   rowSize: number;
   containerWidth: number;
@@ -15,6 +21,8 @@ export interface CalenderContextData {
   events: CalendarEvent[];
   displayStrategy: 'continous' | 'separateMonths';
   onDayClick?: OnDayClickHandler;
+  onDayPointerDown?: OnDayPointerHandler;
+  onDayPointerUp?: OnDayPointerHandler;
   selection?: string | string[];
   isMultiSelectionMode?: boolean;
 }
@@ -29,6 +37,8 @@ export const CalenderContext = createContext<CalenderContextData>({
   events: [],
   displayStrategy: 'continous',
   onDayClick: () => {},
+  onDayPointerDown: () => {},
+  onDayPointerUp: () => {},
   selection: [],
   isMultiSelectionMode: false,
 });
