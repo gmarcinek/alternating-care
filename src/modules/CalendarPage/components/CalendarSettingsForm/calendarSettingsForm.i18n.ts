@@ -1,0 +1,51 @@
+export const calendarSettingsFormI18n = {
+  pl: {
+    today: 'Dziś',
+    plan: 'Plan',
+    continuousDisplay: 'Łącz',
+    weekends: 'Weekend',
+    alternating: 'Opieka',
+  },
+  en: {
+    today: 'Today',
+    plan: 'Plan',
+    continuousDisplay: 'Continuous',
+    weekends: 'Weekend',
+    alternating: 'Alternating Care',
+  },
+  de: {
+    today: 'Heute',
+    plan: 'Plan',
+    continuousDisplay: 'Kontinuierlich',
+    weekends: 'Wochenende',
+    alternating: 'Abwechselnde Betreuung',
+  },
+  es: {
+    today: 'Hoy',
+    plan: 'Plan',
+    continuousDisplay: 'Continuo',
+    weekends: 'Fin de semana',
+    alternating: 'Cuidado alterno',
+  },
+  ru: {
+    today: 'Сегодня',
+    plan: 'План',
+    continuousDisplay: 'Непрерывный',
+    weekends: 'Выходные',
+    alternating: 'Чередующийся уход',
+  },
+  zh: {
+    today: '今天',
+    plan: '计划',
+    continuousDisplay: '连续',
+    weekends: '周末',
+    alternating: '交替护理',
+  },
+  pt: {
+    today: 'Hoje',
+    plan: 'Plano',
+    continuousDisplay: 'Contínuo',
+    weekends: 'Fim de semana',
+    alternating: 'Cuidado alternado',
+  },
+};

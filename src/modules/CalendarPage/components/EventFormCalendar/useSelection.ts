@@ -11,12 +11,12 @@ import {
 } from 'react';
 
 interface UseSelectionProps {
-  isMultiSelectionMode: boolean;
-  setIsMultiSelectionMode: Dispatch<SetStateAction<boolean>>;
+  isMultiSelectionMode?: boolean;
+  setIsMultiSelectionMode?: Dispatch<SetStateAction<boolean>>;
 }
 
 export const useSelection = (props: UseSelectionProps) => {
-  const { isMultiSelectionMode, setIsMultiSelectionMode } = props;
+  const { isMultiSelectionMode = false, setIsMultiSelectionMode } = props;
   const [selection, setSelection] = useState<Set<string>>(new Set());
 
   const [lastClickedDay, setLastClickedDay] = useState<string | null>(null);
@@ -59,7 +59,7 @@ export const useSelection = (props: UseSelectionProps) => {
 
               // Jeśli wszystkie dni są odznaczone, wyłącz tryb multi i zresetuj lastClickedDay
               if (newSet.size === 0) {
-                setIsMultiSelectionMode(false);
+                setIsMultiSelectionMode?.(false);
                 setLastClickedDay(null); // Reset lastClickedDay
               }
             } else {
@@ -89,7 +89,7 @@ export const useSelection = (props: UseSelectionProps) => {
           }
 
           // Włącz tryb wielokrotnego zaznaczania, jeśli nie jest już aktywny
-          setIsMultiSelectionMode(true);
+          setIsMultiSelectionMode?.(true);
         }
 
         // Zaktualizuj zapamiętany dzień kliknięcia na obecny, jeśli coś zostało zaznaczone
@@ -101,7 +101,7 @@ export const useSelection = (props: UseSelectionProps) => {
     [selection, isMultiSelectionMode, setIsMultiSelectionMode, lastClickedDay]
   );
 
-  const handleOnDayPointerDown = useCallback<OnDayPointerHandler>(
+  const handleOnDayPointerUp = useCallback<OnDayPointerHandler>(
     (day, event) => {
       setLastClickedDay(day.date);
       const isCtrlPressed = event?.ctrlKey;
@@ -109,7 +109,7 @@ export const useSelection = (props: UseSelectionProps) => {
       const isShiftPressed = event?.shiftKey;
 
       if (isShiftPressed) {
-        setIsMultiSelectionMode(true);
+        setIsMultiSelectionMode?.(true);
         defaultBehavior(day, event);
         return;
       }
@@ -119,13 +119,13 @@ export const useSelection = (props: UseSelectionProps) => {
     [isMultiSelectionMode, setIsMultiSelectionMode, defaultBehavior]
   );
 
-  const handleOnDayPointerUp = useCallback<OnDayPointerHandler>(
+  const handleOnDayPointerDown = useCallback<OnDayPointerHandler>(
     (day, event) => {},
     [isMultiSelectionMode, setIsMultiSelectionMode, defaultBehavior]
   );
 
   const handleCancelMultiSelect = useCallback(() => {
-    setIsMultiSelectionMode(false);
+    setIsMultiSelectionMode?.(false);
     setSelection(new Set());
   }, [isMultiSelectionMode, setIsMultiSelectionMode, selection]);
 

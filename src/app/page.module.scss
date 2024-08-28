@@ -53,13 +53,13 @@
 @media (min-width: 1024px) {
   .eventFormCalendar {
     .calendarContainer {
-      flex: 0 1 40%;
+      flex: 0 1 60%;
       display: block;
       flex-direction: column;
     }
 
     .formContainer {
-      flex: 0 1 60%;
+      flex: 0 1 40%;
       display: block;
       top: 6rem;
       min-height: calc(100vh - 8rem);

@@ -1,5 +1,7 @@
+import { useAppContext } from '@app/AppContext';
 import { Switch } from '@nextui-org/react';
 import { useBreakpoints } from '@utils/useBreakpoints';
+import { calendarSettingsFormI18n } from './calendarSettingsForm.i18n';
 
 interface CalendarSettingsFormProps {
   isTodayVisible: boolean;
@@ -30,8 +32,9 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
     sliderValue,
   } = props;
 
-  const { isMobile, isTablet } = useBreakpoints();
-
+  const { isMobile } = useBreakpoints();
+  const { language } = useAppContext();
+  const i18n = calendarSettingsFormI18n[language];
   return (
     <>
       <Switch
@@ -39,7 +42,7 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
         onValueChange={setIsTodayVisible}
         size='sm'
       >
-        Dziś
+        {i18n.today}
       </Switch>
 
       {sliderValue !== 1 && (
@@ -48,7 +51,7 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
           onValueChange={setIsPlanVisible}
           size='sm'
         >
-          Plan
+          {i18n.plan}
         </Switch>
       )}
 
@@ -59,7 +62,7 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
           isDisabled={sliderValue !== 7}
           size='sm'
         >
-          {'Łącz'}
+          {i18n.continuousDisplay}
         </Switch>
       )}
 
@@ -69,7 +72,7 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
           onValueChange={setIsWeekendsVisible}
           size='sm'
         >
-          Weekend
+          {i18n.weekends}
         </Switch>
       )}
 
@@ -78,7 +81,7 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
         onValueChange={setIsAlternatingVisible}
         size='sm'
       >
-        Opieka
+        {i18n.alternating}
       </Switch>
     </>
   );

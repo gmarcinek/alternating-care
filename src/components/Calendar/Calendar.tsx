@@ -21,14 +21,14 @@ import { useCalendarGap } from './hooks/useCalendarGap';
 
 interface CalendarProps {
   startDate: string;
+  rowSize: number;
   displayStrategy?: DisplayStrategy;
   endDate?: string;
-  rowSize: number;
-  isTodayVisible: boolean;
-  isPlanVisible: boolean;
-  isWeekendsVisible: boolean;
-  isAlternatingVisible: boolean;
-  events: CalendarEvent[];
+  isTodayVisible?: boolean;
+  isPlanVisible?: boolean;
+  isWeekendsVisible?: boolean;
+  isAlternatingVisible?: boolean;
+  events?: CalendarEvent[];
   className?: string;
   selection?: string[];
   onDayClick?: OnDayClickHandler;
@@ -41,13 +41,13 @@ export function Calendar(props: CalendarProps) {
   const {
     startDate,
     rowSize = NUMBER_SEVEN,
-    isTodayVisible,
-    isPlanVisible,
-    isAlternatingVisible,
-    isWeekendsVisible,
-    isMultiSelectionMode,
-    events,
-    displayStrategy = 'continous',
+    isTodayVisible = true,
+    isPlanVisible = false,
+    isAlternatingVisible = true,
+    isWeekendsVisible = true,
+    isMultiSelectionMode = false,
+    events = [],
+    displayStrategy = 'separateMonths',
     endDate,
     className,
     onDayClick,

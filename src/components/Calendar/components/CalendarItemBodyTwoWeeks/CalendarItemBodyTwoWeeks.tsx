@@ -73,17 +73,10 @@ export function CalendarItemBodyTwoWeeks(
             direction={isMobile ? 'vertical' : 'horizontal'}
             className={styles.content}
           >
-            {isFirstOfTheMonth && !isTablet && !isMobile ? (
-              <h3 style={{ color: 'inherit' }}>
-                {currentDate.format('D')}
-                <small>{currentDate.format('.MM')}</small>
-              </h3>
-            ) : (
-              <>
-                <strong>{currentDate.format('D')}</strong>
-                <small>{currentDate.format('/MM')}</small>
-              </>
-            )}
+            <>
+              <strong>{currentDate.format('D')}</strong>
+              <small>{currentDate.format('/MM')}</small>
+            </>
           </Stack>
         </Stack>
       </div>

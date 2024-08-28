@@ -3,31 +3,36 @@
 import { useInitDb } from '@modules/db/db';
 import { useFormReadUsersMutation } from '@modules/db/users/useFormReadUsersMutation';
 import Navigation from '@modules/Navigation';
-import dayjs from 'dayjs';
-import 'dayjs/locale/pl';
-import arraySupport from 'dayjs/plugin/arraySupport';
-import weekday from 'dayjs/plugin/weekday';
-import weekOfYear from 'dayjs/plugin/weekOfYear';
-import { PropsWithChildren, useMemo } from 'react';
-import { AppContext, AppContextData, defaultUser } from './AppContext';
 
-dayjs.extend(weekOfYear);
-dayjs.extend(weekday);
-dayjs.extend(arraySupport);
-dayjs.locale('pl');
+import { PropsWithChildren, useMemo, useState } from 'react';
+import { AppConfigurationEffect } from './AppConfigurationEffect';
+import {
+  AppContext,
+  AppContextData,
+  defaultUser,
+  SupportedLanguages,
+} from './AppContext';
 
 export default function AppRoot(props: PropsWithChildren) {
+  const [defaultLanguage] =
+    typeof navigator !== 'undefined' ? navigator.language.split('-') : ['pl'];
   const { isReady } = useInitDb();
   const { data, isSuccess } = useFormReadUsersMutation();
+  const [language, setLanguage] = useState(
+    (defaultLanguage as SupportedLanguages) ?? SupportedLanguages.Pl
+  );
 
   const contextData: AppContextData = useMemo(() => {
     return {
       user: data.at(0) ?? { ...defaultUser },
+      language,
+      setLanguage,
     };
-  }, [isSuccess]);
+  }, [isSuccess, language, setLanguage]);
 
   return isReady ? (
     <AppContext.Provider value={contextData}>
+      <AppConfigurationEffect />
       <Navigation />
       {props.children}
     </AppContext.Provider>

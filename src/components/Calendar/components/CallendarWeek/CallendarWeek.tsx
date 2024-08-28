@@ -4,7 +4,6 @@ import { Stack, StackGap } from '@components/Stack/Stack';
 import { CalendarDayType } from '@modules/db/types';
 import { useCalenderContext } from '../../Calendar.context';
 import CalendarDay from '../CalendarDay/CalendarDay';
-import { CalendarPlanSection } from '../CalendarPlanSection/CalendarPlanSection';
 import CalendarWeekInfoSection from '../CalendarWeekInfoSection/CalendarWeekInfoSection';
 
 interface CallendarWeekProps {
@@ -30,10 +29,6 @@ export function CallendarWeek(props: CallendarWeekProps) {
           );
         })}
       </Stack>
-
-      {![1, 10, 14].includes(rowSize) && isPlanVisible && (
-        <CalendarPlanSection />
-      )}
     </Stack>
   );
 }

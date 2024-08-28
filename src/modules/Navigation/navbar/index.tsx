@@ -2,6 +2,7 @@ import { Stack } from '@components/Stack/Stack';
 import { Avatar } from '@nextui-org/react';
 import Link from 'next/link';
 import { AppUser } from '../../db/types';
+import { Language } from './Language';
 import Logo from './Logo';
 import MenuButton from './MenuButton';
 
@@ -27,14 +28,11 @@ const Navbar = (props: NavbarProps) => {
               <Link href='/calendar'>
                 <p>Edycja</p>
               </Link>
-
-              <Link href='/settings'>
-                <p>Ustawienia</p>
-              </Link>
             </ul>
           </div>
           <div>
             <Stack direction='horizontal' contentAlignment='end'>
+              <Language />
               {user.name && <Avatar name={user.name} />}
               <MenuButton onClick={toggle}>Menu</MenuButton>
             </Stack>
