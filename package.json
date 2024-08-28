@@ -13,6 +13,10 @@
   "dependencies": {
     "@custom-react-hooks/all": "^1.4.19",
     "@custom-react-hooks/use-element-size": "^1.4.19",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.0.0",
+    "@mui/material": "^6.0.0",
     "@nextui-org/react": "^2.4.6",
     "classnames": "^2.5.1",
     "crypto": "^1.0.1",

@@ -2,6 +2,7 @@ import { useAppContext } from '@app/AppContext';
 import { Switch } from '@nextui-org/react';
 import { dateFormat } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
+import { useScrollToId } from '@utils/useScrollTo';
 import dayjs from 'dayjs';
 import { useCallback } from 'react';
 import { calendarSettingsFormI18n } from './calendarSettingsForm.i18n';
@@ -39,25 +40,19 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
   const { language } = useAppContext();
   const i18n = calendarSettingsFormI18n[language];
 
-  const handleSwitchToday = useCallback((value: boolean) => {
-    setIsTodayVisible(value);
+  const { scrollToElement } = useScrollToId();
+  const todayDate = dayjs().format(dateFormat);
 
-    if (value === true) {
-      const element = document.getElementById(
-        `day-${dayjs().format(dateFormat)}`
-      );
+  const handleSwitchToday = useCallback(
+    (value: boolean) => {
+      setIsTodayVisible(value);
 
-      if (element) {
-        // Get the element's position relative to the top of the document
-        const headerHeight = 164;
-        const position =
-          element.getBoundingClientRect().top + window.scrollY - headerHeight;
-
-        // Scroll to the element with the header offset
-        window.scrollTo({ top: position, behavior: 'smooth' });
+      if (value === true) {
+        scrollToElement(`day-${todayDate}`, 100);
       }
-    }
-  }, []);
+    },
+    [setIsTodayVisible, scrollToElement, todayDate]
+  );
 
   return (
     <>

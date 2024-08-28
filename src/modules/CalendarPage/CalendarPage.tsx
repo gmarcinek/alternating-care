@@ -2,6 +2,7 @@
 
 import PageContainer from '@components/PageContainer/PageContainer';
 import { useFormReadUsersMutation } from '@modules/db/users/useFormReadUsersMutation';
+import { TodayButton } from '@modules/TodayButton/TodayButton';
 import { EventFormCalendar } from './components/EventFormCalendar/EventFormCalendar';
 
 export const CalendarPage = () => {
@@ -16,6 +17,7 @@ export const CalendarPage = () => {
   return (
     <PageContainer>
       <EventFormCalendar userName={user?.name ?? ''} />
+      <TodayButton />
     </PageContainer>
   );
 };
