@@ -21,8 +21,8 @@ export interface CalenderContextData {
   events: CalendarEvent[];
   displayStrategy: 'continous' | 'separateMonths';
   onDayClick?: OnDayClickHandler;
-  onDayPointerDown?: OnDayPointerHandler;
-  onDayPointerUp?: OnDayPointerHandler;
+  onPointerUp?: OnDayPointerHandler;
+  onPointerDown?: OnDayPointerHandler;
   selection?: string | string[];
   isMultiSelectionMode?: boolean;
 }
@@ -37,8 +37,8 @@ export const CalenderContext = createContext<CalenderContextData>({
   events: [],
   displayStrategy: 'continous',
   onDayClick: () => {},
-  onDayPointerDown: () => {},
-  onDayPointerUp: () => {},
+  onPointerUp: () => {},
+  onPointerDown: () => {},
   selection: [],
   isMultiSelectionMode: false,
 });

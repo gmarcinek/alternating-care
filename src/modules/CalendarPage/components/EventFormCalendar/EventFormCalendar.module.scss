@@ -9,44 +9,9 @@
   .formContainer {
     flex: 1;
     display: none;
-  }
 
-  .calendarDetails {
     padding: 1.5rem;
     overflow-y: auto;
-    scrollbar-width: none; /* Ukrycie scrollbara w Firefox */
-    -ms-overflow-style: none; /* Ukrycie scrollbara w Internet Explorer i Edge */
-  }
-
-  /* Ukrycie standardowych strzałek i scrollbar w przeglądarkach WebKit */
-  .calendarDetails::-webkit-scrollbar {
-    width: 0; /* Ukrycie scrollbara */
-    height: 0;
-  }
-
-  /* Widoczny scrollbar tylko w trakcie przewijania */
-  .calendarDetails:hover::-webkit-scrollbar {
-    width: 8px; /* Pokazanie scrollbara tylko na hover */
-  }
-
-  .calendarDetails:hover::-webkit-scrollbar-thumb {
-    background-color: rgba(
-      136,
-      136,
-      136,
-      0.6
-    ); /* Przezroczysty kolor scrolla */
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-  }
-
-  .calendarDetails:hover::-webkit-scrollbar-track {
-    background: transparent; /* Przezroczyste tło scrolla */
-  }
-
-  /* W trakcie przewijania scroll staje się bardziej widoczny */
-  .calendarDetails:hover::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(136, 136, 136, 1);
   }
 }
 
@@ -64,10 +29,6 @@
       top: 6rem;
       min-height: calc(100vh - 8rem);
       background: $white;
-    }
-
-    .calendarDetails {
-      padding: 2rem;
     }
   }
 }

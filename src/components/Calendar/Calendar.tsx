@@ -32,8 +32,8 @@ interface CalendarProps {
   className?: string;
   selection?: string[];
   onDayClick?: OnDayClickHandler;
-  onDayPointerDown?: OnDayPointerHandler;
-  onDayPointerUp?: OnDayPointerHandler;
+  onPointerUp?: OnDayPointerHandler;
+  onPointerDown?: OnDayPointerHandler;
   isMultiSelectionMode?: boolean;
 }
 
@@ -51,8 +51,8 @@ export function Calendar(props: CalendarProps) {
     endDate,
     className,
     onDayClick,
-    onDayPointerDown,
-    onDayPointerUp,
+    onPointerUp,
+    onPointerDown,
     selection,
   } = props;
 
@@ -90,8 +90,8 @@ export function Calendar(props: CalendarProps) {
       displayStrategy,
       containerWidth: size.width,
       onDayClick,
-      onDayPointerDown,
-      onDayPointerUp,
+      onPointerUp,
+      onPointerDown,
       selection,
       isMultiSelectionMode,
     };
@@ -105,8 +105,8 @@ export function Calendar(props: CalendarProps) {
     displayStrategy,
     size.width,
     onDayClick,
-    onDayPointerDown,
-    onDayPointerUp,
+    onPointerUp,
+    onPointerDown,
     selection,
     isMultiSelectionMode,
   ]);

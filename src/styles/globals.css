@@ -65,3 +65,38 @@ p {
 .border-s-danger {
   border-inline-start-color: #ff4f4f;
 }
+
+/* SCROLL */
+::-webkit-scrollbar {
+  width: 6px;
+  position: absolute;
+  right: 0;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #ff4f4f;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+::-webkit-scrollbar-track {
+  background: transparent; /* Przezroczyste tło scrolla */
+}
+
+.scrollSmall::-webkit-scrollbar {
+  width: 4px;
+  position: absolute;
+  right: 0;
+}
+
+.scrollSmall::-webkit-scrollbar-thumb {
+  background-color: #00000011;
+  border-radius: 10px;
+  transition: background-color 500ms;
+}
+.scrollSmall:hover::-webkit-scrollbar-thumb {
+  background-color: #00000066;
+  transition: background-color 500ms;
+}
+
+.scrollSmall::-webkit-scrollbar-track {
+  background: transparent; /* Przezroczyste tło scrolla */
+}

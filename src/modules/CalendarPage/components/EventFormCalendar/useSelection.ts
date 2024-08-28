@@ -2,25 +2,21 @@ import { OnDayPointerHandler } from '@components/Calendar/Calendar.context';
 import { CalendarDayType } from '@modules/db/types';
 import { dateFormat } from '@utils/dates';
 import dayjs from 'dayjs';
-import {
-  Dispatch,
-  PointerEvent,
-  SetStateAction,
-  useCallback,
-  useState,
-} from 'react';
+import { PointerEvent, useCallback, useState } from 'react';
 
-interface UseSelectionProps {
-  isMultiSelectionMode?: boolean;
-  setIsMultiSelectionMode?: Dispatch<SetStateAction<boolean>>;
-}
+// interface UseSelectionProps {
+//   isMultiSelectionMode?: boolean;
+//   setIsMultiSelectionMode?: Dispatch<SetStateAction<boolean>>;
+// }
 
-export const useSelection = (props: UseSelectionProps) => {
-  const { isMultiSelectionMode = false, setIsMultiSelectionMode } = props;
+export const useSelection = () => {
+  const [isMultiSelectionMode, setIsMultiSelectionMode] =
+    useState<boolean>(false);
+  const [state, setState] = useState<any>(null);
   const [selection, setSelection] = useState<Set<string>>(new Set());
-
   const [lastClickedDay, setLastClickedDay] = useState<string | null>(null);
 
+  // Dodaje zakres dat do zestawu
   const addDateRange = (
     newSet: Set<string>,
     startDate: dayjs.Dayjs,
@@ -33,9 +29,66 @@ export const useSelection = (props: UseSelectionProps) => {
     }
   };
 
+  // Usuwa zakres dat z zestawu
+  const removeDateRange = (
+    newSet: Set<string>,
+    startDate: dayjs.Dayjs,
+    endDate: dayjs.Dayjs
+  ) => {
+    let currentDate = startDate;
+    while (currentDate.isBefore(endDate) || currentDate.isSame(endDate)) {
+      newSet.delete(currentDate.format(dateFormat));
+      currentDate = currentDate.add(1, 'day');
+    }
+  };
+
+  // Obsługuje zaznaczanie zakresu dni (dodawanie lub usuwanie)
+  const handleRangeSelection = (
+    newSet: Set<string>,
+    dayDate: string,
+    isAltPressed: boolean
+  ) => {
+    let startDate = dayjs(lastClickedDay);
+    let endDate = dayjs(dayDate);
+
+    if (startDate.isAfter(endDate)) {
+      [startDate, endDate] = [endDate, startDate];
+    }
+
+    if (isAltPressed) {
+      removeDateRange(newSet, startDate, endDate);
+    } else {
+      addDateRange(newSet, startDate, endDate);
+    }
+  };
+
+  // Obsługuje zachowanie trybu multi-selekcji
+  const handleMultiSelect = (newSet: Set<string>, dayDate: string) => {
+    if (newSet.has(dayDate)) {
+      newSet.delete(dayDate);
+      if (newSet.size === 0) {
+        setIsMultiSelectionMode?.(false);
+        setLastClickedDay(null);
+      }
+    } else {
+      newSet.add(dayDate);
+    }
+  };
+
+  // Obsługuje standardowe zaznaczanie jednego dnia
+  const handleSingleSelect = (newSet: Set<string>, dayDate: string) => {
+    if (newSet.has(dayDate)) {
+      setLastClickedDay(null);
+      return new Set([]);
+    }
+    return new Set([dayDate]);
+  };
+
+  // Główna funkcja obsługująca zaznaczanie
   const defaultBehavior = useCallback(
     (day: CalendarDayType, event: PointerEvent<Element>) => {
       const isShiftPressed = event?.shiftKey;
+      const isAltPressed = event?.altKey;
       const dayDate = day.date;
 
       setSelection((prev) => {
@@ -43,97 +96,63 @@ export const useSelection = (props: UseSelectionProps) => {
 
         if (isMultiSelectionMode) {
           if (isShiftPressed && lastClickedDay) {
-            // Tryb Shift w trybie multi: Zaznacz zakres dni od ostatnio klikniętego dnia do bieżącego dnia
-            let startDate = dayjs(lastClickedDay);
-            let endDate = dayjs(dayDate);
-
-            if (startDate.isAfter(endDate)) {
-              [startDate, endDate] = [endDate, startDate];
-            }
-
-            addDateRange(newSet, startDate, endDate);
+            handleRangeSelection(newSet, dayDate, isAltPressed);
           } else {
-            // Zaznaczanie/dodawanie/usuwanie dni w trybie multi bez Shift
-            if (newSet.has(dayDate)) {
-              newSet.delete(dayDate);
-
-              // Jeśli wszystkie dni są odznaczone, wyłącz tryb multi i zresetuj lastClickedDay
-              if (newSet.size === 0) {
-                setIsMultiSelectionMode?.(false);
-                setLastClickedDay(null); // Reset lastClickedDay
-              }
-            } else {
-              newSet.add(dayDate);
-            }
+            handleMultiSelect(newSet, dayDate);
           }
         } else {
           if (isShiftPressed && lastClickedDay) {
-            // Zaznaczanie zakresu dni w trybie pojedynczym
-            let startDate = dayjs(lastClickedDay);
-            let endDate = dayjs(dayDate);
-
-            if (startDate.isAfter(endDate)) {
-              [startDate, endDate] = [endDate, startDate];
-            }
-
-            addDateRange(newSet, startDate, endDate);
+            handleRangeSelection(newSet, dayDate, isAltPressed);
           } else {
-            // Standardowe zaznaczanie w trybie pojedynczym
-            if (newSet.has(dayDate)) {
-              // Jeśli kliknięto ten sam dzień, wyczyść zaznaczenie i zresetuj lastClickedDay
-              setLastClickedDay(null); // Reset lastClickedDay
-              return new Set([]);
-            }
-            // Zaznacz jeden dzień i wyczyść pozostałe
-            return new Set([dayDate]);
+            return handleSingleSelect(newSet, dayDate);
           }
-
-          // Włącz tryb wielokrotnego zaznaczania, jeśli nie jest już aktywny
           setIsMultiSelectionMode?.(true);
         }
 
-        // Zaktualizuj zapamiętany dzień kliknięcia na obecny, jeśli coś zostało zaznaczone
         setLastClickedDay(dayDate);
-
         return newSet;
       });
     },
-    [selection, isMultiSelectionMode, setIsMultiSelectionMode, lastClickedDay]
+    [isMultiSelectionMode, lastClickedDay]
   );
 
   const handleOnDayPointerUp = useCallback<OnDayPointerHandler>(
     (day, event) => {
       setLastClickedDay(day.date);
-      const isCtrlPressed = event?.ctrlKey;
-      const isAltPressed = event?.altKey;
       const isShiftPressed = event?.shiftKey;
 
       if (isShiftPressed) {
         setIsMultiSelectionMode?.(true);
-        defaultBehavior(day, event);
-        return;
       }
 
       defaultBehavior(day, event);
     },
-    [isMultiSelectionMode, setIsMultiSelectionMode, defaultBehavior]
+    [defaultBehavior]
   );
 
   const handleOnDayPointerDown = useCallback<OnDayPointerHandler>(
     (day, event) => {},
-    [isMultiSelectionMode, setIsMultiSelectionMode, defaultBehavior]
+    []
   );
 
   const handleCancelMultiSelect = useCallback(() => {
     setIsMultiSelectionMode?.(false);
     setSelection(new Set());
-  }, [isMultiSelectionMode, setIsMultiSelectionMode, selection]);
+  }, []);
+
+  const onPointerHandlers = {
+    onPointerUp: handleOnDayPointerUp,
+    onPointerDown: handleOnDayPointerDown,
+  };
 
   return {
     selection,
     setSelection,
     handleCancelMultiSelect,
-    handleOnDayPointerUp,
-    handleOnDayPointerDown,
+    isMultiSelectionMode,
+    setIsMultiSelectionMode,
+    handlers: {
+      ...onPointerHandlers,
+    },
   };
 };

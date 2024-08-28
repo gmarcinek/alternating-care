@@ -29,8 +29,8 @@ export default function CalendarDay(props: CalendarDayProps) {
     onDayClick,
     isMultiSelectionMode,
     selection,
-    onDayPointerDown,
-    onDayPointerUp,
+    onPointerUp,
+    onPointerDown,
   } = useCalenderContext();
 
   const isSelected = useMemo(() => {
@@ -48,16 +48,16 @@ export default function CalendarDay(props: CalendarDayProps) {
 
   const handleonOnPointerDown = useCallback<PointerEventHandler<Element>>(
     (event: PointerEvent) => {
-      onDayPointerDown?.(day, event);
+      onPointerDown?.(day, event);
     },
-    [onDayPointerDown, day]
+    [onPointerDown, day]
   );
 
   const handleonOnPointerUp = useCallback<PointerEventHandler<Element>>(
     (event: PointerEvent) => {
-      onDayPointerUp?.(day, event);
+      onPointerUp?.(day, event);
     },
-    [onDayPointerUp, day]
+    [onPointerUp, day]
   );
 
   if (day.isOffset) {
