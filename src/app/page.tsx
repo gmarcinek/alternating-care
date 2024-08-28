@@ -17,11 +17,7 @@ import { CalendarSizeSlider } from '@modules/CalendarPage/components/CalendarSiz
 import { useSelection } from '@modules/CalendarPage/components/EventFormCalendar/useSelection';
 import styles from './page.module.scss';
 
-interface EventFormCalendarProps {
-  userName: string;
-}
-
-export default function Page(props: EventFormCalendarProps) {
+export default function Page() {
   const startDate = dayjs().format(dateFormat);
   const { isTablet } = useBreakpoints();
 
