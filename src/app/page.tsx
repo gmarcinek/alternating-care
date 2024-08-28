@@ -29,8 +29,7 @@ export default function Page() {
   const [isContiniousDisplayStrategy, setIsContiniousDisplayStrategy] =
     useState(false);
 
-  const { selection, handleOnDayPointerDown, handleOnDayPointerUp } =
-    useSelection({});
+  const { selection, handlers } = useSelection({});
 
   const formClasses = classNames(styles.formContainer, 'sticky t-20 z-10 h-1 ');
 
@@ -83,8 +82,7 @@ export default function Page() {
                 isContiniousDisplayStrategy ? 'continous' : 'separateMonths'
               }
               events={ALTERNATING_DATES}
-              onDayPointerDown={handleOnDayPointerDown}
-              onDayPointerUp={handleOnDayPointerUp}
+              {...handlers}
               selection={Array.from(selection)}
               isMultiSelectionMode={false}
             />
