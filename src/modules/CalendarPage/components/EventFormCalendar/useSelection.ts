@@ -163,6 +163,7 @@ export const useSelection = (props: UseSelectionProps) => {
     handleCancelMultiSelect,
     isMultiSelectionMode,
     setIsMultiSelectionMode,
+    lastClickedDay,
     handlers: {
       ...onPointerHandlers,
     },

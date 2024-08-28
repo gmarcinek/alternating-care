@@ -86,6 +86,7 @@ export default function CalendarDay(props: CalendarDayProps) {
       onPointerDown={handleonOnPointerDown}
       onPointerUp={handleonOnPointerUp}
       onClick={handleonOnDayClick}
+      id={`day-${day.date}`}
     >
       {isCheckboxVisible && (
         <Checkbox
