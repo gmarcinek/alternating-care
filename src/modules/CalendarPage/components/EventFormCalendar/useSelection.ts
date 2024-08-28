@@ -4,15 +4,15 @@ import { dateFormat } from '@utils/dates';
 import dayjs from 'dayjs';
 import { PointerEvent, useCallback, useState } from 'react';
 
-// interface UseSelectionProps {
-//   isMultiSelectionMode?: boolean;
-//   setIsMultiSelectionMode?: Dispatch<SetStateAction<boolean>>;
-// }
+interface UseSelectionProps {
+  isMultiSelectionAvailable?: boolean;
+}
 
-export const useSelection = () => {
+export const useSelection = (props: UseSelectionProps) => {
+  const { isMultiSelectionAvailable = false } = props;
   const [isMultiSelectionMode, setIsMultiSelectionMode] =
     useState<boolean>(false);
-  const [state, setState] = useState<any>(null);
+
   const [selection, setSelection] = useState<Set<string>>(new Set());
   const [lastClickedDay, setLastClickedDay] = useState<string | null>(null);
 
@@ -48,6 +48,10 @@ export const useSelection = () => {
     dayDate: string,
     isAltPressed: boolean
   ) => {
+    if (!props.isMultiSelectionAvailable) {
+      return;
+    }
+
     let startDate = dayjs(lastClickedDay);
     let endDate = dayjs(dayDate);
 
@@ -84,7 +88,6 @@ export const useSelection = () => {
     return new Set([dayDate]);
   };
 
-  // Główna funkcja obsługująca zaznaczanie
   const defaultBehavior = useCallback(
     (day: CalendarDayType, event: PointerEvent<Element>) => {
       const isShiftPressed = event?.shiftKey;
@@ -106,10 +109,17 @@ export const useSelection = () => {
           } else {
             return handleSingleSelect(newSet, dayDate);
           }
-          setIsMultiSelectionMode?.(true);
+          setIsMultiSelectionMode?.(props.isMultiSelectionAvailable ?? false);
         }
 
-        setLastClickedDay(dayDate);
+        // Check if all days are deselected
+        if (newSet.size === 0) {
+          setIsMultiSelectionMode?.(false);
+          setLastClickedDay(null);
+        } else {
+          setLastClickedDay(dayDate);
+        }
+
         return newSet;
       });
     },
@@ -122,7 +132,7 @@ export const useSelection = () => {
       const isShiftPressed = event?.shiftKey;
 
       if (isShiftPressed) {
-        setIsMultiSelectionMode?.(true);
+        setIsMultiSelectionMode?.(props.isMultiSelectionAvailable ?? false);
       }
 
       defaultBehavior(day, event);
@@ -131,7 +141,9 @@ export const useSelection = () => {
   );
 
   const handleOnDayPointerDown = useCallback<OnDayPointerHandler>(
-    (day, event) => {},
+    (day, event) => {
+      console.log('handleOnDayPointerDown');
+    },
     []
   );
 

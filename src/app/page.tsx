@@ -29,7 +29,7 @@ export default function Page() {
   const [isContiniousDisplayStrategy, setIsContiniousDisplayStrategy] =
     useState(false);
 
-  const { selection, handlers } = useSelection();
+  const { selection, handlers } = useSelection({});
 
   const formClasses = classNames(styles.formContainer, 'sticky t-20 z-10 h-1 ');
 

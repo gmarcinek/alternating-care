@@ -38,7 +38,9 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
   const [isLoopedEvent, setIsLoopedEvent] = useState(false);
 
   const { selection, handlers, isMultiSelectionMode, setIsMultiSelectionMode } =
-    useSelection();
+    useSelection({
+      isMultiSelectionAvailable: true,
+    });
 
   const formClasses = classNames(
     styles.formContainer,
