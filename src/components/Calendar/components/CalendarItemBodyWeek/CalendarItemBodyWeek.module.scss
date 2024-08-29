@@ -30,12 +30,12 @@
     color: $neutral-gray-100 !important;
 
     &.isWeekend {
-      background: $blue-green-700 !important;
+      background: $blue-green-700;
     }
 
     &.isToday {
-      background: $red-500 !important;
-      color: $neutral-gray-100 !important;
+      background: $red-500;
+      color: $neutral-gray-100;
     }
   }
 
