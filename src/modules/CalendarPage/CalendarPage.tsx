@@ -2,29 +2,31 @@
 
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 import PageContainer from '@components/PageContainer/PageContainer';
-import { useFetchAllEventsQuery } from '@modules/db/events/useFetchAllEventsQuery';
+import { useGetAllEventsMutation } from '@modules/db/events/useGetAllEventsMutation';
 import { TodayButton } from '@modules/TodayButton/TodayButton';
-import { Spinner } from '@nextui-org/react';
+import { useEffect } from 'react';
 import { EventFormCalendar } from './components/EventFormCalendar/EventFormCalendar';
 
 export const CalendarPage = () => {
-  const { isPending, isError, data } = useFetchAllEventsQuery();
+  const {
+    isPending,
+    isError,
+    data,
+    refetch: fetchEvents,
+    mutation,
+  } = useGetAllEventsMutation();
+
+  useEffect(() => {
+    void mutation.mutate();
+  }, [fetchEvents]);
 
   if (isError) {
     return <ErrorMessage message={'Unexpected error occurred'} />;
   }
 
-  if (isPending) {
-    return (
-      <div className='container mx-auto mb-10 mt-60 flex flex-1 flex-col px-4'>
-        <Spinner color='danger' />
-      </div>
-    );
-  }
-
   return (
     <PageContainer>
-      <EventFormCalendar data={data} />
+      <EventFormCalendar fetchEventsMutation={mutation} />
       <TodayButton />
     </PageContainer>
   );

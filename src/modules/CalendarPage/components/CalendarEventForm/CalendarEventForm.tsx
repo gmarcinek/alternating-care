@@ -1,61 +1,76 @@
 'use client';
 import { useAppContext } from '@app/AppContext';
 import { Button } from '@components/Button/Button';
+import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
 import { Stack } from '@components/Stack/Stack';
 import { useFormPutEventMutation } from '@modules/db/events/useFormPutEventMutation';
 import { CalendarEventType } from '@modules/db/types';
-import { Input, Select, SelectItem, Textarea } from '@nextui-org/react';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import {
+  Divider,
+  Input,
+  Select,
+  SelectItem,
+  Textarea,
+} from '@nextui-org/react';
+import { getTextColor } from '@utils/color';
+import { colorPick, linearGradients } from '@utils/constants';
+import { dateFormat } from '@utils/dates';
 import crypto from 'crypto';
+import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
+import { CirclePicker, ColorResult } from 'react-color';
 import { toast } from 'react-toastify';
 import { calendarEventFormI18n } from './calendarEventForm.i18n'; // Import your i18n file
 
 interface CalendarEventFormProps {
   selection: string[];
+  onSuccess: () => void;
 }
 
 export const CalendarEventForm = (props: CalendarEventFormProps) => {
-  const { selection } = props;
+  const { selection, onSuccess } = props;
   const { language } = useAppContext();
   const translation = calendarEventFormI18n[language];
 
   const [date, setDate] = useState('');
-  const [type, setType] = useState<CalendarEventType>(
-    CalendarEventType.Alternating
-  );
+  const [type, setType] = useState(new Set<CalendarEventType>([]));
   const [issuer, setIssuer] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [backgroundColor, setBackgroundColor] = useState('#00A9FD');
-  const [textColor, setTextColor] = useState('#ffffff');
+  const [backgroundColor, setBackgroundColor] = useState('#d5e1d6');
+  const [textColor, setTextColor] = useState('#000000');
 
-  const { mutateAsync, isSuccess, isError, isPending } =
-    useFormPutEventMutation({
-      onSuccess: () => {
-        setDate('');
-        setType(CalendarEventType.Alternating);
-        setIssuer('');
-        setName('');
-        setDescription('');
-        setBackgroundColor('#00A9FD');
-        setTextColor('#ffffff');
-        toast(translation.eventAddedSuccessfully);
-      },
-    });
+  const { mutateAsync, isPending } = useFormPutEventMutation({
+    onSuccess: () => {
+      onSuccess();
+
+      setDate('');
+      setType(new Set<CalendarEventType>([]));
+      setIssuer('');
+      setName('');
+      setDescription('');
+      setBackgroundColor('#d5e1d6');
+      setTextColor('#000000');
+      toast(translation.eventAddedSuccessfully, { type: 'success' });
+    },
+  });
 
   const handleSubmit = useCallback(
     async (event: React.FormEvent) => {
       event.preventDefault();
 
-      if (!type || !issuer) {
+      if (type.size === 0 || !name) {
         toast(translation.pleaseFillInAllRequiredFields, { type: 'info' });
         return;
       }
 
+      const typeToSave = Array.from(type)[0].toUpperCase() as CalendarEventType;
+
       const newEvents = selection.map((date) => ({
         id: crypto.randomBytes(16).toString('hex'),
         date,
-        type,
+        type: typeToSave,
         issuer: 'Admin',
         name,
         description,
@@ -75,7 +90,6 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
     [
       date,
       type,
-      issuer,
       name,
       description,
       backgroundColor,
@@ -85,6 +99,11 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
       language,
     ]
   );
+
+  const exampleDate = {
+    date: dayjs().format(dateFormat),
+    isOffset: false,
+  };
 
   return (
     <Stack>
@@ -102,33 +121,31 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
             />
             <Select
               label={translation.eventType}
+              isDisabled={isPending}
               radius='sm'
               variant='bordered'
               size='lg'
               onSelectionChange={(value) => {
-                setType(value.currentKey as unknown as CalendarEventType);
+                setType(new Set(value as unknown as CalendarEventType[]));
               }}
+              renderValue={() => {
+                return Array.from(type).at(0) ?? undefined;
+              }}
+              value={Array.from(type).at(0) ?? undefined}
               required
             >
-              <SelectItem key={CalendarEventType.Alternating}>
-                {CalendarEventType.Alternating}
-              </SelectItem>
-              <SelectItem key={CalendarEventType.Event}>
-                {CalendarEventType.Event}
-              </SelectItem>
+              {Object.keys(CalendarEventType).map((key) => (
+                <SelectItem
+                  key={key}
+                  value={
+                    CalendarEventType[key as keyof typeof CalendarEventType]
+                  }
+                >
+                  {CalendarEventType[key as keyof typeof CalendarEventType]}
+                </SelectItem>
+              ))}
             </Select>
           </Stack>
-
-          <Input
-            type='text'
-            label={translation.issuer}
-            value={issuer}
-            radius='sm'
-            variant='bordered'
-            size='lg'
-            onValueChange={setIssuer}
-            required
-          />
 
           <Textarea
             label={translation.eventDescription}
@@ -138,31 +155,55 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
             size='lg'
             onValueChange={setDescription}
           />
-          <Stack direction='horizontal' gap={16}>
-            <Input
-              type='color'
-              label={translation.backgroundColor}
-              value={backgroundColor}
-              radius='sm'
-              variant='bordered'
-              size='lg'
-              onValueChange={setBackgroundColor}
+
+          <Divider className='my-4' />
+
+          <h3>Widoczność</h3>
+          <Stack direction='horizontal' contentAlignment='between'>
+            <CirclePicker
+              colors={colorPick}
+              onChange={(value: ColorResult) => {
+                setBackgroundColor(value.hex);
+              }}
+              onChangeComplete={(value: ColorResult) => {
+                setTextColor(getTextColor(value.hex));
+              }}
             />
-            <Input
-              type='color'
-              label={translation.textColor}
-              value={textColor}
-              radius='sm'
-              variant='bordered'
-              size='lg'
-              onValueChange={setTextColor}
-            />
+
+            <CalendarItem
+              day={exampleDate}
+              className=''
+              style={{
+                backgroundColor: backgroundColor,
+                background: linearGradients[
+                  backgroundColor as keyof typeof linearGradients
+                ]
+                  ? linearGradients[
+                      backgroundColor as keyof typeof linearGradients
+                    ]
+                  : backgroundColor,
+                color: getTextColor(backgroundColor),
+              }}
+            >
+              <Stack gap={0}>
+                <small>{dayjs().format('MMM')}</small>
+              </Stack>
+            </CalendarItem>
           </Stack>
-          <Button type='submit' disabled={isPending}>
-            {isPending ? translation.saving : translation.addEvent}
-          </Button>
-          {isSuccess && <div>{translation.eventAddedSuccessfully}</div>}
-          {isError && <div>{translation.errorAddingEvent}</div>}
+          <Divider className='my-4' />
+          <div>
+            <Button
+              type='submit'
+              disabled={isPending}
+              className='mt-2'
+              radius='sm'
+              variant='solid'
+              color='danger'
+            >
+              <EventAvailableIcon />
+              {isPending ? translation.saving : translation.addEvent}
+            </Button>
+          </div>
         </Stack>
       </form>
     </Stack>

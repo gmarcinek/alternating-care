@@ -1,4 +1,3 @@
-import TodaySharpIcon from '@mui/icons-material/TodaySharp';
 import { Button, ButtonProps } from '@nextui-org/button';
 import '@styles/globals.css';
 import { dateFormat } from '@utils/dates';
@@ -31,14 +30,16 @@ export const TodayButton = (props: TodayButtonProps) => {
   return (
     <Button
       isIconOnly
-      color='danger'
       variant='flat'
       aria-label='Today'
       className={classes}
       onClick={() => scrollToElement(`day-${todayDate}`, 100)}
       {...restProps}
     >
-      <TodaySharpIcon />
+      {/* <TodaySharpIcon /> */}
+      <h3 style={{ color: 'white', margin: 0 }}>
+        <strong>{dayjs().format('DD')}</strong>
+      </h3>
     </Button>
   );
 };

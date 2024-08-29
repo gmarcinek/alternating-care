@@ -3,16 +3,17 @@ import { CalendarDayType } from '@modules/db/types';
 import { capitalizeFirstLetter } from '@utils/string';
 import classNames from 'classnames';
 import dayjs, { Dayjs } from 'dayjs';
-import { useMemo } from 'react';
+import { CSSProperties, PropsWithChildren, useMemo } from 'react';
 import styles from './CalendarItem.module.scss';
 
-interface CalendarItemProps {
+interface CalendarItemProps extends PropsWithChildren {
   day: CalendarDayType;
   className?: string;
+  style?: CSSProperties;
 }
 
 export function CalendarItem(props: CalendarItemProps) {
-  const { day, className } = props;
+  const { day, className, children, style } = props;
 
   const currentDate = dayjs(day.date);
   const itemClasses = classNames(styles.calendarItem, className);
@@ -24,7 +25,7 @@ export function CalendarItem(props: CalendarItemProps) {
   }, [currentDate]);
 
   return (
-    <div className={itemClasses}>
+    <div className={itemClasses} style={style}>
       <Stack gap={0} direction='horizontal'>
         <Stack gap={0}>
           <span>{label}</span>
@@ -33,6 +34,7 @@ export function CalendarItem(props: CalendarItemProps) {
             <strong>{currentDate.format('D')}</strong>
             <small>{currentDate.format('.MM')}</small>
           </span>
+          {children}
         </Stack>
       </Stack>
     </div>

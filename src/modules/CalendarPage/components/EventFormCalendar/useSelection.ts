@@ -92,6 +92,7 @@ export const useSelection = (props: UseSelectionProps) => {
     (day: CalendarDayType, event: PointerEvent<Element>) => {
       const isShiftPressed = event?.shiftKey;
       const isAltPressed = event?.altKey;
+      const isCtrlPressed = event?.ctrlKey;
       const dayDate = day.date;
 
       setSelection((prev) => {
@@ -106,6 +107,8 @@ export const useSelection = (props: UseSelectionProps) => {
         } else {
           if (isShiftPressed && lastClickedDay) {
             handleRangeSelection(newSet, dayDate, isAltPressed);
+          } else if (isCtrlPressed) {
+            handleMultiSelect(newSet, dayDate);
           } else {
             return handleSingleSelect(newSet, dayDate);
           }

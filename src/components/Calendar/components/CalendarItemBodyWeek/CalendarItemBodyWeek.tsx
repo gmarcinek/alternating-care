@@ -86,7 +86,15 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
         className={itemClasses}
         style={{
           ...style.style,
-          background: event?.style?.background,
+          backgroundColor: event?.style?.background,
+          // background: linearGradients[
+          //   event?.style?.background as keyof typeof linearGradients
+          // ]
+          //   ? linearGradients[
+          //       event?.style?.background as keyof typeof linearGradients
+          //     ]
+          //   : event?.style?.background,
+
           color: event?.style?.color,
         }}
       >

@@ -5,6 +5,7 @@ import { Calendar } from '@components/Calendar/Calendar';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarEvent } from '@modules/db/types';
 import { Divider } from '@nextui-org/divider';
+import { UseMutationResult } from '@tanstack/react-query';
 import { dateFormat } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
 import classNames from 'classnames';
@@ -16,15 +17,19 @@ import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsFo
 import { eventFormCalendarI18n } from './eventFormCalendar.i18n';
 import styles from './EventFormCalendar.module.scss';
 import { useSelection } from './useSelection';
-
 interface EventFormCalendarProps {
-  data: CalendarEvent[];
+  fetchEventsMutation: UseMutationResult<
+    CalendarEvent[],
+    unknown,
+    void,
+    unknown
+  >;
 }
 
 export const EventFormCalendar = (props: EventFormCalendarProps) => {
-  const { data } = props;
+  const { fetchEventsMutation } = props;
   const { isTablet } = useBreakpoints();
-  const { language, user } = useAppContext();
+  const { language } = useAppContext();
   const startDate = dayjs().format(dateFormat);
 
   const [isTodayVisible, setIsTodayVisible] = useState(true);
@@ -34,10 +39,25 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
   const [isContinuousDisplayStrategy, setIsContinuousDisplayStrategy] =
     useState(false);
 
-  const { selection, handlers, isMultiSelectionMode, setIsMultiSelectionMode } =
-    useSelection({
-      isMultiSelectionAvailable: true,
-    });
+  const {
+    selection,
+    handlers,
+    isMultiSelectionMode,
+    setIsMultiSelectionMode,
+    handleCancelMultiSelect,
+  } = useSelection({
+    isMultiSelectionAvailable: true,
+  });
+
+  const onAddEventSuccess = useCallback(() => {
+    setIsMultiSelectionMode(false);
+    handleCancelMultiSelect();
+    fetchEventsMutation.mutate();
+  }, [
+    setIsMultiSelectionMode,
+    handleCancelMultiSelect,
+    fetchEventsMutation.mutate,
+  ]);
 
   const formClasses = classNames(
     styles.formContainer,
@@ -93,7 +113,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
             displayStrategy={
               isContinuousDisplayStrategy ? 'continous' : 'separateMonths'
             }
-            events={data}
+            events={fetchEventsMutation.data || []}
             {...handlers}
             selection={Array.from(selection)}
             isMultiSelectionMode={isMultiSelectionMode}
@@ -127,13 +147,16 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
 
               <Stack>
                 <h3 className='mt-0'>
-                  {eventFormCalendarI18n[language].editSection.newPlanTitle}
+                  <span>
+                    {eventFormCalendarI18n[language].editSection.newPlanTitle}
+                  </span>
                 </h3>
 
-                <CalendarEventForm selection={Array.from(selection)} />
+                <CalendarEventForm
+                  selection={Array.from(selection)}
+                  onSuccess={onAddEventSuccess}
+                />
               </Stack>
-
-              <Divider className='my-4' />
             </Stack>
           </Stack>
         </div>
