@@ -15,7 +15,10 @@ const Navbar = (props: NavbarProps) => {
   const { toggle, user } = props;
 
   return (
-    <div className='sticky top-0 z-50 h-16 w-full bg-white shadow-lg shadow-slate-200/50'>
+    <div
+      className='sticky top-0 z-50 h-16 w-full bg-white shadow-lg shadow-slate-200/50'
+      id='main-navbar'
+    >
       <div className='container-fluid h-full px-4'>
         <div className='flex h-full items-center justify-between'>
           <div className='flex h-full items-center justify-between gap-x-8 divide-x divide-slate-300'>
@@ -27,6 +30,9 @@ const Navbar = (props: NavbarProps) => {
 
               <Link href='/calendar'>
                 <p>Edycja</p>
+              </Link>
+              <Link href='/settings'>
+                <p>Ustawienia</p>
               </Link>
             </ul>
           </div>

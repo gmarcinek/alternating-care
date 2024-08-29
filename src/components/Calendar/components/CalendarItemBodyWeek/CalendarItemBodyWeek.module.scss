@@ -26,22 +26,22 @@
   }
 
   &.isAlternating {
-    background: $blue-green-700;
-    color: $neutral-gray-100;
+    background: $blue-green-700 !important;
+    color: $neutral-gray-100 !important;
 
     &.isWeekend {
-      background: $blue-green-700;
+      background: $blue-green-700 !important;
     }
 
     &.isToday {
-      background: $red-500;
-      color: $neutral-gray-100;
+      background: $red-500 !important;
+      color: $neutral-gray-100 !important;
     }
   }
 
   &.isToday {
-    background: $red-500;
-    color: $neutral-gray-100;
+    background: $red-500 !important;
+    color: $neutral-gray-100 !important;
   }
 
   &.isFirstOfTheMonth {

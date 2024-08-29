@@ -58,6 +58,12 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
       })
       .includes(day.date);
 
+  const event = events.find((item) => {
+    return (
+      item.type !== CalendarEventType.Alternating && item.date === day.date
+    );
+  });
+
   const itemClasses = classNames(styles.calendarItem, {
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
@@ -76,7 +82,14 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
       isFirstOfTheMonth={isFirstOfTheMonth}
       isSelected={isSelected}
     >
-      <div className={itemClasses} style={style.style}>
+      <div
+        className={itemClasses}
+        style={{
+          ...style.style,
+          background: event?.style?.background,
+          color: event?.style?.color,
+        }}
+      >
         <Stack gap={0} direction='horizontal'>
           <Stack gap={0}>
             <span>{label}</span>

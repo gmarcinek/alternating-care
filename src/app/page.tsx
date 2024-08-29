@@ -3,7 +3,7 @@
 import { Calendar } from '@components/Calendar/Calendar';
 import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
 import { Stack } from '@components/Stack/Stack';
-import { ALTERNATING_DATES } from '@modules/CalendarPage/constants';
+
 import { Divider } from '@nextui-org/react';
 import { dateFormat } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
@@ -81,7 +81,7 @@ export default function Page() {
               displayStrategy={
                 isContiniousDisplayStrategy ? 'continous' : 'separateMonths'
               }
-              events={ALTERNATING_DATES}
+              events={[]}
               {...handlers}
               selection={Array.from(selection)}
               isMultiSelectionMode={false}

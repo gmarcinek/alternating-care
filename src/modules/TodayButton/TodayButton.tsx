@@ -38,7 +38,6 @@ export const TodayButton = (props: TodayButtonProps) => {
       onClick={() => scrollToElement(`day-${todayDate}`, 100)}
       {...restProps}
     >
-      {children}
       <TodaySharpIcon />
     </Button>
   );

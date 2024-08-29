@@ -48,7 +48,7 @@ export const useSelection = (props: UseSelectionProps) => {
     dayDate: string,
     isAltPressed: boolean
   ) => {
-    if (!props.isMultiSelectionAvailable) {
+    if (!isMultiSelectionAvailable) {
       return;
     }
 

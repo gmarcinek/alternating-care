@@ -5,6 +5,7 @@ import { PropsWithChildren } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AppRoot from './AppRoot';
+import QueryClientContext from './QueryClientContext';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,7 +18,9 @@ export default function RootLayout(props: PropsWithChildren) {
   return (
     <html lang='pl' className='bg-gray-100'>
       <body className={inter.className}>
-        <AppRoot>{props.children}</AppRoot>
+        <QueryClientContext>
+          <AppRoot>{props.children}</AppRoot>
+        </QueryClientContext>
         <ToastContainer
           position='bottom-left'
           hideProgressBar

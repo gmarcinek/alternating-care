@@ -1,8 +1,6 @@
 export interface AppUser {
   id: string;
   name: string;
-  startDate: string;
-  countingRange: string;
 }
 
 export enum CalendarEventType {

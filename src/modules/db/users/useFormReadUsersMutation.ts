@@ -1,68 +1,41 @@
-import { openDB } from 'idb';
-import { useCallback, useEffect, useState } from 'react';
-import { dbName, dbVersion } from '../constants';
-import { AlternatingCareDBSchema } from '../schema';
+import { useMutation } from '@tanstack/react-query';
+import { useDbContext } from '../DbContext'; // Użycie kontekstu bazy danych
 import { AppUser } from '../types';
 
-interface UseFormReadUsersQueryProps {
+interface UseFormReadUsersMutationProps {
   onSuccess?: (data?: AppUser[]) => void;
   onError?: (error: unknown) => void;
 }
 
 export const useFormReadUsersMutation = (
-  props: UseFormReadUsersQueryProps = {
-    onError() {},
-    onSuccess() {},
-  }
+  props: UseFormReadUsersMutationProps = {}
 ) => {
-  const { onError, onSuccess } = props;
-  const [isPending, setIsPending] = useState(true);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [data, setData] = useState<AppUser[]>([]);
+  const { onSuccess = () => {}, onError = () => {} } = props;
 
-  const initiateDb = useCallback(async () => {
-    const db = await openDB<AlternatingCareDBSchema>(dbName, dbVersion);
+  // Pobieramy instancję bazy danych z kontekstu
+  const { db } = useDbContext();
 
+  // Funkcja zapytania do bazy danych
+  const fetchUsers = async (): Promise<AppUser[]> => {
     if (!db) {
-      return;
+      throw new Error('No database instance available');
     }
+    return db.getAll('users'); // Wykonujemy zapytanie do bazy danych
+  };
 
-    // actions
-    const users = await db.getAll('users');
-    setData(users);
-    db.close();
-
-    return users;
-  }, []);
-
-  useEffect(() => {
-    let isSubscribed = true;
-
-    initiateDb()
-      .then((data) => {
-        if (isSubscribed) {
-          setIsSuccess(true);
-          onSuccess?.(data);
-        }
-      })
-      .catch((error) => {
-        setIsError(true);
-        onError?.(error);
-      })
-      .finally(() => {
-        setIsPending(false);
-      });
-
-    return () => {
-      isSubscribed = false;
-    };
-  }, []);
+  // Hook useMutation zarządza stanem mutacji
+  const mutation = useMutation({
+    mutationFn: fetchUsers, // Funkcja zapytania
+    onSuccess, // Funkcja sukcesu
+    onError, // Funkcja błędu
+  });
 
   return {
-    data,
-    isPending,
-    isSuccess,
-    isError,
+    data: mutation.data || [], // Dane zapytania
+    isPending: mutation.isPending, // Stan oczekiwania
+    isSuccess: mutation.isSuccess, // Stan sukcesu
+    isError: mutation.isError, // Stan błędu
+    error: mutation.error, // Błąd zapytania
+    refetch: mutation.mutate, // Funkcja do wywołania mutacji
   };
 };
