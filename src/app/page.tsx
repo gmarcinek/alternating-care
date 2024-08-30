@@ -1,20 +1,21 @@
 'use client';
 
 import { Calendar } from '@components/Calendar/Calendar';
-import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
 import { Stack } from '@components/Stack/Stack';
 
 import { Divider } from '@nextui-org/react';
-import { dateFormat } from '@utils/dates';
+import { dateFormat, groupByDate } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
+import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import PageContainer from '@components/PageContainer/PageContainer';
 import { CalendarSettingsForm } from '@modules/CalendarPage/components/CalendarSettingsForm/CalendarSettingsForm';
 import { CalendarSizeSlider } from '@modules/CalendarPage/components/CalendarSizeSlider/CalendarSizeSlider';
 import { useSelection } from '@modules/CalendarPage/components/EventFormCalendar/useSelection';
+import { useGetAllEventsMutation } from '@modules/db/events/useGetAllEventsMutation';
 import styles from './page.module.scss';
 
 export default function Page() {
@@ -32,6 +33,28 @@ export default function Page() {
   const { selection, handlers } = useSelection({});
 
   const formClasses = classNames(styles.formContainer, 'sticky t-20 z-10 h-1 ');
+  const { mutation, data } = useGetAllEventsMutation();
+
+  useEffect(() => {
+    void mutation.mutate();
+  }, []);
+
+  const detailDates = useMemo(() => {
+    return (data ?? [])
+      .filter((item) => {
+        return (
+          dayjs(item.date).isAfter(dayjs(startDate).subtract(1, 'day')) &&
+          item.type !== 'ALTERNATING'
+        );
+      })
+      .sort((itemA, itemB) => {
+        return dayjs(itemA.date).isAfter(itemB.date) ? 1 : -1;
+      });
+  }, [data, startDate]);
+
+  const detailDataGrouped = useMemo(() => {
+    return groupByDate(detailDates);
+  }, [detailDates]);
 
   return (
     <PageContainer>
@@ -81,7 +104,7 @@ export default function Page() {
               displayStrategy={
                 isContiniousDisplayStrategy ? 'continous' : 'separateMonths'
               }
-              events={[]}
+              events={data ?? []}
               {...handlers}
               selection={Array.from(selection)}
               isMultiSelectionMode={false}
@@ -121,17 +144,37 @@ export default function Page() {
                 <Divider className='my-8' />
 
                 <Stack>
-                  {selection.size !== 0 && (
-                    <h3>Przegląd zaplanowanych wydarzeń</h3>
+                  {selection.size === 0 && (
+                    <>
+                      {detailDataGrouped.map((dayGroup, indexGroup) => {
+                        return (
+                          <CalendarEventList
+                            key={`dayGroup-${dayGroup.date}-${indexGroup}`}
+                            date={dayGroup.date}
+                            eventGroup={dayGroup}
+                          />
+                        );
+                      })}
+                    </>
                   )}
-                  {Array.from(selection).map((item, index) => {
+
+                  {Array.from(selection).map((selectedItem, index) => {
                     return (
-                      <CalendarItem
-                        day={{
-                          date: item,
-                        }}
-                        key={`${item}-${index}`}
-                      />
+                      <>
+                        {detailDataGrouped
+                          .filter((group) => {
+                            return selectedItem.includes(group.date);
+                          })
+                          .map((dayGroup, indexGroup) => {
+                            return (
+                              <CalendarEventList
+                                key={`dayGroup-${dayGroup.date}-${indexGroup}`}
+                                date={dayGroup.date}
+                                eventGroup={dayGroup}
+                              />
+                            );
+                          })}
+                      </>
                     );
                   })}
                 </Stack>

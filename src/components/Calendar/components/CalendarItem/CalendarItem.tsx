@@ -2,7 +2,7 @@ import { Stack } from '@components/Stack/Stack';
 import { CalendarDayType } from '@modules/db/types';
 import { capitalizeFirstLetter } from '@utils/string';
 import classNames from 'classnames';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { CSSProperties, PropsWithChildren, useMemo } from 'react';
 import styles from './CalendarItem.module.scss';
 
@@ -10,17 +10,20 @@ interface CalendarItemProps extends PropsWithChildren {
   day: CalendarDayType;
   className?: string;
   style?: CSSProperties;
+  mode?: 'short' | 'long' | 'full' | 'none';
 }
 
 export function CalendarItem(props: CalendarItemProps) {
-  const { day, className, children, style } = props;
+  const { day, className, children, style, mode = 'short' } = props;
 
   const currentDate = dayjs(day.date);
   const itemClasses = classNames(styles.calendarItem, className);
 
-  const { label } = useMemo(() => {
+  const { labelFull, labelLong, labelShort } = useMemo(() => {
     return {
-      label: toFormatedLabel(currentDate),
+      labelShort: capitalizeFirstLetter(currentDate.format('dd')),
+      labelLong: capitalizeFirstLetter(currentDate.format('ddd')),
+      labelFull: capitalizeFirstLetter(currentDate.format('dddd D MMMM YYYY')),
     };
   }, [currentDate]);
 
@@ -28,19 +31,30 @@ export function CalendarItem(props: CalendarItemProps) {
     <div className={itemClasses} style={style}>
       <Stack gap={0} direction='horizontal'>
         <Stack gap={0}>
-          <span>{label}</span>
+          {mode === 'none' && <></>}
+          {mode === 'short' && (
+            <>
+              <span>{labelShort}</span>
+              <span>
+                <strong>{currentDate.format('D')}</strong>
+                <small>{currentDate.format('.MM')}</small>
+              </span>
+            </>
+          )}
+          {mode === 'long' && (
+            <>
+              <span>{labelLong}</span>
+              <span>
+                <strong>{currentDate.format('D')}</strong>
+                <small>{currentDate.format('.MM')}</small>
+              </span>
+            </>
+          )}
+          {mode === 'full' && <h3>{labelFull}</h3>}
 
-          <span>
-            <strong>{currentDate.format('D')}</strong>
-            <small>{currentDate.format('.MM')}</small>
-          </span>
           {children}
         </Stack>
       </Stack>
     </div>
   );
-}
-
-function toFormatedLabel(date: string | Dayjs) {
-  return capitalizeFirstLetter(dayjs(date).format('dd'));
 }

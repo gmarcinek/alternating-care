@@ -16,7 +16,6 @@ body {
 
 html {
   min-height: 100vh;
-  color: #666666;
 }
 
 h1,
@@ -24,7 +23,7 @@ h2,
 h3,
 h4,
 p {
-  color: #666666;
+  color: #333333;
 }
 
 h1,
@@ -99,4 +98,30 @@ p {
 
 .scrollSmall::-webkit-scrollbar-track {
   background: transparent; /* Przezroczyste tło scrolla */
+}
+
+/* HIGHLIGHT */
+.highlight {
+  background-color: yellow;
+  transition: background-color 0.3s ease;
+}
+
+.zoomIn {
+  transform: scale(2);
+  z-index: 5;
+  filter: drop-shadow(0 0 12px rgb(255, 255, 255));
+
+  transition:
+    transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+    filter 0.2s ease-out;
+}
+
+.zoomOut {
+  transform: scale(1);
+  z-index: 5;
+  filter: drop-shadow(0 0 0px rgba(0, 0, 0, 0));
+
+  transition:
+    transform 0.3s ease-out,
+    filter 0.2s ease-out;
 }

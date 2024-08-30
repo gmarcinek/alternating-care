@@ -8,13 +8,7 @@ import { useEffect } from 'react';
 import { EventFormCalendar } from './components/EventFormCalendar/EventFormCalendar';
 
 export const CalendarPage = () => {
-  const {
-    isPending,
-    isError,
-    data,
-    refetch: fetchEvents,
-    mutation,
-  } = useGetAllEventsMutation();
+  const { isError, refetch: fetchEvents, mutation } = useGetAllEventsMutation();
 
   useEffect(() => {
     void mutation.mutate();

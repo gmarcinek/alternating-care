@@ -1,4 +1,4 @@
-import { CalendarDayType } from '@modules/db/types';
+import { CalendarDayType, CalendarEvent } from '@modules/db/types';
 import dayjs, { Dayjs } from 'dayjs';
 
 export const dateFormat = 'YYYY-MM-DD';
@@ -86,3 +86,28 @@ export function getDaysBetweenDates(
 
   return days;
 }
+
+export interface GroupByDateType {
+  date: string;
+  events: CalendarEvent[];
+}
+
+export const groupByDate = (events: CalendarEvent[]) => {
+  return events.reduce((acc, event) => {
+    // Sprawdzamy czy istnieje już wpis z daną datą
+    const existingGroup = acc.find((group) => group.date === event.date);
+
+    if (existingGroup) {
+      // Jeśli tak, dodajemy event do istniejącej grupy
+      existingGroup.events.push(event);
+    } else {
+      // Jeśli nie, tworzymy nową grupę z daną datą
+      acc.push({
+        date: event.date,
+        events: [event],
+      });
+    }
+
+    return acc;
+  }, [] as GroupByDateType[]);
+};
