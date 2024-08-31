@@ -122,6 +122,7 @@ function sortAndFillEvents(
         id: `offset-${key}`, // Generujemy unikalne ID dla OFFSET
         groupId: key, // Używamy brakującego klucza
         date: '', // Data może być pusta lub ustawiona na odpowiednią wartość
+        creationTime: 0, // Data może być pusta lub ustawiona na odpowiednią wartość
         type: CalendarEventType.Offset, // Typ OFFSET
         issuer: '', // Puste pole issuer lub inna wartość
       };
