@@ -4,7 +4,8 @@ import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 import { useInitDb } from '@modules/db/db';
 import { DbProvider } from '@modules/db/DbContext';
 import { useFormReadUsersMutation } from '@modules/db/users/useFormReadUsersMutation';
-import Navigation from '@modules/Navigation';
+
+import Navigation from '@modules/Navigation/Navigation';
 import { Spinner } from '@nextui-org/react';
 import { PropsWithChildren, useMemo, useState } from 'react';
 import { AppConfigurationEffect } from './AppConfigurationEffect';

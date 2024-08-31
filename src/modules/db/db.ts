@@ -32,6 +32,7 @@ export const useInitDb = () => {
             keyPath: 'id',
           });
           eventStore.createIndex('by-id', 'id', { unique: true });
+          eventStore.createIndex('by-groupId', 'groupId');
           eventStore.createIndex('by-date', 'date');
           eventStore.createIndex('by-type', 'type');
           eventStore.createIndex('by-issuer', 'issuer');

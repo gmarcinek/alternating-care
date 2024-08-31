@@ -20,7 +20,7 @@ export interface AlternatingCareDBSchema extends DBSchema {
       'by-date': string;
       'by-type': CalendarEventType;
       'by-issuer': string;
-      'by-gouping': string;
+      'by-groupId': string;
     };
   };
 }

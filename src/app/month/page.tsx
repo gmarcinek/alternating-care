@@ -21,7 +21,7 @@ export default function Page() {
 
   const sortedEvents = useMemo(() => {
     const data = mutation.data || ([] as CalendarEvent[]);
-    return sortBy(data, 'type');
+    return sortBy(data, 'creationTime');
   }, [mutation.data]);
 
   useEffect(() => {
@@ -32,86 +32,32 @@ export default function Page() {
     <Stack className={styles.eventFormCalendar} gap={0}>
       <h3 className='mb-8'>Przegląd miesiąca</h3>
 
-      <Calendar
-        startDate={startDate}
-        endDate={endDate}
-        rowSize={30}
-        isTodayVisible
-        isPlanVisible
-        isWeekendsVisible
-        isAlternatingVisible
-        displayStrategy='continous'
-        events={sortedEvents ?? []}
-        {...handlers}
-        selection={Array.from(selection)}
-        isMultiSelectionMode={false}
-      />
-
-      <Calendar
-        startDate={dayjs(startDate)
-          .add(1, 'month')
-          .startOf('month')
-          .format(dateFormat)}
-        endDate={dayjs(startDate)
-          .add(1, 'month')
-          .endOf('month')
-          .add(1, 'day')
-          .format(dateFormat)}
-        rowSize={30}
-        isTodayVisible
-        isPlanVisible
-        isWeekendsVisible
-        isAlternatingVisible
-        displayStrategy='continous'
-        events={sortedEvents ?? []}
-        {...handlers}
-        selection={Array.from(selection)}
-        isMultiSelectionMode={false}
-      />
-
-      <Calendar
-        startDate={dayjs(startDate)
-          .add(2, 'month')
-          .startOf('month')
-          .format(dateFormat)}
-        endDate={dayjs(startDate)
-          .add(2, 'month')
-          .endOf('month')
-          .add(1, 'day')
-          .format(dateFormat)}
-        rowSize={30}
-        isTodayVisible
-        isPlanVisible
-        isWeekendsVisible
-        isAlternatingVisible
-        displayStrategy='continous'
-        events={sortedEvents ?? []}
-        {...handlers}
-        selection={Array.from(selection)}
-        isMultiSelectionMode={false}
-      />
-
-      <Calendar
-        startDate={dayjs(startDate)
-          .add(3, 'month')
-          .startOf('month')
-          .format(dateFormat)}
-        endDate={dayjs(startDate)
-          .add(3, 'month')
-          .endOf('month')
-          .add(1, 'day')
-          .format(dateFormat)}
-        rowSize={30}
-        isTodayVisible
-        isPlanVisible
-        isWeekendsVisible
-        isAlternatingVisible
-        displayStrategy='continous'
-        events={sortedEvents ?? []}
-        {...handlers}
-        selection={Array.from(selection)}
-        isMultiSelectionMode={false}
-      />
+      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((m, index) => {
+        return (
+          <Calendar
+            key={`month-plan-view-${index}`}
+            startDate={dayjs(startDate)
+              .add(index, 'month')
+              .startOf('month')
+              .format(dateFormat)}
+            endDate={dayjs(startDate)
+              .add(index, 'month')
+              .endOf('month')
+              .add(1, 'day')
+              .format(dateFormat)}
+            rowSize={30}
+            isTodayVisible
+            isPlanVisible
+            isWeekendsVisible
+            isAlternatingVisible
+            displayStrategy='continous'
+            events={sortedEvents ?? []}
+            {...handlers}
+            selection={Array.from(selection)}
+            isMultiSelectionMode={false}
+          />
+        );
+      })}
     </Stack>
   );
 }

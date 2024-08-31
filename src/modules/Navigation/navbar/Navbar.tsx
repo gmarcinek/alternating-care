@@ -5,7 +5,6 @@ import { AppUser } from '../../db/types';
 import { Language } from './Language';
 import Logo from './Logo';
 import MenuButton from './MenuButton';
-
 interface NavbarProps {
   toggle: () => void;
   user: AppUser;
@@ -16,7 +15,7 @@ const Navbar = (props: NavbarProps) => {
 
   return (
     <div
-      className='sticky top-0 z-50 h-16 w-full bg-white shadow-lg shadow-slate-200/50'
+      className='x-0 sticky top-0 z-50 h-16 w-full bg-white shadow-lg shadow-slate-200/50'
       id='main-navbar'
     >
       <div className='container-fluid h-full px-4'>
@@ -31,6 +30,11 @@ const Navbar = (props: NavbarProps) => {
               <Link href='/calendar'>
                 <p>Edycja</p>
               </Link>
+
+              <Link href='/month'>
+                <p>Plan miesiąca</p>
+              </Link>
+
               <Link href='/settings'>
                 <p>Ustawienia</p>
               </Link>

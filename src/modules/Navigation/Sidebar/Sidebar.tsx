@@ -44,7 +44,11 @@ const Sidebar = (props: SidebarProps) => {
               <h3>Edycja</h3>
             </Link>
           </li>
-
+          <li>
+            <Link href='/month' onClick={toggle}>
+              <h3>Plan miesiąca</h3>
+            </Link>
+          </li>
           <li>
             <Link href='/settings' onClick={toggle}>
               <h3>Ustawienia</h3>

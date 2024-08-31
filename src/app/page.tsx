@@ -38,7 +38,7 @@ export default function Page() {
 
   const sortedEvents = useMemo(() => {
     const data = mutation.data || ([] as CalendarEvent[]);
-    return sortBy(data, 'type');
+    return sortBy(data, 'creationTime');
   }, [mutation.data]);
 
   useEffect(() => {
@@ -156,7 +156,7 @@ export default function Page() {
 
                   {Array.from(selection).map((selectedItem, index) => {
                     return (
-                      <>
+                      <div key={`dayselect-${selectedItem}-${index}`}>
                         {detailDataGrouped
                           .filter((group) => {
                             return selectedItem.includes(group.date);
@@ -170,7 +170,7 @@ export default function Page() {
                               />
                             );
                           })}
-                      </>
+                      </div>
                     );
                   })}
                 </Stack>

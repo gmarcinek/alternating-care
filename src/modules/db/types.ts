@@ -16,6 +16,7 @@ export interface CalendarEvent {
   date: string;
   type: CalendarEventType;
   issuer: string;
+  creationTime: number;
   name?: string;
   description?: string;
   style?: {

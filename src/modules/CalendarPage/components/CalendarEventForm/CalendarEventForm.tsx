@@ -34,8 +34,8 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
   const [groupId, setGroupId] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [backgroundColor, setBackgroundColor] = useState('#d5e1d6');
-  const [textColor, setTextColor] = useState('#000000');
+  const [backgroundColor, setBackgroundColor] = useState('');
+  const [textColor, setTextColor] = useState('');
 
   const { mutateAsync, isPending } = useFormPutEventMutation({
     onSuccess: () => {
@@ -65,12 +65,14 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
         return;
       }
 
-      const typeToSave = Array.from(type)[0].toUpperCase() as CalendarEventType;
+      const typeToSave = type.toUpperCase() as CalendarEventType;
       const groupId = crypto.randomBytes(16).toString('hex');
 
       const newEvents = selection.map((date) => ({
         id: crypto.randomBytes(16).toString('hex'),
-        groupId,
+        groupId:
+          typeToSave === CalendarEventType.Alternating ? typeToSave : groupId,
+        creationTime: new Date().getTime(),
         date,
         type: typeToSave,
         issuer: 'Admin',
@@ -170,41 +172,44 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
 
           <Divider className='my-4' />
 
-          <h3>Widoczność</h3>
-          <Stack direction='horizontal' contentAlignment='between'>
-            <CirclePicker
-              colors={colorPick}
-              circleSpacing={8}
-              circleSize={32}
-              onChange={(value: ColorResult) => {
-                setBackgroundColor(value.hex);
-              }}
-              onChangeComplete={(value: ColorResult) => {
-                setTextColor(getTextColor(value.hex));
-              }}
-            />
-
-            <CalendarItem
-              day={exampleDate}
-              className=''
-              style={{
-                backgroundColor: backgroundColor,
-                background: linearGradients[
-                  backgroundColor as keyof typeof linearGradients
-                ]
-                  ? linearGradients[
+          {type !== CalendarEventType.Alternating && (
+            <Stack>
+              <h3>Widoczność</h3>
+              <Stack direction='horizontal' contentAlignment='between'>
+                <CirclePicker
+                  colors={colorPick}
+                  circleSpacing={8}
+                  circleSize={32}
+                  onChange={(value: ColorResult) => {
+                    setBackgroundColor(value.hex);
+                  }}
+                  onChangeComplete={(value: ColorResult) => {
+                    setTextColor(getTextColor(value.hex));
+                  }}
+                />
+                <CalendarItem
+                  day={exampleDate}
+                  className=''
+                  style={{
+                    backgroundColor: backgroundColor,
+                    background: linearGradients[
                       backgroundColor as keyof typeof linearGradients
                     ]
-                  : backgroundColor,
-                color: getTextColor(backgroundColor),
-              }}
-            >
-              <Stack gap={0}>
-                <small>{dayjs().format('MMM')}</small>
+                      ? linearGradients[
+                          backgroundColor as keyof typeof linearGradients
+                        ]
+                      : backgroundColor,
+                    color: getTextColor(backgroundColor),
+                  }}
+                >
+                  <Stack gap={0}>
+                    <small>{dayjs().format('MMM')}</small>
+                  </Stack>
+                </CalendarItem>
               </Stack>
-            </CalendarItem>
-          </Stack>
-          <Divider className='my-4' />
+              <Divider className='my-4' />
+            </Stack>
+          )}
           <div>
             <Button
               type='submit'
