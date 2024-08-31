@@ -4,7 +4,7 @@ interface ButtonProps extends PropsWithChildren {
   onClick: () => void;
 }
 
-export default function MenuButton(props: ButtonProps) {
+export function MenuButton(props: ButtonProps) {
   const { onClick } = props;
 
   return (

@@ -5,7 +5,7 @@ interface SidebarProps {
   toggle: () => void;
 }
 
-const Sidebar = (props: SidebarProps) => {
+export const Sidebar = (props: SidebarProps) => {
   const { isOpen, toggle } = props;
 
   return (
@@ -59,5 +59,3 @@ const Sidebar = (props: SidebarProps) => {
     </>
   );
 };
-
-export default Sidebar;

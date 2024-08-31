@@ -1,3 +1,3 @@
-export default function Logo() {
+export function Logo() {
   return <p>Logo</p>;
 }
