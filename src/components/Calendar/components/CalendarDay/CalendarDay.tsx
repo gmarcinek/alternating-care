@@ -76,6 +76,14 @@ export default function CalendarDay(props: CalendarDayProps) {
     case 14:
       render = <CalendarItemBodyTwoWeeks day={day} />;
       break;
+
+    case 30:
+      render = <CalendarItemBodyTwoWeeks day={day} />;
+      break;
+
+    default:
+      render = <CalendarItemBodyTwoWeeks day={day} />;
+      break;
   }
 
   const classes = classNames(styles.calendarDay);

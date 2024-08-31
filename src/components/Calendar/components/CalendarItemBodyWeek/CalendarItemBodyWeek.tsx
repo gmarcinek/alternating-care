@@ -1,6 +1,5 @@
 import { Stack } from '@components/Stack/Stack';
 import { CalendarDayType, CalendarEventType } from '@modules/db/types';
-import { linearGradients } from '@utils/constants';
 import { dateFormat } from '@utils/dates';
 import { capitalizeFirstLetter } from '@utils/string';
 import classNames from 'classnames';
@@ -88,20 +87,8 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
         className={itemClasses}
         style={{
           ...style.style,
-          backgroundColor: !isPlanVisible
-            ? event?.style?.background
-            : '#ffffff',
-          background: !isPlanVisible
-            ? linearGradients[
-                event?.style?.background as keyof typeof linearGradients
-              ]
-            : '#ffffff'
-              ? linearGradients[
-                  event?.style?.background as keyof typeof linearGradients
-                ]
-              : event?.style?.background,
-
-          color: !isPlanVisible ? event?.style?.color : '#000000',
+          background: isPlanVisible ? 'white' : event?.style?.background,
+          color: isPlanVisible ? 'black' : event?.style?.color,
         }}
       >
         <Stack gap={0} direction='horizontal'>

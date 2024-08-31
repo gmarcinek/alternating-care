@@ -70,7 +70,8 @@ export function Calendar(props: CalendarProps) {
         });
 
   const { weeks, months } = useMemo(() => {
-    const weeks = splitEvenly(calendarDates, rowSize);
+    const weeks =
+      rowSize === 30 ? [calendarDates] : splitEvenly(calendarDates, rowSize);
     const months = segregateDatesMonthly(calendarDates, rowSize);
 
     return {

@@ -71,7 +71,7 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
         return 8;
     }
   }
-  return 16;
+  return 1;
 }
 
 interface ToGapSizeProps {

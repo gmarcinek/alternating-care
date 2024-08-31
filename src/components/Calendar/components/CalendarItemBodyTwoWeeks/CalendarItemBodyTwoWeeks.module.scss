@@ -1,4 +1,5 @@
 @import '@styles/color.module.scss';
+@import '@styles/transition.module.scss';
 @import '@styles/spacer.module.scss';
 
 .calendarItem {
@@ -23,31 +24,31 @@
   }
 
   &.isWeekend {
-    background: $neutral-gray-200; /* #d7d7d7 -> $neutral-gray-200 */
+    background: $neutral-gray-200 !important;
   }
 
   &.isAlternating {
-    background: $blue-green-700; /* #0d3e53 -> $blue-green-700 */
-    color: $neutral-gray-100; /* #ffffff -> $neutral-gray-100 */
+    background: $blue-green-700 !important;
+    color: $neutral-gray-100 !important;
 
     &.isWeekend {
-      background: $blue-green-700; /* #0d3e53 -> $blue-green-700 */
+      background: $blue-green-700;
     }
 
     &.isToday {
-      background: $red-500; /* #ff4f4f -> $red-500 */
-      color: $neutral-gray-100; /* #ffffff -> $neutral-gray-100 */
+      background: $red-500;
+      color: $neutral-gray-100;
     }
   }
 
   &.isToday {
-    background: $red-500; /* #ff4f4f -> $red-500 */
-    color: $neutral-gray-100; /* #ffffff -> $neutral-gray-100 */
+    background: $red-500 !important;
+    color: $neutral-gray-100 !important;
   }
 
   &.isFirstOfTheMonth {
-    color: $red-600; /* #e94646 -> $red-600 */
-    padding-left: 7px;
+    color: $red-600;
+    padding-left: 10px;
   }
 
   &.isLastOfTheMnth {
@@ -55,8 +56,14 @@
   }
 
   &.isSelected {
-    filter: brightness(0.75);
+    background: $turquoise-500 !important;
+    color: $neutral-gray-100 !important;
   }
+
+  transition:
+    background $transition-duration,
+    color $transition-duration,
+    filter $transition-duration $transition-timing-function;
 
   .date {
     font-size: 14px;

@@ -173,6 +173,8 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
           <Stack direction='horizontal' contentAlignment='between'>
             <CirclePicker
               colors={colorPick}
+              circleSpacing={8}
+              circleSize={32}
               onChange={(value: ColorResult) => {
                 setBackgroundColor(value.hex);
               }}
