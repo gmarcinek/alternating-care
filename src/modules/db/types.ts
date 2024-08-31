@@ -7,8 +7,6 @@ export enum CalendarEventType {
   Alternating = 'ALTERNATING',
   Event = 'EVENT',
   Trip = 'TRIP',
-  VacationsSolo = 'VACATIONS_SOLO',
-  VacationsWithChildren = 'VACATIONS_WITH_CHILDREN',
   Offset = 'OFFSET',
 }
 

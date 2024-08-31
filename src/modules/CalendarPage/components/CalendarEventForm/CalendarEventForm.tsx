@@ -6,16 +6,11 @@ import { Stack } from '@components/Stack/Stack';
 import { useFormPutEventMutation } from '@modules/db/events/useFormPutEventMutation';
 import { CalendarEventType } from '@modules/db/types';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import {
-  Divider,
-  Input,
-  Select,
-  SelectItem,
-  Textarea,
-} from '@nextui-org/react';
-import { blueGreen700, getTextColor, white } from '@utils/color';
+import { Divider, Input, Radio, RadioGroup, Textarea } from '@nextui-org/react';
+import { colorBlueGreen700, getTextColor, white } from '@utils/color';
 import { colorPick, linearGradients } from '@utils/constants';
 import { dateFormat } from '@utils/dates';
+import { capitalizeFirstLetter } from '@utils/string';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
@@ -34,7 +29,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
   const translation = calendarEventFormI18n[language];
 
   const [date, setDate] = useState('');
-  const [type, setType] = useState(new Set<CalendarEventType>([]));
+  const [type, setType] = useState(CalendarEventType.Alternating);
   const [issuer, setIssuer] = useState('');
   const [groupId, setGroupId] = useState('');
   const [name, setName] = useState('');
@@ -47,7 +42,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
       onSuccess();
 
       setDate('');
-      setType(new Set<CalendarEventType>([]));
+      setType(CalendarEventType.Alternating);
       setIssuer('');
       setName('');
       setGroupId('');
@@ -65,7 +60,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
     async (event: React.FormEvent) => {
       event.preventDefault();
 
-      if (type.size === 0 || !name) {
+      if (!name) {
         toast(translation.pleaseFillInAllRequiredFields, { type: 'info' });
         return;
       }
@@ -84,7 +79,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
         style: {
           background:
             typeToSave === CalendarEventType.Alternating
-              ? blueGreen700
+              ? colorBlueGreen700
               : backgroundColor,
           color:
             typeToSave === CalendarEventType.Alternating ? white : textColor,
@@ -121,51 +116,57 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
       <form onSubmit={handleSubmit}>
         <Stack>
           <Stack direction='horizontal'>
-            <Input
-              type='text'
-              label={translation.eventName}
-              value={name}
-              radius='sm'
-              variant='bordered'
-              size='lg'
-              onValueChange={setName}
-            />
-            <Select
-              label={translation.eventType}
-              isDisabled={isPending}
-              radius='sm'
-              variant='bordered'
-              size='lg'
-              onSelectionChange={(value) => {
-                setType(new Set(value as unknown as CalendarEventType[]));
-              }}
-              renderValue={() => {
-                return Array.from(type).at(0) ?? undefined;
-              }}
-              value={Array.from(type).at(0) ?? undefined}
-              required
-            >
-              {Object.keys(CalendarEventType).map((key) => (
-                <SelectItem
-                  key={key}
-                  value={
-                    CalendarEventType[key as keyof typeof CalendarEventType]
-                  }
-                >
-                  {CalendarEventType[key as keyof typeof CalendarEventType]}
-                </SelectItem>
-              ))}
-            </Select>
-          </Stack>
+            <Stack>
+              <Input
+                type='text'
+                label={translation.eventName}
+                value={name}
+                radius='sm'
+                variant='bordered'
+                size='lg'
+                onValueChange={setName}
+              />
 
-          <Textarea
-            label={translation.eventDescription}
-            value={description}
-            radius='sm'
-            variant='bordered'
-            size='lg'
-            onValueChange={setDescription}
-          />
+              <Textarea
+                label={translation.eventDescription}
+                value={description}
+                radius='sm'
+                variant='bordered'
+                size='lg'
+                onValueChange={setDescription}
+              />
+            </Stack>
+
+            <RadioGroup
+              className='ml-4 mr-8'
+              label={translation.eventType}
+              value={type}
+              onValueChange={(value) => {
+                setType(value as CalendarEventType);
+              }}
+            >
+              {Object.keys(CalendarEventType).map((key) => {
+                if (key.toUpperCase() === CalendarEventType.Offset) {
+                  return;
+                }
+
+                return (
+                  <Radio
+                    key={key}
+                    value={
+                      CalendarEventType[key as keyof typeof CalendarEventType]
+                    }
+                  >
+                    {capitalizeFirstLetter(
+                      CalendarEventType[
+                        key as keyof typeof CalendarEventType
+                      ].toLocaleLowerCase()
+                    )}
+                  </Radio>
+                );
+              })}
+            </RadioGroup>
+          </Stack>
 
           <Divider className='my-4' />
 

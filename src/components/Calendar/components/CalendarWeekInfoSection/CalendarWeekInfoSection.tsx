@@ -1,6 +1,10 @@
 'use client';
 
+import { Stack } from '@components/Stack/Stack';
 import { CalendarDayType } from '@modules/db/types';
+import { Divider } from '@nextui-org/react';
+import { colorRed500 } from '@utils/color';
+import { capitalizeFirstLetter } from '@utils/string';
 import dayjs from 'dayjs';
 import { useCalenderContext } from '../../Calendar.context';
 
@@ -17,38 +21,83 @@ export default function CalendarWeekInfoSection(
   const dayAlpha = week[0];
   const dayOmega = week[week.length - 1];
 
+  const dateAlpha = dayjs(dayAlpha.date);
+  const dateOmega = dayjs(dayOmega.date);
+  const monthName = capitalizeFirstLetter(dateAlpha.format('MMMM'));
+  const endMmonthName = capitalizeFirstLetter(dateOmega.format('MMMM'));
+  const yearName = dateOmega.format('YYYY');
+
   return (
     <p className='mt-3'>
       {rowSize === 7 && (
-        <>
-          Tydzień: <strong>{dayjs(dayAlpha.date).week()}</strong>
-          {'/'}
-          <small>
-            {dayjs(dayAlpha.date).format('YYYY')}{' '}
-            {dayjs(dayAlpha.date).format('DD.MM')}
-            {'-'}
-            {dayjs(dayOmega.date).format('DD.MM')}
-          </small>
-        </>
+        <Stack direction='horizontal' contentAlignment='between'>
+          <div>
+            <span>
+              {monthName === endMmonthName ? (
+                <strong>{monthName}</strong>
+              ) : (
+                <span>
+                  {monthName} /{' '}
+                  <strong style={{ color: colorRed500 }}>
+                    {endMmonthName}
+                  </strong>
+                </span>
+              )}{' '}
+              {yearName}
+            </span>
+          </div>{' '}
+          <div>
+            <small>
+              {dateAlpha.format('DD.MM')}
+              {'-'}
+              {dateOmega.format('DD.MM')}
+            </small>
+          </div>
+        </Stack>
       )}
       {rowSize === 14 && (
-        <>
-          Tygodnie:{' '}
-          <strong>
-            {dayjs(dayAlpha.date).week() / dayjs(dayOmega.date).week()}
-          </strong>
-          {'/'}
-          <small>
-            {dayjs(dayAlpha.date).format('YYYY')}{' '}
-            {dayjs(dayAlpha.date).format('DD.MM')}
-            {'-'}
-            {dayjs(dayOmega.date).format('DD.MM')}
-          </small>
-        </>
+        <Stack direction='horizontal' contentAlignment='between'>
+          <div>
+            <span>
+              {monthName === endMmonthName ? (
+                <strong>{monthName}</strong>
+              ) : (
+                <span>
+                  {monthName} /{' '}
+                  <strong style={{ color: colorRed500 }}>
+                    {endMmonthName}
+                  </strong>
+                </span>
+              )}{' '}
+              {yearName}
+            </span>
+          </div>{' '}
+          <div>
+            <small>
+              {dateAlpha.format('DD.MM')}
+              {'-'}
+              {dateOmega.format('DD.MM')}
+            </small>
+          </div>
+        </Stack>
       )}
       {rowSize === 30 && (
         <>
-          Miesiąc: <strong>{dayjs(dayAlpha.date).format('MMMM')}</strong>{' '}
+          <Divider className='mb-3' />
+          <Stack direction='horizontal' contentAlignment='between'>
+            <div>
+              <h3>
+                <strong style={{ color: colorRed500 }}>{monthName}</strong>{' '}
+                {yearName}
+              </h3>
+            </div>
+            <div>
+              {dateAlpha.format('DD.MM')}
+              {'-'}
+              {dateOmega.format('DD.MM')}
+            </div>
+          </Stack>
+          <Divider className='mb-4 mt-1' />
         </>
       )}
     </p>

@@ -17,6 +17,7 @@ import { CalendarSizeSlider } from '@modules/CalendarPage/components/CalendarSiz
 import { useSelection } from '@modules/CalendarPage/components/EventFormCalendar/useSelection';
 import { useGetAllEventsMutation } from '@modules/db/events/useGetAllEventsMutation';
 import { CalendarEvent } from '@modules/db/types';
+import { TodayButton } from '@modules/TodayButton/TodayButton';
 import { sortBy } from '@utils/array';
 import styles from './page.module.scss';
 
@@ -178,6 +179,7 @@ export default function Page() {
           </div>
         </Stack>
       </Stack>
+      <TodayButton />
     </PageContainer>
   );
 }

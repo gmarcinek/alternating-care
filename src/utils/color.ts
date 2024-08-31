@@ -1,20 +1,19 @@
 export const white = 'hsl(0, 0%, 100%)'; // #ffffff (white)
-export const white50 = 'hsla(0, 0%, 100%, 0.533)'; // #ffffff88
-export const neutralGray100 = 'hsl(0, 0%, 100%)'; // #ffffff (white)
-export const neutralGray150 = 'hsl(0, 0%, 98%)'; // #f7f7f7
-export const neutralGray200 = 'hsl(0, 0%, 84%)'; // #d7d7d7
-export const neutralGray300 = 'hsl(0, 0%, 81%)'; // #cfcfcf
-export const neutralGray900 = 'hsl(0, 0%, 28%)'; // #494949
-
-export const gray200 = 'hsl(0, 0%, 88%)'; // #e0e0e0
+export const colorWhite50 = 'hsla(0, 0%, 100%, 0.533)'; // #ffffff88
+export const colorNeutralGray100 = 'hsl(0, 0%, 100%)'; // #ffffff (white)
+export const colorNeutralGray150 = 'hsl(0, 0%, 98%)'; // #f7f7f7
+export const colorNeutralGray200 = 'hsl(0, 0%, 84%)'; // #d7d7d7
+export const colorNeutralGray300 = 'hsl(0, 0%, 81%)'; // #cfcfcf
+export const colorNeutralGray900 = 'hsl(0, 0%, 28%)'; // #494949
+export const colorGray200 = 'hsl(0, 0%, 88%)'; // #e0e0e0
 
 // Red tones
-export const red500 = 'hsl(0, 100%, 66%)'; // #ff4f4f
-export const red600 = 'hsl(0, 76%, 60%)'; // #e94646
+export const colorRed500 = 'hsl(0, 100%, 66%)'; // #ff4f4f
+export const colorRed600 = 'hsl(0, 76%, 60%)'; // #e94646
 
 // Green/blue tones
-export const turquoise500 = 'hsl(170, 100%, 44%)'; // #00deb9
-export const blueGreen700 = 'hsl(194, 39%, 29%)'; // #2d5465
+export const colorTurquoise500 = 'hsl(170, 100%, 44%)'; // #00deb9
+export const colorBlueGreen700 = 'hsl(194, 39%, 29%)'; // #2d5465
 
 export function getTextColorByBackground(backgroundHex: string): string {
   // Usuwamy znak # z koloru HEX, jeśli jest obecny
@@ -40,7 +39,10 @@ export function getTextColorByBackground(backgroundHex: string): string {
   }
 }
 
-export function getTextColor(backgroundHex: string): string {
+export function getTextColor(
+  backgroundHex: string,
+  thresholds: [number, number] = [0.35, 0.7]
+): string {
   // Usuwamy znak # z koloru HEX, jeśli jest obecny
   backgroundHex = backgroundHex.replace('#', '');
 
@@ -67,42 +69,57 @@ export function getTextColor(backgroundHex: string): string {
     return (light + 0.05) / (dark + 0.05);
   }
 
-  // Definiowanie kolorów do testowania
+  // Funkcja liniowej interpolacji (przejście między dwoma kolorami)
+  function lerp(color1: string, color2: string, t: number): string {
+    const c1 = parseInt(color1.substring(1), 16);
+    const c2 = parseInt(color2.substring(1), 16);
+
+    const r1 = (c1 >> 16) & 0xff;
+    const g1 = (c1 >> 8) & 0xff;
+    const b1 = c1 & 0xff;
+
+    const r2 = (c2 >> 16) & 0xff;
+    const g2 = (c2 >> 8) & 0xff;
+    const b2 = c2 & 0xff;
+
+    const r = Math.round(r1 + t * (r2 - r1));
+    const g = Math.round(g1 + t * (g2 - g1));
+    const b = Math.round(b1 + t * (b2 - b1));
+
+    return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
+  }
+
+  // Definiowanie kolorów
   const colors = {
-    black: { r: 0, g: 0, b: 0 },
-    darkGray: { r: 64, g: 64, b: 64 },
-    gray: { r: 128, g: 128, b: 128 },
-    white: { r: 255, g: 255, b: 255 },
+    black: '#000000',
+    darkGray: '#404040',
+    gray: '#808080',
+    white: '#FFFFFF',
   };
 
-  // Wybór koloru tekstu w zależności od luminancji tła
-  if (luminance < 0.3) {
-    return '#FFFFFF'; // Biały tekst dla bardzo ciemnego tła
-  } else if (luminance < 0.6) {
-    // Testowanie kontrastu dla ciemnoszarego i białego tekstu
-    if (
-      getContrast(
-        r,
-        g,
-        b,
-        colors.darkGray.r,
-        colors.darkGray.g,
-        colors.darkGray.b
-      ) >= 4.5
-    ) {
-      return '#404040'; // Ciemnoszary tekst dla średnio ciemnego tła
+  // Pobieranie progów
+  const [lowThreshold, highThreshold] = thresholds;
+
+  // Wybór koloru tekstu na podstawie luminancji i kontrastu
+  if (luminance < lowThreshold) {
+    return colors.white; // Biały tekst dla bardzo ciemnego tła
+  } else if (luminance >= lowThreshold && luminance < highThreshold) {
+    // Stopniowe przejście między białym a ciemnoszarym w zakresie progów
+    const contrast = getContrast(r, g, b, 64, 64, 64);
+    if (contrast >= 4.5) {
+      const t = (luminance - lowThreshold) / (highThreshold - lowThreshold); // t z przedziału [0, 1]
+      return lerp(colors.white, colors.darkGray, t);
     } else {
-      return '#FFFFFF'; // Biały tekst jeśli ciemnoszary nie zapewnia odpowiedniego kontrastu
+      return colors.white; // Zbyt niski kontrast, wybieramy biały tekst
     }
   } else {
-    // Testowanie kontrastu dla czarnego i ciemnoszarego tekstu
-    if (
-      getContrast(r, g, b, colors.black.r, colors.black.g, colors.black.b) >=
-      4.5
-    ) {
-      return '#000000'; // Czarny tekst dla jasnego tła
+    // Jasne tła: przejście między ciemnoszarym a czarnym
+    const contrast = getContrast(r, g, b, 0, 0, 0);
+    if (contrast >= 4.5) {
+      const t = (luminance - highThreshold) / (1 - highThreshold); // t z przedziału [0, 1]
+      return lerp(colors.darkGray, colors.black, t);
     } else {
-      return '#404040'; // Ciemnoszary tekst jeśli czarny nie zapewnia odpowiedniego kontrastu
+      return colors.darkGray; // Zbyt niski kontrast, wybieramy ciemnoszary tekst
     }
   }
 }

@@ -33,7 +33,7 @@ export const TodayButton = (props: TodayButtonProps) => {
       variant='flat'
       aria-label='Today'
       className={classes}
-      onClick={() => scrollToElement(`day-${todayDate}`, 100)}
+      onClick={() => scrollToElement(`day-${todayDate}`, 100, true)}
       {...restProps}
     >
       {/* <TodaySharpIcon /> */}
