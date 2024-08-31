@@ -1,11 +1,11 @@
 'use client';
 
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
+import { Stack } from '@components/Stack/Stack';
 import { useInitDb } from '@modules/db/db';
 import { DbProvider } from '@modules/db/DbContext';
 import { useFormReadUsersMutation } from '@modules/db/users/useFormReadUsersMutation';
-
-import Navigation from '@modules/Navigation/Navigation';
+import { SiteNavigation } from '@modules/SiteNavigation/SiteNavigation';
 import { Spinner } from '@nextui-org/react';
 import { PropsWithChildren, useMemo, useState } from 'react';
 import { AppConfigurationEffect } from './AppConfigurationEffect';
@@ -44,14 +44,20 @@ export default function AppRoot({ children }: PropsWithChildren) {
   }
 
   if (!isReady) {
-    return <Spinner color='danger' />;
+    return (
+      <div className='flex'>
+        <Stack contentAlignment='center'>
+          <Spinner color='danger' />
+        </Stack>
+      </div>
+    );
   }
 
   return (
     <DbProvider db={dbInstance}>
       <AppContext.Provider value={contextData}>
         <AppConfigurationEffect />
-        <Navigation />
+        <SiteNavigation />
         {children}
       </AppContext.Provider>
     </DbProvider>

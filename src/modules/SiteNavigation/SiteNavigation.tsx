@@ -2,10 +2,10 @@
 
 import { useAppContext } from '@app/AppContext';
 import { useState } from 'react';
-import { Navbar } from './Navbar/Navbar';
+import { NavigationBar } from './NavigationBar/NavigationBar';
 import { Sidebar } from './Sidebar/Sidebar';
 
-const Navigation = () => {
+export const SiteNavigation = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const { user } = useAppContext();
@@ -16,9 +16,7 @@ const Navigation = () => {
   return (
     <>
       <Sidebar isOpen={isOpen} toggle={toggle} />
-      <Navbar toggle={toggle} user={user} />
+      <NavigationBar toggle={toggle} user={user} />
     </>
   );
 };
-
-export default Navigation;

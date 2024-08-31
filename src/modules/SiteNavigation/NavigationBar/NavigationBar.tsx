@@ -11,7 +11,7 @@ interface NavbarProps {
   user: AppUser;
 }
 
-export const Navbar = (props: NavbarProps) => {
+export const NavigationBar = (props: NavbarProps) => {
   const { toggle, user } = props;
 
   return (
