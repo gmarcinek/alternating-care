@@ -6,11 +6,12 @@ import { Stack } from '@components/Stack/Stack';
 import { CalendarEvent } from '@modules/db/types';
 import { Divider } from '@nextui-org/divider';
 import { UseMutationResult } from '@tanstack/react-query';
+import { sortBy } from '@utils/array';
 import { dateFormat } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useLongPress } from 'use-long-press';
 import { CalendarEventForm } from '../CalendarEventForm/CalendarEventForm';
 import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsForm';
@@ -76,6 +77,11 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
     cancelOutsideElement: true,
   });
 
+  const sortedEvents = useMemo(() => {
+    const data = fetchEventsMutation.data || ([] as CalendarEvent[]);
+    return sortBy(data, 'type');
+  }, [fetchEventsMutation.data]);
+
   return (
     <Stack gap={0} className={styles.eventFormCalendar}>
       {isTablet && (
@@ -88,8 +94,6 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
                 setIsTodayVisible={setIsTodayVisible}
                 isPlanVisible={isPlanVisible}
                 setIsPlanVisible={setIsPlanVisible}
-                isContiniousDisplayStrategy={isContinuousDisplayStrategy}
-                setIsContiniousDisplayStrategy={setIsContinuousDisplayStrategy}
                 isWeekendsVisible={isWeekendsVisible}
                 setIsWeekendsVisible={setIsWeekendsVisible}
                 isAlternatingVisible={isAlternatingVisible}
@@ -110,10 +114,8 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
             isPlanVisible={isPlanVisible}
             isWeekendsVisible={isWeekendsVisible}
             isAlternatingVisible={isAlternatingVisible}
-            displayStrategy={
-              isContinuousDisplayStrategy ? 'continous' : 'separateMonths'
-            }
-            events={fetchEventsMutation.data || []}
+            displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
+            events={sortedEvents}
             {...handlers}
             selection={Array.from(selection)}
             isMultiSelectionMode={isMultiSelectionMode}
@@ -131,10 +133,6 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
                   setIsTodayVisible={setIsTodayVisible}
                   isPlanVisible={isPlanVisible}
                   setIsPlanVisible={setIsPlanVisible}
-                  isContiniousDisplayStrategy={isContinuousDisplayStrategy}
-                  setIsContiniousDisplayStrategy={
-                    setIsContinuousDisplayStrategy
-                  }
                   isWeekendsVisible={isWeekendsVisible}
                   setIsWeekendsVisible={setIsWeekendsVisible}
                   isAlternatingVisible={isAlternatingVisible}

@@ -1,10 +1,5 @@
 import { DBSchema } from 'idb';
-import {
-  AppUser,
-  CalendarDayType,
-  CalendarEvent,
-  CalendarEventType,
-} from './types';
+import { AppUser, CalendarEvent, CalendarEventType } from './types';
 
 export interface AlternatingCareDBSchema extends DBSchema {
   users: {
@@ -25,15 +20,7 @@ export interface AlternatingCareDBSchema extends DBSchema {
       'by-date': string;
       'by-type': CalendarEventType;
       'by-issuer': string;
-    };
-  };
-  days: {
-    value: CalendarDayType;
-    key: string;
-    indexes: {
-      'by-id': string;
-      'by-date': string;
-      'by-weekday': number;
+      'by-gouping': string;
     };
   };
 }

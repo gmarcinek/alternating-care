@@ -21,15 +21,15 @@ export default function CalendarEventList(props: CalendarEventListProps) {
   const currentDate = dayjs(date);
   const { scrollToElement } = useScrollToId();
   const handlePointerOver = useCallback(() => {
-    scrollToElement(`day-${date}`, 200);
+    scrollToElement(`day-${date}`, 200, true);
   }, [scrollToElement]);
 
   return (
-    <div onClick={handlePointerOver}>
+    <div onClick={handlePointerOver} id={`event-list-${date}`}>
       <Stack gap={0}>
         <div>
           <Divider className='my-2' />
-          <h3>
+          <h3 className='mb-1'>
             <strong style={{ color: '#000000' }}>
               {capitalizeFirstLetter(currentDate.format('dddd'))}
             </strong>{' '}
@@ -47,7 +47,7 @@ export default function CalendarEventList(props: CalendarEventListProps) {
                 mode='none'
                 key={`${item.date}-${index}`}
                 style={{
-                  background: `${item.style?.background}44`,
+                  background: `${item.style?.background}77`,
                   padding: '16px',
                   marginBottom: '8px',
                 }}

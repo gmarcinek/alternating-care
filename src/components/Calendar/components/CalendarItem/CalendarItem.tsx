@@ -11,13 +11,28 @@ interface CalendarItemProps extends PropsWithChildren {
   className?: string;
   style?: CSSProperties;
   mode?: 'short' | 'long' | 'full' | 'none';
+  isNoPadding?: boolean;
 }
 
 export function CalendarItem(props: CalendarItemProps) {
-  const { day, className, children, style, mode = 'short' } = props;
+  const {
+    day,
+    className,
+    children,
+    style,
+    mode = 'short',
+    isNoPadding,
+  } = props;
 
   const currentDate = dayjs(day.date);
-  const itemClasses = classNames(styles.calendarItem, className);
+  const itemClasses = classNames(
+    styles.calendarItem,
+    {
+      [styles.isClipped]: mode !== 'none',
+      [styles.isNoPadding]: isNoPadding,
+    },
+    className
+  );
 
   const { labelFull, labelLong, labelShort } = useMemo(() => {
     return {

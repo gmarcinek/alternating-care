@@ -4,10 +4,34 @@
 .calendarPlanSection {
   display: flex;
   flex: 1;
-  padding: $spacer-2;
+  padding: 0;
+  margin-bottom: $spacer-32;
 
-  background: $white;
-  min-height: 250px;
+  .calendarPlanItem {
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+  }
 
-  clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
+  .calendarItem {
+    margin: 0;
+    height: 32px;
+    line-height: 14px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    border: 1px solid #00000015;
+    border-right: none;
+
+    &:nth-of-type(7) {
+      border-right: 1px solid #00000015;
+    }
+
+    small {
+      font-size: 11px;
+      height: 32px;
+      margin: 0;
+      padding: 0;
+      position: absolute;
+    }
+  }
 }

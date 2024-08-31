@@ -13,7 +13,7 @@ import {
   SelectItem,
   Textarea,
 } from '@nextui-org/react';
-import { getTextColor } from '@utils/color';
+import { blueGreen700, getTextColor, white } from '@utils/color';
 import { colorPick, linearGradients } from '@utils/constants';
 import { dateFormat } from '@utils/dates';
 import crypto from 'crypto';
@@ -36,6 +36,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
   const [date, setDate] = useState('');
   const [type, setType] = useState(new Set<CalendarEventType>([]));
   const [issuer, setIssuer] = useState('');
+  const [groupId, setGroupId] = useState('');
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('#d5e1d6');
@@ -49,10 +50,14 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
       setType(new Set<CalendarEventType>([]));
       setIssuer('');
       setName('');
+      setGroupId('');
       setDescription('');
       setBackgroundColor('#d5e1d6');
       setTextColor('#000000');
-      toast(translation.eventAddedSuccessfully, { type: 'success' });
+      toast(translation.eventAddedSuccessfully, {
+        type: 'success',
+        className: 'bg-green-100',
+      });
     },
   });
 
@@ -66,17 +71,23 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
       }
 
       const typeToSave = Array.from(type)[0].toUpperCase() as CalendarEventType;
+      const groupId = crypto.randomBytes(16).toString('hex');
 
       const newEvents = selection.map((date) => ({
         id: crypto.randomBytes(16).toString('hex'),
+        groupId,
         date,
         type: typeToSave,
         issuer: 'Admin',
         name,
         description,
         style: {
-          background: backgroundColor,
-          color: textColor,
+          background:
+            typeToSave === CalendarEventType.Alternating
+              ? blueGreen700
+              : backgroundColor,
+          color:
+            typeToSave === CalendarEventType.Alternating ? white : textColor,
         },
       }));
 

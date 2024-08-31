@@ -1,3 +1,21 @@
+export const white = 'hsl(0, 0%, 100%)'; // #ffffff (white)
+export const white50 = 'hsla(0, 0%, 100%, 0.533)'; // #ffffff88
+export const neutralGray100 = 'hsl(0, 0%, 100%)'; // #ffffff (white)
+export const neutralGray150 = 'hsl(0, 0%, 98%)'; // #f7f7f7
+export const neutralGray200 = 'hsl(0, 0%, 84%)'; // #d7d7d7
+export const neutralGray300 = 'hsl(0, 0%, 81%)'; // #cfcfcf
+export const neutralGray900 = 'hsl(0, 0%, 28%)'; // #494949
+
+export const gray200 = 'hsl(0, 0%, 88%)'; // #e0e0e0
+
+// Red tones
+export const red500 = 'hsl(0, 100%, 66%)'; // #ff4f4f
+export const red600 = 'hsl(0, 76%, 60%)'; // #e94646
+
+// Green/blue tones
+export const turquoise500 = 'hsl(170, 100%, 44%)'; // #00deb9
+export const blueGreen700 = 'hsl(194, 39%, 29%)'; // #2d5465
+
 export function getTextColorByBackground(backgroundHex: string): string {
   // Usuwamy znak # z koloru HEX, jeśli jest obecny
   backgroundHex = backgroundHex.replace('#', '');

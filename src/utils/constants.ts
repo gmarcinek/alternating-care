@@ -22,6 +22,16 @@ export const linearGradients = {
   '#39ff14': 'linear-gradient(135deg, #39ff14, #66ff66)',
   '#7df9ff': 'linear-gradient(135deg, #7df9ff, #b3e5fc)',
   '#ff00ff': 'linear-gradient(135deg, #ff00ff, #ff77ff)',
+
+  '#e1e1e1': 'linear-gradient(135deg, #e1e1e1, #d0d0d0)',
+  '#cee3e6': 'linear-gradient(135deg, #cee3e6, #a1b2b6)',
+  '#d5e1d6': 'linear-gradient(135deg, #d5e1d6, #b2c4b7)',
+  '#ebdfcf': 'linear-gradient(135deg, #ebdfcf, #d6bfa3)',
+  '#e8d2d9': 'linear-gradient(135deg, #e8d2d9, #d4a3b2)',
+  '#dfd3e1': 'linear-gradient(135deg, #dfd3e1, #c3a6c9)',
+  '#cfcfd5': 'linear-gradient(135deg, #cfcfd5, #a9a9b7)',
+  '#b5bad6': 'linear-gradient(135deg, #b5bad6, #8a8fb4)',
+  '#accdec': 'linear-gradient(135deg, #accdec, #8bafc8)',
 };
 
 export const colorPick = [

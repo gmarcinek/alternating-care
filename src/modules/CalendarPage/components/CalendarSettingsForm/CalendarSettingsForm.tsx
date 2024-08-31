@@ -12,8 +12,7 @@ interface CalendarSettingsFormProps {
   setIsTodayVisible: (value: boolean) => void;
   isPlanVisible: boolean;
   setIsPlanVisible: (value: boolean) => void;
-  isContiniousDisplayStrategy: boolean;
-  setIsContiniousDisplayStrategy: (value: boolean) => void;
+
   isWeekendsVisible: boolean;
   setIsWeekendsVisible: (value: boolean) => void;
   isAlternatingVisible: boolean;
@@ -27,8 +26,6 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
     setIsTodayVisible,
     isPlanVisible,
     setIsPlanVisible,
-    isContiniousDisplayStrategy,
-    setIsContiniousDisplayStrategy,
     isWeekendsVisible,
     setIsWeekendsVisible,
     isAlternatingVisible,
@@ -71,17 +68,6 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
           size='sm'
         >
           {i18n.plan}
-        </Switch>
-      )}
-
-      {sliderValue === 7 && (
-        <Switch
-          defaultSelected={isContiniousDisplayStrategy}
-          onValueChange={setIsContiniousDisplayStrategy}
-          isDisabled={sliderValue !== 7}
-          size='sm'
-        >
-          {i18n.continuousDisplay}
         </Switch>
       )}
 

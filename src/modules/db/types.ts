@@ -9,10 +9,12 @@ export enum CalendarEventType {
   Trip = 'TRIP',
   VacationsSolo = 'VACATIONS_SOLO',
   VacationsWithChildren = 'VACATIONS_WITH_CHILDREN',
+  Offset = 'OFFSET',
 }
 
 export interface CalendarEvent {
   id: string;
+  groupId: string;
   date: string;
   type: CalendarEventType;
   issuer: string;

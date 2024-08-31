@@ -5,11 +5,18 @@
   padding: 0.5rem;
   background: rgb(236, 236, 236);
 
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% calc(100% - 15px),
-    calc(100% - 15px) 100%,
-    0 100%
-  );
+  &.isNoPadding {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  &.isClipped {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - 15px),
+      calc(100% - 15px) 100%,
+      0 100%
+    );
+  }
 }

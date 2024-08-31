@@ -16,6 +16,8 @@ import { CalendarSettingsForm } from '@modules/CalendarPage/components/CalendarS
 import { CalendarSizeSlider } from '@modules/CalendarPage/components/CalendarSizeSlider/CalendarSizeSlider';
 import { useSelection } from '@modules/CalendarPage/components/EventFormCalendar/useSelection';
 import { useGetAllEventsMutation } from '@modules/db/events/useGetAllEventsMutation';
+import { CalendarEvent } from '@modules/db/types';
+import { sortBy } from '@utils/array';
 import styles from './page.module.scss';
 
 export default function Page() {
@@ -27,20 +29,23 @@ export default function Page() {
   const [isPlanVisible, setIsPlanVisible] = useState(false);
   const [isWeekendsVisible, setIsWeekendsVisible] = useState(true);
   const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
-  const [isContiniousDisplayStrategy, setIsContiniousDisplayStrategy] =
-    useState(false);
 
   const { selection, handlers } = useSelection({});
 
   const formClasses = classNames(styles.formContainer, 'sticky t-20 z-10 h-1 ');
-  const { mutation, data } = useGetAllEventsMutation();
+  const { mutation } = useGetAllEventsMutation();
+
+  const sortedEvents = useMemo(() => {
+    const data = mutation.data || ([] as CalendarEvent[]);
+    return sortBy(data, 'type');
+  }, [mutation.data]);
 
   useEffect(() => {
     void mutation.mutate();
   }, []);
 
   const detailDates = useMemo(() => {
-    return (data ?? [])
+    return (sortedEvents ?? [])
       .filter((item) => {
         return (
           dayjs(item.date).isAfter(dayjs(startDate).subtract(1, 'day')) &&
@@ -50,7 +55,7 @@ export default function Page() {
       .sort((itemA, itemB) => {
         return dayjs(itemA.date).isAfter(itemB.date) ? 1 : -1;
       });
-  }, [data, startDate]);
+  }, [sortedEvents, startDate]);
 
   const detailDataGrouped = useMemo(() => {
     return groupByDate(detailDates);
@@ -69,10 +74,6 @@ export default function Page() {
                   setIsTodayVisible={setIsTodayVisible}
                   isPlanVisible={isPlanVisible}
                   setIsPlanVisible={setIsPlanVisible}
-                  isContiniousDisplayStrategy={isContiniousDisplayStrategy}
-                  setIsContiniousDisplayStrategy={
-                    setIsContiniousDisplayStrategy
-                  }
                   isWeekendsVisible={isWeekendsVisible}
                   setIsWeekendsVisible={setIsWeekendsVisible}
                   isAlternatingVisible={isAlternatingVisible}
@@ -101,17 +102,15 @@ export default function Page() {
               isPlanVisible={isPlanVisible}
               isWeekendsVisible={isWeekendsVisible}
               isAlternatingVisible={isAlternatingVisible}
-              displayStrategy={
-                isContiniousDisplayStrategy ? 'continous' : 'separateMonths'
-              }
-              events={data ?? []}
+              displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
+              events={sortedEvents ?? []}
               {...handlers}
               selection={Array.from(selection)}
               isMultiSelectionMode={false}
             />
           </div>
 
-          <div className={formClasses}>
+          <div className={formClasses} id={'calendar-event-list-container'}>
             <Stack className={styles.calendarDetails}>
               <h3>Przegląd</h3>
               {!isTablet && (
@@ -129,10 +128,6 @@ export default function Page() {
                     setIsTodayVisible={setIsTodayVisible}
                     isPlanVisible={isPlanVisible}
                     setIsPlanVisible={setIsPlanVisible}
-                    isContiniousDisplayStrategy={isContiniousDisplayStrategy}
-                    setIsContiniousDisplayStrategy={
-                      setIsContiniousDisplayStrategy
-                    }
                     isWeekendsVisible={isWeekendsVisible}
                     setIsWeekendsVisible={setIsWeekendsVisible}
                     isAlternatingVisible={isAlternatingVisible}

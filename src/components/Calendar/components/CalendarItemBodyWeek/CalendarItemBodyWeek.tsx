@@ -22,6 +22,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
     isAlternatingVisible,
     isWeekendsVisible,
     isTodayVisible,
+    isPlanVisible,
     events,
     rowSize,
     containerWidth,
@@ -87,16 +88,20 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
         className={itemClasses}
         style={{
           ...style.style,
-          backgroundColor: event?.style?.background,
-          background: linearGradients[
-            event?.style?.background as keyof typeof linearGradients
-          ]
+          backgroundColor: !isPlanVisible
+            ? event?.style?.background
+            : '#ffffff',
+          background: !isPlanVisible
             ? linearGradients[
                 event?.style?.background as keyof typeof linearGradients
               ]
-            : event?.style?.background,
+            : '#ffffff'
+              ? linearGradients[
+                  event?.style?.background as keyof typeof linearGradients
+                ]
+              : event?.style?.background,
 
-          color: event?.style?.color,
+          color: !isPlanVisible ? event?.style?.color : '#000000',
         }}
       >
         <Stack gap={0} direction='horizontal'>
