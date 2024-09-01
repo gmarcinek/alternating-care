@@ -1,12 +1,19 @@
 'use client';
 
 import dayjs from 'dayjs';
+import 'dayjs/locale/cs';
 import 'dayjs/locale/de';
 import 'dayjs/locale/en';
 import 'dayjs/locale/es';
+import 'dayjs/locale/fr';
+import 'dayjs/locale/it';
+import 'dayjs/locale/lt';
+import 'dayjs/locale/lv';
 import 'dayjs/locale/pl';
 import 'dayjs/locale/pt';
 import 'dayjs/locale/ru';
+import 'dayjs/locale/sv';
+import 'dayjs/locale/uk';
 import 'dayjs/locale/zh';
 
 import arraySupport from 'dayjs/plugin/arraySupport';

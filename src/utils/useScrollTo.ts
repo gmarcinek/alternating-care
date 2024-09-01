@@ -1,6 +1,41 @@
 import { useCallback } from 'react';
 import { mainNavbar } from './constants';
 
+/**
+ * Niestandardowy hak `useScrollToId` dostarcza funkcję do przewijania do elementu o określonym identyfikatorze
+ * oraz opcjonalnego dodawania efektu powiększenia do tego elementu.
+ *
+ * Hak ten wykorzystuje `useCallback` z Reacta do optymalizacji funkcji przewijania, aby nie była ona
+ * na nowo tworzona przy każdym renderze komponentu.
+ *
+ * @returns {Object} Obiekt z jedną funkcją:
+ * - `scrollToElement` (Function): Funkcja przewijająca do elementu o określonym identyfikatorze z opcjonalnym
+ *   efektem powiększenia. Przyjmuje następujące parametry:
+ *   - `elementId` (string): Identyfikator elementu, do którego ma zostać przewinięte.
+ *   - `offset` (number, opcjonalny): Dodatkowy offset (w pikselach) do uwzględnienia przy przewijaniu. Domyślnie `0`.
+ *   - `zoom` (boolean, opcjonalny): Czy dodać efekt powiększenia do elementu. Domyślnie `false`.
+ *   - `containerId` (string, opcjonalny): Identyfikator kontenera, wewnątrz którego ma być przewijane. Jeśli nie jest podany,
+ *     przewijanie odbywa się w oknie przeglądarki.
+ *
+ * @example
+ * // Przykład użycia haka
+ * import React from 'react';
+ * import { useScrollToId } from './useScrollToId'; // Załóżmy, że hak jest zapisany w pliku `useScrollToId.ts`
+ *
+ * const MyComponent: React.FC = () => {
+ *   const { scrollToElement } = useScrollToId();
+ *
+ *   return (
+ *     <div>
+ *       <button onClick={() => scrollToElement('sectionId', 50, true)}>Przewiń do sekcji</button>
+ *
+ *       <div id="sectionId" style={{ height: '500px', backgroundColor: 'lightgrey' }}>Sekcja</div>
+ *     </div>
+ *   );
+ * };
+ *
+ * export default MyComponent;
+ */
 export const useScrollToId = () => {
   const navbatHeight = document.getElementById(mainNavbar)?.offsetHeight ?? 64;
 

@@ -7,14 +7,10 @@ import { DbProvider } from '@modules/db/DbContext';
 import { useFormReadUsersMutation } from '@modules/db/users/useFormReadUsersMutation';
 import { SiteNavigation } from '@modules/SiteNavigation/SiteNavigation';
 import { Spinner } from '@nextui-org/react';
+import { SupportedLanguages } from '@utils/lang';
 import { PropsWithChildren, useMemo, useState } from 'react';
 import { AppConfigurationEffect } from './AppConfigurationEffect';
-import {
-  AppContext,
-  AppContextData,
-  defaultUser,
-  SupportedLanguages,
-} from './AppContext';
+import { AppContext, AppContextData, defaultUser } from './AppContext';
 
 export default function AppRoot({ children }: PropsWithChildren) {
   const { isReady, isError, error, dbInstance } = useInitDb();

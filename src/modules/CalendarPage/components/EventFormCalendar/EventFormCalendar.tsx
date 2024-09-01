@@ -33,12 +33,12 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
   const { language } = useAppContext();
   const startDate = dayjs().format(dateFormat);
 
+  const i18n = eventFormCalendarI18n[language];
+
   const [isTodayVisible, setIsTodayVisible] = useState(true);
   const [isPlanVisible, setIsPlanVisible] = useState(false);
   const [isWeekendsVisible, setIsWeekendsVisible] = useState(true);
   const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
-  const [isContinuousDisplayStrategy, setIsContinuousDisplayStrategy] =
-    useState(false);
 
   const {
     selection,
@@ -79,7 +79,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
 
   const sortedEvents = useMemo(() => {
     const data = fetchEventsMutation.data || ([] as CalendarEvent[]);
-    return sortBy(data, 'type');
+    return sortBy(data, 'creationTime');
   }, [fetchEventsMutation.data]);
 
   return (
@@ -87,7 +87,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
       {isTablet && (
         <>
           <Stack>
-            <h3>{eventFormCalendarI18n[language].editSection.title}</h3>
+            <h3>{i18n.editSection.title}</h3>
             <Stack gap={8} direction='horizontal' className='mb-4'>
               <CalendarSettingsForm
                 isTodayVisible={isTodayVisible}
@@ -125,7 +125,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
         <div className={formClasses}>
           <Stack gap={0}>
             <Stack className={styles.calendarDetails}>
-              <h3>{eventFormCalendarI18n[language].editSection.title}</h3>
+              <h3>{i18n.editSection.title}</h3>
 
               <Stack gap={12} direction='horizontal'>
                 <CalendarSettingsForm
@@ -145,9 +145,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
 
               <Stack>
                 <h3 className='mt-0'>
-                  <span>
-                    {eventFormCalendarI18n[language].editSection.newPlanTitle}
-                  </span>
+                  <span>{i18n.editSection.newPlanTitle}</span>
                 </h3>
 
                 <CalendarEventForm

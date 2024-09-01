@@ -7,7 +7,7 @@ import {
   CalendarEventType,
 } from '@modules/db/types';
 import { toTransposeArray } from '@utils/array';
-import { colorBlueGreen700, white } from '@utils/color';
+import { colorBlueGreen700, getTextColor } from '@utils/color';
 import { useMemo } from 'react';
 import { CalendarItem } from '../CalendarItem/CalendarItem';
 import styles from './CalendarPlanSection.module.scss';
@@ -80,10 +80,7 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                           event.type === CalendarEventType.Alternating
                             ? colorBlueGreen700
                             : `${event.style?.background}ff`,
-                        color:
-                          event.type === CalendarEventType.Alternating
-                            ? white
-                            : event.style?.color,
+                        color: getTextColor(colorBlueGreen700),
                       }}
                     >
                       {itemIndex === 0 && <small>{eventDescription}</small>}

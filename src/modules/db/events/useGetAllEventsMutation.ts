@@ -7,6 +7,57 @@ interface OseGetAllEventsMutationProps {
   onError?: (error: unknown) => void;
 }
 
+/**
+ * Hak `useGetAllEventsMutation` wykorzystuje `react-query` do pobierania wszystkich zdarzeń z bazy danych.
+ *
+ * Hak korzysta z kontekstu bazy danych (`useDbContext`) w celu uzyskania instancji bazy danych i wykonania zapytania.
+ *
+ * @param {OseGetAllEventsMutationProps} [props] - Opcjonalne właściwości:
+ * - `onSuccess` (Function): Funkcja wywoływana, gdy zapytanie do bazy danych zakończy się sukcesem. Otrzymuje tablicę zdarzeń jako argument.
+ * - `onError` (Function): Funkcja wywoływana, gdy zapytanie do bazy danych zakończy się błędem. Otrzymuje obiekt błędu jako argument.
+ *
+ * @returns {Object} Obiekt zawierający:
+ * - `mutation` (Object): Obiekt `react-query` z pełnym stanem mutacji, w tym metodami `mutate` i `mutateAsync`.
+ * - `data` (CalendarEvent[]): Dane zwrócone przez zapytanie, domyślnie pusta tablica, jeśli brak danych.
+ * - `isPending` (boolean): `true`, jeśli zapytanie jest w toku.
+ * - `isSuccess` (boolean): `true`, jeśli zapytanie zakończyło się sukcesem.
+ * - `isError` (boolean): `true`, jeśli zapytanie zakończyło się błędem.
+ * - `error` (unknown): Obiekt błędu, jeśli wystąpił podczas zapytania.
+ * - `refetch` (Function): Funkcja do wywołania mutacji, czyli ponownego pobrania danych.
+ *
+ * @example
+ * // Przykład użycia haka
+ * import React from 'react';
+ * import { useGetAllEventsMutation } from './useGetAllEventsMutation'; // Załóżmy, że hak jest zapisany w pliku `useGetAllEventsMutation.ts`
+ *
+ * const MyComponent: React.FC = () => {
+ *   const { data, isPending, isSuccess, isError, error, refetch } = useGetAllEventsMutation({
+ *     onSuccess: (events) => {
+ *       console.log('Events fetched successfully:', events);
+ *     },
+ *     onError: (err) => {
+ *       console.log('Failed to fetch events:', err);
+ *     },
+ *   });
+ *
+ *   return (
+ *     <div>
+ *       <button onClick={() => refetch()}>Fetch Events</button>
+ *       {isPending && <div>Loading...</div>}
+ *       {isSuccess && (
+ *         <ul>
+ *           {data.map(event => (
+ *             <li key={event.id}>{event.title}</li>
+ *           ))}
+ *         </ul>
+ *       )}
+ *       {isError && <div>Error fetching events: {error?.message}</div>}
+ *     </div>
+ *   );
+ * };
+ *
+ * export default MyComponent;
+ */
 export const useGetAllEventsMutation = (
   props: OseGetAllEventsMutationProps = {}
 ) => {

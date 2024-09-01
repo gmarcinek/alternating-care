@@ -26,12 +26,11 @@ interface CalendarEventFormProps {
 export const CalendarEventForm = (props: CalendarEventFormProps) => {
   const { selection, onSuccess } = props;
   const { language } = useAppContext();
-  const translation = calendarEventFormI18n[language];
+  const i18n = calendarEventFormI18n[language];
 
   const [date, setDate] = useState('');
   const [type, setType] = useState(CalendarEventType.Alternating);
-  const [issuer, setIssuer] = useState('');
-  const [groupId, setGroupId] = useState('');
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('');
@@ -43,13 +42,11 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
 
       setDate('');
       setType(CalendarEventType.Alternating);
-      setIssuer('');
       setName('');
-      setGroupId('');
       setDescription('');
       setBackgroundColor('#d5e1d6');
       setTextColor('#000000');
-      toast(translation.eventAddedSuccessfully, {
+      toast(i18n.eventAddedSuccessfully, {
         type: 'success',
         className: 'bg-green-100',
       });
@@ -61,7 +58,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
       event.preventDefault();
 
       if (!name) {
-        toast(translation.pleaseFillInAllRequiredFields, { type: 'info' });
+        toast(i18n.pleaseFillInAllRequiredFields, { type: 'info' });
         return;
       }
 
@@ -92,7 +89,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
         await mutateAsync(newEvents);
       } catch (error) {
         console.error('Failed to save event:', error);
-        toast(translation.errorAddingEvent, { type: 'error' });
+        toast(i18n.errorAddingEvent, { type: 'error' });
       }
     },
     [
@@ -121,7 +118,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
             <Stack>
               <Input
                 type='text'
-                label={translation.eventName}
+                label={i18n.eventName}
                 value={name}
                 radius='sm'
                 variant='bordered'
@@ -130,7 +127,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
               />
 
               <Textarea
-                label={translation.eventDescription}
+                label={i18n.eventDescription}
                 value={description}
                 radius='sm'
                 variant='bordered'
@@ -141,7 +138,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
 
             <RadioGroup
               className='ml-4 mr-8'
-              label={translation.eventType}
+              label={i18n.eventType}
               value={type}
               onValueChange={(value) => {
                 setType(value as CalendarEventType);
@@ -174,7 +171,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
 
           {type !== CalendarEventType.Alternating && (
             <Stack>
-              <h3>Widoczność</h3>
+              <h3>{i18n.visibility}</h3>
               <Stack direction='horizontal' contentAlignment='between'>
                 <CirclePicker
                   colors={colorPick}
@@ -220,7 +217,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
               color='danger'
             >
               <EventAvailableIcon />
-              {isPending ? translation.saving : translation.addEvent}
+              {isPending ? i18n.saving : i18n.addEvent}
             </Button>
           </div>
         </Stack>

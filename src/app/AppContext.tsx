@@ -1,17 +1,9 @@
 'use client';
 
+import { SupportedLanguages } from '@utils/lang';
 import { createContext, useContext } from 'react';
 import { AppUser } from '../modules/db/types';
 
-export enum SupportedLanguages {
-  Pl = 'pl',
-  En = 'en',
-  De = 'de',
-  Es = 'es',
-  Ru = 'ru',
-  Zh = 'zh',
-  Pt = 'pt',
-}
 export interface AppContextData {
   user: AppUser;
   language: SupportedLanguages;

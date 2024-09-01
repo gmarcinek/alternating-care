@@ -1,3 +1,6 @@
+'use client';
+
+import { useAppContext } from '@app/AppContext';
 import { Stack } from '@components/Stack/Stack';
 import { Avatar } from '@nextui-org/react';
 import Link from 'next/link';
@@ -5,6 +8,7 @@ import { AppUser } from '../../db/types';
 import { Language } from './Language';
 import { Logo } from './Logo';
 import { MenuButton } from './MenuButton';
+import { navigationBarI18n } from './navigationBar.i18n';
 
 interface NavbarProps {
   toggle: () => void;
@@ -13,6 +17,9 @@ interface NavbarProps {
 
 export const NavigationBar = (props: NavbarProps) => {
   const { toggle, user } = props;
+
+  const { language } = useAppContext();
+  const i18n = navigationBarI18n[language];
 
   return (
     <div
@@ -25,19 +32,19 @@ export const NavigationBar = (props: NavbarProps) => {
             <Logo />
             <ul className='hidden gap-x-6 pl-8 md:flex'>
               <Link href='/'>
-                <p>Start</p>
+                <p>{i18n.home}</p>
               </Link>
 
               <Link href='/calendar'>
-                <p>Edycja</p>
+                <p>{i18n.edit}</p>
               </Link>
 
               <Link href='/month'>
-                <p>Plan miesiąca</p>
+                <p>{i18n.monthPlan}</p>
               </Link>
 
               <Link href='/settings'>
-                <p>Ustawienia</p>
+                <p>{i18n.settings}</p>
               </Link>
             </ul>
           </div>
@@ -45,7 +52,7 @@ export const NavigationBar = (props: NavbarProps) => {
             <Stack direction='horizontal' contentAlignment='end'>
               <Language />
               {user.name && <Avatar name={user.name} />}
-              <MenuButton onClick={toggle}>Menu</MenuButton>
+              <MenuButton onClick={toggle}>{i18n.menu}</MenuButton>
             </Stack>
           </div>
         </div>

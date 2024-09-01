@@ -5,6 +5,43 @@ import dayjs from 'dayjs';
 import { CalendarMonthRawType, CalendarMonthType } from './Calendar.types';
 
 type MonthsRaw = Record<string, CalendarMonthRawType>;
+
+/**
+ * Segreguje dane o dniach według miesięcy, dodając dni offsetowe na początku i końcu miesięcy,
+ * a następnie dzieli te dane na tygodnie według zadanego rozmiaru wiersza.
+ *
+ * @param days - Tablica obiektów `CalendarDayType`, gdzie każdy obiekt reprezentuje pojedynczy dzień.
+ *               Obiekt `CalendarDayType` powinien zawierać przynajmniej pole `date` w formacie ISO 8601.
+ *
+ * @param rowSize - Liczba dni, które mają być wyświetlane w jednym wierszu tygodnia.
+ *
+ * @returns Tablica obiektów `CalendarMonthType`, gdzie każdy obiekt reprezentuje miesiąc z podziałem na tygodnie.
+ *          Obiekt `CalendarMonthType` zawiera:
+ *          - `monthIndex`: Indeks miesiąca (0 = styczeń, 1 = luty, ..., 11 = grudzień).
+ *          - `yearIndex`: Rok, do którego należy miesiąc.
+ *          - `weeks`: Tablica tygodni, gdzie każdy tydzień to tablica dni (`CalendarDayType`), która została podzielona
+ *            na podstawie `rowSize`. Dni offsetowe są oznaczone flagą `isOffset: true`.
+ *
+ * Proces działania funkcji:
+ *
+ * 1. **Grupowanie dni według miesiąca i roku**:
+ *    - Funkcja przekształca tablicę dni `days` w obiekt `monthsRaw`, gdzie kluczem jest rok i miesiąc
+ *      (w formacie "YYYY-MM"), a wartością jest obiekt zawierający miesiąc, rok oraz tablicę dni w tym miesiącu.
+ *
+ * 2. **Obliczanie prefiksów i sufiksów dla każdego miesiąca**:
+ *    - Dla każdego miesiąca sprawdzane są dni offsetowe (dni przed pierwszym dniem miesiąca i po ostatnim dniu miesiąca).
+ *    - Jeżeli liczba dni w miesiącu jest mniejsza lub równa 7, prefiks i sufiks są pomijane.
+ *    - Dni offsetowe są generowane na podstawie dnia tygodnia, w którym znajduje się pierwszy i ostatni dzień miesiąca.
+ *      Są dodawane dni przed pierwszym dniem i po ostatnim dniu miesiąca, aby uzupełnić widok kalendarza.
+ *
+ * 3. **Mapowanie na `CalendarMonthType`**:
+ *    - Obiekty `monthsRaw` są mapowane na format `CalendarMonthType`, gdzie dni są dzielone na tygodnie według `rowSize`.
+ *    - Dni offsetowe są oznaczane jako `isOffset: true` w celu odróżnienia ich od standardowych dni miesiąca.
+ *
+ * 4. **Filtrowanie nulli**:
+ *    - Na końcu funkcja filtruje wyniki, usuwając ewentualne `null` z tablicy, co może mieć miejsce, gdy miesiąc
+ *      ma mniej niż 8 dni.
+ */
 export function segregateDatesMonthly(
   days: CalendarDayType[],
   rowSize: number

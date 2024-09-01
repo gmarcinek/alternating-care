@@ -1,6 +1,6 @@
 'use client';
 
-import { SupportedLanguages, useAppContext } from '@app/AppContext';
+import { useAppContext } from '@app/AppContext';
 import {
   Button,
   Dropdown,
@@ -8,6 +8,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/react';
+import { SupportedLanguages } from '@utils/lang';
 
 export function Language() {
   const { setLanguage, language } = useAppContext();
