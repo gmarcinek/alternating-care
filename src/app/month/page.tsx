@@ -15,7 +15,6 @@ import styles from './page.module.scss';
 
 export default function Page() {
   const startDate = dayjs().startOf('month').format(dateFormat);
-  const endDate = dayjs().endOf('month').add(1, 'day').format(dateFormat);
   const { selection, handlers } = useSelection({});
   const { mutation } = useGetAllEventsMutation();
 

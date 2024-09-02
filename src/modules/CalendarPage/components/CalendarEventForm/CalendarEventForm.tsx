@@ -6,25 +6,32 @@ import { Stack } from '@components/Stack/Stack';
 import { useFormPutEventMutation } from '@modules/db/events/useFormPutEventMutation';
 import { CalendarEventType } from '@modules/db/types';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import EventBusyIcon from '@mui/icons-material/EventBusy';
 import { Divider, Input, Radio, RadioGroup, Textarea } from '@nextui-org/react';
-import { colorBlueGreen700, getTextColor, white } from '@utils/color';
-import { colorPick, linearGradients } from '@utils/constants';
+import {
+  colorBlueGreen700,
+  colorPick,
+  getTextColor,
+  linearGradients,
+  white,
+} from '@utils/color';
 import { dateFormat } from '@utils/dates';
 import { capitalizeFirstLetter } from '@utils/string';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
-import { useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { CirclePicker, ColorResult } from 'react-color';
 import { toast } from 'react-toastify';
 import { calendarEventFormI18n } from './calendarEventForm.i18n'; // Import your i18n file
 
 interface CalendarEventFormProps {
   selection: string[];
+  setSelection: Dispatch<SetStateAction<Set<string>>>;
   onSuccess: () => void;
 }
 
 export const CalendarEventForm = (props: CalendarEventFormProps) => {
-  const { selection, onSuccess } = props;
+  const { selection, onSuccess, setSelection } = props;
   const { language } = useAppContext();
   const i18n = calendarEventFormI18n[language];
 
@@ -110,6 +117,10 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
     isOffset: false,
   };
 
+  const handleCancel = useCallback(() => {
+    setSelection(new Set([]));
+  }, [setSelection]);
+
   return (
     <Stack>
       <form onSubmit={handleSubmit}>
@@ -167,8 +178,6 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
             </RadioGroup>
           </Stack>
 
-          <Divider className='my-4' />
-
           {type !== CalendarEventType.Alternating && (
             <Stack>
               <h3>{i18n.visibility}</h3>
@@ -207,10 +216,22 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
               <Divider className='my-4' />
             </Stack>
           )}
-          <div>
+
+          <Stack direction='horizontal'>
+            <Button
+              onClick={handleCancel}
+              isDisabled={selection.length === 0}
+              className='mt-2'
+              radius='sm'
+              variant='flat'
+              color='default'
+            >
+              <EventBusyIcon />
+              Anuluj
+            </Button>
             <Button
               type='submit'
-              disabled={isPending}
+              isDisabled={selection.length === 0 || isPending}
               className='mt-2'
               radius='sm'
               variant='solid'
@@ -219,7 +240,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
               <EventAvailableIcon />
               {isPending ? i18n.saving : i18n.addEvent}
             </Button>
-          </div>
+          </Stack>
         </Stack>
       </form>
     </Stack>

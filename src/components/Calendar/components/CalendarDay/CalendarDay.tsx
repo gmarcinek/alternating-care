@@ -12,6 +12,7 @@ import {
   useCallback,
   useMemo,
 } from 'react';
+import { CalendarItemBodyMonth } from '../CalendarItemBodyMonth/CalendarItemBodyMonth';
 import { CalendarItemBodySingle } from '../CalendarItemBodySingle/CalendarItemBodySingle';
 import { CalendarItemBodyTwoWeeks } from '../CalendarItemBodyTwoWeeks/CalendarItemBodyTwoWeeks';
 import { CalendarItemBodyWeek } from '../CalendarItemBodyWeek/CalendarItemBodyWeek';
@@ -75,8 +76,11 @@ export default function CalendarDay(props: CalendarDayProps) {
       break;
 
     case 14:
-    case 30:
       render = <CalendarItemBodyTwoWeeks day={day} />;
+      break;
+
+    case 30:
+      render = <CalendarItemBodyMonth day={day} />;
       break;
 
     default:

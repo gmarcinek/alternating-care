@@ -21,6 +21,7 @@
       flex: 0 1 40%;
       display: block;
       flex-direction: column;
+      z-index: 1;
     }
 
     .formContainer {
@@ -29,6 +30,7 @@
       top: 6rem;
       min-height: calc(100vh - 8rem);
       background: $white;
+      z-index: 0;
     }
   }
 }

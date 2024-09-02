@@ -2,21 +2,36 @@
   display: flex;
   flex: 1;
   color: #494949;
-  padding: 0.5rem;
+  padding: 2px;
   background: rgb(236, 236, 236);
 
   &.isNoPadding {
     margin: 0 !important;
     padding: 0 !important;
   }
+}
 
-  &.isClipped {
-    clip-path: polygon(
-      0 0,
-      100% 0,
-      100% calc(100% - 15px),
-      calc(100% - 15px) 100%,
-      0 100%
-    );
+@media (min-width: 768px) {
+  .calendarItem {
+    display: flex;
+    flex: 1;
+    color: #494949;
+    padding: 0.5rem;
+    background: rgb(236, 236, 236);
+
+    &.isNoPadding {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    &.isClipped {
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - 15px),
+        calc(100% - 15px) 100%,
+        0 100%
+      );
+    }
   }
 }

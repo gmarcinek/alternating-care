@@ -1,7 +1,7 @@
 @import '@styles/color.module.scss';
 
 .eventFormCalendar {
-  padding: 2rem;
+  padding: 0.25rem;
 
   .calendarContainer {
     flex: 1;
@@ -16,7 +16,7 @@
   }
 
   .calendarDetails {
-    padding: 1.5rem;
+    padding: 1rem;
     overflow-y: auto;
     scrollbar-width: none; /* Ukrycie scrollbara w Firefox */
     -ms-overflow-style: none; /* Ukrycie scrollbara w Internet Explorer i Edge */

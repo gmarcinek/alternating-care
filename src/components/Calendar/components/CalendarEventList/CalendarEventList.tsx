@@ -54,9 +54,9 @@ export default function CalendarEventList(props: CalendarEventListProps) {
                 mode='none'
                 key={`${item.date}-${index}`}
                 style={{
-                  backgroundColor: 'f1f1f1',
+                  // backgroundColor: 'f1f1f1',
                   // background: `linear-gradient(135deg, #f1f1f1 60%, ${item.style?.background}22 90%)`,
-                  // background: `${item.style?.background}77`,
+                  background: `${item.style?.background}77`,
                   padding: '16px',
                   marginBottom: '8px',
                 }}

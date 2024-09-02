@@ -94,11 +94,7 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                           ) ?? event.style?.color,
                       }}
                     >
-                      {itemIndex === 0 && (
-                        <small>
-                          {eventName} {eventDate}
-                        </small>
-                      )}
+                      {itemIndex === 0 && <small>{eventName}</small>}
                     </CalendarItem>
                   );
                 })}

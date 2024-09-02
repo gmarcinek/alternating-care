@@ -2,12 +2,13 @@
 
 import { useAppContext } from '@app/AppContext';
 import { Calendar } from '@components/Calendar/Calendar';
+import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarEvent } from '@modules/db/types';
 import { Divider } from '@nextui-org/divider';
 import { UseMutationResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
-import { dateFormat } from '@utils/dates';
+import { dateFormat, groupByDate } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -46,6 +47,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
     isMultiSelectionMode,
     setIsMultiSelectionMode,
     handleCancelMultiSelect,
+    setSelection,
   } = useSelection({
     isMultiSelectionAvailable: true,
   });
@@ -81,6 +83,23 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
     const data = fetchEventsMutation.data || ([] as CalendarEvent[]);
     return sortBy(data, 'creationTime');
   }, [fetchEventsMutation.data]);
+
+  const detailDates = useMemo(() => {
+    return (sortedEvents ?? [])
+      .filter((item) => {
+        return (
+          dayjs(item.date).isAfter(dayjs(startDate).subtract(2, 'day')) &&
+          item.type !== 'ALTERNATING'
+        );
+      })
+      .sort((itemA, itemB) => {
+        return dayjs(itemA.date).isAfter(itemB.date) ? 1 : -1;
+      });
+  }, [sortedEvents, startDate]);
+
+  const detailDataGrouped = useMemo(() => {
+    return groupByDate(detailDates);
+  }, [detailDates]);
 
   return (
     <Stack gap={0} className={styles.eventFormCalendar}>
@@ -123,38 +142,82 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
         </div>
 
         <div className={formClasses}>
-          <Stack gap={0}>
-            <Stack className={styles.calendarDetails}>
-              <h3>{i18n.editSection.title}</h3>
+          <div>
+            <Stack gap={0}>
+              <Stack className={styles.calendarDetails}>
+                <h3>{i18n.editSection.title}</h3>
 
-              <Stack gap={12} direction='horizontal'>
-                <CalendarSettingsForm
-                  isTodayVisible={isTodayVisible}
-                  setIsTodayVisible={setIsTodayVisible}
-                  isPlanVisible={isPlanVisible}
-                  setIsPlanVisible={setIsPlanVisible}
-                  isWeekendsVisible={isWeekendsVisible}
-                  setIsWeekendsVisible={setIsWeekendsVisible}
-                  isAlternatingVisible={isAlternatingVisible}
-                  setIsAlternatingVisible={setIsAlternatingVisible}
-                  sliderValue={7}
-                />
+                <Stack gap={12} direction='horizontal'>
+                  <CalendarSettingsForm
+                    isTodayVisible={isTodayVisible}
+                    setIsTodayVisible={setIsTodayVisible}
+                    isPlanVisible={isPlanVisible}
+                    setIsPlanVisible={setIsPlanVisible}
+                    isWeekendsVisible={isWeekendsVisible}
+                    setIsWeekendsVisible={setIsWeekendsVisible}
+                    isAlternatingVisible={isAlternatingVisible}
+                    setIsAlternatingVisible={setIsAlternatingVisible}
+                    sliderValue={7}
+                  />
+                </Stack>
+
+                <Divider className='mb-4 mt-8' />
+
+                <Stack>
+                  <h3 className='mt-0'>
+                    <span>{i18n.editSection.newPlanTitle}</span>
+                  </h3>
+
+                  <CalendarEventForm
+                    selection={Array.from(selection)}
+                    setSelection={setSelection}
+                    onSuccess={onAddEventSuccess}
+                  />
+                </Stack>
               </Stack>
 
               <Divider className='mb-4 mt-8' />
 
-              <Stack>
-                <h3 className='mt-0'>
-                  <span>{i18n.editSection.newPlanTitle}</span>
-                </h3>
+              <Stack className='mt-8'>
+                <h3>Wydarzenia w wybranych dniach</h3>
+                <Stack gap={0}>
+                  {selection.size === 0 && (
+                    <>
+                      {detailDataGrouped.map((dayGroup, indexGroup) => {
+                        return (
+                          <CalendarEventList
+                            key={`dayGroup-${dayGroup.date}-${indexGroup}`}
+                            date={dayGroup.date}
+                            eventGroup={dayGroup}
+                          />
+                        );
+                      })}
+                    </>
+                  )}
 
-                <CalendarEventForm
-                  selection={Array.from(selection)}
-                  onSuccess={onAddEventSuccess}
-                />
+                  {Array.from(selection).map((selectedItem, index) => {
+                    return (
+                      <div key={`dayselect-${selectedItem}-${index}`}>
+                        {detailDataGrouped
+                          .filter((group) => {
+                            return selectedItem.includes(group.date);
+                          })
+                          .map((dayGroup, indexGroup) => {
+                            return (
+                              <CalendarEventList
+                                key={`dayGroup-${dayGroup.date}-${indexGroup}`}
+                                date={dayGroup.date}
+                                eventGroup={dayGroup}
+                              />
+                            );
+                          })}
+                      </div>
+                    );
+                  })}
+                </Stack>
               </Stack>
             </Stack>
-          </Stack>
+          </div>
         </div>
       </Stack>
     </Stack>

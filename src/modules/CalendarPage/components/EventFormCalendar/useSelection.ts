@@ -210,7 +210,8 @@ export const useSelection = (props: UseSelectionProps) => {
           setLastClickedDay(dayDate);
         }
 
-        return newSet;
+        const sorted = Array.from(newSet).sort();
+        return new Set(sorted);
       });
     },
     [isMultiSelectionMode, lastClickedDay]

@@ -1,0 +1,106 @@
+@import '@styles/color.module.scss';
+@import '@styles/transition.module.scss';
+@import '@styles/spacer.module.scss';
+
+.calendarItem {
+  display: flex;
+  flex: 1;
+  color: $neutral-gray-900; /* #494949 -> $neutral-gray-900 */
+  font-size: 8px;
+  line-height: 11px;
+  background: $neutral-gray-100; /* rgb(255, 255, 255) -> $neutral-gray-100 */
+  padding: 0px;
+  text-align: center;
+
+  .hiden {
+    display: none;
+  }
+
+  &.isWeekend {
+    background: $neutral-gray-200 !important;
+  }
+
+  &.isAlternating {
+    background: $blue-green-700 !important;
+    color: $neutral-gray-100 !important;
+
+    &.isWeekend {
+      background: $blue-green-700;
+    }
+
+    &.isToday {
+      background: $red-500;
+      color: $neutral-gray-100;
+    }
+  }
+
+  &.isToday {
+    background: $red-500 !important;
+    color: $neutral-gray-100 !important;
+  }
+
+  &.isSelected {
+    background: $turquoise-500 !important;
+    color: $neutral-gray-100 !important;
+  }
+
+  transition:
+    background $transition-duration,
+    color $transition-duration,
+    filter $transition-duration $transition-timing-function;
+
+  .date {
+    font-size: 12px;
+  }
+
+  .month {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 768px) {
+  .calendarItem {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - 10px),
+      calc(100% - 10px) 100%,
+      0 100%
+    );
+    font-size: 12px;
+    padding: 0.25rem;
+    text-align: left;
+
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - 6px),
+      calc(100% - 6px) 100%,
+      0 100%
+    );
+
+    .content {
+      align-items: baseline;
+    }
+    .date {
+      font-size: 11px;
+    }
+    .month {
+      font-size: 10px;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .calendarItem {
+    font-size: 12px;
+    padding: 0.5rem;
+
+    .date {
+      font-size: 18px;
+    }
+    .month {
+      font-size: 14px;
+    }
+  }
+}

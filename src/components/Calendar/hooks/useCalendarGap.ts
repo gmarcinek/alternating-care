@@ -36,6 +36,8 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
         return 4;
       case 14:
         return 2;
+      case 30:
+        return 0;
     }
   }
 
@@ -47,6 +49,8 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
         return 8;
       case 14:
         return 4;
+      case 30:
+        return 1;
     }
   }
 
@@ -58,6 +62,8 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
         return 12;
       case 14:
         return 8;
+      case 30:
+        return 1;
     }
   }
 
@@ -69,9 +75,11 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
         return 12;
       case 14:
         return 8;
+      case 30:
+        return 1;
     }
   }
-  return 1;
+  return 0;
 }
 
 interface ToGapSizeProps {

@@ -50,7 +50,7 @@ export const Sidebar = (props: SidebarProps) => {
             </Link>
           </li>
           <li>
-            <Link href='/alternating'>
+            <Link href='/alternating' onClick={toggle}>
               <h3>Opieka</h3>
             </Link>
           </li>

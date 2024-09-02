@@ -15,8 +15,7 @@
 
   .calendarItem {
     margin: 0;
-    height: 32px;
-    line-height: 14px;
+    height: 24px;
     overflow-x: hidden;
     overflow-y: hidden;
     border: 1px solid #00000015;
@@ -28,10 +27,22 @@
 
     small {
       font-size: 11px;
-      height: 32px;
+      height: 24px;
       margin: 0;
       padding: 0;
       position: absolute;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .calendarPlanSection {
+    .calendarItem {
+      height: 32px;
+
+      small {
+        height: 32px;
+      }
     }
   }
 }
