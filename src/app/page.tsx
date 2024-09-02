@@ -74,8 +74,6 @@ export default function Page() {
               <h3>Przegląd</h3>
               <Stack gap={8} direction='horizontal'>
                 <CalendarSettingsForm
-                  isTodayVisible={isTodayVisible}
-                  setIsTodayVisible={setIsTodayVisible}
                   isPlanVisible={isPlanVisible}
                   setIsPlanVisible={setIsPlanVisible}
                   isWeekendsVisible={isWeekendsVisible}
@@ -128,8 +126,6 @@ export default function Page() {
               <div>
                 <Stack gap={12} direction='horizontal'>
                   <CalendarSettingsForm
-                    isTodayVisible={isTodayVisible}
-                    setIsTodayVisible={setIsTodayVisible}
                     isPlanVisible={isPlanVisible}
                     setIsPlanVisible={setIsPlanVisible}
                     isWeekendsVisible={isWeekendsVisible}

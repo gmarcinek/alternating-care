@@ -7,20 +7,15 @@ import { useFormPutEventMutation } from '@modules/db/events/useFormPutEventMutat
 import { CalendarEventType } from '@modules/db/types';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Divider, Input, Radio, RadioGroup, Textarea } from '@nextui-org/react';
-import {
-  colorBlueGreen700,
-  colorPick,
-  getTextColor,
-  linearGradients,
-  white,
-} from '@utils/color';
+import { colorBlueGreen700, getTextColor, white } from '@utils/color';
 import { dateFormat } from '@utils/dates';
 import { capitalizeFirstLetter } from '@utils/string';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { CirclePicker, ColorResult } from 'react-color';
+import { ColorResult, SwatchesPicker } from 'react-color';
 import { toast } from 'react-toastify';
 import { calendarEventFormI18n } from './calendarEventForm.i18n'; // Import your i18n file
 
@@ -40,8 +35,8 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [backgroundColor, setBackgroundColor] = useState('');
-  const [textColor, setTextColor] = useState('');
+  const [backgroundColor, setBackgroundColor] = useState('#E57373');
+  const [textColor, setTextColor] = useState('#ffffff');
 
   const { mutateAsync, isPending } = useFormPutEventMutation({
     onSuccess: () => {
@@ -51,8 +46,8 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
       setType(CalendarEventType.Alternating);
       setName('');
       setDescription('');
-      setBackgroundColor('#d5e1d6');
-      setTextColor('#000000');
+      setBackgroundColor('#E57373');
+      setTextColor('#ffffff');
       toast(i18n.eventAddedSuccessfully, {
         type: 'success',
         className: 'bg-green-100',
@@ -142,7 +137,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
                 value={description}
                 radius='sm'
                 variant='bordered'
-                size='lg'
+                size='md'
                 onValueChange={setDescription}
               />
             </Stack>
@@ -180,36 +175,53 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
 
           {type !== CalendarEventType.Alternating && (
             <Stack>
-              <h3>{i18n.visibility}</h3>
+              <Stack direction='horizontal'>
+                <VisibilityIcon />
+                <h3>{i18n.visibility}</h3>
+              </Stack>
               <Stack direction='horizontal' contentAlignment='between'>
-                <CirclePicker
-                  colors={colorPick}
-                  circleSpacing={8}
-                  circleSize={32}
+                <SwatchesPicker
+                  height={243}
+                  width={372}
                   onChange={(value: ColorResult) => {
                     setBackgroundColor(value.hex);
                   }}
                   onChangeComplete={(value: ColorResult) => {
                     setTextColor(getTextColor(value.hex));
                   }}
+                  colors={[
+                    ['#B71C1C', '#F44336', '#E57373', '#FFCDD2'], // Red
+                    ['#880E4F', '#E91E63', '#F06292', '#F8BBD0'], // Pink
+                    ['#4A148C', '#9C27B0', '#BA68C8', '#E1BEE7'], // Purple
+                    ['#311B92', '#673AB7', '#9575CD', '#D1C4E9'], // Deep Purple
+                    ['#1A237E', '#3F51B5', '#7986CB', '#C5CAE9'], // Indigo
+                    ['#01579B', '#03A9F4', '#6fbbdd', '#B3E5FC'], // Light Blue
+                    ['#004D40', '#009688', '#4DB6AC', '#B2DFDB'], // Teal
+                    ['#194D33', '#4CAF50', '#81C784', '#C8E6C9'], // Green
+                    ['#33691E', '#8BC34A', '#AED581', '#DCEDC8'], // Light Green
+                    ['#827717', '#CDDC39', '#DCE775', '#F0F4C3'], // Lime
+                    ['#FF6F00', '#FFC107', '#FFD54F', '#FFECB3'], // Amber
+                    ['#BF360C', '#FF5722', '#FF8A65', '#FFCCBC'], // Deep Orange
+                    ['#263238', '#607D8B', '#90A4AE', '#CFD8DC'], // Blue Grey
+                    ['#333333', '#969696', '#D9D9D9', '#F0F0F0'], // Black to White Scale
+                  ]}
                 />
                 <CalendarItem
                   day={exampleDate}
                   className=''
                   style={{
                     backgroundColor: backgroundColor,
-                    background: linearGradients[
-                      backgroundColor as keyof typeof linearGradients
-                    ]
-                      ? linearGradients[
-                          backgroundColor as keyof typeof linearGradients
-                        ]
-                      : backgroundColor,
                     color: getTextColor(backgroundColor),
                   }}
                 >
                   <Stack gap={0}>
                     <small>{dayjs().format('MMM')}</small>
+                  </Stack>
+                </CalendarItem>
+
+                <CalendarItem day={exampleDate} className=''>
+                  <Stack gap={0}>
+                    <small>{dayjs().clone().add(1, 'day').format('MMM')}</small>
                   </Stack>
                 </CalendarItem>
               </Stack>

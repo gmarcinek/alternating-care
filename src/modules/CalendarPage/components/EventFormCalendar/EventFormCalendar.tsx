@@ -5,6 +5,7 @@ import { Calendar } from '@components/Calendar/Calendar';
 import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarEvent } from '@modules/db/types';
+import AddIcon from '@mui/icons-material/Add';
 import { Divider } from '@nextui-org/divider';
 import { UseMutationResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
@@ -19,6 +20,7 @@ import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsFo
 import { eventFormCalendarI18n } from './eventFormCalendar.i18n';
 import styles from './EventFormCalendar.module.scss';
 import { useSelection } from './useSelection';
+
 interface EventFormCalendarProps {
   fetchEventsMutation: UseMutationResult<
     CalendarEvent[],
@@ -109,8 +111,6 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
             <h3>{i18n.editSection.title}</h3>
             <Stack gap={8} direction='horizontal' className='mb-4'>
               <CalendarSettingsForm
-                isTodayVisible={isTodayVisible}
-                setIsTodayVisible={setIsTodayVisible}
                 isPlanVisible={isPlanVisible}
                 setIsPlanVisible={setIsPlanVisible}
                 isWeekendsVisible={isWeekendsVisible}
@@ -145,12 +145,8 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
           <div>
             <Stack gap={0}>
               <Stack className={styles.calendarDetails}>
-                <h3>{i18n.editSection.title}</h3>
-
                 <Stack gap={12} direction='horizontal'>
                   <CalendarSettingsForm
-                    isTodayVisible={isTodayVisible}
-                    setIsTodayVisible={setIsTodayVisible}
                     isPlanVisible={isPlanVisible}
                     setIsPlanVisible={setIsPlanVisible}
                     isWeekendsVisible={isWeekendsVisible}
@@ -161,12 +157,13 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
                   />
                 </Stack>
 
-                <Divider className='mb-4 mt-8' />
+                <Divider className='mb-2 mt-4' />
 
-                <Stack>
-                  <h3 className='mt-0'>
-                    <span>{i18n.editSection.newPlanTitle}</span>
-                  </h3>
+                <Stack gap={8}>
+                  <Stack direction='horizontal' gap={8}>
+                    <AddIcon />
+                    <h3 className='mt-0'>{i18n.editSection.newPlanTitle}</h3>
+                  </Stack>
 
                   <CalendarEventForm
                     selection={Array.from(selection)}
@@ -179,10 +176,14 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
               <Divider className='mb-4 mt-8' />
 
               <Stack className='mt-8'>
-                <h3>Wydarzenia w wybranych dniach</h3>
                 <Stack gap={0}>
                   {selection.size === 0 && (
                     <>
+                      <h3>
+                        {detailDataGrouped.length === 0
+                          ? 'Brak wydarzeń - dodaj'
+                          : 'Nadchodzące wydarzenia'}
+                      </h3>
                       {detailDataGrouped.map((dayGroup, indexGroup) => {
                         return (
                           <CalendarEventList
@@ -195,25 +196,30 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
                     </>
                   )}
 
-                  {Array.from(selection).map((selectedItem, index) => {
-                    return (
-                      <div key={`dayselect-${selectedItem}-${index}`}>
-                        {detailDataGrouped
-                          .filter((group) => {
-                            return selectedItem.includes(group.date);
-                          })
-                          .map((dayGroup, indexGroup) => {
-                            return (
-                              <CalendarEventList
-                                key={`dayGroup-${dayGroup.date}-${indexGroup}`}
-                                date={dayGroup.date}
-                                eventGroup={dayGroup}
-                              />
-                            );
-                          })}
-                      </div>
-                    );
-                  })}
+                  {selection.size !== 0 && (
+                    <>
+                      <h3>Wydarzenia w zaznaczonych dniach</h3>
+                      {Array.from(selection).map((selectedItem, index) => {
+                        return (
+                          <div key={`dayselect-${selectedItem}-${index}`}>
+                            {detailDataGrouped
+                              .filter((group) => {
+                                return selectedItem.includes(group.date);
+                              })
+                              .map((dayGroup, indexGroup) => {
+                                return (
+                                  <CalendarEventList
+                                    key={`dayGroup-${dayGroup.date}-${indexGroup}`}
+                                    date={dayGroup.date}
+                                    eventGroup={dayGroup}
+                                  />
+                                );
+                              })}
+                          </div>
+                        );
+                      })}
+                    </>
+                  )}
                 </Stack>
               </Stack>
             </Stack>

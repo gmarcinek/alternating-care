@@ -1,15 +1,10 @@
 import { useAppContext } from '@app/AppContext';
-import { Switch } from '@nextui-org/react';
-import { dateFormat } from '@utils/dates';
+import TuneIcon from '@mui/icons-material/Tune';
+import { Input, Switch } from '@nextui-org/react';
 import { useBreakpoints } from '@utils/useBreakpoints';
-import { useScrollToId } from '@utils/useScrollTo';
-import dayjs from 'dayjs';
-import { useCallback } from 'react';
 import { calendarSettingsFormI18n } from './calendarSettingsForm.i18n';
 
 interface CalendarSettingsFormProps {
-  isTodayVisible: boolean;
-  setIsTodayVisible: (value: boolean) => void;
   isPlanVisible: boolean;
   setIsPlanVisible: (value: boolean) => void;
 
@@ -22,8 +17,6 @@ interface CalendarSettingsFormProps {
 
 export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
   const {
-    isTodayVisible,
-    setIsTodayVisible,
     isPlanVisible,
     setIsPlanVisible,
     isWeekendsVisible,
@@ -37,30 +30,8 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
   const { language } = useAppContext();
   const i18n = calendarSettingsFormI18n[language];
 
-  const { scrollToElement } = useScrollToId();
-  const todayDate = dayjs().format(dateFormat);
-
-  const handleSwitchToday = useCallback(
-    (value: boolean) => {
-      setIsTodayVisible(value);
-
-      if (value === true) {
-        scrollToElement(`day-${todayDate}`, 100);
-      }
-    },
-    [setIsTodayVisible, scrollToElement, todayDate]
-  );
-
   return (
     <>
-      <Switch
-        defaultSelected={isTodayVisible}
-        onValueChange={handleSwitchToday}
-        size='sm'
-      >
-        {i18n.today}
-      </Switch>
-
       {sliderValue !== 1 && (
         <Switch
           defaultSelected={isPlanVisible}
@@ -88,6 +59,16 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
       >
         {i18n.alternating}
       </Switch>
+
+      <Input
+        type='text'
+        radius='full'
+        placeholder='Filtr'
+        isClearable
+        variant='faded'
+        size='sm'
+        startContent={<TuneIcon />}
+      />
     </>
   );
 };
