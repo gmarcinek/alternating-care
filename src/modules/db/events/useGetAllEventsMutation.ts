@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useDbContext } from '../DbContext'; // Użycie kontekstu bazy danych
 import { CalendarEvent } from '../types';
 
-interface OseGetAllEventsMutationProps {
+interface UseGetAllEventsMutationProps {
   onSuccess?: (data?: CalendarEvent[]) => void;
   onError?: (error: unknown) => void;
 }
@@ -12,7 +12,7 @@ interface OseGetAllEventsMutationProps {
  *
  * Hak korzysta z kontekstu bazy danych (`useDbContext`) w celu uzyskania instancji bazy danych i wykonania zapytania.
  *
- * @param {OseGetAllEventsMutationProps} [props] - Opcjonalne właściwości:
+ * @param {UseGetAllEventsMutationProps} [props] - Opcjonalne właściwości:
  * - `onSuccess` (Function): Funkcja wywoływana, gdy zapytanie do bazy danych zakończy się sukcesem. Otrzymuje tablicę zdarzeń jako argument.
  * - `onError` (Function): Funkcja wywoływana, gdy zapytanie do bazy danych zakończy się błędem. Otrzymuje obiekt błędu jako argument.
  *
@@ -59,7 +59,7 @@ interface OseGetAllEventsMutationProps {
  * export default MyComponent;
  */
 export const useGetAllEventsMutation = (
-  props: OseGetAllEventsMutationProps = {}
+  props: UseGetAllEventsMutationProps = {}
 ) => {
   const { onSuccess = () => {}, onError = () => {} } = props;
 

@@ -50,6 +50,11 @@ export const Sidebar = (props: SidebarProps) => {
             </Link>
           </li>
           <li>
+            <Link href='/alternating'>
+              <h3>Opieka</h3>
+            </Link>
+          </li>
+          <li>
             <Link href='/settings' onClick={toggle}>
               <h3>Ustawienia</h3>
             </Link>

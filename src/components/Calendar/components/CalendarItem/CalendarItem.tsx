@@ -9,6 +9,7 @@ import styles from './CalendarItem.module.scss';
 interface CalendarItemProps extends PropsWithChildren {
   day: CalendarDayType;
   className?: string;
+  title?: string;
   style?: CSSProperties;
   mode?: 'short' | 'long' | 'full' | 'none';
   isNoPadding?: boolean;
@@ -22,6 +23,7 @@ export function CalendarItem(props: CalendarItemProps) {
     style,
     mode = 'short',
     isNoPadding,
+    title,
   } = props;
 
   const currentDate = dayjs(day.date);
@@ -43,7 +45,7 @@ export function CalendarItem(props: CalendarItemProps) {
   }, [currentDate]);
 
   return (
-    <div className={itemClasses} style={style}>
+    <div className={itemClasses} style={style} title={title}>
       <Stack gap={0} direction='horizontal'>
         <Stack gap={0}>
           {mode === 'none' && <></>}

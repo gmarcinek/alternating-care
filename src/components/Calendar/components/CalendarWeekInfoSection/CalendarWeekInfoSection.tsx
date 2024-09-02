@@ -28,7 +28,7 @@ export default function CalendarWeekInfoSection(
   const yearName = dateOmega.format('YYYY');
 
   return (
-    <p className='mt-3'>
+    <div className='mt-3'>
       {rowSize === 7 && (
         <Stack direction='horizontal' contentAlignment='between'>
           <div>
@@ -100,6 +100,6 @@ export default function CalendarWeekInfoSection(
           <Divider className='mb-4 mt-1' />
         </>
       )}
-    </p>
+    </div>
   );
 }

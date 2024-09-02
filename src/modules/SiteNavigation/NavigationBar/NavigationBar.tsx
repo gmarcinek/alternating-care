@@ -9,7 +9,6 @@ import { Language } from './Language';
 import { Logo } from './Logo';
 import { MenuButton } from './MenuButton';
 import { navigationBarI18n } from './navigationBar.i18n';
-
 interface NavbarProps {
   toggle: () => void;
   user: AppUser;
@@ -41,6 +40,10 @@ export const NavigationBar = (props: NavbarProps) => {
 
               <Link href='/month'>
                 <p>{i18n.monthPlan}</p>
+              </Link>
+
+              <Link href='/alternating'>
+                <p>Opieka</p>
               </Link>
 
               <Link href='/settings'>

@@ -33,7 +33,10 @@ export default function Page() {
 
   const { selection, handlers } = useSelection({});
 
-  const formClasses = classNames(styles.formContainer, 'sticky t-20 z-10 h-1 ');
+  const formClasses = classNames(
+    styles.formContainer,
+    'scrollSmall sticky t-20 z-10 h-1 '
+  );
   const { mutation } = useGetAllEventsMutation();
 
   const sortedEvents = useMemo(() => {

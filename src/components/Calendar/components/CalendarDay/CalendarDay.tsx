@@ -24,6 +24,7 @@ interface CalendarDayProps extends PropsWithChildren {
 export default function CalendarDay(props: CalendarDayProps) {
   const { day } = props;
   let render: JSX.Element | undefined = undefined;
+
   const {
     rowSize,
     onDayClick,
@@ -74,9 +75,6 @@ export default function CalendarDay(props: CalendarDayProps) {
       break;
 
     case 14:
-      render = <CalendarItemBodyTwoWeeks day={day} />;
-      break;
-
     case 30:
       render = <CalendarItemBodyTwoWeeks day={day} />;
       break;

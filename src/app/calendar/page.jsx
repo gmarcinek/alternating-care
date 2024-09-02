@@ -2,6 +2,6 @@
 
 import { CalendarPage } from '@modules/CalendarPage/CalendarPage';
 
-export default function Calendar() {
+export default function Page() {
   return <CalendarPage />;
 }

@@ -54,7 +54,12 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
     <Stack className={styles.calendarPlanSection}>
       <Stack gap={8}>
         {transposed.map((events, groupIndex) => {
-          const eventDescription = events.find((event) => event.name)?.name;
+          const eventName = events.find((event) => event.name)?.name;
+          const eventDate = events.find((event) => event.name)?.date;
+          const eventDescription = events.find(
+            (event) => event.name
+          )?.description;
+
           return (
             <div
               key={`week-pan-day-${groupIndex}`}
@@ -68,11 +73,12 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                 {events.map((event, itemIndex) => {
                   return (
                     <CalendarItem
+                      key={`week-day-${event.date}-${itemIndex}`}
+                      title={`${eventDate} ${eventName} ${eventDescription}`}
                       day={{
                         date: event.date,
                         isOffset: event.type === CalendarEventType.Offset,
                       }}
-                      key={`week-day-${event.date}-${itemIndex}`}
                       mode='none'
                       className={styles.calendarItem}
                       style={{
@@ -80,10 +86,19 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                           event.type === CalendarEventType.Alternating
                             ? colorBlueGreen700
                             : `${event.style?.background}ff`,
-                        color: getTextColor(colorBlueGreen700),
+                        color:
+                          getTextColor(
+                            event.type === CalendarEventType.Alternating
+                              ? colorBlueGreen700
+                              : event.style?.background
+                          ) ?? event.style?.color,
                       }}
                     >
-                      {itemIndex === 0 && <small>{eventDescription}</small>}
+                      {itemIndex === 0 && (
+                        <small>
+                          {eventName} {eventDate}
+                        </small>
+                      )}
                     </CalendarItem>
                   );
                 })}

@@ -1,21 +1,24 @@
-export const white = 'hsl(0, 0%, 100%)'; // #ffffff (white)
-export const colorWhite50 = 'hsla(0, 0%, 100%, 0.533)'; // #ffffff88
-export const colorNeutralGray100 = 'hsl(0, 0%, 100%)'; // #ffffff (white)
-export const colorNeutralGray150 = 'hsl(0, 0%, 98%)'; // #f7f7f7
-export const colorNeutralGray200 = 'hsl(0, 0%, 84%)'; // #d7d7d7
-export const colorNeutralGray300 = 'hsl(0, 0%, 81%)'; // #cfcfcf
-export const colorNeutralGray900 = 'hsl(0, 0%, 28%)'; // #494949
-export const colorGray200 = 'hsl(0, 0%, 88%)'; // #e0e0e0
+export const white = '#ffffff'; // #ffffff (white)
+export const colorWhite50 = '#ffffff88'; // #ffffff88
+export const colorNeutralGray100 = '#ffffff'; // #ffffff (white)
+export const colorNeutralGray150 = '#f7f7f7'; // #f7f7f7
+export const colorNeutralGray200 = '#d7d7d7'; // #d7d7d7
+export const colorNeutralGray300 = '#cfcfcf'; // #cfcfcf
+export const colorNeutralGray900 = '#494949'; // #494949
+export const colorGray200 = '#e0e0e0'; // #e0e0e0
 
 // Red tones
-export const colorRed500 = 'hsl(0, 100%, 66%)'; // #ff4f4f
-export const colorRed600 = 'hsl(0, 76%, 60%)'; // #e94646
+export const colorRed500 = '#ff4f4f'; //
+export const colorRed600 = '#e94646'; //
 
 // Green/blue tones
-export const colorTurquoise500 = 'hsl(170, 100%, 44%)'; // #00deb9
-export const colorBlueGreen700 = 'hsl(194, 39%, 29%)'; // #2d5465
+export const colorTurquoise500 = '#00deb9'; // #00deb9
+export const colorBlueGreen700 = '#2d5465'; // #2d5465
 
-export function getTextColorByBackground(backgroundHex: string): string {
+export function getTextColorByBackground(backgroundHex?: string): string {
+  if (!backgroundHex) {
+    return '';
+  }
   // Usuwamy znak # z koloru HEX, jeśli jest obecny
   backgroundHex = backgroundHex.replace('#', '');
 
@@ -40,9 +43,13 @@ export function getTextColorByBackground(backgroundHex: string): string {
 }
 
 export function getTextColor(
-  backgroundHex: string,
+  backgroundHex?: string,
   thresholds: [number, number] = [0.35, 0.7]
 ): string {
+  if (!backgroundHex) {
+    return '';
+  }
+
   // Usuwamy znak # z koloru HEX, jeśli jest obecny
   backgroundHex = backgroundHex.replace('#', '');
 
