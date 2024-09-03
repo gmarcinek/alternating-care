@@ -40,7 +40,6 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
 
   const [isTodayVisible, setIsTodayVisible] = useState(true);
   const [isPlanVisible, setIsPlanVisible] = useState(false);
-  const [isWeekendsVisible, setIsWeekendsVisible] = useState(true);
   const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
 
   const {
@@ -113,8 +112,6 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
               <CalendarSettingsForm
                 isPlanVisible={isPlanVisible}
                 setIsPlanVisible={setIsPlanVisible}
-                isWeekendsVisible={isWeekendsVisible}
-                setIsWeekendsVisible={setIsWeekendsVisible}
                 isAlternatingVisible={isAlternatingVisible}
                 setIsAlternatingVisible={setIsAlternatingVisible}
                 sliderValue={7}
@@ -131,7 +128,6 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
             rowSize={7}
             isTodayVisible={isTodayVisible}
             isPlanVisible={isPlanVisible}
-            isWeekendsVisible={isWeekendsVisible}
             isAlternatingVisible={isAlternatingVisible}
             displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
             events={sortedEvents}
@@ -149,8 +145,6 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
                   <CalendarSettingsForm
                     isPlanVisible={isPlanVisible}
                     setIsPlanVisible={setIsPlanVisible}
-                    isWeekendsVisible={isWeekendsVisible}
-                    setIsWeekendsVisible={setIsWeekendsVisible}
                     isAlternatingVisible={isAlternatingVisible}
                     setIsAlternatingVisible={setIsAlternatingVisible}
                     sliderValue={7}

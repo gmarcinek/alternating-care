@@ -17,6 +17,16 @@
     0 100%
   );
 
+  &.smallPolygon {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - 8px),
+      calc(100% - 8px) 100%,
+      0 100%
+    );
+  }
+
   .hiden {
     display: none;
   }

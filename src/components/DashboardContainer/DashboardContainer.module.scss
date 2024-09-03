@@ -1,0 +1,17 @@
+.dashboardContainer {
+  margin: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .dashboardContainer {
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboardContainer {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+}

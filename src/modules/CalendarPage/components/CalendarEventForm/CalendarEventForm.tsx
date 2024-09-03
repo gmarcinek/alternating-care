@@ -218,12 +218,6 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
                     <small>{dayjs().format('MMM')}</small>
                   </Stack>
                 </CalendarItem>
-
-                <CalendarItem day={exampleDate} className=''>
-                  <Stack gap={0}>
-                    <small>{dayjs().clone().add(1, 'day').format('MMM')}</small>
-                  </Stack>
-                </CalendarItem>
               </Stack>
               <Divider className='my-4' />
             </Stack>

@@ -1,0 +1,108 @@
+@import '@styles/color.module.scss';
+// sm	640px	@media (min-width: 640px) { ... }
+// md	768px	@media (min-width: 768px) { ... }
+// lg	1024px	@media (min-width: 1024px) { ... }
+// xl	1280px	@media (min-width: 1280px) { ... }
+// 2xl	1536px
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* 4 kolumny o równej szerokości */
+  grid-template-rows: auto 1fr; /* Wiersze: pierwszy o wysokości auto, drugi o wysokości dostosowanej do dostępnej przestrzeni */
+  column-gap: 1rem;
+  row-gap: 0;
+  position: relative; /* Pozwala na używanie z-index w kontekście siatki */
+
+  .calendarContainer {
+    grid-column: span 1; /* Ta sekcja zajmuje 1 kolumnę */
+    grid-row: 1;
+    z-index: 1;
+  }
+
+  .eventListContainer {
+    display: none;
+    grid-column: span 1; /* Ta sekcja zajmuje 1 kolumnę */
+    grid-row: 1; /* Ta sekcja zaczyna się w drugim wierszu */
+    background: $white;
+    z-index: 0;
+
+    overflow-y: scroll;
+    min-height: calc(100vh - 5rem); /* Zachowuje minimalną wysokość */
+    top: 4.5rem;
+  }
+
+  .formContainer {
+    display: none;
+    grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
+    grid-row: 1;
+    background: $white;
+    z-index: 0;
+    padding: 2rem;
+    overflow-y: scroll;
+    min-height: calc(100vh - 5rem); /* Zachowuje minimalną wysokość */
+    top: 4.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .dashboard {
+    grid-template-columns: repeat(12, 1fr); /* 4 kolumny o równej szerokości */
+    grid-template-rows: auto 1fr; /* Wiersze: pierwszy o wysokości auto, drugi o wysokości dostosowanej do dostępnej przestrzeni */
+
+    .calendarContainer {
+      grid-column: span 5; /* Ta sekcja zajmuje 1 kolumnę */
+      z-index: 1;
+    }
+    .eventListContainer {
+      display: none;
+    }
+    .formContainer {
+      display: block;
+      grid-column: span 7; /* Ta sekcja zajmuje 2 kolumny */
+      padding: 1rem;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard {
+    grid-template-columns: repeat(12, 1fr); /* 4 kolumny o równej szerokości */
+    grid-template-rows: auto 1fr; /* Wiersze: pierwszy o wysokości auto, drugi o wysokości dostosowanej do dostępnej przestrzeni */
+
+    .calendarContainer {
+      grid-column: span 5; /* Ta sekcja zajmuje 1 kolumnę */
+      z-index: 1;
+    }
+
+    .eventListContainer {
+      display: none;
+    }
+
+    .formContainer {
+      grid-column: span 7; /* Ta sekcja zajmuje 2 kolumny */
+    }
+  }
+}
+
+@media (min-width: 1440px) {
+  .dashboard {
+    grid-template-columns: repeat(12, 1fr); /* 4 kolumny o równej szerokości */
+    grid-template-rows: auto 1fr; /* Wiersze: pierwszy o wysokości auto, drugi o wysokości dostosowanej do dostępnej przestrzeni */
+
+    .calendarContainer {
+      grid-column: span 3; /* Ta sekcja zajmuje 1 kolumnę */
+      z-index: 1;
+    }
+
+    .eventListContainer {
+      display: block;
+      grid-column: span 4; /* Ta sekcja zajmuje 1 kolumnę */
+      padding: 1rem;
+    }
+
+    .formContainer {
+      grid-column: span 5; /* Ta sekcja zajmuje 2 kolumny */
+      padding: 2rem;
+    }
+  }
+}

@@ -76,8 +76,6 @@ export default function Page() {
                 <CalendarSettingsForm
                   isPlanVisible={isPlanVisible}
                   setIsPlanVisible={setIsPlanVisible}
-                  isWeekendsVisible={isWeekendsVisible}
-                  setIsWeekendsVisible={setIsWeekendsVisible}
                   isAlternatingVisible={isAlternatingVisible}
                   setIsAlternatingVisible={setIsAlternatingVisible}
                   sliderValue={sliderValue}
@@ -102,7 +100,6 @@ export default function Page() {
               rowSize={sliderValue}
               isTodayVisible={isTodayVisible}
               isPlanVisible={isPlanVisible}
-              isWeekendsVisible={isWeekendsVisible}
               isAlternatingVisible={isAlternatingVisible}
               displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
               events={sortedEvents ?? []}
@@ -128,8 +125,6 @@ export default function Page() {
                   <CalendarSettingsForm
                     isPlanVisible={isPlanVisible}
                     setIsPlanVisible={setIsPlanVisible}
-                    isWeekendsVisible={isWeekendsVisible}
-                    setIsWeekendsVisible={setIsWeekendsVisible}
                     isAlternatingVisible={isAlternatingVisible}
                     setIsAlternatingVisible={setIsAlternatingVisible}
                     sliderValue={sliderValue}

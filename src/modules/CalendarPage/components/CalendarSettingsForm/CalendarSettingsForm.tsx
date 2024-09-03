@@ -8,8 +8,6 @@ interface CalendarSettingsFormProps {
   isPlanVisible: boolean;
   setIsPlanVisible: (value: boolean) => void;
 
-  isWeekendsVisible: boolean;
-  setIsWeekendsVisible: (value: boolean) => void;
   isAlternatingVisible: boolean;
   setIsAlternatingVisible: (value: boolean) => void;
   sliderValue: number;
@@ -19,8 +17,6 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
   const {
     isPlanVisible,
     setIsPlanVisible,
-    isWeekendsVisible,
-    setIsWeekendsVisible,
     isAlternatingVisible,
     setIsAlternatingVisible,
     sliderValue,
@@ -39,16 +35,6 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
           size='sm'
         >
           {i18n.plan}
-        </Switch>
-      )}
-
-      {!isMobile && (
-        <Switch
-          defaultSelected={isWeekendsVisible}
-          onValueChange={setIsWeekendsVisible}
-          size='sm'
-        >
-          {i18n.weekends}
         </Switch>
       )}
 

@@ -1,3 +1,4 @@
+import { useDayContainetRwd } from '@components/Calendar/hooks/useDayContainetRwd';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarDayType, CalendarEventType } from '@modules/db/types';
 import { dateFormat } from '@utils/dates';
@@ -30,6 +31,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
   } = useCalenderContext();
 
   const { style } = useDayContainerBreakPointStyles(rowSize, containerWidth);
+  const { is320, is380 } = useDayContainetRwd(containerWidth);
 
   const isSelected = useMemo(() => {
     return (selection ?? []).toString().split(',').includes(day.date);
@@ -66,6 +68,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
   });
 
   const itemClasses = classNames(styles.calendarItem, {
+    [styles.smallPolygon]: is380,
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
     [styles.isFirstOfTheMonth]:
@@ -99,12 +102,14 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
               <>
                 <strong>{currentDate.format('D')}</strong>
               </>
-              <small>{currentDate.format('.MM')}</small>
+              {!is320 && <small>{currentDate.format('.MM')}</small>}
             </span>
 
-            <span className={styles.month}>
-              <small>{currentDate.format('MMM')}</small>
-            </span>
+            {!is380 && (
+              <span className={styles.month}>
+                <small>{currentDate.format('MMM')}</small>
+              </span>
+            )}
           </Stack>
         </Stack>
       </div>
