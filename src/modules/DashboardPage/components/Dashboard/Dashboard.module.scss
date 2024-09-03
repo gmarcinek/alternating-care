@@ -55,11 +55,13 @@
     }
     .eventListContainer {
       display: none;
+      overflow-y: scroll;
     }
     .formContainer {
       display: block;
       grid-column: span 7; /* Ta sekcja zajmuje 2 kolumny */
       padding: 1rem;
+      overflow-y: scroll;
     }
   }
 }
@@ -76,33 +78,43 @@
 
     .eventListContainer {
       display: none;
+      overflow-y: scroll;
     }
 
     .formContainer {
       grid-column: span 7; /* Ta sekcja zajmuje 2 kolumny */
+      overflow-y: scroll;
     }
   }
 }
 
 @media (min-width: 1440px) {
   .dashboard {
-    grid-template-columns: repeat(12, 1fr); /* 4 kolumny o równej szerokości */
+    grid-template-columns: minmax(375px, 478px) 33% auto;
     grid-template-rows: auto 1fr; /* Wiersze: pierwszy o wysokości auto, drugi o wysokości dostosowanej do dostępnej przestrzeni */
 
+    transition: all 0.5s;
+
+    &.isPlanVisible {
+      grid-template-columns: minmax(50%, 70%) 30% auto;
+    }
+
     .calendarContainer {
-      grid-column: span 3; /* Ta sekcja zajmuje 1 kolumnę */
+      grid-column: span 1; /* Ta sekcja zajmuje 1 kolumnę */
       z-index: 1;
     }
 
     .eventListContainer {
       display: block;
-      grid-column: span 4; /* Ta sekcja zajmuje 1 kolumnę */
+      grid-column: span 1; /* Ta sekcja zajmuje 1 kolumnę */
       padding: 1rem;
+      overflow-y: scroll;
     }
 
     .formContainer {
-      grid-column: span 5; /* Ta sekcja zajmuje 2 kolumny */
+      grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
       padding: 2rem;
+      overflow-y: scroll;
     }
   }
 }

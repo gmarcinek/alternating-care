@@ -4,10 +4,8 @@ import { useAppContext } from '@app/AppContext';
 import { Calendar } from '@components/Calendar/Calendar';
 import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import { Stack } from '@components/Stack/Stack';
-import { CalendarEventForm } from '@modules/CalendarPage/components/CalendarEventForm/CalendarEventForm';
 import { CalendarSettingsForm } from '@modules/CalendarPage/components/CalendarSettingsForm/CalendarSettingsForm';
 import { CalendarEvent } from '@modules/db/types';
-import AddIcon from '@mui/icons-material/Add';
 import { Divider } from '@nextui-org/divider';
 import { UseMutationResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
@@ -16,6 +14,7 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { useLongPress } from 'use-long-press';
+import { DashboardEventForm } from '../DashboardEventForm/DashboardEventForm';
 import { dashboardI18n } from './dashboard.i18n';
 import styles from './Dashboard.module.scss';
 import { useSelection } from './useSelection';
@@ -36,10 +35,6 @@ export const Dashboard = (props: DashboardProps) => {
 
   const i18n = dashboardI18n[language];
 
-  const [isTodayVisible, setIsTodayVisible] = useState(true);
-  const [isPlanVisible, setIsPlanVisible] = useState(false);
-  const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
-
   const {
     selection,
     handlers,
@@ -51,6 +46,9 @@ export const Dashboard = (props: DashboardProps) => {
     isMultiSelectionAvailable: true,
   });
 
+  const [isPlanVisible, setIsPlanVisible] = useState(false);
+  const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
+
   const onAddEventSuccess = useCallback(() => {
     setIsMultiSelectionMode(false);
     handleCancelMultiSelect();
@@ -60,6 +58,10 @@ export const Dashboard = (props: DashboardProps) => {
     handleCancelMultiSelect,
     fetchEventsMutation.mutate,
   ]);
+
+  const dashboardClasses = classNames(styles.dashboard, {
+    [styles.isPlanVisible]: isPlanVisible,
+  });
 
   const formClasses = classNames(
     styles.formContainer,
@@ -106,13 +108,13 @@ export const Dashboard = (props: DashboardProps) => {
   }, [detailDates]);
 
   return (
-    <div className={styles.dashboard} id='dashboard'>
+    <div className={dashboardClasses} id='dashboard'>
       <div className={styles.calendarContainer}>
         <div {...bind()}>
           <Calendar
             startDate={startDate}
-            rowSize={7}
-            isTodayVisible={isTodayVisible}
+            rowSize={isPlanVisible ? 14 : 7}
+            isTodayVisible
             isPlanVisible={isPlanVisible}
             isAlternatingVisible={isAlternatingVisible}
             displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
@@ -124,88 +126,81 @@ export const Dashboard = (props: DashboardProps) => {
         </div>
       </div>
 
-      <div className={eventListClasses}>
-        <Stack className='mt-4'>
-          <Stack gap={0}>
-            {selection.size === 0 && (
-              <>
-                <h3>
-                  {detailDataGrouped.length === 0
-                    ? 'Brak wydarzeń - dodaj'
-                    : 'Nadchodzące wydarzenia'}
-                </h3>
-                {detailDataGrouped.map((dayGroup, indexGroup) => {
-                  return (
-                    <CalendarEventList
-                      key={`dayGroup-${dayGroup.date}-${indexGroup}`}
-                      date={dayGroup.date}
-                      eventGroup={dayGroup}
-                    />
-                  );
-                })}
-              </>
-            )}
+      <div className={formClasses}>
+        <Stack gap={0}>
+          <Stack className={styles.calendarDetails}>
+            <Stack gap={12} direction='horizontal'>
+              <CalendarSettingsForm
+                isPlanVisible={isPlanVisible}
+                setIsPlanVisible={setIsPlanVisible}
+                isAlternatingVisible={isAlternatingVisible}
+                setIsAlternatingVisible={setIsAlternatingVisible}
+                sliderValue={7}
+              />
+            </Stack>
 
-            {selection.size !== 0 && (
-              <>
-                <h3>Wydarzenia w zaznaczonych dniach</h3>
-                {Array.from(selection).map((selectedItem, index) => {
-                  return (
-                    <div key={`dayselect-${selectedItem}-${index}`}>
-                      {detailDataGrouped
-                        .filter((group) => {
-                          return selectedItem.includes(group.date);
-                        })
-                        .map((dayGroup, indexGroup) => {
-                          return (
-                            <CalendarEventList
-                              key={`dayGroup-${dayGroup.date}-${indexGroup}`}
-                              date={dayGroup.date}
-                              eventGroup={dayGroup}
-                            />
-                          );
-                        })}
-                    </div>
-                  );
-                })}
-              </>
-            )}
+            <Divider className='mb-2 mt-4' />
+
+            <Stack gap={8}>
+              <DashboardEventForm
+                selection={Array.from(selection)}
+                setSelection={setSelection}
+                onSuccess={onAddEventSuccess}
+              />
+            </Stack>
+          </Stack>
+
+          <Stack className='mt-4'>
+            <Stack gap={0}>
+              {selection.size === 0 && (
+                <>
+                  <h3>
+                    {detailDataGrouped.length === 0
+                      ? 'Brak wydarzeń - dodaj'
+                      : 'Nadchodzące wydarzenia'}
+                  </h3>
+                  {detailDataGrouped.map((dayGroup, indexGroup) => {
+                    return (
+                      <CalendarEventList
+                        key={`dayGroup-${dayGroup.date}-${indexGroup}`}
+                        date={dayGroup.date}
+                        eventGroup={dayGroup}
+                      />
+                    );
+                  })}
+                </>
+              )}
+
+              {selection.size !== 0 && (
+                <>
+                  <h3>Wydarzenia w zaznaczonych dniach</h3>
+                  {Array.from(selection).map((selectedItem, index) => {
+                    return (
+                      <div key={`dayselect-${selectedItem}-${index}`}>
+                        {detailDataGrouped
+                          .filter((group) => {
+                            return selectedItem.includes(group.date);
+                          })
+                          .map((dayGroup, indexGroup) => {
+                            return (
+                              <CalendarEventList
+                                key={`dayGroup-${dayGroup.date}-${indexGroup}`}
+                                date={dayGroup.date}
+                                eventGroup={dayGroup}
+                              />
+                            );
+                          })}
+                      </div>
+                    );
+                  })}
+                </>
+              )}
+            </Stack>
           </Stack>
         </Stack>
       </div>
 
-      <div className={formClasses}>
-        <div>
-          <Stack gap={0}>
-            <Stack className={styles.calendarDetails}>
-              <Stack gap={12} direction='horizontal'>
-                <CalendarSettingsForm
-                  isPlanVisible={isPlanVisible}
-                  setIsPlanVisible={setIsPlanVisible}
-                  isAlternatingVisible={isAlternatingVisible}
-                  setIsAlternatingVisible={setIsAlternatingVisible}
-                  sliderValue={7}
-                />
-              </Stack>
-
-              <Divider className='mb-2 mt-4' />
-
-              <Stack gap={8}>
-                <Stack direction='horizontal' gap={8}>
-                  <AddIcon />
-                  <h3 className='mt-0'>{i18n.editSection.newPlanTitle}</h3>
-                </Stack>
-
-                <CalendarEventForm
-                  selection={Array.from(selection)}
-                  setSelection={setSelection}
-                  onSuccess={onAddEventSuccess}
-                />
-              </Stack>
-            </Stack>
-          </Stack>
-        </div>
-      </div>
+      <div className={eventListClasses}>aaa</div>
     </div>
   );
 };

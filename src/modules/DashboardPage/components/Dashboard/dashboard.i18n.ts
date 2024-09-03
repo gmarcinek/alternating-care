@@ -3,7 +3,6 @@ export const dashboardI18n = {
     // Sekcja Edycji
     editSection: {
       title: 'Edycja',
-      newPlanTitle: 'Nowy plan',
     },
 
     // Form Calendar Settings
@@ -20,7 +19,6 @@ export const dashboardI18n = {
     // Edit Section
     editSection: {
       title: 'Edit',
-      newPlanTitle: 'New Plan',
     },
 
     // Form Calendar Settings

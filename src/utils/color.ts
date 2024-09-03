@@ -36,7 +36,6 @@ export const swatches = [
   ['#BF360C', '#F4511E', '#FF5722', '#FF8A65', '#FFCCBC'], // Deep Orange
   ['#3E2723', '#5D4037', '#795548', '#A1887F', '#D7CCC8'], // Brown
   ['#263238', '#455A64', '#607D8B', '#90A4AE', '#CFD8DC'], // Blue Grey
-  ['#000000', '#525252', '#969696', '#D9D9D9', '#FFFFFF'], // Black to White Scale
 ];
 
 export function getTextColorByBackground(backgroundHex?: string): string {

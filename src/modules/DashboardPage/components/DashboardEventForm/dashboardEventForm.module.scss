@@ -1,0 +1,12 @@
+.dashboardEventForm {
+  transition: all 0.5s;
+  height: 0px;
+  overflow: hidden;
+
+  &.isSelectionNotEmpty {
+    height: 270px;
+  }
+  &.isColorPickerVisible {
+    height: 650px;
+  }
+}
