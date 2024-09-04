@@ -73,6 +73,7 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                 {events.map((event, itemIndex) => {
                   return (
                     <CalendarItem
+                      isNoPadding
                       key={`week-day-${event.date}-${itemIndex}`}
                       title={`${eventDate} ${eventName} ${eventDescription}`}
                       day={{
@@ -94,7 +95,11 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                           ) ?? event.style?.color,
                       }}
                     >
-                      {itemIndex === 0 && <small>{eventName}</small>}
+                      {itemIndex === 0 && (
+                        <small style={{ paddingLeft: '4px' }}>
+                          <strong>{eventName}</strong>
+                        </small>
+                      )}
                     </CalendarItem>
                   );
                 })}
