@@ -93,7 +93,7 @@
     grid-template-columns: minmax(375px, 478px) 33% auto;
     grid-template-rows: auto 1fr; /* Wiersze: pierwszy o wysokości auto, drugi o wysokości dostosowanej do dostępnej przestrzeni */
 
-    transition: all 0.5s;
+    transition: grid-template-columns 0.5s;
 
     &.isPlanVisible {
       grid-template-columns: minmax(50%, 70%) 30% auto;

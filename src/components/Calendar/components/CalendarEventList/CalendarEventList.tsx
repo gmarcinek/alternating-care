@@ -28,7 +28,7 @@ export default function CalendarEventList(props: CalendarEventListProps) {
     <div onClick={handlePointerOver} id={`event-list-${date}`}>
       <Stack gap={0}>
         <div>
-          <Divider className='my-2' />
+          <Divider className='my-2 mt-4' />
           <Stack direction='horizontal'>
             <CalendarMonthIcon
               style={{
@@ -44,7 +44,7 @@ export default function CalendarEventList(props: CalendarEventListProps) {
               </span>{' '}
             </h3>
           </Stack>
-          <Divider className='mb-3 mt-2' />
+          <Divider className='mb-2 mt-1' />
         </div>
 
         {eventGroup.events.length > 0 &&

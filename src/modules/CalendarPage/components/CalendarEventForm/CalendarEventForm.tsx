@@ -23,10 +23,18 @@ interface CalendarEventFormProps {
   selection: string[];
   setSelection: Dispatch<SetStateAction<Set<string>>>;
   onSuccess: () => void;
+  isMultiSelectionMode: boolean;
+  setIsMultiSelectionMode: (value: boolean) => void;
 }
 
 export const CalendarEventForm = (props: CalendarEventFormProps) => {
-  const { selection, onSuccess, setSelection } = props;
+  const {
+    selection,
+    onSuccess,
+    setSelection,
+    isMultiSelectionMode,
+    setIsMultiSelectionMode,
+  } = props;
   const { language } = useAppContext();
   const i18n = calendarEventFormI18n[language];
 
@@ -114,6 +122,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
 
   const handleCancel = useCallback(() => {
     setSelection(new Set([]));
+    setIsMultiSelectionMode(false);
   }, [setSelection]);
 
   return (

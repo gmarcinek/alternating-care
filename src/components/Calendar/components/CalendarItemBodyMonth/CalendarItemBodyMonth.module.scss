@@ -17,7 +17,7 @@
   }
 
   &.isWeekend {
-    background: $neutral-gray-200 !important;
+    background: $neutral-gray-200;
   }
 
   &.isAlternating {
@@ -37,6 +37,15 @@
   &.isToday {
     background: $red-500 !important;
     color: $neutral-gray-100 !important;
+  }
+
+  &.isFirstOfTheMonth {
+    color: $red-600;
+    padding-left: 10px;
+  }
+
+  &.isLastOfTheMnth {
+    position: relative;
   }
 
   &.isSelected {
@@ -60,13 +69,6 @@
 
 @media (min-width: 768px) {
   .calendarItem {
-    clip-path: polygon(
-      0 0,
-      100% 0,
-      100% calc(100% - 10px),
-      calc(100% - 10px) 100%,
-      0 100%
-    );
     font-size: 12px;
     padding: 0.25rem;
     text-align: left;
@@ -74,10 +76,19 @@
     clip-path: polygon(
       0 0,
       100% 0,
-      100% calc(100% - 6px),
-      calc(100% - 6px) 100%,
+      100% calc(100% - 8px),
+      calc(100% - 8px) 100%,
       0 100%
     );
+    &.smallPolygon {
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - 6px),
+        calc(100% - 6px) 100%,
+        0 100%
+      );
+    }
 
     .content {
       align-items: baseline;
@@ -95,6 +106,23 @@
   .calendarItem {
     font-size: 12px;
     padding: 0.5rem;
+
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - 12px),
+      calc(100% - 12px) 100%,
+      0 100%
+    );
+    &.smallPolygon {
+      clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - 6px),
+        calc(100% - 6px) 100%,
+        0 100%
+      );
+    }
 
     .date {
       font-size: 18px;

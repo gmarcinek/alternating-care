@@ -146,6 +146,8 @@ export const Dashboard = (props: DashboardProps) => {
                 selection={Array.from(selection)}
                 setSelection={setSelection}
                 onSuccess={onAddEventSuccess}
+                isMultiSelectionMode={isMultiSelectionMode}
+                setIsMultiSelectionMode={setIsMultiSelectionMode}
               />
             </Stack>
           </Stack>
@@ -200,7 +202,7 @@ export const Dashboard = (props: DashboardProps) => {
         </Stack>
       </div>
 
-      <div className={eventListClasses}>aaa</div>
+      <div className={eventListClasses}></div>
     </div>
   );
 };

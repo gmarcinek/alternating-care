@@ -39,7 +39,8 @@ export default function CalendarDay(props: CalendarDayProps) {
     return (selection ?? []).toString().split(',').includes(day.date);
   }, [selection, day.date]);
 
-  const isCheckboxVisible = isMultiSelectionMode && rowSize === 7;
+  const isCheckboxVisible =
+    isMultiSelectionMode || (isSelected && rowSize !== 1);
 
   const handleonOnDayClick = useCallback<MouseEventHandler<Element>>(
     (event) => {

@@ -26,10 +26,18 @@ interface DashboardEventFormProps {
   selection: string[];
   setSelection: Dispatch<SetStateAction<Set<string>>>;
   onSuccess: () => void;
+  isMultiSelectionMode: boolean;
+  setIsMultiSelectionMode: (value: boolean) => void;
 }
 
 export const DashboardEventForm = (props: DashboardEventFormProps) => {
-  const { selection, onSuccess, setSelection } = props;
+  const {
+    selection,
+    onSuccess,
+    setSelection,
+    isMultiSelectionMode,
+    setIsMultiSelectionMode,
+  } = props;
   const { language } = useAppContext();
   const i18n = dashboardEventFormI18n[language];
 
@@ -117,10 +125,13 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
 
   const handleCancel = useCallback(() => {
     setSelection(new Set([]));
+    setIsMultiSelectionMode(false);
   }, [setSelection]);
 
   const formClasses = classNames(styles.dashboardEventForm, {
     [styles.isSelectionNotEmpty]: selection.length !== 0,
+    [styles.isColorPickerVisible]:
+      selection.length !== 0 && type !== CalendarEventType.Alternating,
   });
 
   return (
@@ -219,8 +230,9 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
               </Stack>
               <Stack contentAlignment='between' direction='horizontal'>
                 <SwatchesPicker
-                  height={293}
+                  height={364}
                   width={473}
+                  className={styles.swatches}
                   onChange={(value: ColorResult) => {
                     setBackgroundColor(value.hex);
                   }}

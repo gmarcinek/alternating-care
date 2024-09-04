@@ -1,3 +1,4 @@
+import { useDayContainetRwd } from '@components/Calendar/hooks/useDayContainetRwd';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarDayType, CalendarEventType } from '@modules/db/types';
 import { dateFormat } from '@utils/dates';
@@ -16,10 +17,17 @@ interface CalendarItemBodyMonthProps {
 export function CalendarItemBodyMonth(props: CalendarItemBodyMonthProps) {
   const { day } = props;
   const currentDate = dayjs(day.date);
-  const { isAlternatingVisible, isWeekendsVisible, isTodayVisible, events } =
-    useCalenderContext();
+  const {
+    isAlternatingVisible,
+    isWeekendsVisible,
+    isTodayVisible,
+    events,
+    selection,
+    containerWidth,
+    displayStrategy,
+  } = useCalenderContext();
   const { isTablet, isMobile } = useBreakpoints();
-
+  const { is380, is1024, is1504 } = useDayContainetRwd(containerWidth);
   const { isToday, isFirstOfTheMonth } = useMemo(() => {
     return {
       isToday: currentDate.format(dateFormat) === dayjs().format(dateFormat),
@@ -48,11 +56,19 @@ export function CalendarItemBodyMonth(props: CalendarItemBodyMonthProps) {
       })
       .includes(day.date);
 
+  const isSelected = useMemo(() => {
+    return (selection ?? []).toString().split(',').includes(day.date);
+  }, [selection, day.date]);
+
   const itemClasses = classNames(styles.calendarItem, {
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
-    [styles.isFirstOfTheMonth]: isFirstOfTheMonth,
     [styles.isAlternating]: isAlternating,
+
+    [styles.smallPolygon]: is380,
+    [styles.isFirstOfTheMonth]:
+      displayStrategy === 'continous' && isFirstOfTheMonth,
+    [styles.isSelected]: isSelected,
   });
 
   return (
@@ -62,9 +78,10 @@ export function CalendarItemBodyMonth(props: CalendarItemBodyMonthProps) {
       isToday={isToday}
       isTodayVisible={isTodayVisible}
       isFirstOfTheMonth={isFirstOfTheMonth}
+      isSelected={isSelected}
     >
       <div className={itemClasses}>
-        <Stack className={label} gap={4}>
+        <Stack className={label} gap={2}>
           <div className={textClasses}>{label}</div>
           <Stack
             gap={isTablet || isMobile ? 0 : 2}
@@ -73,8 +90,10 @@ export function CalendarItemBodyMonth(props: CalendarItemBodyMonthProps) {
           >
             <>
               <strong>{currentDate.format('D')}</strong>
+              {!is1504 && <small>{currentDate.format('.MM')}</small>}
             </>
           </Stack>
+          {!is1024 && <small>{currentDate.format('MMM')}</small>}
         </Stack>
       </div>
     </CalendarItemStatusContainer>

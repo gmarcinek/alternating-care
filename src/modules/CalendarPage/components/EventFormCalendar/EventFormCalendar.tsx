@@ -163,6 +163,8 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
                     selection={Array.from(selection)}
                     setSelection={setSelection}
                     onSuccess={onAddEventSuccess}
+                    isMultiSelectionMode={isMultiSelectionMode}
+                    setIsMultiSelectionMode={setIsMultiSelectionMode}
                   />
                 </Stack>
               </Stack>

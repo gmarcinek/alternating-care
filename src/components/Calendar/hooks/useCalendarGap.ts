@@ -35,7 +35,7 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
       case 7:
         return 4;
       case 14:
-        return 2;
+        return 1;
       case 30:
         return 0;
     }
@@ -48,7 +48,7 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
       case 7:
         return 8;
       case 14:
-        return 4;
+        return 1;
       case 30:
         return 1;
     }
@@ -61,7 +61,7 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
       case 7:
         return 12;
       case 14:
-        return 8;
+        return 1;
       case 30:
         return 1;
     }
@@ -74,7 +74,7 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
       case 7:
         return 12;
       case 14:
-        return 8;
+        return 1;
       case 30:
         return 1;
     }

@@ -1,3 +1,4 @@
+import { useDayContainetRwd } from '@components/Calendar/hooks/useDayContainetRwd';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarDayType, CalendarEventType } from '@modules/db/types';
 import { dateFormat } from '@utils/dates';
@@ -18,9 +19,17 @@ export function CalendarItemBodyTwoWeeks(
 ) {
   const { day } = props;
   const currentDate = dayjs(day.date);
-  const { isAlternatingVisible, isWeekendsVisible, isTodayVisible, events } =
-    useCalenderContext();
+  const {
+    isAlternatingVisible,
+    isWeekendsVisible,
+    isTodayVisible,
+    events,
+    displayStrategy,
+    containerWidth,
+    selection,
+  } = useCalenderContext();
   const { isTablet, isMobile } = useBreakpoints();
+  const { is380, is1024 } = useDayContainetRwd(containerWidth);
 
   const { isToday, isFirstOfTheMonth } = useMemo(() => {
     return {
@@ -50,11 +59,19 @@ export function CalendarItemBodyTwoWeeks(
       })
       .includes(day.date);
 
+  const isSelected = useMemo(() => {
+    return (selection ?? []).toString().split(',').includes(day.date);
+  }, [selection, day.date]);
+
   const itemClasses = classNames(styles.calendarItem, {
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
-    [styles.isFirstOfTheMonth]: isFirstOfTheMonth,
     [styles.isAlternating]: isAlternating,
+
+    [styles.smallPolygon]: is380,
+    [styles.isFirstOfTheMonth]:
+      displayStrategy === 'continous' && isFirstOfTheMonth,
+    [styles.isSelected]: isSelected,
   });
 
   return (
@@ -64,6 +81,7 @@ export function CalendarItemBodyTwoWeeks(
       isToday={isToday}
       isTodayVisible={isTodayVisible}
       isFirstOfTheMonth={isFirstOfTheMonth}
+      isSelected={isSelected}
     >
       <div className={itemClasses}>
         <Stack className={label} gap={2}>
@@ -75,9 +93,10 @@ export function CalendarItemBodyTwoWeeks(
           >
             <>
               <strong>{currentDate.format('D')}</strong>
-              <small>{currentDate.format('/MM')}</small>
+              <small>{currentDate.format('.MM')}</small>
             </>
           </Stack>
+          {!is1024 && <small>{currentDate.format('MMM')}</small>}
         </Stack>
       </div>
     </CalendarItemStatusContainer>
