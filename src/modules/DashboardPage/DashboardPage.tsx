@@ -2,25 +2,20 @@
 
 import DashboardContainer from '@components/DashboardContainer/DashboardContainer';
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
-import { useGetAllEventsMutation } from '@modules/db/events/useGetAllEventsMutation';
+import { useGetAllEventsQuery } from '@modules/db/events/useGetAllEventsQuery';
 import { TodayButton } from '@modules/TodayButton/TodayButton';
-import { useEffect } from 'react';
 import { Dashboard } from './components/Dashboard/Dashboard';
 
 export const DashboardPage = () => {
-  const { isError, refetch: fetchEvents, mutation } = useGetAllEventsMutation();
+  const { query } = useGetAllEventsQuery();
 
-  useEffect(() => {
-    void mutation.mutate();
-  }, [fetchEvents]);
-
-  if (isError) {
+  if (query.isError) {
     return <ErrorMessage message={'Unexpected error occurred'} />;
   }
 
   return (
     <DashboardContainer>
-      <Dashboard fetchEventsMutation={mutation} />
+      <Dashboard fetchEventsQuery={query} />
       <TodayButton />
     </DashboardContainer>
   );

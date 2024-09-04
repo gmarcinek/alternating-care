@@ -136,11 +136,11 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
 
   return (
     <>
-      <Stack direction='horizontal' gap={8}>
-        <AddIcon />
-        <h3 className='mt-0'>{i18n.newPlanTitle}</h3>
-      </Stack>
       <form onSubmit={handleSubmit} className={formClasses}>
+        <Stack direction='horizontal' gap={8}>
+          <AddIcon />
+          <h3 className='mt-0'>{i18n.newPlanTitle}</h3>
+        </Stack>
         <Stack direction='horizontal'>
           <Button
             onClick={handleCancel}

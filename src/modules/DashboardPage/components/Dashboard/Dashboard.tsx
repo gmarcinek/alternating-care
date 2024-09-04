@@ -4,32 +4,27 @@ import { useAppContext } from '@app/AppContext';
 import { Calendar } from '@components/Calendar/Calendar';
 import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import { Stack } from '@components/Stack/Stack';
-import { CalendarSettingsForm } from '@modules/CalendarPage/components/CalendarSettingsForm/CalendarSettingsForm';
 import { CalendarEvent } from '@modules/db/types';
 import { Divider } from '@nextui-org/divider';
-import { UseMutationResult } from '@tanstack/react-query';
+import { UseQueryResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
 import { dateFormat, groupByDate } from '@utils/dates';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { useLongPress } from 'use-long-press';
+import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsForm';
 import { DashboardEventForm } from '../DashboardEventForm/DashboardEventForm';
 import { dashboardI18n } from './dashboard.i18n';
 import styles from './Dashboard.module.scss';
 import { useSelection } from './useSelection';
 
 interface DashboardProps {
-  fetchEventsMutation: UseMutationResult<
-    CalendarEvent[],
-    unknown,
-    void,
-    unknown
-  >;
+  fetchEventsQuery: UseQueryResult<CalendarEvent[], Error>;
 }
 
 export const Dashboard = (props: DashboardProps) => {
-  const { fetchEventsMutation } = props;
+  const { fetchEventsQuery } = props;
   const { language } = useAppContext();
   const startDate = dayjs().format(dateFormat);
 
@@ -52,11 +47,11 @@ export const Dashboard = (props: DashboardProps) => {
   const onAddEventSuccess = useCallback(() => {
     setIsMultiSelectionMode(false);
     handleCancelMultiSelect();
-    fetchEventsMutation.mutate();
+    fetchEventsQuery.refetch();
   }, [
     setIsMultiSelectionMode,
     handleCancelMultiSelect,
-    fetchEventsMutation.mutate,
+    fetchEventsQuery.refetch,
   ]);
 
   const dashboardClasses = classNames(styles.dashboard, {
@@ -86,9 +81,9 @@ export const Dashboard = (props: DashboardProps) => {
   });
 
   const sortedEvents = useMemo(() => {
-    const data = fetchEventsMutation.data || ([] as CalendarEvent[]);
+    const data = fetchEventsQuery.data || ([] as CalendarEvent[]);
     return sortBy(data, 'creationTime');
-  }, [fetchEventsMutation.data]);
+  }, [fetchEventsQuery.data]);
 
   const detailDates = useMemo(() => {
     return (sortedEvents ?? [])

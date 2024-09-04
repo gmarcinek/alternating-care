@@ -29,7 +29,7 @@ export function CalendarItemBodyTwoWeeks(
     selection,
   } = useCalenderContext();
   const { isTablet, isMobile } = useBreakpoints();
-  const { is380, is1024 } = useDayContainetRwd(containerWidth);
+  const { is380, is608, is1024 } = useDayContainetRwd(containerWidth);
 
   const { isToday, isFirstOfTheMonth } = useMemo(() => {
     return {
@@ -68,7 +68,7 @@ export function CalendarItemBodyTwoWeeks(
     [styles.isToday]: isTodayVisible && isToday,
     [styles.isAlternating]: isAlternating,
 
-    [styles.smallPolygon]: is380,
+    [styles.smallPolygon]: is608,
     [styles.isFirstOfTheMonth]:
       displayStrategy === 'continous' && isFirstOfTheMonth,
     [styles.isSelected]: isSelected,

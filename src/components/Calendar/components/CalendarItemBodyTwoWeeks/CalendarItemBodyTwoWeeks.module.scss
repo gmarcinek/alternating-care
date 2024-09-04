@@ -74,14 +74,6 @@
     background $transition-duration,
     color $transition-duration,
     filter $transition-duration $transition-timing-function;
-
-  .date {
-    font-size: 14px;
-  }
-
-  .month {
-    font-size: 14px;
-  }
 }
 
 @media (min-width: 768px) {
@@ -104,7 +96,7 @@
       );
     }
 
-    font-size: 12px;
+    font-size: 14px;
     padding: 0.25rem;
 
     &.isFirstOfTheMonth {
@@ -113,25 +105,19 @@
     .content {
       align-items: baseline;
     }
-    .date {
-      font-size: 12px;
-    }
-    .month {
-      font-size: 10px;
-    }
   }
 }
 
 @media (min-width: 1024px) {
   .calendarItem {
+    font-size: 11px;
+    padding: 0.25rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .calendarItem {
     font-size: 12px;
     padding: 0.5rem;
-
-    .date {
-      font-size: 18px;
-    }
-    .month {
-      font-size: 14px;
-    }
   }
 }

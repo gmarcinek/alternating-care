@@ -4,7 +4,7 @@ import { CalendarItem } from '@components/Calendar/components/CalendarItem/Calen
 import { Stack } from '@components/Stack/Stack';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Divider } from '@nextui-org/react';
-import { colorNeutralGray900 } from '@utils/color';
+import { colorNeutralGray900, getTextColor } from '@utils/color';
 import { GroupByDateType } from '@utils/dates';
 import { capitalizeFirstLetter } from '@utils/string';
 import { useScrollToId } from '@utils/useScrollTo';
@@ -54,9 +54,8 @@ export default function CalendarEventList(props: CalendarEventListProps) {
                 mode='none'
                 key={`${item.date}-${index}`}
                 style={{
-                  // backgroundColor: 'f1f1f1',
-                  // background: `linear-gradient(135deg, #f1f1f1 60%, ${item.style?.background}22 90%)`,
-                  background: `${item.style?.background}77`,
+                  background: `${item.style?.background}`,
+
                   padding: '16px',
                   marginBottom: '8px',
                 }}
@@ -64,10 +63,12 @@ export default function CalendarEventList(props: CalendarEventListProps) {
               >
                 <Stack direction='horizontal' contentAlignment='between'>
                   <Stack gap={0}>
-                    <h4>
+                    <h4 style={{ color: getTextColor(item.style?.background) }}>
                       <strong>{item.name}</strong>
                     </h4>
-                    <p>{item.description}</p>
+                    <p style={{ color: getTextColor(item.style?.background) }}>
+                      {item.description}
+                    </p>
                   </Stack>
                 </Stack>
               </CalendarItem>

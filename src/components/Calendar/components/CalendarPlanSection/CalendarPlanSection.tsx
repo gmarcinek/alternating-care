@@ -54,11 +54,11 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
     <Stack className={styles.calendarPlanSection}>
       <Stack gap={8}>
         {transposed.map((events, groupIndex) => {
-          const eventName = events.find((event) => event.name)?.name;
-          const eventDate = events.find((event) => event.name)?.date;
-          const eventDescription = events.find(
-            (event) => event.name
-          )?.description;
+          const eventNonOffset = events.find((event) => event.name);
+          const eventName = eventNonOffset?.name;
+          const eventDate = eventNonOffset?.date;
+          const eventStyle = eventNonOffset?.style;
+          const eventDescription = eventNonOffset?.description;
 
           return (
             <div
@@ -69,8 +69,16 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                 gap={0}
                 className={styles.calendarPlanItem}
                 direction='horizontal'
+                style={{
+                  background:
+                    eventNonOffset?.type === CalendarEventType.Alternating
+                      ? `${colorBlueGreen700}33`
+                      : `${eventStyle?.background}33`,
+                }}
               >
                 {events.map((event, itemIndex) => {
+                  const isOffset = event.type === CalendarEventType.Offset;
+
                   return (
                     <CalendarItem
                       isNoPadding
@@ -86,7 +94,9 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                         background:
                           event.type === CalendarEventType.Alternating
                             ? colorBlueGreen700
-                            : `${event.style?.background}ff`,
+                            : isOffset
+                              ? 'transparent'
+                              : `${event.style?.background}ff`,
                         color:
                           getTextColor(
                             event.type === CalendarEventType.Alternating

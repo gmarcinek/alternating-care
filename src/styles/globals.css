@@ -109,7 +109,7 @@ p {
 .zoomIn {
   transform: scale(2);
   z-index: 5;
-  filter: drop-shadow(0 0 12px rgb(255, 255, 255));
+  filter: drop-shadow(0 0 12px rgb(66, 66, 66));
 
   transition:
     transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
