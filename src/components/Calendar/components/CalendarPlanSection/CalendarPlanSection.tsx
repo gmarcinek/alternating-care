@@ -72,8 +72,8 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                 style={{
                   background:
                     eventNonOffset?.type === CalendarEventType.Alternating
-                      ? `${colorBlueGreen700}33`
-                      : `${eventStyle?.background}33`,
+                      ? `${colorBlueGreen700}16`
+                      : `${eventStyle?.background}16`,
                 }}
               >
                 {events.map((event, itemIndex) => {

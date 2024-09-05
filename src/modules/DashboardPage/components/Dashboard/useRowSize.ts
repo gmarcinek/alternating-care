@@ -1,21 +1,24 @@
 import { useBreakpoints } from '@utils/useBreakpoints';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 interface UseRowSizeProps {
   isPlanVisible: boolean;
 }
 
+export type RowSizeType = 1 | 7 | 14 | 21 | 28 | 30;
+
 export const useRowSize = (props: UseRowSizeProps) => {
   const { isPlanVisible } = props;
+  const [manualRowSize, setManualRowSize] = useState<RowSizeType>();
   const { isMobile, isTablet, is1024, is1280, is1360, is1440, is1671, is1920 } =
     useBreakpoints();
 
-  const rowSize = useMemo(() => {
+  const automaticRowSize = useMemo<RowSizeType>(() => {
     if (isPlanVisible && is1920) {
-      return 30;
+      return 21;
     }
     if (isPlanVisible && is1671) {
-      return 30;
+      return 14;
     }
     if (isPlanVisible && is1440) {
       return 14;
@@ -49,5 +52,5 @@ export const useRowSize = (props: UseRowSizeProps) => {
     is1920,
   ]);
 
-  return rowSize;
+  return { automaticRowSize, manualRowSize, setManualRowSize };
 };

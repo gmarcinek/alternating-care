@@ -14,7 +14,7 @@ export function Language() {
   const { setLanguage, language } = useAppContext();
 
   return (
-    <Dropdown>
+    <Dropdown size='sm'>
       <DropdownTrigger>
         <Button variant='bordered'>{language.toUpperCase()}</Button>
       </DropdownTrigger>

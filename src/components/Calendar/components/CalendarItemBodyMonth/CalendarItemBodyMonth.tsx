@@ -27,7 +27,7 @@ export function CalendarItemBodyMonth(props: CalendarItemBodyMonthProps) {
     displayStrategy,
   } = useCalenderContext();
   const { isTablet, isMobile } = useBreakpoints();
-  const { is380, is1280, is1504 } = useDayContainetRwd(containerWidth);
+  const { is1280, is1024, is1504 } = useDayContainetRwd(containerWidth);
   const { isToday, isFirstOfTheMonth } = useMemo(() => {
     return {
       isToday: currentDate.format(dateFormat) === dayjs().format(dateFormat),
@@ -65,7 +65,7 @@ export function CalendarItemBodyMonth(props: CalendarItemBodyMonthProps) {
     [styles.isToday]: isTodayVisible && isToday,
     [styles.isAlternating]: isAlternating,
 
-    [styles.smallPolygon]: is380,
+    [styles.smallPolygon]: is1024,
     [styles.isFirstOfTheMonth]:
       displayStrategy === 'continous' && isFirstOfTheMonth,
     [styles.isSelected]: isSelected,

@@ -1,6 +1,6 @@
 import { useAppContext } from '@app/AppContext';
-import TuneIcon from '@mui/icons-material/Tune';
-import { Input, Switch } from '@nextui-org/react';
+import { Stack } from '@components/Stack/Stack';
+import { Switch } from '@nextui-org/react';
 import { calendarSettingsFormI18n } from './calendarSettingsForm.i18n';
 
 interface CalendarSettingsFormProps {
@@ -9,7 +9,6 @@ interface CalendarSettingsFormProps {
 
   isAlternatingVisible: boolean;
   setIsAlternatingVisible: (value: boolean) => void;
-  sliderValue: number;
 }
 
 export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
@@ -18,23 +17,20 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
     setIsPlanVisible,
     isAlternatingVisible,
     setIsAlternatingVisible,
-    sliderValue,
   } = props;
 
   const { language } = useAppContext();
   const i18n = calendarSettingsFormI18n[language];
 
   return (
-    <>
-      {sliderValue !== 1 && (
-        <Switch
-          defaultSelected={isPlanVisible}
-          onValueChange={setIsPlanVisible}
-          size='sm'
-        >
-          {i18n.plan}
-        </Switch>
-      )}
+    <Stack direction='horizontal' className='py-4'>
+      <Switch
+        defaultSelected={isPlanVisible}
+        onValueChange={setIsPlanVisible}
+        size='sm'
+      >
+        {i18n.plan}
+      </Switch>
 
       <Switch
         defaultSelected={isAlternatingVisible}
@@ -43,16 +39,6 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
       >
         {i18n.alternating}
       </Switch>
-
-      <Input
-        type='text'
-        radius='full'
-        placeholder='Filtr'
-        isClearable
-        variant='faded'
-        size='sm'
-        startContent={<TuneIcon />}
-      />
-    </>
+    </Stack>
   );
 };

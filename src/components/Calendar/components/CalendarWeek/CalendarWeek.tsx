@@ -7,6 +7,7 @@ import { useCalenderContext } from '../../Calendar.context';
 import CalendarDay from '../CalendarDay/CalendarDay';
 import { CalendarPlanSection } from '../CalendarPlanSection/CalendarPlanSection';
 import CalendarWeekInfoSection from '../CalendarWeekInfoSection/CalendarWeekInfoSection';
+import style from './CalendarWeek.module.scss';
 
 interface CallendarWeekProps {
   week: CalendarDayType[];
@@ -14,7 +15,7 @@ interface CallendarWeekProps {
   monthIndex?: number;
 }
 
-export function CallendarWeek(props: CallendarWeekProps) {
+export function CalendarWeek(props: CallendarWeekProps) {
   const { week, gap } = props;
   const { rowSize, isPlanVisible, events } = useCalenderContext();
 
@@ -25,7 +26,7 @@ export function CallendarWeek(props: CallendarWeekProps) {
   }, [events, week]);
 
   return (
-    <Stack gap={8}>
+    <Stack gap={8} className={style.calendarWeek}>
       {rowSize !== 1 && isPlanVisible && (
         <CalendarWeekInfoSection week={week} />
       )}
@@ -33,7 +34,11 @@ export function CallendarWeek(props: CallendarWeekProps) {
       <Stack gap={gap} direction='horizontal' contentAlignment='between'>
         {week.map((day, weekDayIndex) => {
           return (
-            <CalendarDay day={day} key={`day-${day.date}-${weekDayIndex}`} />
+            <CalendarDay
+              day={day}
+              key={`day-${day.date}-${weekDayIndex}`}
+              className={style.item}
+            />
           );
         })}
       </Stack>

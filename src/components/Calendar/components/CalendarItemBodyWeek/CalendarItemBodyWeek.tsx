@@ -90,7 +90,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
         className={itemClasses}
         style={{
           ...style.style,
-          background: isPlanVisible ? 'white' : event?.style?.background,
+          backgroundColor: isPlanVisible ? 'white' : event?.style?.background,
           color: isPlanVisible ? 'black' : event?.style?.color,
         }}
       >

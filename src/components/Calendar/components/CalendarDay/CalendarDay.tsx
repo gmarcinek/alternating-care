@@ -20,10 +20,11 @@ import styles from './CalendarDay.module.scss';
 
 interface CalendarDayProps extends PropsWithChildren {
   day: CalendarDayType;
+  className?: string;
 }
 
 export default function CalendarDay(props: CalendarDayProps) {
-  const { day } = props;
+  const { day, className } = props;
   let render: JSX.Element | undefined = undefined;
 
   const {
@@ -63,8 +64,10 @@ export default function CalendarDay(props: CalendarDayProps) {
     [onPointerUp, day]
   );
 
+  const emptyClasses = classNames(className, styles.emptyDay);
+
   if (day.isOffset) {
-    return <div className={styles.emptyDay}></div>;
+    return <div className={emptyClasses}></div>;
   }
 
   switch (rowSize) {
@@ -91,7 +94,7 @@ export default function CalendarDay(props: CalendarDayProps) {
       break;
   }
 
-  const classes = classNames(styles.calendarDay);
+  const classes = classNames(styles.calendarDay, className);
 
   return (
     <div

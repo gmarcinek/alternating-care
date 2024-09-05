@@ -12,26 +12,22 @@
     flex-direction: row;
     margin: 0;
     border-right: 1px solid #00000015;
-  }
 
-  .calendarItem {
-    margin: 0;
-    height: 16px;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    border: 1px solid #00000015;
-    border-right: none;
-
-    &:nth-of-type(7) {
-      border-right: 1px solid #00000015;
-    }
-
-    small {
-      font-size: 11px;
-      height: 16px;
+    .calendarItem {
       margin: 0;
-      padding: 0;
-      position: absolute;
+      height: 16px;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      border: 1px solid #00000015;
+      border-right: none;
+
+      small {
+        font-size: 11px;
+        height: 16px;
+        margin: 0;
+        padding: 0;
+        position: absolute;
+      }
     }
   }
 }

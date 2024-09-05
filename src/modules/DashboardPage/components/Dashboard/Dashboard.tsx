@@ -3,8 +3,7 @@
 import { Calendar } from '@components/Calendar/Calendar';
 import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import { Stack } from '@components/Stack/Stack';
-import { CalendarEvent } from '@modules/db/types';
-import { Divider } from '@nextui-org/divider';
+import { CalendarEvent, CalendarEventType } from '@modules/db/types';
 import { UseQueryResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
 import { dateFormat, groupByDate } from '@utils/dates';
@@ -26,7 +25,6 @@ export const Dashboard = (props: DashboardProps) => {
   const { fetchEventsQuery } = props;
 
   const startDate = dayjs().format(dateFormat);
-
   const {
     selection,
     handlers,
@@ -38,7 +36,7 @@ export const Dashboard = (props: DashboardProps) => {
     isMultiSelectionAvailable: true,
   });
 
-  const [isPlanVisible, setIsPlanVisible] = useState(false);
+  const [isPlanVisible, setIsPlanVisible] = useState(true);
   const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
 
   const onAddEventSuccess = useCallback(() => {
@@ -87,7 +85,7 @@ export const Dashboard = (props: DashboardProps) => {
       .filter((item) => {
         return (
           dayjs(item.date).isAfter(dayjs(startDate).subtract(2, 'day')) &&
-          item.type !== 'ALTERNATING'
+          item.type !== CalendarEventType.Alternating
         );
       })
       .sort((itemA, itemB) => {
@@ -99,15 +97,21 @@ export const Dashboard = (props: DashboardProps) => {
     return groupByDate(detailDates);
   }, [detailDates]);
 
-  const rowSize = useRowSize({
+  const { automaticRowSize } = useRowSize({
     isPlanVisible,
   });
 
   return (
     <div className={dashboardClasses} id='dashboard'>
       <div className={styles.calendarContainer}>
+        <CalendarSettingsForm
+          isPlanVisible={isPlanVisible}
+          setIsPlanVisible={setIsPlanVisible}
+          isAlternatingVisible={isAlternatingVisible}
+          setIsAlternatingVisible={setIsAlternatingVisible}
+        />
         <div {...bind()}>
-          {rowSize === 30 && (
+          {automaticRowSize === 30 && (
             <Stack>
               {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((m, index) => {
                 return (
@@ -137,10 +141,11 @@ export const Dashboard = (props: DashboardProps) => {
               })}
             </Stack>
           )}
-          {rowSize !== 30 && (
+
+          {automaticRowSize !== 30 && (
             <Calendar
               startDate={startDate}
-              rowSize={rowSize}
+              rowSize={automaticRowSize}
               isTodayVisible
               isPlanVisible={isPlanVisible}
               isAlternatingVisible={isAlternatingVisible}
@@ -156,28 +161,14 @@ export const Dashboard = (props: DashboardProps) => {
 
       <div className={formClasses}>
         <Stack gap={0}>
-          <Stack className={styles.calendarDetails}>
-            <Stack gap={12} direction='horizontal'>
-              <CalendarSettingsForm
-                isPlanVisible={isPlanVisible}
-                setIsPlanVisible={setIsPlanVisible}
-                isAlternatingVisible={isAlternatingVisible}
-                setIsAlternatingVisible={setIsAlternatingVisible}
-                sliderValue={7}
-              />
-            </Stack>
-
-            <Divider className='mb-2 mt-4' />
-
-            <Stack gap={8}>
-              <DashboardEventForm
-                selection={Array.from(selection)}
-                setSelection={setSelection}
-                onSuccess={onAddEventSuccess}
-                isMultiSelectionMode={isMultiSelectionMode}
-                setIsMultiSelectionMode={setIsMultiSelectionMode}
-              />
-            </Stack>
+          <Stack gap={8}>
+            <DashboardEventForm
+              selection={Array.from(selection)}
+              setSelection={setSelection}
+              onSuccess={onAddEventSuccess}
+              isMultiSelectionMode={isMultiSelectionMode}
+              setIsMultiSelectionMode={setIsMultiSelectionMode}
+            />
           </Stack>
 
           <Stack className='mt-4'>

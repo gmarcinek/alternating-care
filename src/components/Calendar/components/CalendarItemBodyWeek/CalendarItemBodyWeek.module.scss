@@ -36,7 +36,9 @@
   }
 
   &.isAlternating {
-    background: $blue-green-700 !important;
+    background-image: url(../../../../assets/pas02.png) !important;
+    background-color: $blue-green-700 !important;
+    background-repeat: repeat;
     color: $neutral-gray-100 !important;
 
     &.isWeekend {

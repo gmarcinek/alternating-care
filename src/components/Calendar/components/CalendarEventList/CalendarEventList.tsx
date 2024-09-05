@@ -10,6 +10,7 @@ import { capitalizeFirstLetter } from '@utils/string';
 import { useScrollToId } from '@utils/useScrollTo';
 import dayjs from 'dayjs';
 import { useCallback } from 'react';
+import style from './CalendarEventList.module.scss';
 
 interface CalendarEventListProps {
   date: string;
@@ -55,11 +56,11 @@ export default function CalendarEventList(props: CalendarEventListProps) {
                 key={`${item.date}-${index}`}
                 style={{
                   background: `${item.style?.background}`,
-
                   padding: '16px',
                   marginBottom: '8px',
                 }}
                 day={item}
+                className={style.eventItem}
               >
                 <Stack direction='horizontal' contentAlignment='between'>
                   <Stack gap={0}>

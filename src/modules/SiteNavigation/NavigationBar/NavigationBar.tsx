@@ -22,7 +22,7 @@ export const NavigationBar = (props: NavbarProps) => {
 
   return (
     <div
-      className='x-0 sticky top-0 z-50 h-16 w-full bg-white shadow-lg shadow-slate-200/50'
+      className='x-0 sticky top-0 z-50 h-12 w-full bg-white shadow-lg shadow-slate-200/50'
       id='main-navbar'
     >
       <div className='container-fluid h-full px-4'>

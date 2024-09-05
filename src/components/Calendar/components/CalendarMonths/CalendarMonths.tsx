@@ -3,7 +3,7 @@
 import { Stack, StackGap } from '@components/Stack/Stack';
 import { forwardRef } from 'react';
 import { CalendarMonthType } from '../../Calendar.types';
-import { CalendarMonth } from '../CallendarMonth/CallendarMonth';
+import { CalendarMonth } from '../CalendarMonth/CalendarMonth';
 
 interface CalendarMonthsProps {
   months: CalendarMonthType[];

@@ -14,8 +14,8 @@ import {
 } from './Calendar.context';
 import { segregateDatesMonthly } from './Calendar.helpers';
 import { DisplayStrategy } from './Calendar.types';
-import { CalendarMonths } from './components/CallendarMonths/CallendarMonths';
-import { CallendarUngruped } from './components/CallendarUngruped/CallendarUngruped';
+import { CalendarMonths } from './components/CalendarMonths/CalendarMonths';
+import { CalendarUngruped } from './components/CalendarUngruped/CalendarUngruped';
 import { useCalendarDates } from './hooks/useCalendarDates';
 import { useCalendarGap } from './hooks/useCalendarGap';
 
@@ -122,7 +122,7 @@ export function Calendar(props: CalendarProps) {
         {isSeparateMonthsMode ? (
           <CalendarMonths gap={gap} months={months} />
         ) : (
-          <CallendarUngruped gap={gap} weeks={weeks} />
+          <CalendarUngruped gap={gap} weeks={weeks} />
         )}
       </div>
     </CalenderContext.Provider>

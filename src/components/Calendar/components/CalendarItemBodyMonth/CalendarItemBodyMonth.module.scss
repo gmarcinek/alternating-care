@@ -21,7 +21,9 @@
   }
 
   &.isAlternating {
-    background: $blue-green-700 !important;
+    background-image: url(../../../../assets/pas02.png) !important;
+    background-color: $blue-green-700;
+    background-repeat: repeat;
     color: $neutral-gray-100 !important;
 
     &.isWeekend {
@@ -91,7 +93,7 @@
 @media (min-width: 1024px) {
   .calendarItem {
     font-size: 12px;
-    padding: 0.5rem;
+    padding: 0.25rem;
 
     clip-path: polygon(
       0 0,
@@ -109,5 +111,21 @@
         0 100%
       );
     }
+  }
+}
+
+@media (min-width: 1920px) {
+  .calendarItem {
+    font-size: 12px;
+    padding: 0.5rem;
+    padding-right: 0.25rem;
+
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      100% calc(100% - 12px),
+      calc(100% - 12px) 100%,
+      0 100%
+    );
   }
 }

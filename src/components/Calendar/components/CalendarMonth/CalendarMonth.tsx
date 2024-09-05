@@ -5,8 +5,8 @@ import { capitalizeFirstLetter } from '@utils/string';
 import dayjs from 'dayjs';
 import { useCalenderContext } from '../../Calendar.context';
 import { CalendarMonthType } from '../../Calendar.types';
-import { CallendarWeek } from '../CallendarWeek/CallendarWeek';
-import styles from './CallendarMonth.module.scss';
+import { CalendarWeek } from '../CalendarWeek/CalendarWeek';
+import styles from './CalendarMonth.module.scss';
 
 interface CalendarMonthProps {
   month: CalendarMonthType;
@@ -34,7 +34,7 @@ export function CalendarMonth(props: CalendarMonthProps) {
 
       {month.weeks.map((week, weekIndex) => {
         return (
-          <CallendarWeek
+          <CalendarWeek
             key={`week-of-${week[0].date}-${weekIndex}-${month.monthIndex}`}
             monthIndex={month.monthIndex}
             week={week}

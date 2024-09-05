@@ -30,7 +30,7 @@ interface UseSelectionProps {
  *   - `onPointerUp` (OnDayPointerHandler): Funkcja obsługująca zdarzenie zwolnienia wskaźnika.
  *   - `onPointerDown` (OnDayPointerHandler): Funkcja obsługująca zdarzenie naciśnięcia wskaźnika.
  */
-export const useSelection = (props: UseSelectionProps) => {
+export const useAlternatingSelection = (props: UseSelectionProps) => {
   const { isMultiSelectionAvailable = false } = props;
   const [isMultiSelectionMode, setIsMultiSelectionMode] =
     useState<boolean>(false);

@@ -135,7 +135,7 @@ export default function CalendarWeekInfoSection(
       )}
       {rowSize === 30 && (
         <>
-          <Divider className='mb-3' />
+          <Divider className='mb-2' />
           <Stack direction='horizontal' contentAlignment='between'>
             <div>
               <h3>
