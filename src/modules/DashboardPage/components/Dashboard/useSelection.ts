@@ -12,6 +12,11 @@ interface UseSelectionProps {
   isMultiSelectionAvailable?: boolean;
 }
 
+export interface CalendarPointerHandlers {
+  onPointerUp: OnDayPointerHandler;
+  onPointerDown: OnDayPointerHandler;
+}
+
 /**
  * Hak `useSelection` do zarządzania zaznaczaniem dni w kalendarzu.
  * Obsługuje zarówno standardowe zaznaczanie pojedynczych dni, jak i zaznaczanie wielu dni z wykorzystaniem klawiszy modyfikujących.
@@ -243,7 +248,7 @@ export const useSelection = (props: UseSelectionProps) => {
     setSelection(new Set());
   }, []);
 
-  const onPointerHandlers = {
+  const onPointerHandlers: CalendarPointerHandlers = {
     onPointerUp: handleOnDayPointerUp,
     onPointerDown: handleOnDayPointerDown,
   };

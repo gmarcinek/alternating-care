@@ -18,18 +18,6 @@
     grid-row: 1;
   }
 
-  .eventListContainer {
-    display: none;
-    grid-column: span 1; /* Ta sekcja zajmuje 1 kolumnę */
-    grid-row: 1; /* Ta sekcja zaczyna się w drugim wierszu */
-    background: $white;
-    z-index: 0;
-
-    overflow-y: scroll;
-    min-height: calc(100vh - 4rem); /* Zachowuje minimalną wysokość */
-    top: 3.5rem;
-  }
-
   .formContainer {
     display: none;
     grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
@@ -37,6 +25,18 @@
     background: $white;
     z-index: 0;
     padding: 2rem;
+    overflow-y: scroll;
+    min-height: calc(100vh - 4rem); /* Zachowuje minimalną wysokość */
+    top: 3.5rem;
+  }
+
+  .widgetContainer {
+    display: none;
+    grid-column: span 1; /* Ta sekcja zajmuje 1 kolumnę */
+    grid-row: 1; /* Ta sekcja zaczyna się w drugim wierszu */
+    background: $white;
+    z-index: 0;
+
     overflow-y: scroll;
     min-height: calc(100vh - 4rem); /* Zachowuje minimalną wysokość */
     top: 3.5rem;
@@ -57,16 +57,16 @@
       grid-column: span 1;
     }
 
-    .eventListContainer {
-      display: none;
-      overflow-y: scroll;
-    }
-
     .formContainer {
       display: block;
       grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
       overflow-y: scroll;
       padding: 1rem;
+    }
+
+    .widgetContainer {
+      display: none;
+      overflow-y: scroll;
     }
   }
 }
@@ -85,16 +85,16 @@
       grid-column: span 1;
     }
 
-    .eventListContainer {
-      display: none;
-      overflow-y: scroll;
-    }
-
     .formContainer {
       display: block;
       grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
       overflow-y: scroll;
       padding: 1rem;
+    }
+
+    .widgetContainer {
+      display: none;
+      overflow-y: scroll;
     }
   }
 }
@@ -114,16 +114,16 @@
       grid-column: span 1;
     }
 
-    .eventListContainer {
-      display: block;
-      overflow-y: scroll;
-    }
-
     .formContainer {
       display: block;
       grid-column: span 1;
       overflow-y: scroll;
       padding: 1rem;
+    }
+
+    .widgetContainer {
+      display: block;
+      overflow-y: scroll;
     }
   }
 }
@@ -154,16 +154,16 @@
       grid-column: span 1;
     }
 
-    .eventListContainer {
-      display: block;
-      grid-column: span 1;
-      padding: 1rem;
-      overflow-y: scroll;
-    }
-
     .formContainer {
       grid-column: span 1;
       padding: 1.5rem;
+      overflow-y: scroll;
+    }
+
+    .widgetContainer {
+      display: block;
+      grid-column: span 1;
+      padding: 1rem;
       overflow-y: scroll;
     }
   }
@@ -183,16 +183,16 @@
       grid-column: span 1;
     }
 
-    .eventListContainer {
-      display: block;
-      grid-column: span 1;
-      padding: 1rem;
-      overflow-y: scroll;
-    }
-
     .formContainer {
       grid-column: span 1;
       padding: 1.5rem;
+      overflow-y: scroll;
+    }
+
+    .widgetContainer {
+      display: block;
+      grid-column: span 1;
+      padding: 1rem;
       overflow-y: scroll;
     }
   }
