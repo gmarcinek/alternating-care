@@ -38,10 +38,6 @@ export const NavigationBar = (props: NavbarProps) => {
                 <p>{i18n.edit}</p>
               </Link>
 
-              <Link href='/month'>
-                <p>{i18n.monthPlan}</p>
-              </Link>
-
               <Link href='/alternating'>
                 <p>Opieka</p>
               </Link>

@@ -1,6 +1,5 @@
 'use client';
 
-import { useAppContext } from '@app/AppContext';
 import { Calendar } from '@components/Calendar/Calendar';
 import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import { Stack } from '@components/Stack/Stack';
@@ -15,8 +14,8 @@ import { useCallback, useMemo, useState } from 'react';
 import { useLongPress } from 'use-long-press';
 import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsForm';
 import { DashboardEventForm } from '../DashboardEventForm/DashboardEventForm';
-import { dashboardI18n } from './dashboard.i18n';
 import styles from './Dashboard.module.scss';
+import { useRowSize } from './useRowSize';
 import { useSelection } from './useSelection';
 
 interface DashboardProps {
@@ -25,10 +24,8 @@ interface DashboardProps {
 
 export const Dashboard = (props: DashboardProps) => {
   const { fetchEventsQuery } = props;
-  const { language } = useAppContext();
-  const startDate = dayjs().format(dateFormat);
 
-  const i18n = dashboardI18n[language];
+  const startDate = dayjs().format(dateFormat);
 
   const {
     selection,
@@ -102,13 +99,17 @@ export const Dashboard = (props: DashboardProps) => {
     return groupByDate(detailDates);
   }, [detailDates]);
 
+  const rowSize = useRowSize({
+    isPlanVisible,
+  });
+
   return (
     <div className={dashboardClasses} id='dashboard'>
       <div className={styles.calendarContainer}>
         <div {...bind()}>
           <Calendar
             startDate={startDate}
-            rowSize={isPlanVisible ? 14 : 7}
+            rowSize={rowSize}
             isTodayVisible
             isPlanVisible={isPlanVisible}
             isAlternatingVisible={isAlternatingVisible}

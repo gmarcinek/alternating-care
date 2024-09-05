@@ -35,6 +35,8 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
       case 7:
         return 4;
       case 14:
+      case 21:
+      case 28:
         return 1;
       case 30:
         return 0;
@@ -48,6 +50,8 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
       case 7:
         return 8;
       case 14:
+      case 21:
+      case 28:
         return 1;
       case 30:
         return 1;
@@ -61,6 +65,8 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
       case 7:
         return 12;
       case 14:
+      case 21:
+      case 28:
         return 1;
       case 30:
         return 1;
@@ -74,6 +80,8 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
       case 7:
         return 12;
       case 14:
+      case 21:
+      case 28:
         return 1;
       case 30:
         return 1;
@@ -100,6 +108,8 @@ function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
       case 7:
         return 4;
       case 14:
+      case 21:
+      case 28:
         return 2;
     }
   }
@@ -111,6 +121,8 @@ function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
       case 7:
         return 12;
       case 14:
+      case 21:
+      case 28:
         return 4;
     }
   }
@@ -122,6 +134,8 @@ function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
       case 7:
         return 12;
       case 14:
+      case 21:
+      case 28:
         return 8;
     }
   }
@@ -133,6 +147,8 @@ function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
       case 7:
         return 12;
       case 14:
+      case 21:
+      case 28:
         return 8;
     }
   }

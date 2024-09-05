@@ -44,11 +44,7 @@ export const Sidebar = (props: SidebarProps) => {
               <h3>Edycja</h3>
             </Link>
           </li>
-          <li>
-            <Link href='/month' onClick={toggle}>
-              <h3>Plan miesiąca</h3>
-            </Link>
-          </li>
+
           <li>
             <Link href='/alternating' onClick={toggle}>
               <h3>Opieka</h3>

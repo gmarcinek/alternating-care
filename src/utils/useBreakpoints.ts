@@ -8,7 +8,7 @@ import { useMediaQuery } from 'react-responsive';
  * Hak wykorzystuje `useMediaQuery` z biblioteki `react-responsive` do monitorowania zmian w szerokości okna
  * przeglądarki i dostarczania odpowiednich wartości dla różnych punktów przerwania (breakpoints).
  *
- * @returns {Object} Obiekt zawierający właściwości logiczne, które informują o aktualnym rozmiarze ekranu:
+ * @returns {UseBreakpoints} Obiekt zawierający właściwości logiczne, które informują o aktualnym rozmiarze ekranu:
  * - `isMobile` (boolean): `true`, jeśli szerokość okna przeglądarki jest mniejsza lub równa 767px.
  * - `isTablet` (boolean): `true`, jeśli szerokość okna przeglądarki jest mniejsza lub równa 1023px.
  * - `isDesktop` (boolean): `true`, jeśli szerokość okna przeglądarki jest mniejsza lub równa 1280px.
@@ -34,7 +34,22 @@ import { useMediaQuery } from 'react-responsive';
  *
  * export default MyComponent;
  */
-export const useBreakpoints = () => {
+
+export interface UseBreakpoints {
+  isMobile: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
+  isBigDesktop: boolean;
+  is768: boolean;
+  is1024: boolean;
+  is1280: boolean;
+  is1360: boolean;
+  is1440: boolean;
+  is1600: boolean;
+  is1920: boolean;
+  is2560: boolean;
+}
+export const useBreakpoints = (): UseBreakpoints => {
   // Używamy useMediaQuery do monitorowania punktów przerwania
   const isMobile = useMediaQuery({ query: '(max-width: 767px)' });
   const isTablet = useMediaQuery({
@@ -45,14 +60,44 @@ export const useBreakpoints = () => {
   });
   const isBigDesktop = useMediaQuery({ query: '(min-width: 1281px)' });
 
+  const is768 = useMediaQuery({ query: '(min-width: 768px)' });
+  const is1024 = useMediaQuery({ query: '(min-width: 1024px)' });
+  const is1280 = useMediaQuery({ query: '(min-width: 1280px)' });
+  const is1360 = useMediaQuery({ query: '(min-width: 1360px)' });
+  const is1440 = useMediaQuery({ query: '(min-width: 1440px)' });
+  const is1600 = useMediaQuery({ query: '(min-width: 1600px)' });
+  const is1920 = useMediaQuery({ query: '(min-width: 1920px)' });
+  const is2560 = useMediaQuery({ query: '(min-width: 2560px)' });
+
   const api = useMemo(() => {
     return {
       isMobile,
       isTablet,
       isDesktop,
       isBigDesktop,
+      is768,
+      is1024,
+      is1280,
+      is1360,
+      is1440,
+      is1600,
+      is1920,
+      is2560,
     };
-  }, [isMobile, isTablet, isDesktop, isBigDesktop]);
+  }, [
+    isMobile,
+    isTablet,
+    isDesktop,
+    isBigDesktop,
+    is768,
+    is1024,
+    is1280,
+    is1360,
+    is1440,
+    is1600,
+    is1920,
+    is2560,
+  ]);
 
   return {
     ...api,

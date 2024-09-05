@@ -81,6 +81,58 @@ export default function CalendarWeekInfoSection(
           </div>
         </Stack>
       )}
+      {rowSize === 21 && (
+        <Stack direction='horizontal' contentAlignment='between'>
+          <div>
+            <span>
+              {monthName === endMmonthName ? (
+                <strong>{monthName}</strong>
+              ) : (
+                <span>
+                  {monthName} /{' '}
+                  <strong style={{ color: colorRed500 }}>
+                    {endMmonthName}
+                  </strong>
+                </span>
+              )}{' '}
+              {yearName}
+            </span>
+          </div>{' '}
+          <div>
+            <small>
+              {dateAlpha.format('DD.MM')}
+              {'-'}
+              {dateOmega.format('DD.MM')}
+            </small>
+          </div>
+        </Stack>
+      )}
+      {rowSize === 28 && (
+        <Stack direction='horizontal' contentAlignment='between'>
+          <div>
+            <span>
+              {monthName === endMmonthName ? (
+                <strong>{monthName}</strong>
+              ) : (
+                <span>
+                  {monthName} /{' '}
+                  <strong style={{ color: colorRed500 }}>
+                    {endMmonthName}
+                  </strong>
+                </span>
+              )}{' '}
+              {yearName}
+            </span>
+          </div>{' '}
+          <div>
+            <small>
+              {dateAlpha.format('DD.MM')}
+              {'-'}
+              {dateOmega.format('DD.MM')}
+            </small>
+          </div>
+        </Stack>
+      )}
       {rowSize === 30 && (
         <>
           <Divider className='mb-3' />

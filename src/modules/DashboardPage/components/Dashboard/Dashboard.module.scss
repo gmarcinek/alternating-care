@@ -9,7 +9,7 @@
   display: grid;
   grid-template-columns: repeat(1, 1fr); /* 4 kolumny o równej szerokości */
   grid-template-rows: auto 1fr; /* Wiersze: pierwszy o wysokości auto, drugi o wysokości dostosowanej do dostępnej przestrzeni */
-  column-gap: 1rem;
+  column-gap: 0.5rem;
   row-gap: 0;
   position: relative; /* Pozwala na używanie z-index w kontekście siatki */
 
@@ -44,35 +44,14 @@
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 600px) {
   .dashboard {
-    grid-template-columns: auto;
+    grid-template-columns: 240px auto;
     grid-template-rows: auto 1fr;
-
-    .calendarContainer {
-      grid-column: span 1; /* Ta sekcja zajmuje 1 kolumnę */
-      z-index: 1;
-    }
-    .eventListContainer {
-      display: none;
-      overflow-y: scroll;
-    }
-    .formContainer {
-      display: none;
-      grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
-      padding: 1rem;
-      overflow-y: scroll;
-    }
-  }
-}
-
-@media (min-width: 1024px) {
-  .dashboard {
-    grid-template-columns: minmax(375px, 478px) auto;
-    grid-template-rows: auto 1fr;
+    transition: grid-template-columns 0.5s;
 
     &.isPlanVisible {
-      grid-template-columns: 55% 45% 0%;
+      grid-template-columns: 240px auto 0%;
     }
 
     .calendarContainer {
@@ -89,6 +68,65 @@
       display: block;
       grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
       overflow-y: scroll;
+      padding: 1rem;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .dashboard {
+    grid-template-columns: 260px auto 0%;
+    grid-template-rows: auto 1fr;
+    transition: grid-template-columns 0.5s;
+
+    &.isPlanVisible {
+      grid-template-columns: 260px auto 0%;
+    }
+
+    .calendarContainer {
+      grid-column: span 1;
+      z-index: 1;
+    }
+
+    .eventListContainer {
+      display: none;
+      overflow-y: scroll;
+    }
+
+    .formContainer {
+      display: block;
+      grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
+      overflow-y: scroll;
+      padding: 1rem;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard {
+    grid-template-columns: minmax(375px, 478px) auto 0%;
+    grid-template-rows: auto 1fr;
+    transition: grid-template-columns 0.5s;
+
+    &.isPlanVisible {
+      grid-template-columns: 55% 45% 0%;
+    }
+
+    .calendarContainer {
+      grid-column: span 1;
+      z-index: 1;
+    }
+
+    .eventListContainer {
+      display: block;
+      overflow-y: scroll;
+    }
+
+    .formContainer {
+      display: block;
+      grid-column: span 1;
+      overflow-y: scroll;
+      padding: 1rem;
     }
   }
 }
@@ -132,7 +170,7 @@
     transition: grid-template-columns 0.5s;
 
     &.isPlanVisible {
-      grid-template-columns: minmax(50%, 70%) 600px auto;
+      grid-template-columns: minmax(50%, 70%) auto auto;
     }
 
     .calendarContainer {
@@ -142,13 +180,13 @@
 
     .eventListContainer {
       display: block;
-      grid-column: span 1; /* Ta sekcja zajmuje 1 kolumnę */
+      grid-column: span 1;
       padding: 1rem;
       overflow-y: scroll;
     }
 
     .formContainer {
-      grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
+      grid-column: span 1;
       padding: 2rem;
       overflow-y: scroll;
     }

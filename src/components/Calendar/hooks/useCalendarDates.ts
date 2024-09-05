@@ -16,6 +16,8 @@ export const useCalendarDates = (props: UseCalendarDatesProps) => {
       row1: toFullWeeksDates(baseDate, baseDate.add(3, 'month')),
       row7: toFullMonthsDates(baseDate, baseDate.add(12, 'month')),
       row14: toRowXDates(baseDate, baseDate.add(12, 'month'), 14),
+      row21: toRowXDates(baseDate, baseDate.add(12, 'month'), 21),
+      row28: toRowXDates(baseDate, baseDate.add(12, 'month'), 28),
       row30: toFullMonthsDates(baseDate, baseDate.add(1, 'month')),
     };
   }, [startDate]);
@@ -30,6 +32,12 @@ export const useCalendarDates = (props: UseCalendarDatesProps) => {
 
       case 14:
         return splits.row14;
+
+      case 21:
+        return splits.row21;
+
+      case 28:
+        return splits.row28;
 
       case 30:
         return splits.row30;
