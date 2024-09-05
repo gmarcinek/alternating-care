@@ -7,15 +7,15 @@ interface UseRowSizeProps {
 
 export const useRowSize = (props: UseRowSizeProps) => {
   const { isPlanVisible } = props;
-  const { isMobile, isTablet, is1024, is1280, is1360, is1440, is1600, is1920 } =
+  const { isMobile, isTablet, is1024, is1280, is1360, is1440, is1671, is1920 } =
     useBreakpoints();
 
   const rowSize = useMemo(() => {
     if (isPlanVisible && is1920) {
-      return 28;
+      return 30;
     }
-    if (isPlanVisible && is1600) {
-      return 21;
+    if (isPlanVisible && is1671) {
+      return 30;
     }
     if (isPlanVisible && is1440) {
       return 14;
@@ -45,7 +45,7 @@ export const useRowSize = (props: UseRowSizeProps) => {
     is1280,
     is1360,
     is1440,
-    is1600,
+    is1671,
     is1920,
   ]);
 

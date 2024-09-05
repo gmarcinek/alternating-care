@@ -107,18 +107,50 @@ export const Dashboard = (props: DashboardProps) => {
     <div className={dashboardClasses} id='dashboard'>
       <div className={styles.calendarContainer}>
         <div {...bind()}>
-          <Calendar
-            startDate={startDate}
-            rowSize={rowSize}
-            isTodayVisible
-            isPlanVisible={isPlanVisible}
-            isAlternatingVisible={isAlternatingVisible}
-            displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
-            events={sortedEvents}
-            {...handlers}
-            selection={Array.from(selection)}
-            isMultiSelectionMode={isMultiSelectionMode}
-          />
+          {rowSize === 30 && (
+            <Stack>
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((m, index) => {
+                return (
+                  <Calendar
+                    key={`month-plan-view-${index}`}
+                    startDate={dayjs(startDate)
+                      .add(index, 'month')
+                      .startOf('month')
+                      .format(dateFormat)}
+                    endDate={dayjs(startDate)
+                      .add(index, 'month')
+                      .endOf('month')
+                      .add(1, 'day')
+                      .format(dateFormat)}
+                    rowSize={30}
+                    isTodayVisible
+                    isPlanVisible
+                    isWeekendsVisible
+                    isAlternatingVisible
+                    displayStrategy='continous'
+                    events={sortedEvents ?? []}
+                    {...handlers}
+                    selection={Array.from(selection)}
+                    isMultiSelectionMode={false}
+                  />
+                );
+              })}
+            </Stack>
+          )}
+          {rowSize !== 30 && (
+            <Calendar
+              startDate={startDate}
+              rowSize={rowSize}
+              isTodayVisible
+              isPlanVisible={isPlanVisible}
+              isAlternatingVisible={isAlternatingVisible}
+              displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
+              events={sortedEvents}
+              {...handlers}
+              selection={Array.from(selection)}
+              isMultiSelectionMode={isMultiSelectionMode}
+            />
+          )}
         </div>
       </div>
 

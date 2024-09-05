@@ -45,7 +45,7 @@ export interface UseBreakpoints {
   is1280: boolean;
   is1360: boolean;
   is1440: boolean;
-  is1600: boolean;
+  is1671: boolean;
   is1920: boolean;
   is2560: boolean;
 }
@@ -65,7 +65,7 @@ export const useBreakpoints = (): UseBreakpoints => {
   const is1280 = useMediaQuery({ query: '(min-width: 1280px)' });
   const is1360 = useMediaQuery({ query: '(min-width: 1360px)' });
   const is1440 = useMediaQuery({ query: '(min-width: 1440px)' });
-  const is1600 = useMediaQuery({ query: '(min-width: 1600px)' });
+  const is1671 = useMediaQuery({ query: '(min-width: 1671px)' });
   const is1920 = useMediaQuery({ query: '(min-width: 1920px)' });
   const is2560 = useMediaQuery({ query: '(min-width: 2560px)' });
 
@@ -80,7 +80,7 @@ export const useBreakpoints = (): UseBreakpoints => {
       is1280,
       is1360,
       is1440,
-      is1600,
+      is1671,
       is1920,
       is2560,
     };
@@ -94,7 +94,7 @@ export const useBreakpoints = (): UseBreakpoints => {
     is1280,
     is1360,
     is1440,
-    is1600,
+    is1671,
     is1920,
     is2560,
   ]);

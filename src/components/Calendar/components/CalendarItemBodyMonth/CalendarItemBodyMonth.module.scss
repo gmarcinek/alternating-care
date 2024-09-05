@@ -57,14 +57,6 @@
     background $transition-duration,
     color $transition-duration,
     filter $transition-duration $transition-timing-function;
-
-  .date {
-    font-size: 12px;
-  }
-
-  .month {
-    font-size: 11px;
-  }
 }
 
 @media (min-width: 768px) {
@@ -93,12 +85,6 @@
     .content {
       align-items: baseline;
     }
-    .date {
-      font-size: 11px;
-    }
-    .month {
-      font-size: 10px;
-    }
   }
 }
 
@@ -122,13 +108,6 @@
         calc(100% - 6px) 100%,
         0 100%
       );
-    }
-
-    .date {
-      font-size: 18px;
-    }
-    .month {
-      font-size: 14px;
     }
   }
 }
