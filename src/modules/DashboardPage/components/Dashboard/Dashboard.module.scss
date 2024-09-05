@@ -29,18 +29,6 @@
     min-height: calc(100vh - 4rem); /* Zachowuje minimalną wysokość */
     top: 3.5rem;
   }
-
-  .widgetContainer {
-    display: none;
-    grid-column: span 1; /* Ta sekcja zajmuje 1 kolumnę */
-    grid-row: 1; /* Ta sekcja zaczyna się w drugim wierszu */
-    background: $white;
-    z-index: 0;
-
-    overflow-y: scroll;
-    min-height: calc(100vh - 4rem); /* Zachowuje minimalną wysokość */
-    top: 3.5rem;
-  }
 }
 
 @media (min-width: 600px) {
@@ -50,7 +38,7 @@
     transition: grid-template-columns 0.5s;
 
     &.isPlanVisible {
-      grid-template-columns: 240px auto 0%;
+      grid-template-columns: 240px auto;
     }
 
     .calendarContainer {
@@ -62,23 +50,18 @@
       grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
       overflow-y: scroll;
       padding: 1rem;
-    }
-
-    .widgetContainer {
-      display: none;
-      overflow-y: scroll;
     }
   }
 }
 
 @media (min-width: 768px) {
   .dashboard {
-    grid-template-columns: 260px auto 0%;
+    grid-template-columns: 40% auto;
     grid-template-rows: auto 1fr;
     transition: grid-template-columns 0.5s;
 
     &.isPlanVisible {
-      grid-template-columns: 260px auto 0%;
+      grid-template-columns: 260px auto;
     }
 
     .calendarContainer {
@@ -91,23 +74,18 @@
       overflow-y: scroll;
       padding: 1rem;
     }
-
-    .widgetContainer {
-      display: none;
-      overflow-y: scroll;
-    }
   }
 }
 
 @media (min-width: 1024px) {
   .dashboard {
-    grid-template-columns: minmax(375px, 478px) auto 0%;
+    grid-template-columns: 50% minmax(50%, 512px);
     grid-template-rows: auto 1fr;
     column-gap: 0.5rem;
     transition: grid-template-columns 0.5s;
 
     &.isPlanVisible {
-      grid-template-columns: 55% 45% 0%;
+      grid-template-columns: 55% 45%;
     }
 
     .calendarContainer {
@@ -120,16 +98,14 @@
       overflow-y: scroll;
       padding: 1rem;
     }
-
-    .widgetContainer {
-      display: block;
-      overflow-y: scroll;
-    }
   }
 }
 
 @media (min-width: 1280px) {
   .dashboard {
+    grid-template-columns: auto 450px;
+    column-gap: 1.5rem;
+
     .formContainer {
       display: block;
       grid-column: span 1;
@@ -141,13 +117,13 @@
 
 @media (min-width: 1440px) {
   .dashboard {
-    grid-template-columns: minmax(375px, 478px) 37% auto;
+    grid-template-columns: auto 500px;
     grid-template-rows: auto 1fr;
 
     transition: grid-template-columns 0.5s;
 
     &.isPlanVisible {
-      grid-template-columns: minmax(50%, 70%) 36% auto;
+      grid-template-columns: auto 500px;
     }
 
     .calendarContainer {
@@ -159,11 +135,27 @@
       padding: 1.5rem;
       overflow-y: scroll;
     }
+  }
+}
 
-    .widgetContainer {
-      display: block;
+@media (min-width: 1671) {
+  .dashboard {
+    grid-template-columns: auto 500px;
+    grid-template-rows: auto 1fr;
+
+    transition: grid-template-columns 0.5s;
+
+    &.isPlanVisible {
+      grid-template-columns: minmax(50%, 70%) 500px;
+    }
+
+    .calendarContainer {
       grid-column: span 1;
-      padding: 1rem;
+    }
+
+    .formContainer {
+      grid-column: span 1;
+      padding: 1.5rem;
       overflow-y: scroll;
     }
   }
@@ -171,12 +163,13 @@
 
 @media (min-width: 1920px) {
   .dashboard {
-    grid-template-columns: minmax(375px, 478px) 702px auto;
+    grid-template-columns: auto 650px;
     grid-template-rows: auto 1fr;
     transition: grid-template-columns 0.5s;
-    column-gap: 1rem;
+    column-gap: 1.5rem;
+
     &.isPlanVisible {
-      grid-template-columns: minmax(50%, 70%) auto auto;
+      grid-template-columns: auto 650px;
     }
 
     .calendarContainer {
@@ -188,11 +181,27 @@
       padding: 1.5rem;
       overflow-y: scroll;
     }
+  }
+}
 
-    .widgetContainer {
-      display: block;
+@media (min-width: 2400px) {
+  .dashboard {
+    grid-template-columns: auto 700px;
+    grid-template-rows: auto 1fr;
+    transition: grid-template-columns 0.5s;
+    column-gap: 1.5rem;
+
+    &.isPlanVisible {
+      grid-template-columns: auto 700px;
+    }
+
+    .calendarContainer {
       grid-column: span 1;
-      padding: 1rem;
+    }
+
+    .formContainer {
+      grid-column: span 1;
+      padding: 1.5rem;
       overflow-y: scroll;
     }
   }

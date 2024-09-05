@@ -7,26 +7,21 @@ import { Divider } from '@nextui-org/react';
 import { colorNeutralGray900, getTextColor } from '@utils/color';
 import { GroupByDateType } from '@utils/dates';
 import { capitalizeFirstLetter } from '@utils/string';
-import { useScrollToId } from '@utils/useScrollTo';
 import dayjs from 'dayjs';
-import { useCallback } from 'react';
+import { PropsWithChildren } from 'react';
 import style from './CalendarEventList.module.scss';
 
-interface CalendarEventListProps {
+interface CalendarEventListProps extends PropsWithChildren {
   date: string;
   eventGroup: GroupByDateType;
 }
 
 export default function CalendarEventList(props: CalendarEventListProps) {
-  const { date, eventGroup } = props;
+  const { date, eventGroup, children } = props;
   const currentDate = dayjs(date);
-  const { scrollToElement } = useScrollToId();
-  const handlePointerOver = useCallback(() => {
-    scrollToElement(`day-${date}`, 200, true);
-  }, [scrollToElement]);
 
   return (
-    <div onClick={handlePointerOver} id={`event-list-${date}`}>
+    <div id={`event-list-${date}`}>
       <Stack gap={0}>
         <div>
           <Divider className='my-2 mt-4' />
@@ -71,6 +66,7 @@ export default function CalendarEventList(props: CalendarEventListProps) {
                       {item.description}
                     </p>
                   </Stack>
+                  {children}
                 </Stack>
               </CalendarItem>
             );

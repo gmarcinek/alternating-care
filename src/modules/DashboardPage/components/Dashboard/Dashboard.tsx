@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { useLongPress } from 'use-long-press';
 import { CalendarEditForm } from '../CalendarEditForm/CalendarEditForm';
+import { CalendarGrid } from '../CalendarGrid/CalendarGrid';
 import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsForm';
 import styles from './Dashboard.module.scss';
 import { useRowSize } from './useRowSize';
@@ -34,7 +35,7 @@ export const Dashboard = (props: DashboardProps) => {
     isMultiSelectionAvailable: true,
   });
 
-  const [isPlanVisible, setIsPlanVisible] = useState(true);
+  const [isPlanVisible, setIsPlanVisible] = useState(false);
   const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
 
   const dashboardClasses = classNames(styles.dashboard, {
@@ -82,7 +83,7 @@ export const Dashboard = (props: DashboardProps) => {
           setIsAlternatingVisible={setIsAlternatingVisible}
         />
         <div {...bind()}>
-          {/* {!isPlanVisible && (
+          {!isPlanVisible && (
             <CalendarGrid
               data={sortedEvents}
               handlers={handlers}
@@ -90,21 +91,21 @@ export const Dashboard = (props: DashboardProps) => {
               isPlanVisible={isPlanVisible}
               selection={selection}
             />
-          )} */}
-          {/* {isPlanVisible && ( */}
-          <Calendar
-            startDate={startDate}
-            rowSize={automaticRowSize}
-            isTodayVisible
-            isPlanVisible={isPlanVisible}
-            isAlternatingVisible={isAlternatingVisible}
-            displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
-            events={sortedEvents}
-            {...handlers}
-            selection={Array.from(selection)}
-            isMultiSelectionMode={isMultiSelectionMode}
-          />
-          {/* )} */}
+          )}
+          {isPlanVisible && (
+            <Calendar
+              startDate={startDate}
+              rowSize={automaticRowSize}
+              isTodayVisible
+              isPlanVisible={isPlanVisible}
+              isAlternatingVisible={isAlternatingVisible}
+              displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
+              events={sortedEvents}
+              {...handlers}
+              selection={Array.from(selection)}
+              isMultiSelectionMode={isMultiSelectionMode}
+            />
+          )}
         </div>
       </div>
 

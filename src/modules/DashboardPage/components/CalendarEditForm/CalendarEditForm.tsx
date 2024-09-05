@@ -3,17 +3,20 @@
 import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarEvent, CalendarEventType } from '@modules/db/types';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import TuneIcon from '@mui/icons-material/Tune';
+import { Button } from '@nextui-org/react';
+import { UseQueryResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
 import { dateFormat, groupByDate } from '@utils/dates';
+import { useScrollToId } from '@utils/useScrollTo';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { DashboardEventForm } from '../DashboardEventForm/DashboardEventForm';
 
-import { UseQueryResult } from '@tanstack/react-query';
-
 interface CalendarEditFormProps {
   fetchEventsQuery: UseQueryResult<CalendarEvent[], Error>;
-
   selection: Set<string>;
   isMultiSelectionMode: boolean;
   setIsMultiSelectionMode: Dispatch<SetStateAction<boolean>>;
@@ -42,6 +45,7 @@ export const CalendarEditForm = (props: CalendarEditFormProps) => {
     handleCancelMultiSelect,
     fetchEventsQuery.refetch,
   ]);
+  const { scrollToElement } = useScrollToId();
 
   const sortedEvents = useMemo(() => {
     const data = fetchEventsQuery.data || ([] as CalendarEvent[]);
@@ -98,7 +102,57 @@ export const CalendarEditForm = (props: CalendarEditFormProps) => {
                     key={`dayGroup-${dayGroup.date}-${indexGroup}`}
                     date={dayGroup.date}
                     eventGroup={dayGroup}
-                  />
+                  >
+                    <Stack
+                      direction='horizontal'
+                      contentAlignment='end'
+                      gap={4}
+                    >
+                      <Button
+                        isIconOnly
+                        variant='light'
+                        aria-label='delete'
+                        size='sm'
+                        onClick={() =>
+                          // scrollToElement(`day-${todayDate}`, 100, true)
+                          console.log('aa')
+                        }
+                      >
+                        <h3 style={{ color: 'white', margin: 0 }}>
+                          <TuneIcon />
+                        </h3>
+                      </Button>
+                      <Button
+                        isIconOnly
+                        variant='light'
+                        aria-label='delete'
+                        size='sm'
+                        onClick={() =>
+                          // scrollToElement(`day-${todayDate}`, 100, true)
+                          console.log('aa')
+                        }
+                      >
+                        <h3 style={{ color: 'white', margin: 0 }}>
+                          <NotificationsIcon />
+                        </h3>
+                      </Button>
+
+                      <Button
+                        isIconOnly
+                        variant='light'
+                        aria-label='delete'
+                        size='sm'
+                        onClick={() =>
+                          // scrollToElement(`day-${todayDate}`, 100, true)
+                          console.log('aa')
+                        }
+                      >
+                        <h3 style={{ color: 'white', margin: 0 }}>
+                          <HighlightOffIcon />
+                        </h3>
+                      </Button>
+                    </Stack>
+                  </CalendarEventList>
                 );
               })}
             </>
@@ -120,7 +174,56 @@ export const CalendarEditForm = (props: CalendarEditFormProps) => {
                             key={`dayGroup-${dayGroup.date}-${indexGroup}`}
                             date={dayGroup.date}
                             eventGroup={dayGroup}
-                          />
+                          >
+                            <Stack
+                              direction='horizontal'
+                              contentAlignment='end'
+                            >
+                              <Button
+                                isIconOnly
+                                variant='light'
+                                aria-label='delete'
+                                size='sm'
+                                onClick={() =>
+                                  // scrollToElement(`day-${todayDate}`, 100, true)
+                                  console.log('aa')
+                                }
+                              >
+                                <h3 style={{ color: 'white', margin: 0 }}>
+                                  <TuneIcon />
+                                </h3>
+                              </Button>
+                              <Button
+                                isIconOnly
+                                variant='light'
+                                aria-label='delete'
+                                size='sm'
+                                onClick={() =>
+                                  // scrollToElement(`day-${todayDate}`, 100, true)
+                                  console.log('aa')
+                                }
+                              >
+                                <h3 style={{ color: 'white', margin: 0 }}>
+                                  <NotificationsIcon />
+                                </h3>
+                              </Button>
+
+                              <Button
+                                isIconOnly
+                                variant='light'
+                                aria-label='delete'
+                                size='sm'
+                                onClick={() =>
+                                  // scrollToElement(`day-${todayDate}`, 100, true)
+                                  console.log('aa')
+                                }
+                              >
+                                <h3 style={{ color: 'white', margin: 0 }}>
+                                  <HighlightOffIcon />
+                                </h3>
+                              </Button>
+                            </Stack>
+                          </CalendarEventList>
                         );
                       })}
                   </div>
