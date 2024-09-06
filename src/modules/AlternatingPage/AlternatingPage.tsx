@@ -1,7 +1,7 @@
 'use client';
 
+import DashboardContainer from '@components/DashboardContainer/DashboardContainer';
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
-import PageContainer from '@components/PageContainer/PageContainer';
 import { useGetAlternatingEventsQuery } from '@modules/db/events/useGetAlternatingEventsQuery';
 import { CalendarEventType } from '@modules/db/types';
 import { TodayButton } from '@modules/TodayButton/TodayButton';
@@ -17,9 +17,9 @@ export const AlternatingPage = () => {
   }
 
   return (
-    <PageContainer>
+    <DashboardContainer>
       <AlternatingFormCalendar fetchEventsMutation={mutation} />
       <TodayButton />
-    </PageContainer>
+    </DashboardContainer>
   );
 };

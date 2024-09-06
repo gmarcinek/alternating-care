@@ -102,57 +102,52 @@ export const CalendarEditForm = (props: CalendarEditFormProps) => {
                     key={`dayGroup-${dayGroup.date}-${indexGroup}`}
                     date={dayGroup.date}
                     eventGroup={dayGroup}
-                  >
-                    <Stack
-                      direction='horizontal'
-                      contentAlignment='end'
-                      gap={4}
-                    >
-                      <Button
-                        isIconOnly
-                        variant='light'
-                        aria-label='delete'
-                        size='sm'
-                        onClick={() =>
-                          // scrollToElement(`day-${todayDate}`, 100, true)
-                          console.log('aa')
-                        }
-                      >
-                        <h3 style={{ color: 'white', margin: 0 }}>
-                          <TuneIcon />
-                        </h3>
-                      </Button>
-                      <Button
-                        isIconOnly
-                        variant='light'
-                        aria-label='delete'
-                        size='sm'
-                        onClick={() =>
-                          // scrollToElement(`day-${todayDate}`, 100, true)
-                          console.log('aa')
-                        }
-                      >
-                        <h3 style={{ color: 'white', margin: 0 }}>
-                          <NotificationsIcon />
-                        </h3>
-                      </Button>
+                    sideEndContent={({ date }) => {
+                      return (
+                        <Stack
+                          direction='horizontal'
+                          contentAlignment='end'
+                          itemsAlignment='center'
+                          gap={4}
+                        >
+                          <Button
+                            isIconOnly
+                            variant='light'
+                            aria-label='edit'
+                            size='sm'
+                            onClick={() => console.log('edit', date)}
+                          >
+                            <h3 style={{ color: 'white', margin: 0 }}>
+                              <TuneIcon />
+                            </h3>
+                          </Button>
+                          <Button
+                            isIconOnly
+                            variant='light'
+                            aria-label='notify'
+                            size='sm'
+                            onClick={() => console.log('notify', date)}
+                          >
+                            <h3 style={{ color: 'white', margin: 0 }}>
+                              <NotificationsIcon />
+                            </h3>
+                          </Button>
 
-                      <Button
-                        isIconOnly
-                        variant='light'
-                        aria-label='delete'
-                        size='sm'
-                        onClick={() =>
-                          // scrollToElement(`day-${todayDate}`, 100, true)
-                          console.log('aa')
-                        }
-                      >
-                        <h3 style={{ color: 'white', margin: 0 }}>
-                          <HighlightOffIcon />
-                        </h3>
-                      </Button>
-                    </Stack>
-                  </CalendarEventList>
+                          <Button
+                            isIconOnly
+                            variant='light'
+                            aria-label='delete'
+                            size='sm'
+                            onClick={() => console.log('delete', date)}
+                          >
+                            <h3 style={{ color: 'white', margin: 0 }}>
+                              <HighlightOffIcon />
+                            </h3>
+                          </Button>
+                        </Stack>
+                      );
+                    }}
+                  />
                 );
               })}
             </>

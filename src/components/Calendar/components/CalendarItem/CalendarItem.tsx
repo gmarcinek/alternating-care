@@ -6,6 +6,10 @@ import dayjs from 'dayjs';
 import { CSSProperties, PropsWithChildren, useMemo } from 'react';
 import styles from './CalendarItem.module.scss';
 
+interface CalendarItemRenderProps extends PropsWithChildren {
+  date: string;
+}
+
 interface CalendarItemProps extends PropsWithChildren {
   day: CalendarDayType;
   className?: string;
@@ -13,17 +17,19 @@ interface CalendarItemProps extends PropsWithChildren {
   style?: CSSProperties;
   mode?: 'short' | 'long' | 'full' | 'none';
   isNoPadding?: boolean;
+  sideEndContent?: (props: CalendarItemRenderProps) => React.ReactElement;
 }
 
 export function CalendarItem(props: CalendarItemProps) {
   const {
     day,
     className,
-    children,
+    sideEndContent,
     style,
     mode = 'short',
     isNoPadding,
     title,
+    children,
   } = props;
 
   const currentDate = dayjs(day.date);
@@ -68,9 +74,10 @@ export function CalendarItem(props: CalendarItemProps) {
             </>
           )}
           {mode === 'full' && <h3>{labelFull}</h3>}
-
           {children}
         </Stack>
+
+        {sideEndContent?.({ date: day.date })}
       </Stack>
     </div>
   );

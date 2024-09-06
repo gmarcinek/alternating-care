@@ -11,13 +11,18 @@ import dayjs from 'dayjs';
 import { PropsWithChildren } from 'react';
 import style from './CalendarEventList.module.scss';
 
+interface CalendarEventListRenderProps extends PropsWithChildren {
+  date: string;
+}
+
 interface CalendarEventListProps extends PropsWithChildren {
   date: string;
   eventGroup: GroupByDateType;
+  sideEndContent?: (props: CalendarEventListRenderProps) => React.ReactElement;
 }
 
 export default function CalendarEventList(props: CalendarEventListProps) {
-  const { date, eventGroup, children } = props;
+  const { date, eventGroup, children, sideEndContent } = props;
   const currentDate = dayjs(date);
 
   return (
@@ -56,6 +61,9 @@ export default function CalendarEventList(props: CalendarEventListProps) {
                 }}
                 day={item}
                 className={style.eventItem}
+                sideEndContent={({ date }) => {
+                  return <>{sideEndContent?.({ date })}</>;
+                }}
               >
                 <Stack direction='horizontal' contentAlignment='between'>
                   <Stack gap={0}>

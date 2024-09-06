@@ -32,45 +32,51 @@ export const AlternatingFormCalendar = (props: EventFormCalendarProps) => {
     return fetchEventsMutation.data || ([] as CalendarEvent[]);
   }, [fetchEventsMutation.data]);
 
-  const formClasses = classNames(styles.eventFormCalendar);
+  const formClasses = classNames(styles.eventFormCalendar, 'py-4 pt-8');
+  const infoClasses = classNames(styles.eventInfo, 'pt-8');
 
   return (
-    <div className={formClasses}>
-      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((m, index) => {
-        return (
-          <Calendar
-            key={`month-plan-view-${index}`}
-            className={styles.calendar}
-            startDate={dayjs(startDate)
-              .add(index, 'month')
-              .startOf('month')
-              .format(dateFormat)}
-            endDate={dayjs(startDate)
-              .add(index, 'month')
-              .endOf('month')
-              .add(1, 'day')
-              .format(dateFormat)}
-            rowSize={7}
-            isTodayVisible
-            // isPlanVisible
-            isWeekendsVisible
-            isAlternatingVisible
-            displayStrategy='separateMonths'
-            events={sortedEvents ?? []}
-            {...handlers}
-            onDayClick={() => {
-              upsertEvents(
-                Array.from(selection).map((date) => {
-                  return {
-                    date,
-                  };
-                })
-              );
-            }}
-            isMultiSelectionMode={false}
-          />
-        );
-      })}
+    <div className={styles.page}>
+      <div className={formClasses}>
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((m, index) => {
+          return (
+            <Calendar
+              key={`month-plan-view-${index}`}
+              className={styles.calendar}
+              startDate={dayjs(startDate)
+                .add(index, 'month')
+                .startOf('month')
+                .format(dateFormat)}
+              endDate={dayjs(startDate)
+                .add(index, 'month')
+                .endOf('month')
+                .add(1, 'day')
+                .format(dateFormat)}
+              rowSize={7}
+              isTodayVisible
+              // isPlanVisible
+              isWeekendsVisible
+              isAlternatingVisible
+              displayStrategy='separateMonths'
+              events={sortedEvents ?? []}
+              {...handlers}
+              onDayClick={() => {
+                upsertEvents(
+                  Array.from(selection).map((date) => {
+                    return {
+                      date,
+                    };
+                  })
+                );
+              }}
+              isMultiSelectionMode={false}
+            />
+          );
+        })}
+      </div>
+      <div className={infoClasses}>
+        <h1>Opieka</h1>
+      </div>
     </div>
   );
 };

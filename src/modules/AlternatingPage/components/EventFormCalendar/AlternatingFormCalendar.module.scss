@@ -1,35 +1,78 @@
 @import '@styles/color.module.scss';
 
-.eventFormCalendar {
+.page {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: auto auto;
   grid-template-rows: 1fr;
-  column-gap: 1rem;
+  column-gap: 2rem;
   row-gap: 1rem;
   position: relative;
   align-items: start;
 
-  .calendar {
-    grid-column: span 1;
-    z-index: 1;
+  .eventFormCalendar {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: 1fr;
+    column-gap: 1rem;
+    row-gap: 1rem;
+    position: relative;
     align-items: start;
+
+    .calendar {
+      grid-column: span 1;
+      z-index: 1;
+      align-items: start;
+    }
+
+    .eventInfo {
+    }
   }
 }
 
 @media (min-width: 768px) {
-  .eventFormCalendar {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 1fr;
-    column-gap: 1.5rem;
-    row-gap: 2rem;
+  .page {
+    grid-template-columns: auto 20%;
+
+    .eventFormCalendar {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: 1fr;
+      column-gap: 1.5rem;
+      row-gap: 2rem;
+    }
   }
 }
 
 @media (min-width: 1024px) {
-  .eventFormCalendar {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr;
-    column-gap: 1.5rem;
-    row-gap: 2rem;
+  .page {
+    grid-template-columns: auto 20%;
+    .eventFormCalendar {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: 1fr;
+      column-gap: 1.5rem;
+      row-gap: 2rem;
+    }
+  }
+}
+@media (min-width: 1366px) {
+  .page {
+    .eventFormCalendar {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 1fr;
+      column-gap: 1.5rem;
+      row-gap: 2rem;
+    }
+  }
+}
+
+@media (min-width: 1920px) {
+  .page {
+    grid-template-columns: auto 12%;
+    .eventFormCalendar {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr;
+      column-gap: 3rem;
+      row-gap: 3rem;
+    }
   }
 }

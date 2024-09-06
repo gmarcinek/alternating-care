@@ -1,6 +1,7 @@
 @import '@styles/color.module.scss';
 @import '@styles/transition.module.scss';
 @import '@styles/spacer.module.scss';
+@import '@styles/mixins.module.scss';
 
 .calendarItem {
   display: flex;
@@ -35,6 +36,10 @@
     background: $neutral-gray-200;
   }
 
+  &.isToday {
+    background: $red-500;
+    color: $neutral-gray-100;
+  }
   &.isAlternating {
     background-image: url(../../../../assets/pas02.png) !important;
     background-color: $blue-green-700 !important;
