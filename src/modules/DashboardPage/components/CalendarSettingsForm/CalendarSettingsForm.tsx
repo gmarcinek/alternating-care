@@ -9,6 +9,9 @@ interface CalendarSettingsFormProps {
 
   isAlternatingVisible: boolean;
   setIsAlternatingVisible: (value: boolean) => void;
+
+  isEventsVisible: boolean;
+  setIsEventsVisible: (value: boolean) => void;
 }
 
 export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
@@ -17,6 +20,8 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
     setIsPlanVisible,
     isAlternatingVisible,
     setIsAlternatingVisible,
+    isEventsVisible,
+    setIsEventsVisible,
   } = props;
 
   const { language } = useAppContext();
@@ -39,6 +44,16 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
       >
         {i18n.alternating}
       </Switch>
+
+      {!isPlanVisible && (
+        <Switch
+          defaultSelected={isEventsVisible}
+          onValueChange={setIsEventsVisible}
+          size='sm'
+        >
+          {i18n.events}
+        </Switch>
+      )}
     </Stack>
   );
 };

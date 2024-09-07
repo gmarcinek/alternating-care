@@ -1,3 +1,5 @@
+'use client';
+
 import { Stack } from '@components/Stack/Stack';
 import { CalendarDayType } from '@modules/db/types';
 import { Divider } from '@nextui-org/react';
@@ -33,7 +35,7 @@ export function CalendarItemBodySingle(props: CalendarItemBodySingleProps) {
     };
   }, [currentDate]);
 
-  const itemClasses = classNames(styles.calendarItem, {
+  const itemClasses = classNames(styles.calendarItemBodySingleItem, {
     [styles.isWeekend]: [6, 0].includes(currentDate.day()),
     [styles.isTaoday]: isToday,
   });

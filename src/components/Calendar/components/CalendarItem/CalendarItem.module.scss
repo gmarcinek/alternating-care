@@ -1,8 +1,12 @@
 .calendarItem {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: 1fr;
+  column-gap: 2rem;
+
   flex: 1;
   color: #494949;
-  padding: 2px;
+  padding: 1rem;
   background: rgb(236, 236, 236);
 
   &.isNoPadding {
@@ -16,7 +20,6 @@
     display: flex;
     flex: 1;
     color: #494949;
-    padding: 0.5rem;
     background: rgb(236, 236, 236);
 
     &.isNoPadding {

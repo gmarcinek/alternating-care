@@ -10,6 +10,8 @@ export enum CalendarEventType {
   Trip = 'TRIP',
   Birthday = 'BIRTHDAY',
   Medical = 'MEDICAL',
+  School = 'SCHOOL',
+  Shopping = 'SHOPPING',
 }
 
 export interface CalendarEvent {

@@ -31,7 +31,7 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
   if (width <= size608) {
     switch (rowSize) {
       case 1:
-        return 12;
+        return 4;
       case 7:
         return 4;
       case 14:
@@ -46,9 +46,9 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
   if (width <= size736) {
     switch (rowSize) {
       case 1:
-        return 12;
+        return 4;
       case 7:
-        return 8;
+        return 4;
       case 14:
       case 21:
       case 28:
@@ -61,9 +61,9 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
   if (width <= size992) {
     switch (rowSize) {
       case 1:
-        return 16;
+        return 4;
       case 7:
-        return 12;
+        return 4;
       case 14:
       case 21:
       case 28:
@@ -76,9 +76,9 @@ function toGapSizeByContainerSize(rowSize: number, width: number) {
   if (width <= size1504) {
     switch (rowSize) {
       case 1:
-        return 16;
+        return 4;
       case 7:
-        return 12;
+        return 4;
       case 14:
       case 21:
       case 28:
@@ -104,7 +104,7 @@ function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
   if (isMobile) {
     switch (rowSize) {
       case 1:
-        return 12;
+        return 8;
       case 7:
         return 4;
       case 14:
@@ -117,9 +117,9 @@ function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
   if (isTablet) {
     switch (rowSize) {
       case 1:
-        return 12;
+        return 8;
       case 7:
-        return 12;
+        return 8;
       case 14:
       case 21:
       case 28:
@@ -130,9 +130,9 @@ function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
   if (isDesktop) {
     switch (rowSize) {
       case 1:
-        return 16;
+        return 8;
       case 7:
-        return 12;
+        return 8;
       case 14:
       case 21:
       case 28:
@@ -143,9 +143,9 @@ function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
   if (isBigDesktop) {
     switch (rowSize) {
       case 1:
-        return 16;
+        return 8;
       case 7:
-        return 12;
+        return 8;
       case 14:
       case 21:
       case 28:
@@ -153,5 +153,5 @@ function toGapSizeByRowSize(props: ToGapSizeProps): StackGap {
     }
   }
 
-  return 16;
+  return 8;
 }

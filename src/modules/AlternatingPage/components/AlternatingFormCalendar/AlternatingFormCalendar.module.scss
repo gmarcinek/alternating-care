@@ -1,8 +1,7 @@
 @import '@styles/color.module.scss';
 
-.page {
+.alternatingFormCalendarPage {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   grid-template-columns: auto auto;
   grid-template-rows: 1fr;
   column-gap: 2rem;
@@ -10,7 +9,7 @@
   position: relative;
   align-items: start;
 
-  .eventFormCalendar {
+  .alternatingFormCalendar {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: 1fr;
@@ -24,17 +23,14 @@
       z-index: 1;
       align-items: start;
     }
-
-    .eventInfo {
-    }
   }
 }
 
 @media (min-width: 768px) {
-  .page {
+  .alternatingFormCalendarPage {
     grid-template-columns: auto 20%;
 
-    .eventFormCalendar {
+    .alternatingFormCalendar {
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: 1fr;
       column-gap: 1.5rem;
@@ -44,9 +40,9 @@
 }
 
 @media (min-width: 1024px) {
-  .page {
+  .alternatingFormCalendarPage {
     grid-template-columns: auto 20%;
-    .eventFormCalendar {
+    .alternatingFormCalendar {
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: 1fr;
       column-gap: 1.5rem;
@@ -55,8 +51,8 @@
   }
 }
 @media (min-width: 1366px) {
-  .page {
-    .eventFormCalendar {
+  .alternatingFormCalendarPage {
+    .alternatingFormCalendar {
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: 1fr;
       column-gap: 1.5rem;
@@ -66,9 +62,9 @@
 }
 
 @media (min-width: 1920px) {
-  .page {
+  .alternatingFormCalendarPage {
     grid-template-columns: auto 12%;
-    .eventFormCalendar {
+    .alternatingFormCalendar {
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: 1fr;
       column-gap: 3rem;

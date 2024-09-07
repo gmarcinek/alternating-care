@@ -41,7 +41,6 @@ export const useUpsertEventsMutation = (
           const existingEventsEventsDates = existingEvents.map(
             (item) => item.date
           );
-          console.log(existingEvents);
           for (const event of existingEvents) {
             await store.delete(event.id);
           }

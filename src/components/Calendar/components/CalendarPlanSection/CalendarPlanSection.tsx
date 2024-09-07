@@ -9,6 +9,7 @@ import {
 import { toTransposeArray } from '@utils/array';
 import { colorBlueGreen700, getTextColor } from '@utils/color';
 import { useMemo } from 'react';
+import CalendarEventAvatar from '../CalendarEventAvatar/CalendarEventAvatar';
 import { CalendarItem } from '../CalendarItem/CalendarItem';
 import styles from './CalendarPlanSection.module.scss';
 
@@ -89,7 +90,7 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                         isOffset: event.type === CalendarEventType.Offset,
                       }}
                       mode='none'
-                      className={styles.calendarItem}
+                      className={styles.calendarPlanSectionItem}
                       style={{
                         background:
                           event.type === CalendarEventType.Alternating
@@ -107,7 +108,17 @@ export function CalendarPlanSection(props: CalendarPlanSectionProps) {
                     >
                       {itemIndex === 0 && (
                         <small style={{ paddingLeft: '4px' }}>
-                          <strong>{eventName}</strong>
+                          <Stack
+                            direction='horizontal'
+                            gap={2}
+                            itemsAlignment='center'
+                          >
+                            <CalendarEventAvatar
+                              event={eventNonOffset}
+                              size={16}
+                            />
+                            <strong>{eventName}</strong>
+                          </Stack>
                         </small>
                       )}
                     </CalendarItem>

@@ -29,7 +29,7 @@ export function CalendarItemBodyTwoWeeks(
     selection,
   } = useCalenderContext();
   const { isTablet, isMobile } = useBreakpoints();
-  const { is380, is608, is1024 } = useDayContainetRwd(containerWidth);
+  const { is608, is1024 } = useDayContainetRwd(containerWidth);
 
   const { isToday, isFirstOfTheMonth } = useMemo(() => {
     return {
@@ -63,7 +63,7 @@ export function CalendarItemBodyTwoWeeks(
     return (selection ?? []).toString().split(',').includes(day.date);
   }, [selection, day.date]);
 
-  const itemClasses = classNames(styles.calendarItem, {
+  const itemClasses = classNames(styles.calendarItemBodyTwoWeeksItem, {
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
     [styles.isAlternating]: isAlternating,
@@ -91,10 +91,10 @@ export function CalendarItemBodyTwoWeeks(
             direction={isMobile ? 'vertical' : 'horizontal'}
             className={styles.content}
           >
-            <>
+            <big>
               <strong>{currentDate.format('D')}</strong>
               <small>{currentDate.format('.MM')}</small>
-            </>
+            </big>
           </Stack>
           {!is1024 && <small>{currentDate.format('MMM')}</small>}
         </Stack>

@@ -32,11 +32,11 @@ export const AlternatingFormCalendar = (props: EventFormCalendarProps) => {
     return fetchEventsMutation.data || ([] as CalendarEvent[]);
   }, [fetchEventsMutation.data]);
 
-  const formClasses = classNames(styles.eventFormCalendar, 'py-4 pt-8');
+  const formClasses = classNames(styles.alternatingFormCalendar, 'py-4 pt-8');
   const infoClasses = classNames(styles.eventInfo, 'pt-8');
 
   return (
-    <div className={styles.page}>
+    <div className={styles.alternatingFormCalendarPage}>
       <div className={formClasses}>
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((m, index) => {
           return (

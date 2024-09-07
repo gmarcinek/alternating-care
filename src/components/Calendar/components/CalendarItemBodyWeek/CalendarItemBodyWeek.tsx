@@ -1,6 +1,9 @@
+'use client';
+
 import { useDayContainetRwd } from '@components/Calendar/hooks/useDayContainetRwd';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarDayType, CalendarEventType } from '@modules/db/types';
+import { getTextColor } from '@utils/color';
 import { dateFormat } from '@utils/dates';
 import { capitalizeFirstLetter } from '@utils/string';
 import classNames from 'classnames';
@@ -23,6 +26,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
     isWeekendsVisible,
     isTodayVisible,
     isPlanVisible,
+    isEventsVisible,
     events,
     rowSize,
     containerWidth,
@@ -46,12 +50,6 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
     };
   }, [currentDate]);
 
-  const { label } = useMemo(() => {
-    return {
-      label: toFormatedLabel(currentDate),
-    };
-  }, [currentDate]);
-
   const isWeekend = isWeekendsVisible && [6, 0].includes(currentDate.day());
   const isAlternating =
     isAlternatingVisible &&
@@ -67,7 +65,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
     );
   });
 
-  const itemClasses = classNames(styles.calendarItem, {
+  const itemClasses = classNames(styles.calendarItemBodyWeek, {
     [styles.smallPolygon]: is380,
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
@@ -82,6 +80,19 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
       dayNumber: currentDate.format('D'),
     };
   }, [currentDate]);
+
+  const itemStyle = useMemo(() => {
+    if (isEventsVisible) {
+      return {
+        ...style.style,
+        backgroundColor: event?.style?.background,
+        color: getTextColor(event?.style?.background),
+      };
+    }
+
+    return style.style;
+  }, [style.style, isPlanVisible, isEventsVisible, events]);
+
   return (
     <CalendarItemStatusContainer
       isAlternating={isAlternating}
@@ -94,9 +105,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
       <div
         className={itemClasses}
         style={{
-          ...style.style,
-          backgroundColor: isPlanVisible ? 'white' : event?.style?.background,
-          color: isPlanVisible ? 'black' : event?.style?.color,
+          ...itemStyle,
         }}
       >
         <Stack gap={0} direction='horizontal'>
@@ -104,9 +113,9 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
             <span>{dayName}</span>
 
             <span className='mt-1'>
-              <>
+              <big>
                 <strong>{dayNumber}</strong>
-              </>
+              </big>
               {!is320 && <small>{currentDate.format('.MM')}</small>}
             </span>
 

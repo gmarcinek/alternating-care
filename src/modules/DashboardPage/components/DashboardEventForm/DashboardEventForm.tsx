@@ -1,7 +1,7 @@
 'use client';
 import { useAppContext } from '@app/AppContext';
 import { Button } from '@components/Button/Button';
-import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
+import CalendarEventListItem from '@components/Calendar/components/CalendarEventListItem/CalendarEventListItem';
 import { Stack } from '@components/Stack/Stack';
 import { useFormPutEventMutation } from '@modules/db/events/useFormPutEventMutation';
 import { CalendarEventType } from '@modules/db/types';
@@ -10,14 +10,20 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Divider, Input, Radio, RadioGroup, Textarea } from '@nextui-org/react';
-import { colorBlueGreen700, getTextColor, swatches, white } from '@utils/color';
+import { colorBlueGreen700, getTextColor, white } from '@utils/color';
 import { dateFormat } from '@utils/dates';
 import { capitalizeFirstLetter } from '@utils/string';
 import classNames from 'classnames';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
-import { ColorResult, SwatchesPicker } from 'react-color';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
+import { ColorResult, SliderPicker } from 'react-color';
 import { toast } from 'react-toastify';
 import { dashboardEventFormI18n } from './dashboardEventForm.i18n'; // Import your i18n file
 import styles from './dashboardEventForm.module.scss';
@@ -29,6 +35,9 @@ interface DashboardEventFormProps {
   isMultiSelectionMode: boolean;
   setIsMultiSelectionMode: (value: boolean) => void;
 }
+
+const defaultBgColor = '#E57373';
+const defaultTextColor = '#ffffff';
 
 export const DashboardEventForm = (props: DashboardEventFormProps) => {
   const {
@@ -42,19 +51,40 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
   const i18n = dashboardEventFormI18n[language];
 
   const [date, setDate] = useState('');
-  const [type, setType] = useState(CalendarEventType.Alternating);
-
+  const [type, setType] = useState<CalendarEventType | undefined>();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [backgroundColor, setBackgroundColor] = useState('#E57373');
-  const [textColor, setTextColor] = useState('#ffffff');
+  const [backgroundColor, setBackgroundColor] = useState('#009688');
+  const [textColor, setTextColor] = useState(defaultTextColor);
+
+  const exampleDate = {
+    date: dayjs().format(dateFormat),
+    isOffset: false,
+  };
+
+  const newEvent = useMemo(() => {
+    return {
+      date: exampleDate.date,
+      type: type ?? CalendarEventType.Event,
+      name: name || 'Nazwa nowego wydarzenia',
+      description: description || 'Opis wydarzenia, godzina, miejsce',
+      style: {
+        background: backgroundColor,
+        color: getTextColor(backgroundColor),
+      },
+      creationTime: 0,
+      groupId: '',
+      id: '',
+      issuer: '',
+    };
+  }, [backgroundColor, description, name, type, exampleDate.date]);
 
   const { mutateAsync, isPending } = useFormPutEventMutation({
     onSuccess: () => {
       onSuccess();
 
       setDate('');
-      setType(CalendarEventType.Alternating);
+      setType(undefined);
       setName('');
       setDescription('');
       setBackgroundColor('#E57373');
@@ -75,7 +105,7 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
         return;
       }
 
-      const typeToSave = type.toUpperCase() as CalendarEventType;
+      const typeToSave = type?.toUpperCase() as CalendarEventType;
       const groupId = crypto.randomBytes(16).toString('hex');
 
       const newEvents = selection.map((date) => ({
@@ -101,7 +131,6 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
       try {
         await mutateAsync(newEvents);
       } catch (error) {
-        console.error('Failed to save event:', error);
         toast(i18n.errorAddingEvent, { type: 'error' });
       }
     },
@@ -118,20 +147,17 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
     ]
   );
 
-  const exampleDate = {
-    date: dayjs().format(dateFormat),
-    isOffset: false,
-  };
-
   const handleCancel = useCallback(() => {
     setSelection(new Set([]));
+    setType(undefined);
+    setBackgroundColor(defaultBgColor);
+    setTextColor(defaultTextColor);
     setIsMultiSelectionMode(false);
   }, [setSelection]);
 
   const formClasses = classNames(styles.dashboardEventForm, {
     [styles.isSelectionNotEmpty]: selection.length !== 0,
-    [styles.isColorPickerVisible]:
-      selection.length !== 0 && type !== CalendarEventType.Alternating,
+    [styles.isColorPickerVisible]: selection.length !== 0 && type !== undefined,
   });
 
   return (
@@ -169,36 +195,36 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
         <Divider className='my-4' />
 
         <Stack>
-          <Stack direction='horizontal'>
-            <Stack>
-              <Input
-                type='text'
-                label={i18n.eventName}
-                value={name}
-                radius='sm'
-                variant='bordered'
-                size='lg'
-                onValueChange={setName}
-              />
+          <Stack>
+            <Input
+              type='text'
+              label={i18n.eventName}
+              value={name}
+              radius='sm'
+              variant='bordered'
+              size='lg'
+              onValueChange={setName}
+            />
 
-              <Textarea
-                label={i18n.eventDescription}
-                value={description}
-                radius='sm'
-                variant='bordered'
-                size='md'
-                onValueChange={setDescription}
-              />
-            </Stack>
+            <Textarea
+              label={i18n.eventDescription}
+              value={description}
+              radius='sm'
+              variant='bordered'
+              size='md'
+              onValueChange={setDescription}
+            />
+          </Stack>
 
-            <RadioGroup
-              className='ml-4 mr-8'
-              label={i18n.eventType}
-              value={type}
-              onValueChange={(value) => {
-                setType(value as CalendarEventType);
-              }}
-            >
+          <RadioGroup
+            className='ml-4 mr-8'
+            label={i18n.eventType}
+            value={type}
+            onValueChange={(value) => {
+              setType(value as CalendarEventType);
+            }}
+          >
+            <div className='grid auto-rows-max grid-cols-2 gap-2'>
               {Object.keys(CalendarEventType).map((key) => {
                 if (
                   [
@@ -224,40 +250,32 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
                   </Radio>
                 );
               })}
-            </RadioGroup>
-          </Stack>
+            </div>
+          </RadioGroup>
 
           {type !== CalendarEventType.Alternating && (
             <Stack>
+              <Divider className='my-2' />
               <Stack direction='horizontal'>
                 <VisibilityIcon />
                 <h3>{i18n.visibility}</h3>
               </Stack>
-              <Stack contentAlignment='between' direction='horizontal'>
-                <SwatchesPicker
-                  height={364}
-                  width={473}
-                  className={styles.swatches}
+              <Stack>
+                <CalendarEventListItem
+                  event={newEvent}
+                  paragraphClassName={styles.exampleItemParagraph}
+                  titleClassName={styles.exampleItemTitle}
+                />
+
+                <SliderPicker
+                  color={backgroundColor}
                   onChange={(value: ColorResult) => {
                     setBackgroundColor(value.hex);
                   }}
                   onChangeComplete={(value: ColorResult) => {
                     setTextColor(getTextColor(value.hex));
                   }}
-                  colors={swatches}
                 />
-                <CalendarItem
-                  day={exampleDate}
-                  className=''
-                  style={{
-                    backgroundColor: backgroundColor,
-                    color: getTextColor(backgroundColor),
-                  }}
-                >
-                  <Stack gap={0}>
-                    <small>{dayjs().format('MMM')}</small>
-                  </Stack>
-                </CalendarItem>
               </Stack>
               <Divider className='my-4' />
             </Stack>

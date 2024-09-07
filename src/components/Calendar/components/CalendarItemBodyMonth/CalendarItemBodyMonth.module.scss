@@ -2,7 +2,7 @@
 @import '@styles/transition.module.scss';
 @import '@styles/spacer.module.scss';
 
-.calendarItem {
+.calendarItemBodyMonthItem {
   display: flex;
   flex: 1;
   color: $neutral-gray-900; /* #494949 -> $neutral-gray-900 */
@@ -62,7 +62,7 @@
 }
 
 @media (min-width: 768px) {
-  .calendarItem {
+  .calendarItemBodyMonthItem {
     font-size: 12px;
     padding: 0.25rem;
     text-align: left;
@@ -91,7 +91,7 @@
 }
 
 @media (min-width: 1024px) {
-  .calendarItem {
+  .calendarItemBodyMonthItem {
     font-size: 12px;
     padding: 0.25rem;
 
@@ -115,7 +115,7 @@
 }
 
 @media (min-width: 1920px) {
-  .calendarItem {
+  .calendarItemBodyMonthItem {
     font-size: 12px;
     padding: 0.5rem;
     padding-right: 0.25rem;

@@ -37,6 +37,7 @@ export const Dashboard = (props: DashboardProps) => {
 
   const [isPlanVisible, setIsPlanVisible] = useState(false);
   const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
+  const [isEventsVisible, setIsEventsVisible] = useState(true);
 
   const dashboardClasses = classNames(styles.dashboard, {
     [styles.isPlanVisible]: isPlanVisible,
@@ -81,6 +82,8 @@ export const Dashboard = (props: DashboardProps) => {
           setIsPlanVisible={setIsPlanVisible}
           isAlternatingVisible={isAlternatingVisible}
           setIsAlternatingVisible={setIsAlternatingVisible}
+          isEventsVisible={isEventsVisible}
+          setIsEventsVisible={setIsEventsVisible}
         />
         <div {...bind()}>
           {!isPlanVisible && (
@@ -89,6 +92,7 @@ export const Dashboard = (props: DashboardProps) => {
               handlers={handlers}
               isAlternatingVisible={isAlternatingVisible}
               isMultiSelectionMode={isMultiSelectionMode}
+              isEventsVisible={isEventsVisible}
               selection={selection}
             />
           )}
@@ -99,6 +103,7 @@ export const Dashboard = (props: DashboardProps) => {
               isTodayVisible
               isPlanVisible={isPlanVisible}
               isAlternatingVisible={isAlternatingVisible}
+              isEventsVisible={false}
               displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
               events={sortedEvents}
               {...handlers}

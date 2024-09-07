@@ -1,3 +1,5 @@
+'use client';
+
 import { useDayContainetRwd } from '@components/Calendar/hooks/useDayContainetRwd';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarDayType, CalendarEventType } from '@modules/db/types';
@@ -60,7 +62,7 @@ export function CalendarItemBodyMonth(props: CalendarItemBodyMonthProps) {
     return (selection ?? []).toString().split(',').includes(day.date);
   }, [selection, day.date]);
 
-  const itemClasses = classNames(styles.calendarItem, {
+  const itemClasses = classNames(styles.calendarItemBodyMonthItem, {
     [styles.isWeekend]: isWeekend,
     [styles.isToday]: isTodayVisible && isToday,
     [styles.isAlternating]: isAlternating,

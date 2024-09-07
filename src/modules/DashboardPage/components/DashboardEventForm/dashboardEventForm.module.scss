@@ -4,30 +4,29 @@
   overflow: hidden;
 
   &.isSelectionNotEmpty {
-    height: 300px;
-  }
-  &.isColorPickerVisible {
-    height: 730px;
+    height: 470px;
   }
 
-  .swatches {
-    display: flex;
-    flex: 0 0 60%;
-    margin-left: 4px;
-    > div {
-      padding-top: 10px;
-      padding-left: 10px;
-      * {
-        display: flex;
-        flex-wrap: wrap;
-        flex: 1 0 15%;
-        padding: 0 !important;
-        padding-bottom: 0 !important;
-        margin: 0px !important;
-        margin-bottom: 1px !important;
-        margin-right: 1px !important;
-        margin-left: 0px !important;
-      }
-    }
+  &.isColorPickerVisible {
+    height: 700px;
   }
+}
+
+.exampleItemParagraph {
+  white-space: pre-wrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.exampleItemTitle {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
 }

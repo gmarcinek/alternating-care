@@ -18,6 +18,7 @@ export interface CalenderContextData {
   isPlanVisible: boolean;
   isAlternatingVisible: boolean;
   isWeekendsVisible: boolean;
+  isEventsVisible: boolean;
   events: CalendarEvent[];
   displayStrategy: 'continous' | 'separateMonths';
   onDayClick?: OnDayClickHandler;
@@ -34,6 +35,7 @@ export const CalenderContext = createContext<CalenderContextData>({
   isPlanVisible: false,
   isAlternatingVisible: true,
   isWeekendsVisible: true,
+  isEventsVisible: true,
   events: [],
   displayStrategy: 'continous',
   onDayClick: () => {},

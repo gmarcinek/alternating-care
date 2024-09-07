@@ -28,18 +28,12 @@ interface CalendarEventFormProps {
 }
 
 export const CalendarEventForm = (props: CalendarEventFormProps) => {
-  const {
-    selection,
-    onSuccess,
-    setSelection,
-    isMultiSelectionMode,
-    setIsMultiSelectionMode,
-  } = props;
+  const { selection, onSuccess, setSelection, setIsMultiSelectionMode } = props;
   const { language } = useAppContext();
   const i18n = calendarEventFormI18n[language];
 
   const [date, setDate] = useState('');
-  const [type, setType] = useState(CalendarEventType.Alternating);
+  const [type, setType] = useState(CalendarEventType.Event);
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -51,7 +45,7 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
       onSuccess();
 
       setDate('');
-      setType(CalendarEventType.Alternating);
+      setType(CalendarEventType.Event);
       setName('');
       setDescription('');
       setBackgroundColor('#E57373');
@@ -129,58 +123,56 @@ export const CalendarEventForm = (props: CalendarEventFormProps) => {
     <Stack>
       <form onSubmit={handleSubmit}>
         <Stack>
-          <Stack direction='horizontal'>
-            <Stack>
-              <Input
-                type='text'
-                label={i18n.eventName}
-                value={name}
-                radius='sm'
-                variant='bordered'
-                size='lg'
-                onValueChange={setName}
-              />
+          <Stack>
+            <Input
+              type='text'
+              label={i18n.eventName}
+              value={name}
+              radius='sm'
+              variant='bordered'
+              size='lg'
+              onValueChange={setName}
+            />
 
-              <Textarea
-                label={i18n.eventDescription}
-                value={description}
-                radius='sm'
-                variant='bordered'
-                size='md'
-                onValueChange={setDescription}
-              />
-            </Stack>
-
-            <RadioGroup
-              className='ml-4 mr-8'
-              label={i18n.eventType}
-              value={type}
-              onValueChange={(value) => {
-                setType(value as CalendarEventType);
-              }}
-            >
-              {Object.keys(CalendarEventType).map((key) => {
-                if (key.toUpperCase() === CalendarEventType.Offset) {
-                  return;
-                }
-
-                return (
-                  <Radio
-                    key={key}
-                    value={
-                      CalendarEventType[key as keyof typeof CalendarEventType]
-                    }
-                  >
-                    {capitalizeFirstLetter(
-                      CalendarEventType[
-                        key as keyof typeof CalendarEventType
-                      ].toLocaleLowerCase()
-                    )}
-                  </Radio>
-                );
-              })}
-            </RadioGroup>
+            <Textarea
+              label={i18n.eventDescription}
+              value={description}
+              radius='sm'
+              variant='bordered'
+              size='md'
+              onValueChange={setDescription}
+            />
           </Stack>
+
+          <RadioGroup
+            className='ml-4 mr-8'
+            label={i18n.eventType}
+            value={type}
+            onValueChange={(value) => {
+              setType(value as CalendarEventType);
+            }}
+          >
+            {Object.keys(CalendarEventType).map((key) => {
+              if (key.toUpperCase() === CalendarEventType.Offset) {
+                return;
+              }
+
+              return (
+                <Radio
+                  key={key}
+                  value={
+                    CalendarEventType[key as keyof typeof CalendarEventType]
+                  }
+                >
+                  {capitalizeFirstLetter(
+                    CalendarEventType[
+                      key as keyof typeof CalendarEventType
+                    ].toLocaleLowerCase()
+                  )}
+                </Radio>
+              );
+            })}
+          </RadioGroup>
 
           {type !== CalendarEventType.Alternating && (
             <Stack>

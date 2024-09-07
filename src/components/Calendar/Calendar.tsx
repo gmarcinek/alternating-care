@@ -28,6 +28,7 @@ interface CalendarProps {
   isPlanVisible?: boolean;
   isWeekendsVisible?: boolean;
   isAlternatingVisible?: boolean;
+  isEventsVisible?: boolean;
   events?: CalendarEvent[];
   className?: string;
   selection?: string[];
@@ -46,6 +47,7 @@ export function Calendar(props: CalendarProps) {
     isAlternatingVisible = true,
     isWeekendsVisible = true,
     isMultiSelectionMode = false,
+    isEventsVisible = true,
     events = [],
     displayStrategy = 'separateMonths',
     endDate,
@@ -86,6 +88,7 @@ export function Calendar(props: CalendarProps) {
       isPlanVisible,
       isAlternatingVisible,
       isWeekendsVisible,
+      isEventsVisible,
       rowSize,
       events,
       displayStrategy,
@@ -101,6 +104,7 @@ export function Calendar(props: CalendarProps) {
     isPlanVisible,
     isAlternatingVisible,
     isWeekendsVisible,
+    isEventsVisible,
     rowSize,
     events,
     displayStrategy,

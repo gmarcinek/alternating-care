@@ -5,7 +5,7 @@ import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 import { useGetAlternatingEventsQuery } from '@modules/db/events/useGetAlternatingEventsQuery';
 import { CalendarEventType } from '@modules/db/types';
 import { TodayButton } from '@modules/TodayButton/TodayButton';
-import { AlternatingFormCalendar } from './components/EventFormCalendar/AlternatingFormCalendar';
+import { AlternatingFormCalendar } from './components/AlternatingFormCalendar/AlternatingFormCalendar';
 
 export const AlternatingPage = () => {
   const { isError, mutation } = useGetAlternatingEventsQuery(

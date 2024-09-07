@@ -2,7 +2,7 @@
 @import '@styles/transition.module.scss';
 @import '@styles/spacer.module.scss';
 
-.calendarItem {
+.calendarItemBodyTwoWeeksItem {
   display: flex;
   flex: 1;
   color: $neutral-gray-900; /* #494949 -> $neutral-gray-900 */
@@ -75,7 +75,7 @@
 }
 
 @media (min-width: 768px) {
-  .calendarItem {
+  .calendarItemBodyTwoWeeksItem {
     clip-path: polygon(
       0 0,
       100% 0,
@@ -107,14 +107,14 @@
 }
 
 @media (min-width: 1024px) {
-  .calendarItem {
+  .calendarItemBodyTwoWeeksItem {
     font-size: 11px;
     padding: 0.25rem;
   }
 }
 
 @media (min-width: 1280px) {
-  .calendarItem {
+  .calendarItemBodyTwoWeeksItem {
     font-size: 12px;
     padding: 0.5rem;
   }

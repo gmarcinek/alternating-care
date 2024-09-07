@@ -10,6 +10,7 @@ import styles from './CalendarGrid.module.scss';
 interface CalendarGridProps {
   data: CalendarEvent[];
   isAlternatingVisible: boolean;
+  isEventsVisible: boolean;
   isMultiSelectionMode: boolean;
   handlers: CalendarPointerHandlers;
   selection: Set<string>;
@@ -22,6 +23,7 @@ export const CalendarGrid = (props: CalendarGridProps) => {
     isMultiSelectionMode,
     selection,
     handlers,
+    isEventsVisible,
   } = props;
   const startDate = dayjs().format(dateFormat);
 
@@ -46,6 +48,7 @@ export const CalendarGrid = (props: CalendarGridProps) => {
             isWeekendsVisible
             isPlanVisible={false}
             isAlternatingVisible={isAlternatingVisible}
+            isEventsVisible={isEventsVisible}
             displayStrategy='separateMonths'
             events={data}
             {...handlers}

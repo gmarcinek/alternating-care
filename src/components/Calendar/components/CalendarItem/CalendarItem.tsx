@@ -1,4 +1,5 @@
-import { Stack } from '@components/Stack/Stack';
+'use client';
+
 import { CalendarDayType } from '@modules/db/types';
 import { capitalizeFirstLetter } from '@utils/string';
 import classNames from 'classnames';
@@ -17,6 +18,7 @@ interface CalendarItemProps extends PropsWithChildren {
   style?: CSSProperties;
   mode?: 'short' | 'long' | 'full' | 'none';
   isNoPadding?: boolean;
+  isClipped?: boolean;
   sideEndContent?: (props: CalendarItemRenderProps) => React.ReactElement;
 }
 
@@ -30,13 +32,14 @@ export function CalendarItem(props: CalendarItemProps) {
     isNoPadding,
     title,
     children,
+    isClipped,
   } = props;
 
   const currentDate = dayjs(day.date);
   const itemClasses = classNames(
     styles.calendarItem,
     {
-      [styles.isClipped]: mode !== 'none',
+      [styles.isClipped]: mode !== 'none' || isClipped,
       [styles.isNoPadding]: isNoPadding,
     },
     className
@@ -51,34 +54,32 @@ export function CalendarItem(props: CalendarItemProps) {
   }, [currentDate]);
 
   return (
-    <div className={itemClasses} style={style} title={title}>
-      <Stack gap={0} direction='horizontal'>
-        <Stack gap={0}>
-          {mode === 'none' && <></>}
-          {mode === 'short' && (
-            <>
-              <span>{labelShort}</span>
-              <span>
-                <strong>{currentDate.format('D')}</strong>
-                <small>{currentDate.format('.MM')}</small>
-              </span>
-            </>
-          )}
-          {mode === 'long' && (
-            <>
-              <span>{labelLong}</span>
-              <span>
-                <strong>{currentDate.format('D')}</strong>
-                <small>{currentDate.format('.MM')}</small>
-              </span>
-            </>
-          )}
-          {mode === 'full' && <h3>{labelFull}</h3>}
-          {children}
-        </Stack>
+    <div className={itemClasses} style={style}>
+      <div>
+        {mode === 'none' && <></>}
+        {mode === 'short' && (
+          <>
+            <span>{labelShort}</span>
+            <span>
+              <strong>{currentDate.format('D')}</strong>
+              <small>{currentDate.format('.MM')}</small>
+            </span>
+          </>
+        )}
+        {mode === 'long' && (
+          <>
+            <span>{labelLong}</span>
+            <span>
+              <strong>{currentDate.format('D')}</strong>
+              <small>{currentDate.format('.MM')}</small>
+            </span>
+          </>
+        )}
+        {mode === 'full' && <h3>{labelFull}</h3>}
+        {children}
+      </div>
 
-        {sideEndContent?.({ date: day.date })}
-      </Stack>
+      {sideEndContent?.({ date: day.date })}
     </div>
   );
 }
