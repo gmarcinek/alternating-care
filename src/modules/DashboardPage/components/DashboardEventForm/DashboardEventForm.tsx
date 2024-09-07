@@ -200,7 +200,12 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
               }}
             >
               {Object.keys(CalendarEventType).map((key) => {
-                if (key.toUpperCase() === CalendarEventType.Offset) {
+                if (
+                  [
+                    CalendarEventType.Offset,
+                    CalendarEventType.Alternating,
+                  ].includes(key.toUpperCase() as CalendarEventType)
+                ) {
                   return;
                 }
 

@@ -1,11 +1,10 @@
 'use client';
 
-import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
+import CalendarEventList, {
+  CalendarEventListRenderProps,
+} from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarEvent, CalendarEventType } from '@modules/db/types';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import TuneIcon from '@mui/icons-material/Tune';
 import { Button } from '@nextui-org/react';
 import { UseQueryResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
@@ -13,6 +12,7 @@ import { dateFormat, groupByDate } from '@utils/dates';
 import { useScrollToId } from '@utils/useScrollTo';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
+import { MdDelete, MdFindInPage, MdTune } from 'react-icons/md';
 import { DashboardEventForm } from '../DashboardEventForm/DashboardEventForm';
 
 interface CalendarEditFormProps {
@@ -75,6 +75,53 @@ export const CalendarEditForm = (props: CalendarEditFormProps) => {
     );
   }, [detailDataGrouped, startDate]);
 
+  const sideContent = ({ date }: CalendarEventListRenderProps) => {
+    const { scrollToElement } = useScrollToId();
+    return (
+      <Stack
+        direction='horizontal'
+        contentAlignment='end'
+        itemsAlignment='center'
+        gap={8}
+      >
+        <Button
+          isIconOnly
+          variant='light'
+          aria-label='edit'
+          size='md'
+          onClick={() => console.log('edit', date)}
+        >
+          <h3 style={{ color: 'white', margin: 0 }}>
+            <MdTune size={26} />
+          </h3>
+        </Button>
+        <Button
+          isIconOnly
+          variant='light'
+          aria-label='notify'
+          size='md'
+          onClick={() => scrollToElement(`day-${date}`, 100, true)}
+        >
+          <h3 style={{ color: 'white', margin: 0 }}>
+            <MdFindInPage size={26} />
+          </h3>
+        </Button>
+
+        <Button
+          isIconOnly
+          variant='light'
+          aria-label='delete'
+          size='md'
+          onClick={() => console.log('delete', date)}
+        >
+          <h3 style={{ color: 'white', margin: 0 }}>
+            <MdDelete size={26} />
+          </h3>
+        </Button>
+      </Stack>
+    );
+  };
+
   return (
     <Stack gap={0}>
       <Stack gap={8}>
@@ -102,51 +149,7 @@ export const CalendarEditForm = (props: CalendarEditFormProps) => {
                     key={`dayGroup-${dayGroup.date}-${indexGroup}`}
                     date={dayGroup.date}
                     eventGroup={dayGroup}
-                    sideEndContent={({ date }) => {
-                      return (
-                        <Stack
-                          direction='horizontal'
-                          contentAlignment='end'
-                          itemsAlignment='center'
-                          gap={4}
-                        >
-                          <Button
-                            isIconOnly
-                            variant='light'
-                            aria-label='edit'
-                            size='sm'
-                            onClick={() => console.log('edit', date)}
-                          >
-                            <h3 style={{ color: 'white', margin: 0 }}>
-                              <TuneIcon />
-                            </h3>
-                          </Button>
-                          <Button
-                            isIconOnly
-                            variant='light'
-                            aria-label='notify'
-                            size='sm'
-                            onClick={() => console.log('notify', date)}
-                          >
-                            <h3 style={{ color: 'white', margin: 0 }}>
-                              <NotificationsIcon />
-                            </h3>
-                          </Button>
-
-                          <Button
-                            isIconOnly
-                            variant='light'
-                            aria-label='delete'
-                            size='sm'
-                            onClick={() => console.log('delete', date)}
-                          >
-                            <h3 style={{ color: 'white', margin: 0 }}>
-                              <HighlightOffIcon />
-                            </h3>
-                          </Button>
-                        </Stack>
-                      );
-                    }}
+                    sideEndContent={sideContent}
                   />
                 );
               })}
@@ -169,56 +172,8 @@ export const CalendarEditForm = (props: CalendarEditFormProps) => {
                             key={`dayGroup-${dayGroup.date}-${indexGroup}`}
                             date={dayGroup.date}
                             eventGroup={dayGroup}
-                          >
-                            <Stack
-                              direction='horizontal'
-                              contentAlignment='end'
-                            >
-                              <Button
-                                isIconOnly
-                                variant='light'
-                                aria-label='delete'
-                                size='sm'
-                                onClick={() =>
-                                  // scrollToElement(`day-${todayDate}`, 100, true)
-                                  console.log('aa')
-                                }
-                              >
-                                <h3 style={{ color: 'white', margin: 0 }}>
-                                  <TuneIcon />
-                                </h3>
-                              </Button>
-                              <Button
-                                isIconOnly
-                                variant='light'
-                                aria-label='delete'
-                                size='sm'
-                                onClick={() =>
-                                  // scrollToElement(`day-${todayDate}`, 100, true)
-                                  console.log('aa')
-                                }
-                              >
-                                <h3 style={{ color: 'white', margin: 0 }}>
-                                  <NotificationsIcon />
-                                </h3>
-                              </Button>
-
-                              <Button
-                                isIconOnly
-                                variant='light'
-                                aria-label='delete'
-                                size='sm'
-                                onClick={() =>
-                                  // scrollToElement(`day-${todayDate}`, 100, true)
-                                  console.log('aa')
-                                }
-                              >
-                                <h3 style={{ color: 'white', margin: 0 }}>
-                                  <HighlightOffIcon />
-                                </h3>
-                              </Button>
-                            </Stack>
-                          </CalendarEventList>
+                            sideEndContent={sideContent}
+                          />
                         );
                       })}
                   </div>

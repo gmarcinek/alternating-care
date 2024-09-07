@@ -4,10 +4,12 @@ export interface AppUser {
 }
 
 export enum CalendarEventType {
+  Offset = 'OFFSET',
   Alternating = 'ALTERNATING',
   Event = 'EVENT',
   Trip = 'TRIP',
-  Offset = 'OFFSET',
+  Birthday = 'BIRTHDAY',
+  Medical = 'MEDICAL',
 }
 
 export interface CalendarEvent {

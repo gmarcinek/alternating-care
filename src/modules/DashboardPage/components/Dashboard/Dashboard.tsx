@@ -88,7 +88,7 @@ export const Dashboard = (props: DashboardProps) => {
               data={sortedEvents}
               handlers={handlers}
               isAlternatingVisible={isAlternatingVisible}
-              isPlanVisible={isPlanVisible}
+              isMultiSelectionMode={isMultiSelectionMode}
               selection={selection}
             />
           )}

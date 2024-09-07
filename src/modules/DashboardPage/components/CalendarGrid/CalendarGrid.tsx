@@ -9,15 +9,20 @@ import styles from './CalendarGrid.module.scss';
 
 interface CalendarGridProps {
   data: CalendarEvent[];
-  isPlanVisible: boolean;
   isAlternatingVisible: boolean;
+  isMultiSelectionMode: boolean;
   handlers: CalendarPointerHandlers;
   selection: Set<string>;
 }
 
 export const CalendarGrid = (props: CalendarGridProps) => {
-  const { data, isAlternatingVisible, isPlanVisible, selection, handlers } =
-    props;
+  const {
+    data,
+    isAlternatingVisible,
+    isMultiSelectionMode,
+    selection,
+    handlers,
+  } = props;
   const startDate = dayjs().format(dateFormat);
 
   return (
@@ -45,6 +50,7 @@ export const CalendarGrid = (props: CalendarGridProps) => {
             events={data}
             {...handlers}
             selection={Array.from(selection)}
+            isMultiSelectionMode={isMultiSelectionMode}
           />
         );
       })}

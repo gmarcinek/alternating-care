@@ -76,7 +76,12 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
     [styles.isAlternating]: isAlternating,
     [styles.isSelected]: isSelected,
   });
-
+  const { dayName, dayNumber } = useMemo(() => {
+    return {
+      dayName: capitalizeFirstLetter(currentDate.format('dd')),
+      dayNumber: currentDate.format('D'),
+    };
+  }, [currentDate]);
   return (
     <CalendarItemStatusContainer
       isAlternating={isAlternating}
@@ -96,11 +101,11 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
       >
         <Stack gap={0} direction='horizontal'>
           <Stack gap={0}>
-            <span>{label}</span>
+            <span>{dayName}</span>
 
             <span className='mt-1'>
               <>
-                <strong>{currentDate.format('D')}</strong>
+                <strong>{dayNumber}</strong>
               </>
               {!is320 && <small>{currentDate.format('.MM')}</small>}
             </span>

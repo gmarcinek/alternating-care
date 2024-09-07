@@ -1,7 +1,7 @@
 'use client';
 
 import { Stack, StackGap } from '@components/Stack/Stack';
-import { CalendarDayType } from '@modules/db/types';
+import { CalendarDayType, CalendarEvent } from '@modules/db/types';
 import { useMemo } from 'react';
 import { useCalenderContext } from '../../Calendar.context';
 import CalendarDay from '../CalendarDay/CalendarDay';
@@ -19,10 +19,23 @@ export function CalendarWeek(props: CallendarWeekProps) {
   const { week, gap } = props;
   const { rowSize, isPlanVisible, events } = useCalenderContext();
 
-  const eventsOfTheWeek = useMemo(() => {
+  const { eventsOfTheWeek, evensByDate } = useMemo(() => {
     const weekDates = week.map((day) => day.date);
+    const eventsOfTheWeek = events.filter((event) =>
+      weekDates.includes(event.date)
+    );
+    const evensByDate: Record<string, CalendarEvent[]> = {};
+    eventsOfTheWeek.forEach((event) => {
+      if (!evensByDate[event.date]) {
+        evensByDate[event.date] = [];
+      }
+      evensByDate[event.date].push(event);
+    });
 
-    return events.filter((event) => weekDates.includes(event.date));
+    return {
+      eventsOfTheWeek,
+      evensByDate,
+    };
   }, [events, week]);
 
   return (
@@ -38,6 +51,7 @@ export function CalendarWeek(props: CallendarWeekProps) {
               day={day}
               key={`day-${day.date}-${weekDayIndex}`}
               className={style.item}
+              dayEvents={evensByDate[day.date]}
             />
           );
         })}

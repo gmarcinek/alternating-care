@@ -1,7 +1,12 @@
 'use client';
 
 import { useCalenderContext } from '@components/Calendar/Calendar.context';
-import { CalendarDayType } from '@modules/db/types';
+import { useDayContainetRwd } from '@components/Calendar/hooks/useDayContainetRwd';
+import {
+  CalendarDayType,
+  CalendarEvent,
+  CalendarEventType,
+} from '@modules/db/types';
 import { Checkbox } from '@nextui-org/react';
 import classNames from 'classnames';
 import {
@@ -12,6 +17,8 @@ import {
   useCallback,
   useMemo,
 } from 'react';
+// import { VscLayers } from 'react-icons/vsc';
+import { BiSolidLayer } from 'react-icons/bi';
 import { CalendarItemBodyMonth } from '../CalendarItemBodyMonth/CalendarItemBodyMonth';
 import { CalendarItemBodySingle } from '../CalendarItemBodySingle/CalendarItemBodySingle';
 import { CalendarItemBodyTwoWeeks } from '../CalendarItemBodyTwoWeeks/CalendarItemBodyTwoWeeks';
@@ -21,10 +28,11 @@ import styles from './CalendarDay.module.scss';
 interface CalendarDayProps extends PropsWithChildren {
   day: CalendarDayType;
   className?: string;
+  dayEvents?: CalendarEvent[];
 }
 
 export default function CalendarDay(props: CalendarDayProps) {
-  const { day, className } = props;
+  const { day, className, dayEvents } = props;
   let render: JSX.Element | undefined = undefined;
 
   const {
@@ -32,13 +40,24 @@ export default function CalendarDay(props: CalendarDayProps) {
     onDayClick,
     isMultiSelectionMode,
     selection,
+    containerWidth,
     onPointerUp,
     onPointerDown,
   } = useCalenderContext();
 
+  const { is380 } = useDayContainetRwd(containerWidth);
+
   const isSelected = useMemo(() => {
     return (selection ?? []).toString().split(',').includes(day.date);
   }, [selection, day.date]);
+
+  const filteredDayEvents = useMemo(() => {
+    return (
+      dayEvents?.filter(
+        (event) => event.type !== CalendarEventType.Alternating
+      ) ?? []
+    );
+  }, [dayEvents]);
 
   const isCheckboxVisible =
     isMultiSelectionMode || (isSelected && rowSize !== 1);
@@ -65,6 +84,19 @@ export default function CalendarDay(props: CalendarDayProps) {
   );
 
   const emptyClasses = classNames(className, styles.emptyDay);
+  const classes = classNames(
+    styles.calendarDay,
+    styles.isMultiEventDay,
+    {
+      [styles.isMultiEventDay1]: filteredDayEvents.length >= 1,
+      [styles.isMultiEventDay2]: filteredDayEvents.length >= 2,
+      [styles.isMultiEventDay3]: filteredDayEvents.length >= 3,
+      [styles.isMultiEventDay5]: filteredDayEvents.length >= 5,
+      [styles.isMultiEventDay7]: filteredDayEvents.length >= 7,
+      [styles.isMultiEventDay9]: filteredDayEvents.length >= 9,
+    },
+    className
+  );
 
   if (day.isOffset) {
     return <div className={emptyClasses}></div>;
@@ -94,8 +126,6 @@ export default function CalendarDay(props: CalendarDayProps) {
       break;
   }
 
-  const classes = classNames(styles.calendarDay, className);
-
   return (
     <div
       className={classes}
@@ -104,6 +134,11 @@ export default function CalendarDay(props: CalendarDayProps) {
       onClick={handleonOnDayClick}
       id={`day-${day.date}`}
     >
+      {filteredDayEvents && filteredDayEvents.length >= 1 && (
+        <div className={styles.eventCounter}>
+          <BiSolidLayer size={is380 ? 14 : 17} />
+        </div>
+      )}
       {isCheckboxVisible && (
         <Checkbox
           className={styles.checkbox}

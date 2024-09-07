@@ -17,6 +17,7 @@ export interface AlternatingCareDBSchema extends DBSchema {
     key: string;
     indexes: {
       'by-id': string;
+      'by-name': string;
       'by-date': string;
       'by-type': CalendarEventType;
       'by-issuer': string;

@@ -15,7 +15,7 @@ export const CalendarMonths = forwardRef<HTMLDivElement, CalendarMonthsProps>(
     const { months, gap } = props;
 
     return (
-      <Stack gap={gap}>
+      <Stack gap={gap} ref={ref}>
         {months.map((month) => {
           return (
             <CalendarMonth

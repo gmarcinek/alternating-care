@@ -2,16 +2,21 @@
 
 import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
 import { Stack } from '@components/Stack/Stack';
+import { CalendarEventType } from '@modules/db/types';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { Avatar } from '@mui/material';
 import { Divider } from '@nextui-org/react';
 import { colorNeutralGray900, getTextColor } from '@utils/color';
 import { GroupByDateType } from '@utils/dates';
 import { capitalizeFirstLetter } from '@utils/string';
 import dayjs from 'dayjs';
 import { PropsWithChildren } from 'react';
+import { BiTrip } from 'react-icons/bi';
+import { IoMdCalendar } from 'react-icons/io';
+import { MdCake, MdLocalHospital } from 'react-icons/md';
 import style from './CalendarEventList.module.scss';
 
-interface CalendarEventListRenderProps extends PropsWithChildren {
+export interface CalendarEventListRenderProps extends PropsWithChildren {
   date: string;
 }
 
@@ -51,32 +56,72 @@ export default function CalendarEventList(props: CalendarEventListProps) {
         {eventGroup.events.length > 0 &&
           eventGroup.events.map((item, index) => {
             return (
-              <CalendarItem
-                mode='none'
-                key={`${item.date}-${index}`}
-                style={{
-                  background: `${item.style?.background}`,
-                  padding: '16px',
-                  marginBottom: '8px',
-                }}
-                day={item}
-                className={style.eventItem}
-                sideEndContent={({ date }) => {
-                  return <>{sideEndContent?.({ date })}</>;
-                }}
-              >
-                <Stack direction='horizontal' contentAlignment='between'>
-                  <Stack gap={0}>
-                    <h4 style={{ color: getTextColor(item.style?.background) }}>
-                      <strong>{item.name}</strong>
-                    </h4>
-                    <p style={{ color: getTextColor(item.style?.background) }}>
-                      {item.description}
-                    </p>
+              <Stack direction='horizontal' itemsAlignment='center'>
+                <Avatar
+                  variant='circular'
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    background: `${item.style?.background}`,
+                  }}
+                >
+                  {item.type === CalendarEventType.Trip && (
+                    <BiTrip
+                      color={getTextColor(item.style?.background)}
+                      size={32}
+                    />
+                  )}
+                  {item.type === CalendarEventType.Medical && (
+                    <MdLocalHospital
+                      color={getTextColor(item.style?.background)}
+                      size={32}
+                    />
+                  )}
+                  {item.type === CalendarEventType.Event && (
+                    <IoMdCalendar
+                      color={getTextColor(item.style?.background)}
+                      size={32}
+                    />
+                  )}
+                  {item.type === CalendarEventType.Birthday && (
+                    <MdCake
+                      color={getTextColor(item.style?.background)}
+                      size={32}
+                    />
+                  )}
+                </Avatar>
+
+                <CalendarItem
+                  mode='none'
+                  key={`${item.date}-${index}`}
+                  style={{
+                    background: `${item.style?.background}`,
+                    padding: '16px',
+                    marginBottom: '8px',
+                  }}
+                  day={item}
+                  className={style.eventItem}
+                  sideEndContent={({ date }) => {
+                    return <>{sideEndContent?.({ date })}</>;
+                  }}
+                >
+                  <Stack direction='horizontal' contentAlignment='between'>
+                    <Stack gap={0}>
+                      <h4
+                        style={{ color: getTextColor(item.style?.background) }}
+                      >
+                        <strong>{item.name}</strong>
+                      </h4>
+                      <p
+                        style={{ color: getTextColor(item.style?.background) }}
+                      >
+                        {item.description}
+                      </p>
+                    </Stack>
+                    {children}
                   </Stack>
-                  {children}
-                </Stack>
-              </CalendarItem>
+                </CalendarItem>
+              </Stack>
             );
           })}
       </Stack>
