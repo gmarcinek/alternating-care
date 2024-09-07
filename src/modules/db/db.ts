@@ -1,4 +1,4 @@
-import { IDBPDatabase, openDB } from 'idb';
+import { IDBPDatabase, IDBPObjectStore, openDB } from 'idb';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { dbName, dbVersion } from './constants';
 import { AlternatingCareDBSchema } from './schema';
@@ -59,24 +59,72 @@ export const useInitDb = () => {
   const initiateDb = useCallback(async () => {
     try {
       const db = await openDB<AlternatingCareDBSchema>(dbName, dbVersion, {
-        upgrade: (db) => {
-          const userStore = db.createObjectStore('users', {
-            keyPath: 'id',
-          });
-          userStore.createIndex('by-id', 'id', { unique: true });
-          userStore.createIndex('by-name', 'name');
-          userStore.createIndex('by-startDate', 'startDate');
-          userStore.createIndex('by-countingRange', 'countingRange');
+        upgrade: (db, oldVersion, newVersion, transaction, event) => {
+          let userStore: IDBPObjectStore<
+              AlternatingCareDBSchema,
+              ArrayLike<'users' | 'events'>,
+              'users',
+              'versionchange'
+            >,
+            eventStore: IDBPObjectStore<
+              AlternatingCareDBSchema,
+              ArrayLike<'users' | 'events'>,
+              'events',
+              'versionchange'
+            >;
 
-          const eventStore = db.createObjectStore('events', {
-            keyPath: 'id',
-          });
-          eventStore.createIndex('by-name', 'name');
-          eventStore.createIndex('by-id', 'id', { unique: true });
-          eventStore.createIndex('by-groupId', 'groupId');
-          eventStore.createIndex('by-date', 'date');
-          eventStore.createIndex('by-type', 'type');
-          eventStore.createIndex('by-issuer', 'issuer');
+          if (newVersion != oldVersion) {
+            userStore = transaction.objectStore('users');
+            eventStore = transaction.objectStore('events');
+          } else {
+            userStore = db.createObjectStore('users');
+            eventStore = db.createObjectStore('events');
+          }
+          // USER
+          if (!userStore.indexNames.contains('by-id')) {
+            userStore.createIndex('by-id', 'id', { unique: true });
+          }
+          if (!userStore.indexNames.contains('by-name')) {
+            userStore.createIndex('by-name', 'name');
+          }
+          if (!userStore.indexNames.contains('by-startDate')) {
+            userStore.createIndex('by-startDate', 'startDate');
+          }
+          if (!userStore.indexNames.contains('by-countingRange')) {
+            userStore.createIndex('by-countingRange', 'countingRange');
+          }
+
+          // EVENT
+          if (!eventStore.indexNames.contains('by-id')) {
+            eventStore.createIndex('by-id', 'id', { unique: true });
+          }
+          if (!eventStore.indexNames.contains('by-groupId')) {
+            eventStore.createIndex('by-groupId', 'groupId');
+          }
+          if (!eventStore.indexNames.contains('by-date')) {
+            eventStore.createIndex('by-date', 'date');
+          }
+          if (!eventStore.indexNames.contains('by-type')) {
+            eventStore.createIndex('by-type', 'type');
+          }
+          if (!eventStore.indexNames.contains('by-issuer')) {
+            eventStore.createIndex('by-issuer', 'issuer');
+          }
+          if (!eventStore.indexNames.contains('by-name')) {
+            eventStore.createIndex('by-name', 'name');
+          }
+          if (!eventStore.indexNames.contains('by-description')) {
+            eventStore.createIndex('by-description', 'description');
+          }
+          if (!eventStore.indexNames.contains('by-startTime')) {
+            eventStore.createIndex('by-startTime', 'startTime');
+          }
+          if (!eventStore.indexNames.contains('by-endTime')) {
+            eventStore.createIndex('by-endTime', 'endTime');
+          }
+          if (!eventStore.indexNames.contains('by-duration')) {
+            eventStore.createIndex('by-duration', 'duration');
+          }
         },
       });
 

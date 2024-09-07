@@ -20,6 +20,9 @@ export interface CalendarEvent {
   issuer: string;
   creationTime: number;
   name?: string;
+  startTime?: number;
+  endTime?: number;
+  duration?: number;
   description?: string;
   style?: {
     background: string;

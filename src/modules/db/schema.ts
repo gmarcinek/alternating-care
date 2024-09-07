@@ -18,10 +18,14 @@ export interface AlternatingCareDBSchema extends DBSchema {
     indexes: {
       'by-id': string;
       'by-name': string;
+      'by-description': string;
       'by-date': string;
       'by-type': CalendarEventType;
       'by-issuer': string;
       'by-groupId': string;
+      'by-startTime': string;
+      'by-endTime': string;
+      'by-duration': string;
     };
   };
 }

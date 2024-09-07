@@ -56,7 +56,11 @@ export default function CalendarEventList(props: CalendarEventListProps) {
         {eventGroup.events.length > 0 &&
           eventGroup.events.map((item, index) => {
             return (
-              <Stack direction='horizontal' itemsAlignment='center'>
+              <Stack
+                direction='horizontal'
+                itemsAlignment='center'
+                key={`event-list-${item.name}-${index}`}
+              >
                 <Avatar
                   variant='circular'
                   style={{
