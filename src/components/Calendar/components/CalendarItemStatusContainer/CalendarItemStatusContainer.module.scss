@@ -10,6 +10,11 @@
     filter: drop-shadow(0px 0px $spacer-16 $red-500);
     background: none;
     z-index: 1;
+
+    background: linear-gradient(#5f5f5f, #5f5f5f);
+    background-size: calc(100% - 4px) calc(100% - 4px);
+    background-repeat: no-repeat;
+    background-position: 2px 2px;
   }
 
   &.isSelected {
