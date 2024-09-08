@@ -11,6 +11,7 @@ import {
   CalenderContextData,
   OnDayClickHandler,
   OnDayPointerHandler,
+  OnDayTouchHandler,
 } from './Calendar.context';
 import { segregateDatesMonthly } from './Calendar.helpers';
 import { DisplayStrategy } from './Calendar.types';
@@ -35,6 +36,8 @@ interface CalendarProps {
   onDayClick?: OnDayClickHandler;
   onPointerUp?: OnDayPointerHandler;
   onPointerDown?: OnDayPointerHandler;
+  onTouchStart: OnDayTouchHandler;
+  onTouchEnd: OnDayTouchHandler;
   isMultiSelectionMode?: boolean;
 }
 

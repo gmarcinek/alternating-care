@@ -1,8 +1,11 @@
-import { OnDayPointerHandler } from '@components/Calendar/Calendar.context';
+import {
+  OnDayPointerHandler,
+  OnDayTouchHandler,
+} from '@components/Calendar/Calendar.context';
 import { CalendarDayType } from '@modules/db/types';
 import { dateFormat } from '@utils/dates';
 import dayjs from 'dayjs';
-import { TouchEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 interface UseSelectionProps {
   isMultiSelectionAvailable?: boolean;
@@ -11,8 +14,8 @@ interface UseSelectionProps {
 export interface CalendarPointerHandlers {
   onPointerUp: OnDayPointerHandler;
   onPointerDown: OnDayPointerHandler;
-  onTouchStart: (day: CalendarDayType, event: TouchEvent) => void;
-  onTouchEnd: (day: CalendarDayType, event: TouchEvent) => void;
+  onTouchStart: OnDayTouchHandler;
+  onTouchEnd: OnDayTouchHandler;
 }
 
 export const useSelection = (props: UseSelectionProps) => {
@@ -136,15 +139,12 @@ export const useSelection = (props: UseSelectionProps) => {
     [defaultBehavior]
   );
 
-  const handleTouchStart = useCallback(
-    (day: CalendarDayType, event: TouchEvent) => {
-      // Obsługa touchstart
-    },
-    []
-  );
+  const handleTouchStart = useCallback<OnDayTouchHandler>((day, event) => {
+    // Obsługa touchstart
+  }, []);
 
-  const handleTouchEnd = useCallback(
-    (day: CalendarDayType, event: TouchEvent) => {
+  const handleTouchEnd = useCallback<OnDayTouchHandler>(
+    (day, event) => {
       // Wykryj zmianę pozycji palca (ruch scrollujący vs kliknięcie)
       if (event.changedTouches.length === 1) {
         const touch = event.changedTouches[0];

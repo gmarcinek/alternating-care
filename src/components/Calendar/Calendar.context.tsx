@@ -11,6 +11,11 @@ export type OnDayPointerHandler = (
   event: PointerEvent<Element>
 ) => void;
 
+export type OnDayTouchHandler = (
+  date: CalendarDayType,
+  event: TouchEvent
+) => void;
+
 export interface CalenderContextData {
   rowSize: number;
   containerWidth: number;
