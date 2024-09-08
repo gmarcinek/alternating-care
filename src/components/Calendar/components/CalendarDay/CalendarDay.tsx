@@ -2,11 +2,12 @@
 
 import { useCalenderContext } from '@components/Calendar/Calendar.context';
 import { useDayContainetRwd } from '@components/Calendar/hooks/useDayContainetRwd';
+
 import {
   CalendarDayType,
   CalendarEvent,
   CalendarEventType,
-} from '@modules/db/types';
+} from '@components/Calendar/Calendar.types';
 import { Checkbox } from '@nextui-org/react';
 import classNames from 'classnames';
 import {
@@ -17,7 +18,6 @@ import {
   useCallback,
   useMemo,
 } from 'react';
-// import { VscLayers } from 'react-icons/vsc';
 import { BiSolidLayer } from 'react-icons/bi';
 import { CalendarItemBodyMonth } from '../CalendarItemBodyMonth/CalendarItemBodyMonth';
 import { CalendarItemBodySingle } from '../CalendarItemBodySingle/CalendarItemBodySingle';

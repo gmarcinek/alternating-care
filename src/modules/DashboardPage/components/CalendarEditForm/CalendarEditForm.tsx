@@ -1,8 +1,8 @@
 'use client';
 
+import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import { Stack } from '@components/Stack/Stack';
 import { IncomingEventList } from '@modules/DashboardPage/IncomingEventList/IncomingEventList';
-import { CalendarEvent } from '@modules/db/types';
 import { UseQueryResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';

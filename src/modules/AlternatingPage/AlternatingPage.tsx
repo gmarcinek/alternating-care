@@ -1,9 +1,10 @@
 'use client';
 
+import { useGetAlternatingEventsQuery } from '@api/db/events/useGetAlternatingEventsQuery';
 import DashboardContainer from '@components/DashboardContainer/DashboardContainer';
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
-import { useGetAlternatingEventsQuery } from '@modules/db/events/useGetAlternatingEventsQuery';
-import { CalendarEventType } from '@modules/db/types';
+
+import { CalendarEventType } from '@components/Calendar/Calendar.types';
 import { TodayButton } from '@modules/TodayButton/TodayButton';
 import { AlternatingFormCalendar } from './components/AlternatingFormCalendar/AlternatingFormCalendar';
 

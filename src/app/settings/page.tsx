@@ -1,8 +1,8 @@
 'use client';
 
+import { useFormPutUserMutation } from '@api/db/users/useFormPutUserMutation'; // Hook do zapisywania użytkownika
 import PageContainer from '@components/PageContainer/PageContainer';
 import { Stack } from '@components/Stack/Stack';
-import { useFormPutUserMutation } from '@modules/db/users/useFormPutUserMutation'; // Hook do zapisywania użytkownika
 import { Button, Input } from '@nextui-org/react'; // Zakładam, że używasz NextUI
 import crypto from 'crypto';
 import { useCallback, useState } from 'react';

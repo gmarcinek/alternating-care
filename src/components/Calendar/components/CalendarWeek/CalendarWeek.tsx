@@ -1,7 +1,10 @@
 'use client';
 
+import {
+  CalendarDayType,
+  CalendarEvent,
+} from '@components/Calendar/Calendar.types';
 import { Stack, StackGap } from '@components/Stack/Stack';
-import { CalendarDayType, CalendarEvent } from '@modules/db/types';
 import { useMemo } from 'react';
 import { useCalenderContext } from '../../Calendar.context';
 import CalendarDay from '../CalendarDay/CalendarDay';

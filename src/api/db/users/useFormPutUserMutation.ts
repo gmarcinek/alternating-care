@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { useDbContext } from '../DbContext'; // Korzystamy z kontekstu bazy danych
-import { AppUser } from '../types';
+import { useDbContext } from '../../../api/db/DbContext'; // Korzystamy z kontekstu bazy danych
+import { AppUser } from '../../../api/db/types';
 
 /**
  * Hak `useFormPutUserMutation` wykorzystuje `react-query` do przeprowadzania operacji `put` w bazie danych

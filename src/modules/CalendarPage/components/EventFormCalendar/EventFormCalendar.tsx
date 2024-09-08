@@ -2,14 +2,15 @@
 
 import { useAppContext } from '@app/AppContext';
 import { Calendar } from '@components/Calendar/Calendar';
+import { dateFormat } from '@components/Calendar/Calendar.helpers';
+import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import { Stack } from '@components/Stack/Stack';
-import { CalendarEvent } from '@modules/db/types';
 import AddIcon from '@mui/icons-material/Add';
 import { Divider } from '@nextui-org/divider';
 import { UseMutationResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
-import { dateFormat, groupByDate } from '@utils/dates';
+import { groupByDate } from '@utils/dates';
 import { useBreakpoints } from '@utils/useBreakpoints';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
@@ -38,7 +39,6 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
 
   const i18n = eventFormCalendarI18n[language];
 
-  const [isTodayVisible, setIsTodayVisible] = useState(true);
   const [isPlanVisible, setIsPlanVisible] = useState(false);
   const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
 
@@ -126,7 +126,7 @@ export const EventFormCalendar = (props: EventFormCalendarProps) => {
           <Calendar
             startDate={startDate}
             rowSize={7}
-            isTodayVisible={isTodayVisible}
+            isTodayVisible
             isPlanVisible={isPlanVisible}
             isAlternatingVisible={isAlternatingVisible}
             displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}

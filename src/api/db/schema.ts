@@ -1,5 +1,9 @@
+import {
+  CalendarEvent,
+  CalendarEventType,
+} from '@components/Calendar/Calendar.types';
 import { DBSchema } from 'idb';
-import { AppUser, CalendarEvent, CalendarEventType } from './types';
+import { AppUser } from '../../api/db/types';
 
 export interface AlternatingCareDBSchema extends DBSchema {
   users: {

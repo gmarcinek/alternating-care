@@ -1,6 +1,6 @@
+import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import { useQuery } from '@tanstack/react-query';
-import { useDbContext } from '../DbContext'; // Użycie kontekstu bazy danych
-import { CalendarEvent } from '../types';
+import { useDbContext } from '../../../api/db/DbContext'; // Użycie kontekstu bazy danych
 
 export const useGetAllEventsQuery = () => {
   // Pobieramy instancję bazy danych z kontekstu

@@ -4,7 +4,7 @@ import { useAppContext } from '@app/AppContext';
 import { Stack } from '@components/Stack/Stack';
 import { Avatar } from '@nextui-org/react';
 import Link from 'next/link';
-import { AppUser } from '../../db/types';
+import { AppUser } from '../../../api/db/types';
 import { Language } from './Language';
 import { Logo } from './Logo';
 import { MenuButton } from './MenuButton';

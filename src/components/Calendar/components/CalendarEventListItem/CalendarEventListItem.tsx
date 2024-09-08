@@ -1,8 +1,8 @@
 'use client';
 
+import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
 import { Stack } from '@components/Stack/Stack';
-import { CalendarEvent } from '@modules/db/types';
 import { getTextColor } from '@utils/color';
 import { PropsWithChildren } from 'react';
 import CalendarEventAvatar from '../CalendarEventAvatar/CalendarEventAvatar';

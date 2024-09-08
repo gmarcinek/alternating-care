@@ -1,8 +1,8 @@
 'use client';
 
 import { Calendar } from '@components/Calendar/Calendar';
-import { CalendarEvent } from '@modules/db/types';
-import { dateFormat } from '@utils/dates';
+import { dateFormat } from '@components/Calendar/Calendar.helpers';
+import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import dayjs from 'dayjs';
 import { CalendarPointerHandlers } from '../Dashboard/useSelection';
 import styles from './CalendarGrid.module.scss';

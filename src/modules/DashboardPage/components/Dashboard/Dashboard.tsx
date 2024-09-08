@@ -1,10 +1,10 @@
 'use client';
 
 import { Calendar } from '@components/Calendar/Calendar';
-import { CalendarEvent } from '@modules/db/types';
+import { dateFormat } from '@components/Calendar/Calendar.helpers';
+import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import { UseQueryResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
-import { dateFormat } from '@utils/dates';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';

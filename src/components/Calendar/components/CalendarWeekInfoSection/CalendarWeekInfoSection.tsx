@@ -1,7 +1,7 @@
 'use client';
 
+import { CalendarDayType } from '@components/Calendar/Calendar.types';
 import { Stack } from '@components/Stack/Stack';
-import { CalendarDayType } from '@modules/db/types';
 import { Divider } from '@nextui-org/react';
 import { colorRed500 } from '@utils/color';
 import { capitalizeFirstLetter } from '@utils/string';

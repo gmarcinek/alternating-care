@@ -1,6 +1,6 @@
+import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import { useMutation } from '@tanstack/react-query';
-import { useDbContext } from '../DbContext'; // Użycie kontekstu bazy danych
-import { CalendarEvent } from '../types';
+import { useDbContext } from '../../../api/db/DbContext'; // Użycie kontekstu bazy danych
 
 interface UseGetAllEventsMutationProps {
   onSuccess?: (data?: CalendarEvent[]) => void;

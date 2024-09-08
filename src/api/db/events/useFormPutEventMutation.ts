@@ -1,6 +1,6 @@
+import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import { useMutation } from '@tanstack/react-query';
-import { useDbContext } from '../DbContext';
-import { CalendarEvent } from '../types';
+import { useDbContext } from '../../../api/db/DbContext';
 
 /**
  * Hak `useFormPutEventMutation` do zapisywania nowych zdarzeń kalendarza w bazie danych.

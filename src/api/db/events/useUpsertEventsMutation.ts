@@ -1,7 +1,11 @@
+import {
+  CalendarDayType,
+  CalendarEvent,
+  CalendarEventType,
+} from '@components/Calendar/Calendar.types';
 import { useMutation } from '@tanstack/react-query';
 import crypto from 'crypto';
-import { useDbContext } from '../DbContext';
-import { CalendarDayType, CalendarEvent, CalendarEventType } from '../types';
+import { useDbContext } from '../../../api/db/DbContext';
 
 export const useUpsertEventsMutation = (
   props: {

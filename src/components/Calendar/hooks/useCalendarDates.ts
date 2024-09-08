@@ -1,6 +1,10 @@
-import { toFullMonthsDates, toFullWeeksDates, toRowXDates } from '@utils/dates';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
+import {
+  toFullMonthsDates,
+  toFullWeeksDates,
+  toRowXDates,
+} from '../Calendar.helpers';
 
 interface UseCalendarDatesProps {
   startDate: string;

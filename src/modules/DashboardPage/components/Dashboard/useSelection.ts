@@ -2,8 +2,8 @@ import {
   OnDayPointerHandler,
   OnDayTouchHandler,
 } from '@components/Calendar/Calendar.context';
-import { CalendarDayType } from '@modules/db/types';
-import { dateFormat } from '@utils/dates';
+import { dateFormat } from '@components/Calendar/Calendar.helpers';
+import { CalendarDayType } from '@components/Calendar/Calendar.types';
 import dayjs from 'dayjs';
 import { useCallback, useState } from 'react';
 

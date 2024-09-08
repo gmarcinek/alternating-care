@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import { useDbContext } from '../DbContext'; // Użycie kontekstu bazy danych
-import { AppUser } from '../types';
+import { useDbContext } from '../../../api/db/DbContext'; // Użycie kontekstu bazy danych
+import { AppUser } from '../../../api/db/types';
 
 interface UseFormReadUsersMutationProps {
   onSuccess?: (data?: AppUser[]) => void;

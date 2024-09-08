@@ -1,8 +1,8 @@
 'use client';
 
+import { useGetAllEventsMutation } from '@api/db/events/useGetAllEventsMutation';
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 import PageContainer from '@components/PageContainer/PageContainer';
-import { useGetAllEventsMutation } from '@modules/db/events/useGetAllEventsMutation';
 import { TodayButton } from '@modules/TodayButton/TodayButton';
 import { useEffect } from 'react';
 import { EventFormCalendar } from './components/EventFormCalendar/EventFormCalendar';

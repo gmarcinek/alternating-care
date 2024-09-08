@@ -1,8 +1,8 @@
 'use client';
 
+import { useGetAllEventsQuery } from '@api/db/events/useGetAllEventsQuery';
 import DashboardContainer from '@components/DashboardContainer/DashboardContainer';
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
-import { useGetAllEventsQuery } from '@modules/db/events/useGetAllEventsQuery';
 import { TodayButton } from '@modules/TodayButton/TodayButton';
 import { Dashboard } from './components/Dashboard/Dashboard';
 

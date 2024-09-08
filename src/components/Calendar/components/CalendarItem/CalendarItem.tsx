@@ -1,6 +1,6 @@
 'use client';
 
-import { CalendarDayType } from '@modules/db/types';
+import { CalendarDayType } from '@components/Calendar/Calendar.types';
 import { capitalizeFirstLetter } from '@utils/string';
 import classNames from 'classnames';
 import dayjs from 'dayjs';

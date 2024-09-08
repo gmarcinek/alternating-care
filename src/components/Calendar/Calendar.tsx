@@ -1,9 +1,8 @@
 'use client';
 
 import useElementSize from '@custom-react-hooks/use-element-size';
-import { CalendarEvent } from '@modules/db/types';
+
 import { splitEvenly } from '@utils/array';
-import { getDaysBetweenDates } from '@utils/dates';
 import { NUMBER_SEVEN } from '@utils/number';
 import { useMemo } from 'react';
 import {
@@ -13,8 +12,8 @@ import {
   OnDayPointerHandler,
   OnDayTouchHandler,
 } from './Calendar.context';
-import { segregateDatesMonthly } from './Calendar.helpers';
-import { DisplayStrategy } from './Calendar.types';
+import { getDaysBetweenDates, segregateDatesMonthly } from './Calendar.helpers';
+import { CalendarEvent, DisplayStrategy } from './Calendar.types';
 import { CalendarMonths } from './components/CalendarMonths/CalendarMonths';
 import { CalendarUngruped } from './components/CalendarUngruped/CalendarUngruped';
 import { useCalendarDates } from './hooks/useCalendarDates';

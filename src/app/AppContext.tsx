@@ -2,7 +2,7 @@
 
 import { SupportedLanguages } from '@utils/lang';
 import { createContext, useContext } from 'react';
-import { AppUser } from '../modules/db/types';
+import { AppUser } from '../api/db/types';
 
 export interface AppContextData {
   user: AppUser;
