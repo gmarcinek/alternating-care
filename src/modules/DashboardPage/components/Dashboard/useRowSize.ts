@@ -24,10 +24,10 @@ export const useRowSize = (props: UseRowSizeProps) => {
       return 14;
     }
     if (isPlanVisible && is1360) {
-      return 7;
+      return 14;
     }
     if (isPlanVisible && is1280) {
-      return 7;
+      return 14;
     }
     if (isPlanVisible && is1024) {
       return 7;

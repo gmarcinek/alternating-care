@@ -26,14 +26,14 @@
   }
 }
 
-@media (min-width: 656px) {
+@media (min-width: 626px) {
   .dashboard {
-    grid-template-columns: auto 290px;
+    grid-template-columns: 50% auto;
     grid-template-rows: auto 1fr;
     transition: grid-template-columns 0.5s;
 
     &.isPlanVisible {
-      grid-template-columns: auto 290px;
+      grid-template-columns: 50% auto;
     }
 
     .calendarContainer {
@@ -51,12 +51,12 @@
 
 @media (min-width: 768px) {
   .dashboard {
-    grid-template-columns: 53% auto;
+    grid-template-columns: 50% auto;
     grid-template-rows: auto 1fr;
     transition: grid-template-columns 0.5s;
 
     &.isPlanVisible {
-      grid-template-columns: 53% auto;
+      grid-template-columns: 50% auto;
     }
 
     .calendarContainer {
@@ -67,20 +67,20 @@
       display: block;
       grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
       overflow-y: scroll;
-      padding: 1rem;
+      padding: 0.5rem;
     }
   }
 }
 
 @media (min-width: 1024px) {
   .dashboard {
-    grid-template-columns: 50% minmax(50%, 512px);
+    grid-template-columns: 50% 50%;
     grid-template-rows: auto 1fr;
     column-gap: 1rem;
     transition: grid-template-columns 0.5s;
 
     &.isPlanVisible {
-      grid-template-columns: auto 45%;
+      grid-template-columns: 50% 50%;
     }
 
     .calendarContainer {
@@ -100,6 +100,10 @@
   .dashboard {
     grid-template-columns: auto 450px;
     column-gap: 1.5rem;
+
+    &.isPlanVisible {
+      grid-template-columns: auto 450px;
+    }
 
     .formContainer {
       display: block;
