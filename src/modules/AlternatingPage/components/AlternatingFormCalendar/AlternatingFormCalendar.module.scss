@@ -2,7 +2,7 @@
 
 .alternatingFormCalendarPage {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto;
   grid-template-rows: 1fr;
   column-gap: 2rem;
   row-gap: 1rem;
@@ -28,7 +28,7 @@
 
 @media (min-width: 768px) {
   .alternatingFormCalendarPage {
-    grid-template-columns: auto 20%;
+    grid-template-columns: auto;
 
     .alternatingFormCalendar {
       grid-template-columns: repeat(2, 1fr);
@@ -41,7 +41,7 @@
 
 @media (min-width: 1024px) {
   .alternatingFormCalendarPage {
-    grid-template-columns: auto 20%;
+    grid-template-columns: auto;
     .alternatingFormCalendar {
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: 1fr;
@@ -63,9 +63,21 @@
 
 @media (min-width: 1920px) {
   .alternatingFormCalendarPage {
-    grid-template-columns: auto 12%;
+    grid-template-columns: auto;
     .alternatingFormCalendar {
       grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 1fr;
+      column-gap: 3rem;
+      row-gap: 3rem;
+    }
+  }
+}
+
+@media (min-width: 2220px) {
+  .alternatingFormCalendarPage {
+    grid-template-columns: auto;
+    .alternatingFormCalendar {
+      grid-template-columns: repeat(6, 1fr);
       grid-template-rows: 1fr;
       column-gap: 3rem;
       row-gap: 3rem;

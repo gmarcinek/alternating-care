@@ -74,9 +74,6 @@ export const AlternatingFormCalendar = (props: EventFormCalendarProps) => {
           );
         })}
       </div>
-      <div className={infoClasses}>
-        <h1>Opieka</h1>
-      </div>
     </div>
   );
 };
