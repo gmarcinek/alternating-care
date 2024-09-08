@@ -36,8 +36,8 @@ interface CalendarProps {
   onDayClick?: OnDayClickHandler;
   onPointerUp?: OnDayPointerHandler;
   onPointerDown?: OnDayPointerHandler;
-  onTouchStart: OnDayTouchHandler;
-  onTouchEnd: OnDayTouchHandler;
+  onTouchStart?: OnDayTouchHandler;
+  onTouchEnd?: OnDayTouchHandler;
   isMultiSelectionMode?: boolean;
 }
 
