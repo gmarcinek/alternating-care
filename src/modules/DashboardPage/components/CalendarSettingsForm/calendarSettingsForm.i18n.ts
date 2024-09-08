@@ -2,7 +2,7 @@ export const calendarSettingsFormI18n = {
   pl: {
     plan: 'Plan',
     alternating: 'Opieka',
-    events: 'Wydarzenia',
+    events: 'Eventy',
   },
   en: {
     plan: 'Plan',

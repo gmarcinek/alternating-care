@@ -177,7 +177,7 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
             color='default'
           >
             <EventBusyIcon />
-            Anuluj
+            {i18n.cancel}
           </Button>
           <Button
             type='submit'
