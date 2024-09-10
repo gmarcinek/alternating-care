@@ -3,17 +3,18 @@
 import { useDeleteEventMutation } from '@api/db/events/useDeleteEventMutation';
 import { CalendarEvent, CalendarEventType } from '@api/db/types';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
-import CalendarEventList, {
+import EventList, {
   CalendarEventListRenderProps,
-} from '@components/Calendar/components/CalendarEventList/CalendarEventList';
+} from '@components/EventList/EventList';
 import { Stack } from '@components/Stack/Stack';
+import { useDashboardPageContext } from '@modules/DashboardPage/DashboardPage.context';
 import { Button } from '@nextui-org/react';
 import { sortBy } from '@utils/array';
 import { groupByDate } from '@utils/dates';
 import { useScrollToId } from '@utils/useScrollTo';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import { MdFindInPage } from 'react-icons/md';
+import { MdDeleteForever, MdFindInPage } from 'react-icons/md';
 
 interface IncomingEventListProps {
   data: CalendarEvent[];
@@ -23,7 +24,12 @@ interface IncomingEventListProps {
 export const IncomingEventList = (props: IncomingEventListProps) => {
   const { data, selection } = props;
   const startDate = dayjs().format(dateFormat);
-  const deleteMutation = useDeleteEventMutation();
+  const { updateAllEvents } = useDashboardPageContext();
+  const deleteMutation = useDeleteEventMutation({
+    onSuccess() {
+      updateAllEvents?.();
+    },
+  });
 
   const sortedEvents = useMemo(() => {
     return sortBy(data, 'creationTime');
@@ -52,7 +58,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
     );
   }, [sinceThisMonthGroupedEvents, startDate]);
 
-  const sideContent = ({ date }: CalendarEventListRenderProps) => {
+  const sideContent = ({ event }: CalendarEventListRenderProps) => {
     const { scrollToElement } = useScrollToId();
     return (
       <Stack
@@ -66,16 +72,19 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
           variant='light'
           aria-label='notify'
           size='md'
-          // onClick={() => deleteMutation.mutate(data)}
+          onClick={() => deleteMutation.mutate(event)}
         >
-          <b style={{ color: 'white', margin: 0 }}>Usuń</b>
+          <h3 style={{ color: 'white', margin: 0 }}>
+            <MdDeleteForever size={26} />
+          </h3>
         </Button>
+
         <Button
           isIconOnly
           variant='light'
           aria-label='notify'
           size='md'
-          onClick={() => scrollToElement(`day-${date}`, 100, true)}
+          onClick={() => scrollToElement(`day-${event.date}`, 100, true)}
         >
           <h3 style={{ color: 'white', margin: 0 }}>
             <MdFindInPage size={26} />
@@ -89,15 +98,23 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
     <Stack className='mt-4'>
       <Stack gap={0}>
         {selection.size === 0 && (
-          <>
-            <h3>
-              {sinceTodayEvents.length === 0
-                ? 'Brak wydarzeń - dodaj'
-                : 'Nadchodzące wydarzenia'}
-            </h3>
+          <div>
+            {sinceTodayEvents.length === 0 && (
+              <Stack>
+                <h3>Brak zaplanowanych wydarzeń</h3>
+                <p>
+                  Zacznij od kliknięcia w dzień kalendarza żeby go zaznaczyć.
+                  <br />
+                  Możesz zaznaczać wiele dni na raz używając skrótów
+                  klawiaturowych z shift, alt i ctrl
+                </p>
+              </Stack>
+            )}
+            {sinceTodayEvents.length !== 0 && <>Nadchodzące wydarzenia</>}
+
             {sinceTodayEvents.map((dayGroup, indexGroup) => {
               return (
-                <CalendarEventList
+                <EventList
                   key={`dayGroup-${dayGroup.date}-${indexGroup}`}
                   date={dayGroup.date}
                   eventGroup={dayGroup}
@@ -105,7 +122,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
                 />
               );
             })}
-          </>
+          </div>
         )}
 
         {selection.size !== 0 && (
@@ -120,7 +137,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
                     })
                     .map((dayGroup, indexGroup) => {
                       return (
-                        <CalendarEventList
+                        <EventList
                           key={`dayGroup-${dayGroup.date}-${indexGroup}`}
                           date={dayGroup.date}
                           eventGroup={dayGroup}

@@ -1,5 +1,6 @@
 'use client';
 
+import { CalendarEvent } from '@api/db/types';
 import { Stack } from '@components/Stack/Stack';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { Divider } from '@nextui-org/react';
@@ -8,20 +9,20 @@ import { GroupByDateType } from '@utils/dates';
 import { capitalizeFirstLetter } from '@utils/string';
 import dayjs from 'dayjs';
 import { PropsWithChildren } from 'react';
-import CalendarEventListItem from '../CalendarEventListItem/CalendarEventListItem';
+import EventListItem from './components/EventListItem/EventListItem';
 
 export interface CalendarEventListRenderProps extends PropsWithChildren {
-  date: string;
+  event: CalendarEvent;
 }
 
-interface CalendarEventListProps extends PropsWithChildren {
+interface EventListProps extends PropsWithChildren {
   date: string;
   eventGroup: GroupByDateType;
   sideEndContent?: (props: CalendarEventListRenderProps) => React.ReactElement;
 }
 
-export default function CalendarEventList(props: CalendarEventListProps) {
-  const { date, eventGroup, children, sideEndContent } = props;
+export default function EventList(props: EventListProps) {
+  const { date, eventGroup, sideEndContent } = props;
   const currentDate = dayjs(date);
 
   return (
@@ -48,13 +49,13 @@ export default function CalendarEventList(props: CalendarEventListProps) {
         </div>
 
         {eventGroup.events.length > 0 &&
-          eventGroup.events.map((item, index) => {
+          eventGroup.events.map((event, index) => {
             return (
-              <CalendarEventListItem
-                key={`event-list-${item.name}-${index}`}
-                event={item}
-                sideEndContent={({ date }) => {
-                  return <>{sideEndContent?.({ date })}</>;
+              <EventListItem
+                key={`event-list-${event.name}-${index}`}
+                event={event}
+                sideEndContent={({ event }) => {
+                  return <>{sideEndContent?.({ event })}</>;
                 }}
               />
             );

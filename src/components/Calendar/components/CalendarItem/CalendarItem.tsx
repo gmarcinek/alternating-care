@@ -30,7 +30,6 @@ export function CalendarItem(props: CalendarItemProps) {
     style,
     mode = 'short',
     isNoPadding,
-    title,
     children,
     isClipped,
   } = props;

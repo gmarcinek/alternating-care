@@ -73,13 +73,18 @@ export const useInitDb = () => {
               'versionchange'
             >;
 
-          if (newVersion != oldVersion) {
-            userStore = transaction.objectStore('users');
-            eventStore = transaction.objectStore('events');
+          if (!db.objectStoreNames.contains('users')) {
+            userStore = db.createObjectStore('users', { keyPath: 'id' });
           } else {
-            userStore = db.createObjectStore('users');
-            eventStore = db.createObjectStore('events');
+            userStore = transaction.objectStore('users');
           }
+
+          if (!db.objectStoreNames.contains('events')) {
+            eventStore = db.createObjectStore('events', { keyPath: 'id' });
+          } else {
+            eventStore = transaction.objectStore('events');
+          }
+
           // USER
           if (!userStore.indexNames.contains('by-id')) {
             userStore.createIndex('by-id', 'id', { unique: true });

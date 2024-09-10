@@ -1,11 +1,10 @@
 'use client';
+import { CalendarEventType } from '@api/db/types';
 import { useAppContext } from '@app/AppContext';
 import { Button } from '@components/Button/Button';
-import CalendarEventListItem from '@components/Calendar/components/CalendarEventListItem/CalendarEventListItem';
-import { Stack } from '@components/Stack/Stack';
-
-import { CalendarEventType } from '@api/db/types';
 import ColorPicker from '@components/ColorPicker/ColorPicker';
+import EventListItem from '@components/EventList/components/EventListItem/EventListItem';
+import { Stack } from '@components/Stack/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
@@ -153,7 +152,7 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
             </Stack>
 
             <Stack>
-              <CalendarEventListItem
+              <EventListItem
                 event={newEvent}
                 paragraphClassName={styles.exampleItemParagraph}
                 titleClassName={styles.exampleItemTitle}

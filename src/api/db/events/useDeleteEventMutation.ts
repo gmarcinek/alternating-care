@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useDbContext } from '../DbContext';
+import { CalendarEvent } from '../types';
 
 export const useDeleteEventMutation = (
   props: {
@@ -11,7 +12,7 @@ export const useDeleteEventMutation = (
   const { db } = useDbContext(); // Pobieramy instancję bazy danych z kontekstu
 
   const mutation = useMutation({
-    mutationFn: async (eventId: string) => {
+    mutationFn: async (calendarEvent: CalendarEvent) => {
       if (!db) {
         throw new Error('Database not available');
       }
@@ -22,14 +23,14 @@ export const useDeleteEventMutation = (
         const store = transaction.objectStore('events');
 
         // Sprawdzamy, czy event o podanym id istnieje
-        const event = await store.get(eventId);
+        const event = await store.get(calendarEvent.id);
 
         if (!event) {
-          throw new Error(`Event with id "${eventId}" not found`);
+          throw new Error(`Event with id "${calendarEvent.id}" not found`);
         }
 
         // Usuwamy event
-        await store.delete(eventId);
+        await store.delete(calendarEvent.id);
 
         await transaction.done;
       } catch (error) {
