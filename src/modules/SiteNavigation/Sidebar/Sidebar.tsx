@@ -40,12 +40,6 @@ export const Sidebar = (props: SidebarProps) => {
           </li>
 
           <li>
-            <Link href='/calendar' onClick={toggle}>
-              <h3>Edycja</h3>
-            </Link>
-          </li>
-
-          <li>
             <Link href='/alternating' onClick={toggle}>
               <h3>Opieka</h3>
             </Link>
