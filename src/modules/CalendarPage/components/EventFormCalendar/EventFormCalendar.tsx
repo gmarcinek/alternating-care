@@ -1,9 +1,9 @@
 'use client';
 
+import { CalendarEvent } from '@api/db/types';
 import { useAppContext } from '@app/AppContext';
 import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
-import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import CalendarEventList from '@components/Calendar/components/CalendarEventList/CalendarEventList';
 import { Stack } from '@components/Stack/Stack';
 import AddIcon from '@mui/icons-material/Add';

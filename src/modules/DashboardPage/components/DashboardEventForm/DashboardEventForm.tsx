@@ -5,8 +5,9 @@ import { Button } from '@components/Button/Button';
 import CalendarEventListItem from '@components/Calendar/components/CalendarEventListItem/CalendarEventListItem';
 import { Stack } from '@components/Stack/Stack';
 
+import { CalendarEventType } from '@api/db/types';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
-import { CalendarEventType } from '@components/Calendar/Calendar.types';
+import ColorPicker from '@components/ColorPicker/ColorPicker';
 import AddIcon from '@mui/icons-material/Add';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
@@ -24,7 +25,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { ColorResult, SliderPicker } from 'react-color';
 import { toast } from 'react-toastify';
 import { dashboardEventFormI18n } from './dashboardEventForm.i18n'; // Import your i18n file
 import styles from './dashboardEventForm.module.scss';
@@ -33,7 +33,7 @@ interface DashboardEventFormProps {
   selection: string[];
   setSelection: Dispatch<SetStateAction<Set<string>>>;
   onSuccess: () => void;
-  isMultiSelectionMode: boolean;
+  isMultiSelectionMode?: boolean;
   setIsMultiSelectionMode: (value: boolean) => void;
 }
 
@@ -41,13 +41,7 @@ const defaultBgColor = '#E57373';
 const defaultTextColor = '#ffffff';
 
 export const DashboardEventForm = (props: DashboardEventFormProps) => {
-  const {
-    selection,
-    onSuccess,
-    setSelection,
-    isMultiSelectionMode,
-    setIsMultiSelectionMode,
-  } = props;
+  const { selection, onSuccess, setSelection, setIsMultiSelectionMode } = props;
   const { language } = useAppContext();
   const i18n = dashboardEventFormI18n[language];
 
@@ -268,13 +262,10 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
                   titleClassName={styles.exampleItemTitle}
                 />
 
-                <SliderPicker
-                  color={backgroundColor}
-                  onChange={(value: ColorResult) => {
-                    setBackgroundColor(value.hex);
-                  }}
-                  onChangeComplete={(value: ColorResult) => {
-                    setTextColor(getTextColor(value.hex));
+                <ColorPicker
+                  onColorChange={(color) => {
+                    setBackgroundColor(color);
+                    setTextColor(getTextColor(color));
                   }}
                 />
               </Stack>

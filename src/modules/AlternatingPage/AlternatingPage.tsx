@@ -4,7 +4,7 @@ import { useGetAlternatingEventsQuery } from '@api/db/events/useGetAlternatingEv
 import DashboardContainer from '@components/DashboardContainer/DashboardContainer';
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 
-import { CalendarEventType } from '@components/Calendar/Calendar.types';
+import { CalendarEventType } from '@api/db/types';
 import { TodayButton } from '@modules/TodayButton/TodayButton';
 import { AlternatingFormCalendar } from './components/AlternatingFormCalendar/AlternatingFormCalendar';
 

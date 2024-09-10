@@ -1,8 +1,6 @@
+import { CalendarEventType } from '@api/db/types';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
-import {
-  CalendarDayType,
-  CalendarEventType,
-} from '@components/Calendar/Calendar.types';
+import { CalendarDayType } from '@components/Calendar/Calendar.types';
 import { useDayContainetRwd } from '@components/Calendar/hooks/useDayContainetRwd';
 import { Stack } from '@components/Stack/Stack';
 import { useBreakpoints } from '@utils/useBreakpoints';

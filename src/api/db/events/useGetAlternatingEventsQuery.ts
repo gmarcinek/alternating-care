@@ -1,7 +1,4 @@
-import {
-  CalendarEvent,
-  CalendarEventType,
-} from '@components/Calendar/Calendar.types';
+import { CalendarEvent, CalendarEventType } from '@api/db/types';
 import { useQuery } from '@tanstack/react-query';
 import { useDbContext } from '../../../api/db/DbContext';
 

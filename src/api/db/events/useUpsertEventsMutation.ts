@@ -1,8 +1,5 @@
-import {
-  CalendarDayType,
-  CalendarEvent,
-  CalendarEventType,
-} from '@components/Calendar/Calendar.types';
+import { CalendarEvent, CalendarEventType } from '@api/db/types';
+import { CalendarDayType } from '@components/Calendar/Calendar.types';
 import { useMutation } from '@tanstack/react-query';
 import crypto from 'crypto';
 import { useDbContext } from '../../../api/db/DbContext';

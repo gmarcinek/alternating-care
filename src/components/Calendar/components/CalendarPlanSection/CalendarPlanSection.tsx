@@ -1,12 +1,8 @@
 'use client';
 
+import { CalendarEvent, CalendarEventType } from '@api/db/types';
+import { CalendarDayType } from '@components/Calendar/Calendar.types';
 import { Stack } from '@components/Stack/Stack';
-
-import {
-  CalendarDayType,
-  CalendarEvent,
-  CalendarEventType,
-} from '@components/Calendar/Calendar.types';
 import { toTransposeArray } from '@utils/array';
 import { colorBlueGreen700, getTextColor } from '@utils/color';
 import { useMemo } from 'react';

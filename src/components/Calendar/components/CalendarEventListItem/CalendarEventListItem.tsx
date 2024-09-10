@@ -1,6 +1,6 @@
 'use client';
 
-import { CalendarEvent } from '@components/Calendar/Calendar.types';
+import { CalendarEvent } from '@api/db/types';
 import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
 import { Stack } from '@components/Stack/Stack';
 import { getTextColor } from '@utils/color';

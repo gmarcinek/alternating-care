@@ -1,9 +1,9 @@
 'use client';
 import { useFormPutEventMutation } from '@api/db/events/useFormPutEventMutation';
+import { CalendarEventType } from '@api/db/types';
 import { useAppContext } from '@app/AppContext';
 import { Button } from '@components/Button/Button';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
-import { CalendarEventType } from '@components/Calendar/Calendar.types';
 import { CalendarItem } from '@components/Calendar/components/CalendarItem/CalendarItem';
 import { Stack } from '@components/Stack/Stack';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';

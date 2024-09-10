@@ -1,9 +1,6 @@
 'use client';
 
-import {
-  CalendarEvent,
-  CalendarEventType,
-} from '@components/Calendar/Calendar.types';
+import { CalendarEvent, CalendarEventType } from '@api/db/types';
 import { Avatar } from '@mui/material';
 import { getTextColor } from '@utils/color';
 import { PropsWithChildren } from 'react';

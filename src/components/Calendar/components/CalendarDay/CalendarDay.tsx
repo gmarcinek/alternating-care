@@ -3,11 +3,8 @@
 import { useCalenderContext } from '@components/Calendar/Calendar.context';
 import { useDayContainetRwd } from '@components/Calendar/hooks/useDayContainetRwd';
 
-import {
-  CalendarDayType,
-  CalendarEvent,
-  CalendarEventType,
-} from '@components/Calendar/Calendar.types';
+import { CalendarEvent, CalendarEventType } from '@api/db/types';
+import { CalendarDayType } from '@components/Calendar/Calendar.types';
 import { Checkbox } from '@nextui-org/react';
 import classNames from 'classnames';
 import {

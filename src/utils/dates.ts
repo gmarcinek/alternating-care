@@ -1,4 +1,4 @@
-import { CalendarEvent } from '@components/Calendar/Calendar.types';
+import { CalendarEvent } from '@api/db/types';
 
 /**
  * Interfejs `GroupByDateType` reprezentuje grupę wydarzeń zgrupowanych według daty.

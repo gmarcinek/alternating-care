@@ -1,5 +1,6 @@
+import { CalendarEvent } from '@api/db/types';
 import { createContext, MouseEvent, PointerEvent, useContext } from 'react';
-import { CalendarDayType, CalendarEvent } from './Calendar.types';
+import { CalendarDayType } from './Calendar.types';
 
 export type OnDayClickHandler = (
   date: CalendarDayType,

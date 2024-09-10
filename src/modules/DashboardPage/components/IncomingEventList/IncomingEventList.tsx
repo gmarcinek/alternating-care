@@ -1,10 +1,7 @@
 'use client';
 
+import { CalendarEvent, CalendarEventType } from '@api/db/types';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
-import {
-  CalendarEvent,
-  CalendarEventType,
-} from '@components/Calendar/Calendar.types';
 import CalendarEventList, {
   CalendarEventListRenderProps,
 } from '@components/Calendar/components/CalendarEventList/CalendarEventList';

@@ -152,3 +152,122 @@ export function getTextColor(
     }
   }
 }
+
+export const hslToHex = (hsl: string): string => {
+  const hslValues = hsl.match(/\d+(\.\d+)?/g)?.map(Number);
+  if (!hslValues || hslValues.length < 3) {
+    throw new Error('Invalid HSL format');
+  }
+
+  const [h, s, l] = hslValues;
+  const saturation = s / 100;
+  const lightness = l / 100;
+
+  const c = (1 - Math.abs(2 * lightness - 1)) * saturation;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = lightness - c / 2;
+
+  let r = 0,
+    g = 0,
+    b = 0;
+
+  if (0 <= h && h < 60) {
+    r = c;
+    g = x;
+    b = 0;
+  } else if (60 <= h && h < 120) {
+    r = x;
+    g = c;
+    b = 0;
+  } else if (120 <= h && h < 180) {
+    r = 0;
+    g = c;
+    b = x;
+  } else if (180 <= h && h < 240) {
+    r = 0;
+    g = x;
+    b = c;
+  } else if (240 <= h && h < 300) {
+    r = x;
+    g = 0;
+    b = c;
+  } else if (300 <= h && h < 360) {
+    r = c;
+    g = 0;
+    b = x;
+  }
+
+  r = Math.round((r + m) * 255);
+  g = Math.round((g + m) * 255);
+  b = Math.round((b + m) * 255);
+
+  const toHexValue = (value: number) => value.toString(16).padStart(2, '0');
+  return `#${toHexValue(r)}${toHexValue(g)}${toHexValue(b)}`;
+};
+
+// Helper function to convert HEX to HSL
+const hexToHsl = (hex: string): [number, number, number] => {
+  let r = 0,
+    g = 0,
+    b = 0;
+
+  if (hex.length === 7) {
+    r = parseInt(hex.slice(1, 3), 16) / 255;
+    g = parseInt(hex.slice(3, 5), 16) / 255;
+    b = parseInt(hex.slice(5, 7), 16) / 255;
+  }
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const h = (max + min) / 2;
+  let s = 0;
+  let l = (max + min) / 2;
+
+  if (max === min) {
+    s = 0;
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+  }
+
+  const delta = max - min;
+  let hue = 0;
+  if (delta !== 0) {
+    if (max === r) {
+      hue = (g - b) / delta + (g < b ? 6 : 0);
+    } else if (max === g) {
+      hue = (b - r) / delta + 2;
+    } else {
+      hue = (r - g) / delta + 4;
+    }
+    hue /= 6;
+  }
+
+  return [Math.round(hue * 360), Math.round(s * 100), Math.round(l * 100)];
+};
+
+export const reduceSaturation = (
+  color: string,
+  saturationReduce = 30
+): string => {
+  let h: number, s: number, l: number;
+
+  if (color.startsWith('#')) {
+    [h, s, l] = hexToHsl(color);
+  } else {
+    // Assume HSL input format
+    const match = color.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+    if (match) {
+      h = parseFloat(match[1]);
+      s = parseFloat(match[2]);
+      l = parseFloat(match[3]);
+    } else {
+      throw new Error('Invalid color format');
+    }
+  }
+
+  // Reduce saturation by 30%
+  s = Math.max(0, s - saturationReduce);
+
+  return hslToHex(`hsl(${h}%, ${s}%,${l}%)`);
+};

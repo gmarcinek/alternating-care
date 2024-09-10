@@ -1,8 +1,8 @@
 'use client';
 
+import { CalendarEvent } from '@api/db/types';
 import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
-import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import { UseQueryResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
 import classNames from 'classnames';

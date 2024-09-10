@@ -1,12 +1,12 @@
 'use client';
 
-import { CalendarEvent } from '@components/Calendar/Calendar.types';
+import { CalendarEvent } from '@api/db/types';
 import { Stack } from '@components/Stack/Stack';
-import { IncomingEventList } from '@modules/DashboardPage/IncomingEventList/IncomingEventList';
 import { UseQueryResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { DashboardEventForm } from '../DashboardEventForm/DashboardEventForm';
+import { IncomingEventList } from '../IncomingEventList/IncomingEventList';
 
 interface CalendarEditFormProps {
   fetchEventsQuery: UseQueryResult<CalendarEvent[], Error>;

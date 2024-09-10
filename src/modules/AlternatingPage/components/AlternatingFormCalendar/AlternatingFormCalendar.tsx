@@ -1,9 +1,9 @@
 'use client';
 
 import { useUpsertEventsMutation } from '@api/db/events/useUpsertEventsMutation';
+import { CalendarEvent } from '@api/db/types';
 import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
-import { CalendarEvent } from '@components/Calendar/Calendar.types';
 import { UseQueryResult } from '@tanstack/react-query';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
