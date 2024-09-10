@@ -1,4 +1,4 @@
-export const calendarSettingsFormI18n = {
+export const calendarSettingsSectionI18n = {
   pl: {
     plan: 'Plan',
     alternating: 'Opieka',

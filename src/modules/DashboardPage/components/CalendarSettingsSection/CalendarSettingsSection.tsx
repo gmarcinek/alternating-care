@@ -1,9 +1,9 @@
 import { useAppContext } from '@app/AppContext';
 import { Stack } from '@components/Stack/Stack';
 import { Switch } from '@nextui-org/react';
-import { calendarSettingsFormI18n } from './calendarSettingsForm.i18n';
+import { calendarSettingsSectionI18n } from './calendarSettingsSection.i18n';
 
-interface CalendarSettingsFormProps {
+interface CalendarSettingsSectionProps {
   isPlanVisible: boolean;
   setIsPlanVisible: (value: boolean) => void;
 
@@ -14,7 +14,9 @@ interface CalendarSettingsFormProps {
   setIsEventsVisible: (value: boolean) => void;
 }
 
-export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
+export const CalendarSettingsSection = (
+  props: CalendarSettingsSectionProps
+) => {
   const {
     isPlanVisible,
     setIsPlanVisible,
@@ -25,7 +27,7 @@ export const CalendarSettingsForm = (props: CalendarSettingsFormProps) => {
   } = props;
 
   const { language } = useAppContext();
-  const i18n = calendarSettingsFormI18n[language];
+  const i18n = calendarSettingsSectionI18n[language];
 
   return (
     <Stack direction='horizontal' className='py-4'>

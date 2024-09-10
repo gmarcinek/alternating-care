@@ -1,5 +1,6 @@
 'use client';
 
+import { useDeleteEventMutation } from '@api/db/events/useDeleteEventMutation';
 import { CalendarEvent, CalendarEventType } from '@api/db/types';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import CalendarEventList, {
@@ -22,11 +23,13 @@ interface IncomingEventListProps {
 export const IncomingEventList = (props: IncomingEventListProps) => {
   const { data, selection } = props;
   const startDate = dayjs().format(dateFormat);
+  const deleteMutation = useDeleteEventMutation();
+
   const sortedEvents = useMemo(() => {
     return sortBy(data, 'creationTime');
   }, [data]);
 
-  const detailDates = useMemo(() => {
+  const sinceThisMonthDates = useMemo(() => {
     return (sortedEvents ?? [])
       .filter((item) => {
         return (
@@ -39,15 +42,15 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
       });
   }, [sortedEvents, startDate]);
 
-  const detailDataGrouped = useMemo(() => {
-    return groupByDate(detailDates);
-  }, [detailDates]);
+  const sinceThisMonthGroupedEvents = useMemo(() => {
+    return groupByDate(sinceThisMonthDates);
+  }, [sinceThisMonthDates]);
 
-  const incommingEventsFilteredPast = useMemo(() => {
-    return detailDataGrouped.filter((item) =>
+  const sinceTodayEvents = useMemo(() => {
+    return sinceThisMonthGroupedEvents.filter((item) =>
       dayjs(item.date).isAfter(dayjs(startDate).subtract(1, 'day'))
     );
-  }, [detailDataGrouped, startDate]);
+  }, [sinceThisMonthGroupedEvents, startDate]);
 
   const sideContent = ({ date }: CalendarEventListRenderProps) => {
     const { scrollToElement } = useScrollToId();
@@ -58,6 +61,15 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
         itemsAlignment='center'
         gap={2}
       >
+        <Button
+          isIconOnly
+          variant='light'
+          aria-label='notify'
+          size='md'
+          // onClick={() => deleteMutation.mutate(data)}
+        >
+          <b style={{ color: 'white', margin: 0 }}>Usuń</b>
+        </Button>
         <Button
           isIconOnly
           variant='light'
@@ -79,11 +91,11 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
         {selection.size === 0 && (
           <>
             <h3>
-              {incommingEventsFilteredPast.length === 0
+              {sinceTodayEvents.length === 0
                 ? 'Brak wydarzeń - dodaj'
                 : 'Nadchodzące wydarzenia'}
             </h3>
-            {incommingEventsFilteredPast.map((dayGroup, indexGroup) => {
+            {sinceTodayEvents.map((dayGroup, indexGroup) => {
               return (
                 <CalendarEventList
                   key={`dayGroup-${dayGroup.date}-${indexGroup}`}
@@ -102,7 +114,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
             {Array.from(selection).map((selectedItem, index) => {
               return (
                 <div key={`dayselect-${selectedItem}-${index}`}>
-                  {incommingEventsFilteredPast
+                  {sinceThisMonthGroupedEvents
                     .filter((group) => {
                       return selectedItem.includes(group.date);
                     })

@@ -9,9 +9,9 @@ import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
 import { useLongPress } from 'use-long-press';
-import { CalendarEditForm } from '../CalendarEditForm/CalendarEditForm';
+import { CalendarFormSection } from '../CalendarFormSection/CalendarFormSection';
 import { CalendarGrid } from '../CalendarGrid/CalendarGrid';
-import { CalendarSettingsForm } from '../CalendarSettingsForm/CalendarSettingsForm';
+import { CalendarSettingsSection } from '../CalendarSettingsSection/CalendarSettingsSection';
 import styles from './Dashboard.module.scss';
 import { useRowSize } from './useRowSize';
 import { useSelection } from './useSelection';
@@ -77,7 +77,7 @@ export const Dashboard = (props: DashboardProps) => {
   return (
     <div className={dashboardClasses} id='dashboard'>
       <div className={styles.calendarContainer}>
-        <CalendarSettingsForm
+        <CalendarSettingsSection
           isPlanVisible={isPlanVisible}
           setIsPlanVisible={setIsPlanVisible}
           isAlternatingVisible={isAlternatingVisible}
@@ -115,10 +115,9 @@ export const Dashboard = (props: DashboardProps) => {
       </div>
 
       <div className={formClasses}>
-        <CalendarEditForm
+        <CalendarFormSection
           handleCancelMultiSelect={handleCancelMultiSelect}
           fetchEventsQuery={fetchEventsQuery}
-          isMultiSelectionMode={isMultiSelectionMode}
           setIsMultiSelectionMode={setIsMultiSelectionMode}
           selection={selection}
           setSelection={setSelection}

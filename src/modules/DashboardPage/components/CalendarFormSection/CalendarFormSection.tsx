@@ -8,20 +8,18 @@ import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { DashboardEventForm } from '../DashboardEventForm/DashboardEventForm';
 import { IncomingEventList } from '../IncomingEventList/IncomingEventList';
 
-interface CalendarEditFormProps {
+interface CalendarFormSectionProps {
   fetchEventsQuery: UseQueryResult<CalendarEvent[], Error>;
   selection: Set<string>;
-  isMultiSelectionMode: boolean;
   setIsMultiSelectionMode: Dispatch<SetStateAction<boolean>>;
   handleCancelMultiSelect: () => void;
   setSelection: Dispatch<SetStateAction<Set<string>>>;
 }
 
-export const CalendarEditForm = (props: CalendarEditFormProps) => {
+export const CalendarFormSection = (props: CalendarFormSectionProps) => {
   const {
     fetchEventsQuery,
     handleCancelMultiSelect,
-    isMultiSelectionMode,
     selection,
     setIsMultiSelectionMode,
     setSelection,
@@ -49,7 +47,6 @@ export const CalendarEditForm = (props: CalendarEditFormProps) => {
           selection={Array.from(selection)}
           setSelection={setSelection}
           onSuccess={onAddEventSuccess}
-          isMultiSelectionMode={isMultiSelectionMode}
           setIsMultiSelectionMode={setIsMultiSelectionMode}
         />
       </Stack>

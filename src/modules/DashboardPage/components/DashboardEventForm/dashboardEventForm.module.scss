@@ -1,14 +1,48 @@
+@keyframes expandTo200 {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes expandTo700 {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes collapseTo0 {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .dashboardEventForm {
-  transition: all 0.5s;
-  height: 0px;
+  transition: max-height 0.5s;
   overflow: hidden;
+  max-height: 0px;
+
+  overflow: hidden;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-name: collapseTo0;
 
   &.isSelectionNotEmpty {
-    height: 470px;
+    max-height: 200px;
+    animation-name: expandTo200;
   }
 
   &.isColorPickerVisible {
-    height: 750px;
+    max-height: 700px;
+    animation-name: expandTo700;
   }
 }
 
