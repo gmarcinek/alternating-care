@@ -41,6 +41,9 @@ export const NavigationBar = (props: NavbarProps) => {
               <Link href='/settings'>
                 <p>{i18n.settings}</p>
               </Link>
+              <Link href='/help'>
+                <p>Help</p>
+              </Link>
             </ul>
           </div>
           <div>
