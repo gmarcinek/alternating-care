@@ -12,7 +12,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Divider, Input, Textarea } from '@nextui-org/react';
 import { getTextColor } from '@utils/color';
 import classNames from 'classnames';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import dayjs from 'dayjs';
+import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { dashboardEventFormI18n } from './dashboardEventForm.i18n'; // Import your i18n file
 import styles from './dashboardEventForm.module.scss';
 import { DashboardEventFormTypeSelectInput } from './DashboardEventFormTypeSelectInput';
@@ -73,6 +74,20 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
     }
   }, [selection.length, handleReset]);
 
+  const selectedDaysHelper = useMemo(() => {
+    const sordedSelection = selection.sort();
+    const first = dayjs(sordedSelection.at(0)).format('MM.DD');
+    const last = dayjs(sordedSelection.at(sordedSelection.length - 1)).format(
+      'MM.DD'
+    );
+
+    return {
+      sordedSelection,
+      first,
+      last,
+    };
+  }, [selection]);
+
   return (
     <>
       <form
@@ -83,8 +98,26 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
       >
         <Stack direction='horizontal' gap={8}>
           <AddIcon />
-          <h3 className='mt-0'>{i18n.newPlanTitle}</h3>
+          {selection.length !== 0 && (
+            <h3>
+              Wybrano{' '}
+              <strong>
+                {`${selection.length} ${selection.length === 1 ? 'dzień' : 'dni'}`}
+              </strong>
+              {' - '}
+              {selection.length === 1 ? (
+                <small>{selectedDaysHelper.first}</small>
+              ) : (
+                <small>
+                  {selectedDaysHelper.first}
+                  {' / '}
+                  {selectedDaysHelper.last}
+                </small>
+              )}
+            </h3>
+          )}
         </Stack>
+
         <Stack direction='horizontal'>
           <Button
             onClick={handleCancel}

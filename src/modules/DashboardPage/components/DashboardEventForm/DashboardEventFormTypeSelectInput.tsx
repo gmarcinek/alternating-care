@@ -18,11 +18,7 @@ export const DashboardEventFormTypeSelectInput = (
   const i18n = dashboardEventFormI18n[language];
 
   return (
-    <RadioGroup
-      className='ml-4 mr-8'
-      label={i18n.eventType}
-      onValueChange={onValueChange}
-    >
+    <RadioGroup label={i18n.eventType} onValueChange={onValueChange}>
       <div className='grid auto-rows-max grid-cols-3 gap-2'>
         {Object.keys(CalendarEventType).map((key) => {
           if (

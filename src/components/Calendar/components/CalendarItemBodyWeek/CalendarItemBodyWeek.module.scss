@@ -3,6 +3,15 @@
 @import '@styles/spacer.module.scss';
 @import '@styles/mixins.module.scss';
 
+@keyframes loopGlow {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 28px 0; /* Przesunięcie o 100px, dopasuj według potrzeb */
+  }
+}
+
 .calendarItemBodyWeek {
   display: flex;
   flex: 1;
@@ -44,17 +53,35 @@
     color: $neutral-gray-100 !important;
 
     &.isWeekend {
-      background: $blue-green-700;
+      background-color: $blue-green-700;
     }
 
     &.isToday {
-      background: $red-500;
+      // background-image: none !important;
+      background-color: $red-500;
       color: $neutral-gray-100;
+    }
+
+    &.isSelected {
+      background-color: $red-600 !important;
+      color: $neutral-gray-100 !important;
+
+      background-image: repeating-linear-gradient(
+        135deg,
+        $red-600,
+        $red-600 10px,
+        black 10px,
+        black 20px
+      ) !important;
+
+      background-size: 28px 28px; /* Rozmiar jednego cyklu pasków */
+      background-repeat: repeat;
+      animation: loopGlow 1s linear infinite !important;
     }
   }
 
   &.isToday {
-    background: $red-500 !important;
+    background-color: $red-500 !important;
     color: $neutral-gray-100 !important;
   }
 
@@ -68,8 +95,19 @@
   }
 
   &.isSelected {
-    background: $turquoise-500 !important;
+    background-color: $turquoise-600 !important;
     color: $neutral-gray-100 !important;
+
+    background-image: repeating-linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.8),
+      rgba(0, 0, 0, 0.8) 10px,
+      $turquoise-600 10px,
+      $turquoise-600 20px
+    );
+    background-size: 28px 28px; /* Rozmiar jednego cyklu pasków */
+    background-repeat: repeat;
+    animation: loopGlow 1s linear infinite !important;
   }
 
   transition:

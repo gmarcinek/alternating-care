@@ -26,7 +26,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
     const hexColor = hslToHex(hueColor);
     setSelectedHue(hue);
     setSelectedColor(hexColor);
-    onColorChange(reduceSaturation(hexColor, 15));
+    onColorChange(hexColor);
   };
 
   const handleInteraction = (
@@ -40,7 +40,7 @@ export const ColorPicker = (props: ColorPickerProps) => {
     updateColor(position, width);
   };
 
-  const brightnessLevels: number[] = [85, 70, 50, 40, 30];
+  const brightnessLevels: number[] = [80, 50, 40, 18];
 
   return (
     <div style={{ width: '100%' }}>
@@ -54,13 +54,13 @@ export const ColorPicker = (props: ColorPickerProps) => {
           width: '100%',
           height: '24px',
           background: `linear-gradient(to right, 
-                ${reduceSaturation('#ff0000', 10)},
-                ${reduceSaturation('#ffff00', 10)},
-                ${reduceSaturation('#00ff00', 10)},
-                ${reduceSaturation('#00ffff', 10)},
-                ${reduceSaturation('#0000ff', 10)},
-                ${reduceSaturation('#ff00ff', 10)},
-                ${reduceSaturation('#ff0000', 10)}
+                ${reduceSaturation('#ff0000', 5)},
+                ${reduceSaturation('#ffff00', 5)},
+                ${reduceSaturation('#00ff00', 5)},
+                ${reduceSaturation('#00ffff', 5)},
+                ${reduceSaturation('#0000ff', 5)},
+                ${reduceSaturation('#ff00ff', 5)},
+                ${reduceSaturation('#ff0000', 5)}
             )`,
           cursor: 'pointer',
         }}
@@ -79,16 +79,13 @@ export const ColorPicker = (props: ColorPickerProps) => {
             key={brightness}
             onClick={() =>
               onColorChange(
-                reduceSaturation(
-                  hslToHex(getBrightnessColor(selectedHue, brightness)),
-                  10
-                )
+                hslToHex(getBrightnessColor(selectedHue, brightness))
               )
             }
             style={{
-              width: '20%',
+              width: '25%',
               height: '24px',
-              margin: '1px',
+              margin: '0px',
               backgroundColor: reduceSaturation(
                 hslToHex(getBrightnessColor(selectedHue, brightness)),
                 15
@@ -111,47 +108,17 @@ export const ColorPicker = (props: ColorPickerProps) => {
               onColorChange(
                 reduceSaturation(
                   hslToHex(getBrightnessColor(selectedHue, brightness)),
-                  40
+                  60
                 )
               )
             }
             style={{
-              width: '20%',
+              width: '25%',
               height: '24px',
-              margin: '1px',
+              margin: '0px',
               backgroundColor: reduceSaturation(
                 hslToHex(getBrightnessColor(selectedHue, brightness)),
-                40
-              ),
-              cursor: 'pointer',
-            }}
-          ></div>
-        ))}
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        {brightnessLevels.map((brightness) => (
-          <div
-            key={brightness}
-            onClick={() =>
-              onColorChange(
-                reduceSaturation(
-                  hslToHex(getBrightnessColor(selectedHue, brightness)),
-                  80
-                )
-              )
-            }
-            style={{
-              width: '20%',
-              height: '24px',
-              margin: '1px',
-              backgroundColor: reduceSaturation(
-                hslToHex(getBrightnessColor(selectedHue, brightness)),
-                80
+                60
               ),
               cursor: 'pointer',
             }}
