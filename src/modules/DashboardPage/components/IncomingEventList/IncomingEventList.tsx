@@ -13,6 +13,7 @@ import { sortBy } from '@utils/array';
 import { groupByDate } from '@utils/dates';
 import { useScrollToId } from '@utils/useScrollTo';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 import { MdDeleteForever, MdFindInPage } from 'react-icons/md';
 
@@ -25,6 +26,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
   const { data, selection } = props;
   const startDate = dayjs().format(dateFormat);
   const { updateAllEvents } = useDashboardPageContext();
+  const router = useRouter();
   const deleteMutation = useDeleteEventMutation({
     onSuccess() {
       updateAllEvents?.();
@@ -84,7 +86,11 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
           variant='light'
           aria-label='notify'
           size='md'
-          onClick={() => scrollToElement(`day-${event.date}`, 100, true)}
+          onClick={() => {
+            router.push(`/?groupId=${event.groupId}`);
+
+            // scrollToElement(`day-${event.date}`, 100, true);
+          }}
         >
           <h3 style={{ color: 'white', margin: 0 }}>
             <MdFindInPage size={26} />

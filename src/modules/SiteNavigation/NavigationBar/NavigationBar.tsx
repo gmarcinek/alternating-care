@@ -30,7 +30,7 @@ export const NavigationBar = (props: NavbarProps) => {
           <div className='flex h-full items-center justify-between gap-x-8 divide-x divide-slate-300'>
             <Logo />
             <ul className='hidden gap-x-6 pl-8 md:flex'>
-              <Link href='/'>
+              <Link href='/[mode]' as={'/'}>
                 <p>{i18n.home}</p>
               </Link>
 

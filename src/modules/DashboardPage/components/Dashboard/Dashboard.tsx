@@ -3,6 +3,7 @@
 import { CalendarEvent } from '@api/db/types';
 import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
+import { useDashboardPageContext } from '@modules/DashboardPage/DashboardPage.context';
 import { UseQueryResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
 import classNames from 'classnames';
@@ -22,7 +23,7 @@ interface DashboardProps {
 
 export const Dashboard = (props: DashboardProps) => {
   const { fetchEventsQuery } = props;
-
+  const { groupId, mode, range } = useDashboardPageContext();
   const startDate = dayjs().format(dateFormat);
   const {
     selection,
@@ -65,10 +66,21 @@ export const Dashboard = (props: DashboardProps) => {
     cancelOutsideElement: true,
   });
 
-  const sortedEvents = useMemo(() => {
+  const filteredEvents = useMemo(() => {
     const data = fetchEventsQuery.data || ([] as CalendarEvent[]);
+
+    return !groupId
+      ? fetchEventsQuery.data || ([] as CalendarEvent[])
+      : data.filter(
+          (item) =>
+            item.groupId === groupId || item.groupId === groupId?.toUpperCase()
+        );
+  }, [fetchEventsQuery.data, groupId]);
+
+  const sortedEvents = useMemo(() => {
+    const data = filteredEvents;
     return sortBy(data, 'creationTime');
-  }, [fetchEventsQuery.data]);
+  }, [fetchEventsQuery.data, filteredEvents]);
 
   const { automaticRowSize } = useRowSize({
     isPlanVisible,

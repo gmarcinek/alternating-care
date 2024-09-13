@@ -49,6 +49,11 @@ export const Sidebar = (props: SidebarProps) => {
               <h3>Ustawienia</h3>
             </Link>
           </li>
+          <li>
+            <Link href='/help' onClick={toggle}>
+              <h3>Help</h3>
+            </Link>
+          </li>
         </ul>
       </div>
     </>
