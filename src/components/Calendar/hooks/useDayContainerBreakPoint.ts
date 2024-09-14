@@ -17,6 +17,7 @@ export const useDayContainerBreakPointStyles = (
 
 function toFontSizeByContainerSize(rowSize: number, width: number) {
   const size430 = 430;
+  const size480 = 480;
   const size608 = 608;
   const size736 = 736;
   // const size992 = 992;
@@ -32,8 +33,29 @@ function toFontSizeByContainerSize(rowSize: number, width: number) {
       case 7:
         return {
           fontSize: '12px',
-          lineHeight: '12px',
+          lineHeight: '11px',
           padding: ' 5px 0 5px 8px',
+        };
+      case 14:
+        return {
+          fontSize: 'inherit',
+          lineHeight: 'inherit',
+        };
+    }
+  }
+
+  if (width <= size480) {
+    switch (rowSize) {
+      case 1:
+        return {
+          fontSize: '12px',
+          lineHeight: '14px',
+        };
+      case 7:
+        return {
+          fontSize: '13px',
+          lineHeight: '13px',
+          padding: '6px 0 6px 10px',
         };
       case 14:
         return {
@@ -53,7 +75,7 @@ function toFontSizeByContainerSize(rowSize: number, width: number) {
       case 7:
         return {
           fontSize: '13px',
-          lineHeight: 'initial',
+          lineHeight: '15px',
           padding: '6px 0 6px 10px',
         };
       case 14:

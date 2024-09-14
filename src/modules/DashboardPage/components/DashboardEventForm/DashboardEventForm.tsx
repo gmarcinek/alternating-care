@@ -8,12 +8,13 @@ import { Stack } from '@components/Stack/Stack';
 import AddIcon from '@mui/icons-material/Add';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Divider, Input, Textarea } from '@nextui-org/react';
 import { getTextColor } from '@utils/color';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
+import { BsTags } from 'react-icons/bs';
+import { MdOutlineVisibility } from 'react-icons/md';
 import { dashboardEventFormI18n } from './dashboardEventForm.i18n'; // Import your i18n file
 import styles from './dashboardEventForm.module.scss';
 import { DashboardEventFormTypeSelectInput } from './DashboardEventFormTypeSelectInput';
@@ -151,11 +152,17 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
         <Stack>
           <Stack>
             {isRadioGroupVisible && (
-              <DashboardEventFormTypeSelectInput
-                onValueChange={(value) => {
-                  setType(value as CalendarEventType);
-                }}
-              />
+              <>
+                <Stack direction='horizontal'>
+                  <BsTags size={24} />
+                  <h3>{i18n.eventType}</h3>
+                </Stack>
+                <DashboardEventFormTypeSelectInput
+                  onValueChange={(value) => {
+                    setType(value as CalendarEventType);
+                  }}
+                />
+              </>
             )}
 
             <Input
@@ -180,7 +187,7 @@ export const DashboardEventForm = (props: DashboardEventFormProps) => {
             <Divider className='my-2' />
 
             <Stack direction='horizontal'>
-              <VisibilityIcon />
+              <MdOutlineVisibility size={24} />
               <h3>{i18n.visibility}</h3>
             </Stack>
 

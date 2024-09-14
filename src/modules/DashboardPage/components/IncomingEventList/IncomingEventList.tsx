@@ -8,14 +8,22 @@ import EventList, {
 } from '@components/EventList/EventList';
 import { Stack } from '@components/Stack/Stack';
 import { useDashboardPageContext } from '@modules/DashboardPage/DashboardPage.context';
-import { Button } from '@nextui-org/react';
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownSection,
+  DropdownTrigger,
+} from '@nextui-org/react';
 import { sortBy } from '@utils/array';
 import { groupByDate } from '@utils/dates';
 import { useScrollToId } from '@utils/useScrollTo';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
-import { MdDeleteForever, MdFindInPage } from 'react-icons/md';
+import { BsCalendar3, BsSearch } from 'react-icons/bs';
+import { MdDeleteForever, MdMoreVert } from 'react-icons/md';
 
 interface IncomingEventListProps {
   data: CalendarEvent[];
@@ -63,40 +71,102 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
   const sideContent = ({ event }: CalendarEventListRenderProps) => {
     const { scrollToElement } = useScrollToId();
     return (
-      <Stack
-        direction='horizontal'
-        contentAlignment='end'
-        itemsAlignment='center'
-        gap={2}
-      >
-        <Button
-          isIconOnly
-          variant='light'
-          aria-label='notify'
-          size='md'
-          onClick={() => deleteMutation.mutate(event)}
+      <Dropdown>
+        <DropdownTrigger>
+          <Button isIconOnly variant='light' aria-label='notify' size='md'>
+            <h3 style={{ color: 'white', margin: 0 }}>
+              <MdMoreVert size={26} />
+            </h3>
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu
+          variant='faded'
+          aria-label='Dropdown menu with description'
         >
-          <h3 style={{ color: 'white', margin: 0 }}>
-            <MdDeleteForever size={26} />
-          </h3>
-        </Button>
+          <DropdownSection title='Akcje' showDivider>
+            <DropdownItem
+              key='filter'
+              description='Odfiltruj inne wydarzenia'
+              startContent={
+                <h3 style={{ margin: 0 }}>
+                  <BsCalendar3 size={26} />
+                </h3>
+              }
+              onClick={() => {
+                router.push(`/?groupId=${event.groupId}`);
+              }}
+            >
+              Pokaż wszystkie wystąpienia
+            </DropdownItem>
 
-        <Button
-          isIconOnly
-          variant='light'
-          aria-label='notify'
-          size='md'
-          onClick={() => {
-            router.push(`/?groupId=${event.groupId}`);
+            <DropdownItem
+              key='find'
+              description='Pokaż ten dzień w kalendarzu'
+              onClick={() => {
+                scrollToElement(`day-${event.date}`, 0, true);
+              }}
+              startContent={
+                <h3 style={{ margin: 0 }}>
+                  <BsSearch size={26} />
+                </h3>
+              }
+            >
+              Znajdź ten dzień
+            </DropdownItem>
+          </DropdownSection>
 
-            // scrollToElement(`day-${event.date}`, 100, true);
-          }}
-        >
-          <h3 style={{ color: 'white', margin: 0 }}>
-            <MdFindInPage size={26} />
-          </h3>
-        </Button>
-      </Stack>
+          <DropdownSection title='Strefa niebezpieczna'>
+            <DropdownItem
+              key='delete'
+              className='text-danger'
+              color='danger'
+              description='Permanentnie usuń wydarzenie w tym dniu'
+              onClick={() => deleteMutation.mutate(event)}
+              startContent={
+                <h3 style={{ color: 'red', margin: 0 }}>
+                  <MdDeleteForever size={26} />
+                </h3>
+              }
+            >
+              Usuń trwale
+            </DropdownItem>
+          </DropdownSection>
+        </DropdownMenu>
+      </Dropdown>
+      // <Stack
+      //   direction='horizontal'
+      //   contentAlignment='end'
+      //   itemsAlignment='center'
+      //   gap={2}
+      // >
+      //   <Button
+      //     isIconOnly
+      //     variant='light'
+      //     aria-label='notify'
+      //     size='md'
+      //     onClick={() => deleteMutation.mutate(event)}
+      //   >
+      //     <h3 style={{ color: 'white', margin: 0 }}>
+      //       <MdDeleteForever size={26} />
+      //     </h3>
+      //   </Button>
+
+      //   <Button
+      //     isIconOnly
+      //     variant='light'
+      //     aria-label='notify'
+      //     size='md'
+      //     onClick={() => {
+      //       router.push(`/?groupId=${event.groupId}`);
+
+      //       // scrollToElement(`day-${event.date}`, 100, true);
+      //     }}
+      //   >
+      //     <h3 style={{ color: 'white', margin: 0 }}>
+      //       <MdFindInPage size={26} />
+      //     </h3>
+      //   </Button>
+      // </Stack>
     );
   };
 
@@ -116,7 +186,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
                 </p>
               </Stack>
             )}
-            {sinceTodayEvents.length !== 0 && <>Nadchodzące wydarzenia</>}
+            {sinceTodayEvents.length !== 0 && <h3>Nadchodzące wydarzenia</h3>}
 
             {sinceTodayEvents.map((dayGroup, indexGroup) => {
               return (

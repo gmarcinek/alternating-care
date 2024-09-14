@@ -22,7 +22,7 @@ export default function RootLayout(props: PropsWithChildren) {
           <AppRoot>{props.children}</AppRoot>
         </QueryClientContext>
         <ToastContainer
-          position='bottom-left'
+          position='top-right'
           hideProgressBar
           closeOnClick
           pauseOnHover

@@ -120,7 +120,7 @@ export function CalendarItemBodyWeek(props: CalendarItemBodyWeekProps) {
               {!is320 && <small>{currentDate.format('.MM')}</small>}
             </span>
 
-            {!is380 && (
+            {!is320 && (
               <span className={styles.month}>
                 <small>{currentDate.format('MMM')}</small>
               </span>

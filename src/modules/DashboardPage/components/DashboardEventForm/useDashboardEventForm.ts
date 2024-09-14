@@ -5,6 +5,7 @@ import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { colorBlueGreen700, getTextColor, white } from '@utils/color';
 import crypto from 'crypto';
 import dayjs from 'dayjs';
+import { useRouter } from 'next/navigation';
 import {
   Dispatch,
   SetStateAction,
@@ -35,6 +36,7 @@ export const useDashboardEventForm = (props: useDashboardEventFormProps) => {
     setSelection,
   } = props;
 
+  const router = useRouter();
   const [date, setDate] = useState('');
   const [type, setType] = useState<CalendarEventType | undefined>();
   const [name, setName] = useState('');
@@ -68,7 +70,7 @@ export const useDashboardEventForm = (props: useDashboardEventFormProps) => {
   }, [backgroundColor, description, name, type, exampleDate.date]);
 
   const formPutEventMutation = useFormPutEventMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       onSuccess();
       setIsRadioGroupVisible(false);
 
@@ -82,6 +84,9 @@ export const useDashboardEventForm = (props: useDashboardEventFormProps) => {
         type: 'success',
         className: 'bg-green-100',
       });
+
+      const currentGroupId = data?.at(0)?.groupId;
+      currentGroupId && router.push(`/?groupId=${currentGroupId}`);
     },
   });
 
@@ -99,6 +104,7 @@ export const useDashboardEventForm = (props: useDashboardEventFormProps) => {
 
       const newEvents = selection.map((date) => ({
         id: crypto.randomBytes(16).toString('hex'),
+
         groupId:
           typeToSave === CalendarEventType.Alternating ? typeToSave : groupId,
         creationTime: new Date().getTime(),

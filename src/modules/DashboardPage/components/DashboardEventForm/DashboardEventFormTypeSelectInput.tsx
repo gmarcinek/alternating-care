@@ -5,7 +5,6 @@ import { CalendarEventType } from '@api/db/types';
 import { Radio, RadioGroup } from '@nextui-org/react';
 import { capitalizeFirstLetter } from '@utils/string';
 import { dashboardEventFormI18n } from './dashboardEventForm.i18n'; // Import your i18n file
-
 interface DashboardEventFormTypeSelectInputProps {
   onValueChange: (value: string) => void;
 }
@@ -18,7 +17,7 @@ export const DashboardEventFormTypeSelectInput = (
   const i18n = dashboardEventFormI18n[language];
 
   return (
-    <RadioGroup label={i18n.eventType} onValueChange={onValueChange}>
+    <RadioGroup onValueChange={onValueChange}>
       <div className='grid auto-rows-max grid-cols-3 gap-2'>
         {Object.keys(CalendarEventType).map((key) => {
           if (
