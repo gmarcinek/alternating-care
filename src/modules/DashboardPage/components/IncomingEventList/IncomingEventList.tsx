@@ -100,6 +100,21 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
             </DropdownItem>
 
             <DropdownItem
+              key='edit'
+              description='Zarzadzaj wydarzeniem'
+              startContent={
+                <h3 style={{ margin: 0 }}>
+                  <BsCalendar3 size={26} />
+                </h3>
+              }
+              onClick={() => {
+                router.push(`/edit?groupId=${event.groupId}`);
+              }}
+            >
+              Edytuj
+            </DropdownItem>
+
+            <DropdownItem
               key='find'
               description='Pokaż ten dzień w kalendarzu'
               onClick={() => {

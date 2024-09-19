@@ -1,8 +1,8 @@
-import { CalendarEvent, CalendarEventType } from '@api/db/types';
+import { CalendarEvent } from '@api/db/types';
 import { useQuery } from '@tanstack/react-query';
 import { useDbContext } from '../../../api/db/DbContext';
 
-export const useGetAlternatingEventsQuery = (eventType: CalendarEventType) => {
+export const useGetEventsByGroupQuery = (groupId: string) => {
   // Pobieramy instancję bazy danych z kontekstu
   const { db } = useDbContext();
 
@@ -16,14 +16,14 @@ export const useGetAlternatingEventsQuery = (eventType: CalendarEventType) => {
     const transaction = db.transaction('events', 'readonly');
     const store = transaction.objectStore('events');
 
-    // Sprawdzamy czy istnieje indeks 'by-type' (na wszelki wypadek)
-    if (!store.indexNames.contains('by-type')) {
-      throw new Error('Index "by-type" not found');
+    // Sprawdzamy czy istnieje indeks 'by-groupId' (na wszelki wypadek)
+    if (!store.indexNames.contains('by-groupId')) {
+      throw new Error('Index "by-groupId" not found');
     }
 
-    // Używamy indeksu 'by-type' do filtrowania zdarzeń po określonym typie
-    const index = store.index('by-type');
-    const keyRange = IDBKeyRange.only(eventType); // eventType np. 'ALTERNATING'
+    // Używamy indeksu 'by-groupId' do filtrowania zdarzeń po określonym typie
+    const index = store.index('by-groupId');
+    const keyRange = IDBKeyRange.only(groupId); // eventType np. 'ALTERNATING'
 
     // Pobieramy wszystkie eventy o podanym typie
     return index.getAll(keyRange);
@@ -32,11 +32,11 @@ export const useGetAlternatingEventsQuery = (eventType: CalendarEventType) => {
   // Hook useMutation zarządza stanem mutacji
   const query = useQuery({
     queryFn: fetchEventsByType,
-    queryKey: ['fetchEventsByType'],
+    queryKey: ['fetchEventsByGroupId'],
   });
 
   return {
-    mutation: query,
+    query,
     data: query.data || [],
     isPending: query.isPending,
     isSuccess: query.isSuccess,

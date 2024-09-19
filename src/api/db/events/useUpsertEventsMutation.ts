@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import { useDbContext } from '../../../api/db/DbContext';
 
 export const useUpsertEventsMutation = (
+  groupId: string, // Dodanie groupId jako parametru
   props: {
     onSuccess?: () => void;
     onError?: (error: unknown) => void;
@@ -25,18 +26,25 @@ export const useUpsertEventsMutation = (
         const store = transaction.objectStore('events');
 
         // Sprawdzamy czy istnieje indeks 'by-type' (na wszelki wypadek)
-        if (!store.indexNames.contains('by-type')) {
-          throw new Error('Index "by-type" not found');
+        if (!store.indexNames.contains('by-groupId')) {
+          throw new Error('Index "by-groupId" not found');
         }
 
-        // Używamy indeksu 'by-type' do filtrowania zdarzeń po określonym typie
-        const index = store.index('by-type');
-        const keyRange = IDBKeyRange.only(CalendarEventType.Alternating);
-        const alternatingEvents = await index.getAll(keyRange);
+        // Używamy indeksu 'by-groupId' do filtrowania zdarzeń po określonym groupId
+        const index = store.index('by-groupId');
+        const keyRange = IDBKeyRange.only(groupId);
+        const allEvents = await index.getAll(keyRange);
+
+        const {
+          type = CalendarEventType.Event,
+          name = '',
+          description = '',
+          style,
+        } = allEvents[0];
 
         // Przechodzimy przez każdy event i sprawdzamy, czy już istnieje
         for (const date of dates) {
-          const existingEvents = alternatingEvents.filter(
+          const existingEvents = allEvents.filter(
             (item) => item.date === date.date
           );
           const existingEventsEventsDates = existingEvents.map(
@@ -49,13 +57,14 @@ export const useUpsertEventsMutation = (
           if (!existingEventsEventsDates.includes(date.date)) {
             const newEvent: CalendarEvent = {
               id: crypto.randomBytes(16).toString('hex'),
-              groupId: CalendarEventType.Alternating,
               date: date.date,
-              type: CalendarEventType.Alternating,
-              name: 'Opieka',
-              description: '',
+              groupId, // edytowana grupa
+              type,
+              name,
+              description,
               creationTime: Date.now(),
               issuer: 'Admin',
+              style,
             };
             await store.put(newEvent);
           }

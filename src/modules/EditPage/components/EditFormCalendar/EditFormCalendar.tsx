@@ -1,44 +1,44 @@
 'use client';
 
 import { useUpsertEventsMutation } from '@api/db/events/useUpsertEventsMutation';
-import { CalendarEvent, CalendarEventType } from '@api/db/types';
+import { CalendarEvent } from '@api/db/types';
 import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
+import { useEditPageContext } from '@modules/EditPage/EditPage.context';
 import { UseQueryResult } from '@tanstack/react-query';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
-import styles from './AlternatingFormCalendar.module.scss';
-import { useAlternatingSelection } from './useAlternatingSelection';
+import styles from './EditFormCalendar.module.scss';
+import { useEditSelection } from './useEditSelection';
 
 interface EventFormCalendarProps {
   fetchEventsMutation: UseQueryResult<CalendarEvent[], Error>;
 }
 
-export const AlternatingFormCalendar = (props: EventFormCalendarProps) => {
+export const EditFormCalendar = (props: EventFormCalendarProps) => {
   const { fetchEventsMutation } = props;
   const startDate = dayjs().format(dateFormat);
-  const { selection, handlers, setSelection } = useAlternatingSelection({
+  const { selection, handlers, setSelection } = useEditSelection({
     isMultiSelectionAvailable: true,
   });
-  const { mutate: upsertEvents } = useUpsertEventsMutation(
-    CalendarEventType.Alternating,
-    {
-      onSuccess() {
-        setSelection(new Set([]));
-        fetchEventsMutation.refetch();
-      },
-    }
-  );
+  const { groupId } = useEditPageContext();
+
+  const { mutate: upsertEvents } = useUpsertEventsMutation(groupId, {
+    onSuccess() {
+      setSelection(new Set([]));
+      fetchEventsMutation.refetch();
+    },
+  });
 
   const sortedEvents = useMemo(() => {
     return fetchEventsMutation.data || ([] as CalendarEvent[]);
   }, [fetchEventsMutation.data]);
 
-  const formClasses = classNames(styles.alternatingFormCalendar, 'py-4 pt-8');
+  const formClasses = classNames(styles.editFormCalendar, 'py-4 pt-8');
 
   return (
-    <div className={styles.alternatingFormCalendarPage}>
+    <div className={styles.editFormCalendarPage}>
       <div className={formClasses}>
         {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((m, index) => {
           return (
@@ -58,7 +58,7 @@ export const AlternatingFormCalendar = (props: EventFormCalendarProps) => {
               isTodayVisible
               // isPlanVisible
               isWeekendsVisible
-              isAlternatingVisible
+              isAlternatingVisible={false}
               displayStrategy='separateMonths'
               events={sortedEvents ?? []}
               {...handlers}
