@@ -22,7 +22,7 @@ import { useScrollToId } from '@utils/useScrollTo';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
-import { BsCalendar3, BsSearch } from 'react-icons/bs';
+import { BsCalendar3, BsFilterCircle, BsSearch } from 'react-icons/bs';
 import { MdDeleteForever, MdMoreVert } from 'react-icons/md';
 
 interface IncomingEventListProps {
@@ -89,7 +89,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
               description='Odfiltruj inne wydarzenia'
               startContent={
                 <h3 style={{ margin: 0 }}>
-                  <BsCalendar3 size={26} />
+                  <BsFilterCircle size={26} />
                 </h3>
               }
               onClick={() => {

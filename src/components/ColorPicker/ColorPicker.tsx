@@ -1,19 +1,12 @@
 import { hslToHex, reduceSaturation } from '@utils/color';
 import React, { useState } from 'react';
+import { getHueColor } from './ColorPicker.helpers';
+import HueAndSaturationBar from './HueAndSaturationBar';
 
 interface ColorPickerProps {
   onColorChange: (color: string) => void;
   hueHeight?: number;
 }
-
-const getHueColor = (position: number, width: number): string => {
-  const hue = Math.round((position / width) * 360 * 100) / 100; // Zaokrąglamy do 2 miejsc po przecinku
-  return `hsl(${hue}, 100%, 50%)`;
-};
-
-const getBrightnessColor = (hue: number, brightness: number): string => {
-  return `hsl(${hue}, 100%, ${brightness}%)`;
-};
 
 export const ColorPicker = (props: ColorPickerProps) => {
   const { onColorChange, hueHeight } = props;
@@ -40,7 +33,15 @@ export const ColorPicker = (props: ColorPickerProps) => {
     updateColor(position, width);
   };
 
-  const brightnessLevels: number[] = [80, 50, 40, 18];
+  const brightnessLevels: number[] = [
+    90, 85, 80, 75, 70, 65, 60, 55, 50, 45, 40, 35, 30, 25, 20,
+  ];
+
+  const options = {
+    brightnessLevels,
+    onColorChange,
+    selectedHue,
+  };
 
   return (
     <div style={{ width: '100%' }}>
@@ -64,66 +65,20 @@ export const ColorPicker = (props: ColorPickerProps) => {
             )`,
           cursor: 'pointer',
         }}
-      ></div>
+      />
 
       {/* Pasek jasności */}
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          marginTop: '10px',
+          marginTop: '1rem',
         }}
       >
-        {brightnessLevels.map((brightness) => (
-          <div
-            key={brightness}
-            onClick={() =>
-              onColorChange(
-                hslToHex(getBrightnessColor(selectedHue, brightness))
-              )
-            }
-            style={{
-              width: '25%',
-              height: '24px',
-              margin: '0px',
-              backgroundColor: reduceSaturation(
-                hslToHex(getBrightnessColor(selectedHue, brightness)),
-                15
-              ),
-              cursor: 'pointer',
-            }}
-          ></div>
-        ))}
-      </div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        {brightnessLevels.map((brightness) => (
-          <div
-            key={brightness}
-            onClick={() =>
-              onColorChange(
-                reduceSaturation(
-                  hslToHex(getBrightnessColor(selectedHue, brightness)),
-                  60
-                )
-              )
-            }
-            style={{
-              width: '25%',
-              height: '24px',
-              margin: '0px',
-              backgroundColor: reduceSaturation(
-                hslToHex(getBrightnessColor(selectedHue, brightness)),
-                60
-              ),
-              cursor: 'pointer',
-            }}
-          ></div>
-        ))}
+        <HueAndSaturationBar {...options} hueOffset={0} />
+        <HueAndSaturationBar {...options} hueOffset={15} />
+        <HueAndSaturationBar {...options} hueOffset={30} />
+        <HueAndSaturationBar {...options} hueOffset={45} />
+        <HueAndSaturationBar {...options} hueOffset={75} />
+        <HueAndSaturationBar {...options} hueOffset={100} />
       </div>
     </div>
   );

@@ -25,7 +25,7 @@ export const useUpsertEventsMutation = (
         const transaction = db.transaction('events', 'readwrite');
         const store = transaction.objectStore('events');
 
-        // Sprawdzamy czy istnieje indeks 'by-type' (na wszelki wypadek)
+        // Sprawdzamy czy istnieje indeks 'by-groupId' (na wszelki wypadek)
         if (!store.indexNames.contains('by-groupId')) {
           throw new Error('Index "by-groupId" not found');
         }
@@ -36,11 +36,11 @@ export const useUpsertEventsMutation = (
         const allEvents = await index.getAll(keyRange);
 
         const {
-          type = CalendarEventType.Event,
+          type = groupId ?? CalendarEventType.Event,
           name = '',
           description = '',
           style,
-        } = allEvents[0];
+        } = allEvents.length > 0 ? allEvents[0] : {};
 
         // Przechodzimy przez każdy event i sprawdzamy, czy już istnieje
         for (const date of dates) {
@@ -79,6 +79,7 @@ export const useUpsertEventsMutation = (
       onSuccess(); // Wywołanie callbacka po pomyślnym zapisaniu
     },
     onError: (error) => {
+      console.log('error', error);
       onError(error); // Wywołanie callbacka w przypadku błędu
     },
   });
