@@ -36,11 +36,13 @@ export const useUpsertEventsMutation = (
         const allEvents = await index.getAll(keyRange);
 
         const {
-          type = groupId ?? CalendarEventType.Event,
+          type = groupId as CalendarEventType,
           name = '',
           description = '',
-          style,
+          style = undefined,
         } = allEvents.length > 0 ? allEvents[0] : {};
+
+        console.log(allEvents[0]);
 
         // Przechodzimy przez każdy event i sprawdzamy, czy już istnieje
         for (const date of dates) {
