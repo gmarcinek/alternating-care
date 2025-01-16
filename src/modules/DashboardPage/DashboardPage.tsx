@@ -29,6 +29,8 @@ export const DashboardPage = () => {
       mode: searchParams.get('mode') as DashboardModeType,
       range: searchParams.get('type') as DashboardRangeType,
       groupId: searchParams.get('groupId') ?? undefined,
+      startDate: searchParams.get('startDate') ?? undefined,
+      endDate: searchParams.get('endDate') ?? undefined,
     };
   }, [refetch, searchParams]);
 

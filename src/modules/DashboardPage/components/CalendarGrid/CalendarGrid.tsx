@@ -3,6 +3,8 @@
 import { CalendarEvent } from '@api/db/types';
 import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
+import { useDashboardPageContext } from '@modules/DashboardPage/DashboardPage.context';
+import { generateAbsArray } from '@utils/array';
 import dayjs from 'dayjs';
 import { CalendarPointerHandlers } from '../Dashboard/useSelection';
 import styles from './CalendarGrid.module.scss';
@@ -17,6 +19,7 @@ interface CalendarGridProps {
 }
 
 export const CalendarGrid = (props: CalendarGridProps) => {
+  const { startDate, endDate } = useDashboardPageContext();
   const {
     data,
     isAlternatingVisible,
@@ -25,20 +28,24 @@ export const CalendarGrid = (props: CalendarGridProps) => {
     handlers,
     isEventsVisible,
   } = props;
-  const startDate = dayjs().format(dateFormat);
+
+  const startingDate = dayjs(startDate).format(dateFormat);
+  const gridLength = endDate
+    ? Math.abs(dayjs(endDate).diff(startingDate, 'month')) + 1
+    : 12;
 
   return (
     <div className={styles.calendarGrid}>
-      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((m, index) => {
+      {generateAbsArray(gridLength).map((m, index) => {
         return (
           <Calendar
             className={styles.calendar}
             key={`month-plan-view-${index}`}
-            startDate={dayjs(startDate)
+            startDate={dayjs(startingDate)
               .add(index, 'month')
               .startOf('month')
               .format(dateFormat)}
-            endDate={dayjs(startDate)
+            endDate={dayjs(startingDate)
               .add(index, 'month')
               .endOf('month')
               .add(1, 'day')

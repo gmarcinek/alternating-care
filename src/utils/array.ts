@@ -111,3 +111,7 @@ export function sortBy<T>(array: T[], key: keyof T): T[] {
 export function toTransposeArray<T>(matrix: T[][]): T[][] {
   return matrix[0].map((_, colIndex) => matrix.map((row) => row[colIndex]));
 }
+
+export function generateAbsArray(length: number): number[] {
+  return Array.from({ length }, (_, i) => Math.abs(i));
+}
