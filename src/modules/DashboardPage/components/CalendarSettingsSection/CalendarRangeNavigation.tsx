@@ -7,30 +7,41 @@ import { useDashboardPageContext } from '@modules/DashboardPage/DashboardPage.co
 import { DateRangePicker, RangeValue } from '@nextui-org/react';
 import { useUpdateQueryParam } from '@utils/useUpdateQueryParam';
 import dayjs from 'dayjs';
-import { useCallback, useLayoutEffect, useState } from 'react';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
 } from 'react-icons/md';
+import { TfiBackLeft } from 'react-icons/tfi';
 
 export const CalendarRangeNavigation = () => {
   const { startDate, endDate } = useDashboardPageContext();
   const updateQueryParam = useUpdateQueryParam();
 
-  useLayoutEffect(() => {
-    if (!startDate) {
-      updateQueryParam('startDate', dayjs().format(dateFormat));
-    }
-    if (!endDate) {
-      updateQueryParam('endDate', dayjs().add(1, 'year').format(dateFormat));
-    }
+  const defaultDates = useMemo(() => {
+    const start = dayjs().startOf('month').format(dateFormat);
+    const end = dayjs().add(11, 'month').endOf('month').format(dateFormat);
+
+    return {
+      start,
+      end,
+    };
   }, []);
 
+  useLayoutEffect(() => {
+    if (!startDate) {
+      updateQueryParam('startDate', defaultDates.start);
+    }
+    if (!endDate) {
+      updateQueryParam('endDate', defaultDates.end);
+    }
+  }, [defaultDates]);
+
   const [parsedDates, setParsedDates] = useState({
-    start: parseDate(dayjs().format(dateFormat)),
-    end: parseDate(dayjs().add(1, 'year').format(dateFormat)),
+    start: parseDate(dayjs().startOf('month').format(dateFormat)),
+    end: parseDate(dayjs().add(11, 'month').endOf('month').format(dateFormat)),
   });
 
   const handlePickerOnChangeDates = useCallback(
@@ -40,9 +51,27 @@ export const CalendarRangeNavigation = () => {
 
       updateQueryParam('startDate', startDate);
       updateQueryParam('endDate', endDate);
+
+      setParsedDates({
+        start: parseDate(startDate),
+        end: parseDate(endDate),
+      });
     },
-    []
+    [updateQueryParam, setParsedDates]
   );
+
+  const handleResetDates = useCallback(() => {
+    const startDate = dayjs(defaultDates.start).format(dateFormat);
+    const endDate = dayjs(defaultDates.end).format(dateFormat);
+
+    updateQueryParam('startDate', startDate);
+    updateQueryParam('endDate', endDate);
+
+    setParsedDates({
+      start: parseDate(startDate),
+      end: parseDate(endDate),
+    });
+  }, [updateQueryParam, setParsedDates]);
 
   const handleUpdateRange = (
     direction: 'back' | 'forward',
@@ -84,10 +113,8 @@ export const CalendarRangeNavigation = () => {
           onChange={handlePickerOnChangeDates}
           onKeyDown={(event) => event.preventDefault()}
           defaultValue={{
-            start: parseDate(dayjs(startDate?.toString()).format(dateFormat)),
-            end: endDate
-              ? parseDate(dayjs(endDate).format(dateFormat))
-              : parseDate(dayjs().format(dateFormat)),
+            start: parseDate(defaultDates.start),
+            end: parseDate(defaultDates.end),
           }}
         />
       </div>
@@ -97,6 +124,7 @@ export const CalendarRangeNavigation = () => {
       <MdKeyboardDoubleArrowRight
         onClick={() => handleUpdateRange('forward', 'year')}
       />
+      <TfiBackLeft onClick={() => handleResetDates()} />
     </Stack>
   );
 };
