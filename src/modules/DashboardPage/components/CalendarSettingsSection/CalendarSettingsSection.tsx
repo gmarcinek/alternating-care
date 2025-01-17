@@ -1,14 +1,10 @@
 'use client';
 
 import { useAppContext } from '@app/AppContext';
-import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { Stack } from '@components/Stack/Stack';
-import { CalendarDate, parseDate } from '@internationalized/date';
-import { useDashboardPageContext } from '@modules/DashboardPage/DashboardPage.context';
-import { DatePicker, Switch } from '@nextui-org/react';
+import { Switch } from '@nextui-org/react';
 import { useUpdateQueryParam } from '@utils/useUpdateQueryParam';
-import dayjs from 'dayjs';
-import { useCallback } from 'react';
+import { CalendarRangeNavigation } from './CalendarRangeNavigation';
 import { calendarSettingsSectionI18n } from './calendarSettingsSection.i18n';
 
 interface CalendarSettingsSectionProps {
@@ -37,60 +33,41 @@ export const CalendarSettingsSection = (
   const { language } = useAppContext();
   const i18n = calendarSettingsSectionI18n[language];
 
-  const { startDate, endDate } = useDashboardPageContext();
-
-  const handleOnChangeStartDate = useCallback((value: CalendarDate) => {
-    updateQueryParam('startDate', dayjs(value.toString()).format(dateFormat));
-  }, []);
-
-  const handleOnChangeEndDate = useCallback((value: CalendarDate) => {
-    updateQueryParam('endDate', dayjs(value.toString()).format(dateFormat));
-  }, []);
-
   return (
-    <Stack direction='horizontal' className='wrap flex-wrap py-4'>
-      <Switch
-        defaultSelected={isPlanVisible}
-        onValueChange={setIsPlanVisible}
-        size='sm'
-      >
-        {i18n.plan}
-      </Switch>
-
-      <Switch
-        defaultSelected={isAlternatingVisible}
-        onValueChange={setIsAlternatingVisible}
-        size='sm'
-      >
-        {i18n.alternating}
-      </Switch>
-
-      {!isPlanVisible && (
+    <Stack
+      direction='horizontal'
+      className='wrap flex-wrap py-4'
+      itemsAlignment='between'
+    >
+      <Stack direction='horizontal'>
         <Switch
-          defaultSelected={isEventsVisible}
-          onValueChange={setIsEventsVisible}
+          defaultSelected={isPlanVisible}
+          onValueChange={setIsPlanVisible}
           size='sm'
         >
-          {i18n.events}
+          {i18n.plan}
         </Switch>
-      )}
 
-      <div>
-        <DatePicker
-          label={i18n.startDate}
-          defaultValue={parseDate(dayjs(startDate).format(dateFormat))}
-          onChange={handleOnChangeStartDate}
-        />
-      </div>
+        <Switch
+          defaultSelected={isAlternatingVisible}
+          onValueChange={setIsAlternatingVisible}
+          size='sm'
+        >
+          {i18n.alternating}
+        </Switch>
 
-      <div>
-        <DatePicker
-          label={i18n.endDate}
-          defaultValue={parseDate(dayjs(endDate).format(dateFormat))}
-          onChange={handleOnChangeEndDate}
-          granularity='day'
-        />
-      </div>
+        {!isPlanVisible && (
+          <Switch
+            defaultSelected={isEventsVisible}
+            onValueChange={setIsEventsVisible}
+            size='sm'
+          >
+            {i18n.events}
+          </Switch>
+        )}
+      </Stack>
+
+      <CalendarRangeNavigation />
     </Stack>
   );
 };

@@ -23,6 +23,8 @@ export const EditPage = () => {
   const contextData = useMemo(() => {
     return {
       groupId,
+      startDate: searchParams.get('startDate') ?? undefined,
+      endDate: searchParams.get('endDate') ?? undefined,
     };
   }, [query.refetch, groupId]);
 

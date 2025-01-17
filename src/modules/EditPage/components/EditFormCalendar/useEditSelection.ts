@@ -139,9 +139,7 @@ export const useEditSelection = (props: UseSelectionProps) => {
   );
 
   const handleOnDayPointerDown = useCallback<OnDayPointerHandler>(
-    (day, event) => {
-      console.log('handleOnDayPointerDown');
-    },
+    (day, event) => {},
     []
   );
 

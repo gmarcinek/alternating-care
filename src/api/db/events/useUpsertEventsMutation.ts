@@ -42,8 +42,6 @@ export const useUpsertEventsMutation = (
           style = undefined,
         } = allEvents.length > 0 ? allEvents[0] : {};
 
-        console.log(allEvents[0]);
-
         // Przechodzimy przez każdy event i sprawdzamy, czy już istnieje
         for (const date of dates) {
           const existingEvents = allEvents.filter(

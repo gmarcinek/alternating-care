@@ -231,9 +231,7 @@ export const useAlternatingSelection = (props: UseSelectionProps) => {
   );
 
   const handleOnDayPointerDown = useCallback<OnDayPointerHandler>(
-    (day, event) => {
-      console.log('handleOnDayPointerDown');
-    },
+    (day, event) => {},
     []
   );
 

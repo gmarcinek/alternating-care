@@ -45,13 +45,10 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
     return sortBy(data, 'creationTime');
   }, [data]);
 
-  const sinceThisMonthDates = useMemo(() => {
+  const nonAlternatingEvents = useMemo(() => {
     return (sortedEvents ?? [])
       .filter((item) => {
-        return (
-          dayjs(item.date).isAfter(dayjs(startDate).startOf('month')) &&
-          item.type !== CalendarEventType.Alternating
-        );
+        return item.type !== CalendarEventType.Alternating;
       })
       .sort((itemA, itemB) => {
         return dayjs(itemA.date).isAfter(itemB.date) ? 1 : -1;
@@ -59,8 +56,8 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
   }, [sortedEvents, startDate]);
 
   const sinceThisMonthGroupedEvents = useMemo(() => {
-    return groupByDate(sinceThisMonthDates);
-  }, [sinceThisMonthDates]);
+    return groupByDate(nonAlternatingEvents);
+  }, [nonAlternatingEvents]);
 
   const sinceTodayEvents = useMemo(() => {
     return sinceThisMonthGroupedEvents.filter((item) =>
@@ -108,7 +105,17 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
                 </h3>
               }
               onClick={() => {
-                router.push(`/edit?groupId=${event.groupId}`);
+                const startDate = dayjs(event.date)
+                  .subtract(1, 'month')
+                  .format(dateFormat);
+
+                const endDate = dayjs(event.date)
+                  .add(2, 'month')
+                  .format(dateFormat);
+
+                router.push(
+                  `/edit?groupId=${event.groupId}&startDate=${startDate}&endDate=${endDate}`
+                );
               }}
             >
               Edytuj
@@ -148,40 +155,6 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
           </DropdownSection>
         </DropdownMenu>
       </Dropdown>
-      // <Stack
-      //   direction='horizontal'
-      //   contentAlignment='end'
-      //   itemsAlignment='center'
-      //   gap={2}
-      // >
-      //   <Button
-      //     isIconOnly
-      //     variant='light'
-      //     aria-label='notify'
-      //     size='md'
-      //     onClick={() => deleteMutation.mutate(event)}
-      //   >
-      //     <h3 style={{ color: 'white', margin: 0 }}>
-      //       <MdDeleteForever size={26} />
-      //     </h3>
-      //   </Button>
-
-      //   <Button
-      //     isIconOnly
-      //     variant='light'
-      //     aria-label='notify'
-      //     size='md'
-      //     onClick={() => {
-      //       router.push(`/?groupId=${event.groupId}`);
-
-      //       // scrollToElement(`day-${event.date}`, 100, true);
-      //     }}
-      //   >
-      //     <h3 style={{ color: 'white', margin: 0 }}>
-      //       <MdFindInPage size={26} />
-      //     </h3>
-      //   </Button>
-      // </Stack>
     );
   };
 

@@ -6,6 +6,7 @@ import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { useEditPageContext } from '@modules/EditPage/EditPage.context';
 import { UseQueryResult } from '@tanstack/react-query';
+import { generateAbsArray } from '@utils/array';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
@@ -18,7 +19,6 @@ interface EventFormCalendarProps {
 
 export const EditFormCalendar = (props: EventFormCalendarProps) => {
   const { fetchEventsMutation } = props;
-  const startDate = dayjs().format(dateFormat);
   const { selection, handlers, setSelection } = useEditSelection({
     isMultiSelectionAvailable: true,
   });
@@ -37,19 +37,25 @@ export const EditFormCalendar = (props: EventFormCalendarProps) => {
 
   const formClasses = classNames(styles.editFormCalendar, 'py-4 pt-8');
 
+  const { startDate, endDate } = useEditPageContext();
+  const startingDate = dayjs(startDate).format(dateFormat);
+  const gridLength = endDate
+    ? Math.abs(dayjs(endDate).diff(startingDate, 'month')) + 1
+    : 12;
+
   return (
     <div className={styles.editFormCalendarPage}>
       <div className={formClasses}>
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((m, index) => {
+        {generateAbsArray(gridLength).map((m, index) => {
           return (
             <Calendar
               key={`month-plan-view-${index}`}
               className={styles.calendar}
-              startDate={dayjs(startDate)
+              startDate={dayjs(startingDate)
                 .add(index, 'month')
                 .startOf('month')
                 .format(dateFormat)}
-              endDate={dayjs(startDate)
+              endDate={dayjs(startingDate)
                 .add(index, 'month')
                 .endOf('month')
                 .add(1, 'day')
