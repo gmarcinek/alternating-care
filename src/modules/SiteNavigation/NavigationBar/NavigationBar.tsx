@@ -35,14 +35,14 @@ export const NavigationBar = (props: NavbarProps) => {
               </Link>
 
               <Link href='/alternating'>
-                <p>Opieka</p>
+                <p>{i18n.alternating}</p>
               </Link>
 
               <Link href='/settings'>
                 <p>{i18n.settings}</p>
               </Link>
               <Link href='/help'>
-                <p>Help</p>
+                <p>{i18n.help}</p>
               </Link>
             </ul>
           </div>

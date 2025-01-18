@@ -1,14 +1,16 @@
 export const navigationBarI18n = {
   pl: {
     home: 'Start',
-    edit: 'Edycja',
+    alternating: 'Opieka',
     settings: 'Ustawienia',
     menu: 'Menu',
+    help: 'help',
   },
   en: {
     home: 'Home',
-    edit: 'Edit',
+    alternating: 'Alternating',
     settings: 'Settings',
     menu: 'Menu',
+    help: 'help',
   },
 };

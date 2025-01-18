@@ -22,7 +22,7 @@ import { useCalendarGap } from './hooks/useCalendarGap';
 
 interface CalendarProps {
   startDate: string;
-  rowSize: number;
+  rowSize?: number;
   displayStrategy?: DisplayStrategy;
   endDate?: string;
   isTodayVisible?: boolean;

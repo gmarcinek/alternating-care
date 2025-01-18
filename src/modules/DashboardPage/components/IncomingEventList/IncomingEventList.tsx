@@ -2,6 +2,7 @@
 
 import { useDeleteEventMutation } from '@api/db/events/useDeleteEventMutation';
 import { CalendarEvent, CalendarEventType } from '@api/db/types';
+import { useAppContext } from '@app/AppContext';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import EventList, {
   CalendarEventListRenderProps,
@@ -21,9 +22,10 @@ import { groupByDate } from '@utils/dates';
 import { useScrollToId } from '@utils/useScrollTo';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { BsCalendar3, BsFilterCircle, BsSearch } from 'react-icons/bs';
 import { MdDeleteForever, MdMoreVert } from 'react-icons/md';
+import { incomingEventListI18n } from './incomingEventList.i18n';
 
 interface IncomingEventListProps {
   data: CalendarEvent[];
@@ -32,9 +34,15 @@ interface IncomingEventListProps {
 
 export const IncomingEventList = (props: IncomingEventListProps) => {
   const { data, selection } = props;
-  const startDate = dayjs().format(dateFormat);
+
+  const { language } = useAppContext();
+  const i18n = incomingEventListI18n[language];
+
+  const todayDate = dayjs().format(dateFormat);
+
   const { updateAllEvents } = useDashboardPageContext();
   const router = useRouter();
+
   const deleteMutation = useDeleteEventMutation({
     onSuccess() {
       updateAllEvents?.();
@@ -53,7 +61,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
       .sort((itemA, itemB) => {
         return dayjs(itemA.date).isAfter(itemB.date) ? 1 : -1;
       });
-  }, [sortedEvents, startDate]);
+  }, [sortedEvents, todayDate]);
 
   const sinceThisMonthGroupedEvents = useMemo(() => {
     return groupByDate(nonAlternatingEvents);
@@ -61,12 +69,28 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
 
   const sinceTodayEvents = useMemo(() => {
     return sinceThisMonthGroupedEvents.filter((item) =>
-      dayjs(item.date).isAfter(dayjs(startDate).subtract(1, 'day'))
+      dayjs(item.date).isAfter(dayjs(todayDate).subtract(1, 'day'))
     );
-  }, [sinceThisMonthGroupedEvents, startDate]);
+  }, [sinceThisMonthGroupedEvents, todayDate]);
 
   const sideContent = ({ event }: CalendarEventListRenderProps) => {
     const { scrollToElement } = useScrollToId();
+    const handleOnEditClick = useCallback(() => {
+      const startDate = dayjs(event.date)
+        .subtract(1, 'month')
+        .startOf('month')
+        .format(dateFormat);
+
+      const endDate = dayjs(startDate)
+        .add(11, 'month')
+        .endOf('month')
+        .format(dateFormat);
+
+      router.push(
+        `/edit?groupId=${event.groupId}&startDate=${startDate}&endDate=${endDate}`
+      );
+    }, [event.date, event.groupId]);
+
     return (
       <Dropdown>
         <DropdownTrigger>
@@ -83,7 +107,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
           <DropdownSection title='Akcje' showDivider>
             <DropdownItem
               key='filter'
-              description='Odfiltruj inne wydarzenia'
+              description={i18n.showAllOccurrencesDescription}
               startContent={
                 <h3 style={{ margin: 0 }}>
                   <BsFilterCircle size={26} />
@@ -93,37 +117,25 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
                 router.push(`/?groupId=${event.groupId}`);
               }}
             >
-              Pokaż wszystkie wystąpienia
+              {i18n.showAllOccurrences}
             </DropdownItem>
 
             <DropdownItem
               key='edit'
-              description='Zarzadzaj wydarzeniem'
+              description={i18n.editDescription}
               startContent={
                 <h3 style={{ margin: 0 }}>
                   <BsCalendar3 size={26} />
                 </h3>
               }
-              onClick={() => {
-                const startDate = dayjs(event.date)
-                  .subtract(1, 'month')
-                  .format(dateFormat);
-
-                const endDate = dayjs(event.date)
-                  .add(2, 'month')
-                  .format(dateFormat);
-
-                router.push(
-                  `/edit?groupId=${event.groupId}&startDate=${startDate}&endDate=${endDate}`
-                );
-              }}
+              onClick={handleOnEditClick}
             >
-              Edytuj
+              {i18n.edit}
             </DropdownItem>
 
             <DropdownItem
               key='find'
-              description='Pokaż ten dzień w kalendarzu'
+              description={i18n.findTheDayDescription}
               onClick={() => {
                 scrollToElement(`day-${event.date}`, 0, true);
               }}
@@ -133,16 +145,16 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
                 </h3>
               }
             >
-              Znajdź ten dzień
+              {i18n.findTheDay}
             </DropdownItem>
           </DropdownSection>
 
-          <DropdownSection title='Strefa niebezpieczna'>
+          <DropdownSection title={i18n.dangerZone}>
             <DropdownItem
               key='delete'
               className='text-danger'
               color='danger'
-              description='Permanentnie usuń wydarzenie w tym dniu'
+              description={i18n.deleteDescription}
               onClick={() => deleteMutation.mutate(event)}
               startContent={
                 <h3 style={{ color: 'red', margin: 0 }}>
@@ -150,7 +162,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
                 </h3>
               }
             >
-              Usuń trwale
+              {i18n.delete}
             </DropdownItem>
           </DropdownSection>
         </DropdownMenu>
@@ -159,22 +171,12 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
   };
 
   return (
-    <Stack className='mt-4'>
-      <Stack gap={0}>
+    <Stack className='mt-0'>
+      <Stack gap={8}>
         {selection.size === 0 && (
           <div>
-            {sinceTodayEvents.length === 0 && (
-              <Stack>
-                <h3>Brak zaplanowanych wydarzeń</h3>
-                <p>
-                  Zacznij od kliknięcia w dzień kalendarza żeby go zaznaczyć.
-                  <br />
-                  Możesz zaznaczać wiele dni na raz używając skrótów
-                  klawiaturowych z shift, alt i ctrl
-                </p>
-              </Stack>
-            )}
-            {sinceTodayEvents.length !== 0 && <h3>Nadchodzące wydarzenia</h3>}
+            {sinceTodayEvents.length === 0 && <Stack>{i18n.emptyInfo}</Stack>}
+            {sinceTodayEvents.length !== 0 && <h3>{i18n.approachingEvents}</h3>}
 
             {sinceTodayEvents.map((dayGroup, indexGroup) => {
               return (
@@ -190,8 +192,10 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
         )}
 
         {selection.size !== 0 && (
-          <>
-            <h3>Wydarzenia w zaznaczonych dniach</h3>
+          <div className='mt-8'>
+            <h3>
+              <strong>{i18n.selectedDayRangeEvents}</strong>
+            </h3>
             {Array.from(selection).map((selectedItem, index) => {
               return (
                 <div key={`dayselect-${selectedItem}-${index}`}>
@@ -212,7 +216,7 @@ export const IncomingEventList = (props: IncomingEventListProps) => {
                 </div>
               );
             })}
-          </>
+          </div>
         )}
       </Stack>
     </Stack>

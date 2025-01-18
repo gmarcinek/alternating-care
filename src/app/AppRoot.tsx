@@ -19,6 +19,7 @@ export default function AppRoot({ children }: PropsWithChildren) {
     error: dbError,
     dbInstance,
   } = useInitDb();
+
   const [defaultLanguage] =
     typeof navigator !== 'undefined' ? navigator.language.split('-') : ['pl'];
 

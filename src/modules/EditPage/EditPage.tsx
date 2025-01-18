@@ -5,35 +5,21 @@ import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 
 import { useGetEventsByGroupQuery } from '@api/db/events/useGetEventsByGroupQuery';
 import { TodayButton } from '@modules/TodayButton/TodayButton';
-import { useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { useAppSearchParams } from '@utils/useAppSearchParams';
 import { EditFormCalendar } from './components/EditFormCalendar/EditFormCalendar';
-import { EditPageContext } from './EditPage.context';
 
 export const EditPage = () => {
-  const params = useSearchParams();
-  const searchParams = params;
-  const groupId = searchParams.get('groupId') ?? '';
+  const { groupId } = useAppSearchParams();
   const { query } = useGetEventsByGroupQuery(groupId);
 
   if (query.isError) {
     return <ErrorMessage message={'Unexpected error occurred'} />;
   }
 
-  const contextData = useMemo(() => {
-    return {
-      groupId,
-      startDate: searchParams.get('startDate') ?? undefined,
-      endDate: searchParams.get('endDate') ?? undefined,
-    };
-  }, [query.refetch, groupId]);
-
   return (
-    <EditPageContext.Provider value={contextData}>
-      <DashboardContainer>
-        <EditFormCalendar fetchEventsMutation={query} />
-        <TodayButton />
-      </DashboardContainer>
-    </EditPageContext.Provider>
+    <DashboardContainer>
+      <EditFormCalendar fetchEventsMutation={query} />
+      <TodayButton />
+    </DashboardContainer>
   );
 };

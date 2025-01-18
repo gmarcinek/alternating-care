@@ -3,9 +3,9 @@
 import { CalendarEvent } from '@api/db/types';
 import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
-import { useDashboardPageContext } from '@modules/DashboardPage/DashboardPage.context';
 import { UseQueryResult } from '@tanstack/react-query';
 import { sortBy } from '@utils/array';
+import { useAppSearchParams } from '@utils/useAppSearchParams';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useCallback, useMemo, useState } from 'react';
@@ -23,7 +23,7 @@ interface DashboardProps {
 
 export const Dashboard = (props: DashboardProps) => {
   const { fetchEventsQuery } = props;
-  const { groupId, mode, range } = useDashboardPageContext();
+  const { groupId } = useAppSearchParams();
   const startDate = dayjs().format(dateFormat);
   const {
     selection,

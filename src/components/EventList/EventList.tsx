@@ -36,16 +36,16 @@ export default function EventList(props: EventListProps) {
                 color: colorNeutralGray900,
               }}
             />
-            <h3 className='mb-1'>
-              <strong style={{ color: '#000000' }}>
+            <h4 className='mb-1'>
+              <span style={{ color: '#000000' }}>
                 {capitalizeFirstLetter(currentDate.format('dddd'))}
-              </strong>{' '}
+              </span>{' '}
               <span>
                 {capitalizeFirstLetter(currentDate.format('D MMMM YYYY'))}
               </span>{' '}
-            </h3>
+            </h4>
           </Stack>
-          <Divider className='mb-2 mt-1' />
+          <Divider className='mb-1 mt-1' />
         </div>
 
         {eventGroup.events.length > 0 &&

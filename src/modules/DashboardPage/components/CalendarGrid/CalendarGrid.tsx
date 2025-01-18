@@ -3,8 +3,8 @@
 import { CalendarEvent } from '@api/db/types';
 import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
-import { useDashboardPageContext } from '@modules/DashboardPage/DashboardPage.context';
 import { generateAbsArray } from '@utils/array';
+import { useAppSearchParams } from '@utils/useAppSearchParams';
 import dayjs from 'dayjs';
 import { CalendarPointerHandlers } from '../Dashboard/useSelection';
 import styles from './CalendarGrid.module.scss';
@@ -19,7 +19,7 @@ interface CalendarGridProps {
 }
 
 export const CalendarGrid = (props: CalendarGridProps) => {
-  const { startDate, endDate } = useDashboardPageContext();
+  const { startDate, endDate } = useAppSearchParams();
   const {
     data,
     isAlternatingVisible,

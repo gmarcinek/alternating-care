@@ -4,7 +4,10 @@ import { useUpsertEventsMutation } from '@api/db/events/useUpsertEventsMutation'
 import { CalendarEvent, CalendarEventType } from '@api/db/types';
 import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
+import { RangeNavigation } from '@components/RangeNavigation/RangeNavigation';
 import { UseQueryResult } from '@tanstack/react-query';
+import { generateAbsArray } from '@utils/array';
+import { useAppSearchParams } from '@utils/useAppSearchParams';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useMemo } from 'react';
@@ -17,7 +20,8 @@ interface EventFormCalendarProps {
 
 export const AlternatingFormCalendar = (props: EventFormCalendarProps) => {
   const { fetchEventsMutation } = props;
-  const startDate = dayjs().format(dateFormat);
+  const { startDate } = useAppSearchParams();
+
   const { selection, handlers, setSelection } = useAlternatingSelection({
     isMultiSelectionAvailable: true,
   });
@@ -35,12 +39,17 @@ export const AlternatingFormCalendar = (props: EventFormCalendarProps) => {
     return fetchEventsMutation.data || ([] as CalendarEvent[]);
   }, [fetchEventsMutation.data]);
 
-  const formClasses = classNames(styles.alternatingFormCalendar, 'py-4 pt-8');
+  const formClasses = classNames(styles.alternatingFormCalendar, 'py-2');
+  const gridLength = 12;
 
   return (
     <div className={styles.alternatingFormCalendarPage}>
+      <div className='mt-4'>
+        <RangeNavigation contentAlignment='center' />
+      </div>
+
       <div className={formClasses}>
-        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((m, index) => {
+        {generateAbsArray(gridLength).map((m, index) => {
           return (
             <Calendar
               key={`month-plan-view-${index}`}

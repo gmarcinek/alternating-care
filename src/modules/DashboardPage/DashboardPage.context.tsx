@@ -18,11 +18,6 @@ export enum DashboardRangeType {
 
 export interface DashboardPageContextData {
   updateAllEvents?: UseQueryResult<CalendarEvent[], Error>['refetch'];
-  mode?: DashboardModeType;
-  range?: DashboardRangeType;
-  groupId?: string;
-  startDate?: string;
-  endDate?: string;
 }
 
 export const DashboardPageContext = createContext<DashboardPageContextData>({});

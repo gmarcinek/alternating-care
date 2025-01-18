@@ -3,32 +3,47 @@
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarDate, parseDate } from '@internationalized/date';
-import { useDashboardPageContext } from '@modules/DashboardPage/DashboardPage.context';
 import { DateRangePicker, RangeValue } from '@nextui-org/react';
+import { useAppSearchParams } from '@utils/useAppSearchParams';
 import { useUpdateQueryParam } from '@utils/useUpdateQueryParam';
 import dayjs from 'dayjs';
 import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import {
+  MdClose,
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
 } from 'react-icons/md';
-import { TfiBackLeft } from 'react-icons/tfi';
 
-export const CalendarRangeNavigation = () => {
-  const { startDate, endDate } = useDashboardPageContext();
+interface RangeNavigationProps {
+  alignItems?: React.ComponentProps<typeof Stack>['itemsAlignment'];
+  contentAlignment?: React.ComponentProps<typeof Stack>['contentAlignment'];
+  buttonSize?: number;
+}
+
+export const RangeNavigation = (props: RangeNavigationProps) => {
+  const { alignItems, contentAlignment, buttonSize = 20 } = props;
+  const { startDate, endDate } = useAppSearchParams();
+
   const updateQueryParam = useUpdateQueryParam();
 
   const defaultDates = useMemo(() => {
-    const start = dayjs().startOf('month').format(dateFormat);
-    const end = dayjs().add(11, 'month').endOf('month').format(dateFormat);
+    const start = dayjs(startDate).startOf('month').format(dateFormat);
+    const end = startDate
+      ? dayjs(startDate).add(11, 'month').endOf('month').format(dateFormat)
+      : dayjs().add(11, 'month').endOf('month').format(dateFormat);
 
     return {
       start,
       end,
     };
-  }, []);
+  }, [startDate, endDate]);
+
+  const [parsedDates, setParsedDates] = useState({
+    start: parseDate(defaultDates.start),
+    end: parseDate(defaultDates.end),
+  });
 
   useLayoutEffect(() => {
     if (!startDate) {
@@ -37,12 +52,7 @@ export const CalendarRangeNavigation = () => {
     if (!endDate) {
       updateQueryParam('endDate', defaultDates.end);
     }
-  }, [defaultDates]);
-
-  const [parsedDates, setParsedDates] = useState({
-    start: parseDate(dayjs().startOf('month').format(dateFormat)),
-    end: parseDate(dayjs().add(11, 'month').endOf('month').format(dateFormat)),
-  });
+  }, [defaultDates, startDate, endDate]);
 
   const handlePickerOnChangeDates = useCallback(
     (value: RangeValue<CalendarDate>) => {
@@ -61,8 +71,8 @@ export const CalendarRangeNavigation = () => {
   );
 
   const handleResetDates = useCallback(() => {
-    const startDate = dayjs(defaultDates.start).format(dateFormat);
-    const endDate = dayjs(defaultDates.end).format(dateFormat);
+    const startDate = dayjs().startOf('month').format(dateFormat);
+    const endDate = dayjs().add(11, 'month').endOf('month').format(dateFormat);
 
     updateQueryParam('startDate', startDate);
     updateQueryParam('endDate', endDate);
@@ -97,34 +107,35 @@ export const CalendarRangeNavigation = () => {
   return (
     <Stack
       direction='horizontal'
-      itemsAlignment='center'
-      contentAlignment='end'
+      itemsAlignment={alignItems ?? 'center'}
+      contentAlignment={contentAlignment ?? 'end'}
     >
       <MdKeyboardDoubleArrowLeft
         onClick={() => handleUpdateRange('back', 'year')}
+        size={buttonSize}
       />
-      <MdKeyboardArrowLeft onClick={() => handleUpdateRange('back', 'month')} />
+      <MdKeyboardArrowLeft
+        onClick={() => handleUpdateRange('back', 'month')}
+        size={buttonSize}
+      />
       <div>
         <DateRangePicker
           variant='bordered'
           visibleMonths={2}
-          size='sm'
           value={parsedDates}
           onChange={handlePickerOnChangeDates}
           onKeyDown={(event) => event.preventDefault()}
-          defaultValue={{
-            start: parseDate(defaultDates.start),
-            end: parseDate(defaultDates.end),
-          }}
         />
       </div>
       <MdKeyboardArrowRight
         onClick={() => handleUpdateRange('forward', 'month')}
+        size={buttonSize}
       />
       <MdKeyboardDoubleArrowRight
         onClick={() => handleUpdateRange('forward', 'year')}
+        size={buttonSize}
       />
-      <TfiBackLeft onClick={() => handleResetDates()} />
+      <MdClose onClick={() => handleResetDates()} size={buttonSize} />
     </Stack>
   );
 };

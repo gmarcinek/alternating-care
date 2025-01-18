@@ -3,8 +3,8 @@ import { useAppContext } from '@app/AppContext';
 
 import { CalendarEventType } from '@api/db/types';
 import { Radio, RadioGroup } from '@nextui-org/react';
-import { capitalizeFirstLetter } from '@utils/string';
 import { dashboardEventFormI18n } from './dashboardEventForm.i18n'; // Import your i18n file
+
 interface DashboardEventFormTypeSelectInputProps {
   onValueChange: (value: string) => void;
 }
@@ -15,6 +15,14 @@ export const DashboardEventFormTypeSelectInput = (
   const { onValueChange } = props;
   const { language } = useAppContext();
   const i18n = dashboardEventFormI18n[language];
+
+  const getRadioValue = (key: string) => {
+    return CalendarEventType[key as keyof typeof CalendarEventType];
+  };
+
+  const getRadioLabel = (key: string) => {
+    return i18n[CalendarEventType[key as keyof typeof CalendarEventType]];
+  };
 
   return (
     <RadioGroup onValueChange={onValueChange}>
@@ -29,15 +37,8 @@ export const DashboardEventFormTypeSelectInput = (
           }
 
           return (
-            <Radio
-              key={key}
-              value={CalendarEventType[key as keyof typeof CalendarEventType]}
-            >
-              {capitalizeFirstLetter(
-                CalendarEventType[
-                  key as keyof typeof CalendarEventType
-                ].toLocaleLowerCase()
-              )}
+            <Radio key={key} value={getRadioValue(key)}>
+              {getRadioLabel(key)}
             </Radio>
           );
         })}

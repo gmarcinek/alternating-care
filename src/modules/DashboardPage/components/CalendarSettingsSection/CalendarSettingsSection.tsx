@@ -1,10 +1,10 @@
 'use client';
 
 import { useAppContext } from '@app/AppContext';
+import { RangeNavigation } from '@components/RangeNavigation/RangeNavigation';
 import { Stack } from '@components/Stack/Stack';
 import { Switch } from '@nextui-org/react';
 import { useUpdateQueryParam } from '@utils/useUpdateQueryParam';
-import { CalendarRangeNavigation } from './CalendarRangeNavigation';
 import { calendarSettingsSectionI18n } from './calendarSettingsSection.i18n';
 
 interface CalendarSettingsSectionProps {
@@ -67,7 +67,7 @@ export const CalendarSettingsSection = (
         )}
       </Stack>
 
-      <CalendarRangeNavigation />
+      <RangeNavigation />
     </Stack>
   );
 };
