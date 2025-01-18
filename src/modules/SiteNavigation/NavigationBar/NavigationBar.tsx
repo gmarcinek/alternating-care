@@ -1,14 +1,17 @@
 'use client';
 
+import { useExportEvents } from '@api/db/export/useExportEvents';
 import { useAppContext } from '@app/AppContext';
 import { Stack } from '@components/Stack/Stack';
 import { Avatar } from '@nextui-org/react';
 import Link from 'next/link';
+import { PiExport } from 'react-icons/pi';
 import { AppUser } from '../../../api/db/types';
 import { Language } from './Language';
 import { Logo } from './Logo';
 import { MenuButton } from './MenuButton';
 import { navigationBarI18n } from './navigationBar.i18n';
+
 interface NavbarProps {
   toggle: () => void;
   user: AppUser;
@@ -16,7 +19,7 @@ interface NavbarProps {
 
 export const NavigationBar = (props: NavbarProps) => {
   const { toggle, user } = props;
-
+  const { exportEventsToFile } = useExportEvents();
   const { language } = useAppContext();
   const i18n = navigationBarI18n[language];
 
@@ -31,23 +34,29 @@ export const NavigationBar = (props: NavbarProps) => {
             <Logo />
             <ul className='hidden gap-x-6 pl-8 md:flex'>
               <Link href='/[mode]' as={'/'}>
-                <p>{i18n.home}</p>
+                <span>{i18n.home}</span>
               </Link>
 
               <Link href='/alternating'>
-                <p>{i18n.alternating}</p>
+                <span>{i18n.alternating}</span>
               </Link>
 
               <Link href='/settings'>
-                <p>{i18n.settings}</p>
+                <span>{i18n.settings}</span>
               </Link>
               <Link href='/help'>
-                <p>{i18n.help}</p>
+                <span className='my-0 py-0'>{i18n.help}</span>
               </Link>
             </ul>
           </div>
           <div>
-            <Stack direction='horizontal' contentAlignment='end'>
+            <Stack
+              direction='horizontal'
+              contentAlignment='end'
+              itemsAlignment='center'
+            >
+              <PiExport size={24} onClick={exportEventsToFile} />
+
               <Language />
               {user.name && <Avatar name={user.name} />}
               <MenuButton onClick={toggle}>{i18n.menu}</MenuButton>

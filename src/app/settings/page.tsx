@@ -1,5 +1,6 @@
 'use client';
 
+import ImportButton from '@api/db/import/ImportButton';
 import { useFormPutUserMutation } from '@api/db/users/useFormPutUserMutation'; // Hook do zapisywania użytkownika
 import PageContainer from '@components/PageContainer/PageContainer';
 import { Stack } from '@components/Stack/Stack';
@@ -49,7 +50,14 @@ export default function UserForm() {
 
   return (
     <PageContainer>
+      <Stack gap={16}></Stack>
+
       <Stack gap={16}>
+        <div>
+          <h2>Import Eventów z Pliku JSON</h2>
+          <ImportButton />
+        </div>
+
         <h2>Add New User</h2>
         <form onSubmit={handleSubmit}>
           <Stack gap={16}>

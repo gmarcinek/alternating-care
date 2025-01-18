@@ -4,13 +4,13 @@ export const navigationBarI18n = {
     alternating: 'Opieka',
     settings: 'Ustawienia',
     menu: 'Menu',
-    help: 'help',
+    help: 'Help',
   },
   en: {
     home: 'Home',
     alternating: 'Alternating',
     settings: 'Settings',
     menu: 'Menu',
-    help: 'help',
+    help: 'Help',
   },
 };

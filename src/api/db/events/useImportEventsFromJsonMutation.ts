@@ -1,10 +1,8 @@
-import { CalendarEvent, CalendarEventType } from '@api/db/types';
-import { CalendarDayType } from '@components/Calendar/Calendar.types';
+import { CalendarEvent } from '@api/db/types';
 import { useMutation } from '@tanstack/react-query';
-import crypto from 'crypto';
 import { useDbContext } from '../../../api/db/DbContext';
 
-export const useUpsertEventsMutation = (
+export const useImportEventsFromJsonMutation = (
   groupId: string, // Dodanie groupId jako parametru
   props: {
     onSuccess?: () => void;
@@ -15,7 +13,8 @@ export const useUpsertEventsMutation = (
   const { db } = useDbContext(); // Pobieramy instancję bazy danych z kontekstu
 
   const mutation = useMutation({
-    mutationFn: async (dates: CalendarDayType[]) => {
+    mutationFn: async (events: CalendarEvent[]) => {
+      // Zmiana na CalendarEvent[] żeby przyjmować gotowe wydarzenia
       if (!db) {
         throw new Error('Database not available');
       }
@@ -35,36 +34,21 @@ export const useUpsertEventsMutation = (
         const keyRange = IDBKeyRange.only(groupId);
         const allEvents = await index.getAll(keyRange);
 
-        const {
-          type = groupId as CalendarEventType,
-          name = '',
-          description = '',
-          style = undefined,
-        } = allEvents.length > 0 ? allEvents[0] : {};
-
-        // Przechodzimy przez każdy event i sprawdzamy, czy już istnieje
-        for (const date of dates) {
-          const existingEvents = allEvents.filter(
-            (item) => item.date === date.date
+        // Sprawdzamy, które wydarzenia z importu mają już swoje ID w bazie
+        for (const event of events) {
+          const existingEvent = allEvents.find(
+            (existing) => existing.id === event.id
           );
-          const existingEventsDates = existingEvents.map((item) => item.date);
-          for (const event of existingEvents) {
-            await store.delete(event.id);
-          }
 
-          if (!existingEventsDates.includes(date.date)) {
-            const newEvent: CalendarEvent = {
-              id: crypto.randomBytes(16).toString('hex'),
-              date: date.date,
-              groupId, // edytowana grupa
-              type,
-              name,
-              description,
-              creationTime: Date.now(),
-              issuer: 'Admin',
-              style,
-            };
-            await store.put(newEvent);
+          if (existingEvent) {
+            // Jeśli istnieje, aktualizujemy istniejące wydarzenie
+            await store.put({
+              ...existingEvent, // zachowujemy wszystkie istniejące dane
+              ...event, // nadpisujemy te, które przyszły w importowanych danych
+            });
+          } else {
+            // Jeśli nie istnieje, dodajemy nowe wydarzenie
+            await store.put(event);
           }
         }
 
