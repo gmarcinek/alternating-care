@@ -86,7 +86,6 @@ export const Dashboard = (props: DashboardProps) => {
   });
 
   const startingDate = dayjs(startDate).format(dateFormat);
-  console.log('startingDate', startingDate);
 
   return (
     <div className={dashboardClasses} id='dashboard'>

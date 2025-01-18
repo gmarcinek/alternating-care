@@ -163,9 +163,10 @@ export const useSelection = (props: UseSelectionProps) => {
     [defaultBehavior]
   );
 
-  const handlePointerDown = useCallback<OnDayPointerHandler>((day, event) => {
-    console.log('Pointer down');
-  }, []);
+  const handlePointerDown = useCallback<OnDayPointerHandler>(
+    (day, event) => {},
+    []
+  );
 
   const onPointerHandlers: CalendarPointerHandlers = {
     onPointerUp: handlePointerUp,

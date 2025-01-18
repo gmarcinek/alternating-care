@@ -21,7 +21,6 @@ export const useExportEvents = () => {
       }
 
       const events: CalendarEvent[] = mutation.data || [];
-      console.log(mutation);
 
       if (events.length === 0) {
         alert('Brak wydarzeń do eksportu');
