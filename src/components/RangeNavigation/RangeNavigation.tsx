@@ -34,7 +34,7 @@ export const RangeNavigation = (props: RangeNavigationProps) => {
     alignItems,
     contentAlignment,
     className,
-    buttonSize = isMax768 ? 48 : 24,
+    buttonSize = isMax768 ? 32 : 24,
     fastGranulation = 'year',
     slowGranulation = 'month',
     count = 1,
@@ -127,6 +127,7 @@ export const RangeNavigation = (props: RangeNavigationProps) => {
       itemsAlignment={alignItems ?? 'center'}
       contentAlignment={contentAlignment ?? 'center'}
       className={className}
+      gap={isMobile ? 0 : 16}
     >
       {!isMobile && (
         <MdKeyboardDoubleArrowLeft
