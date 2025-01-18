@@ -1,4 +1,7 @@
+import { Stack } from '@components/Stack/Stack';
+import { Button } from '@nextui-org/react';
 import React, { useRef } from 'react';
+import { GrUploadOption } from 'react-icons/gr';
 import { useImportEvents } from './useImportEvents';
 
 const ImportButton = () => {
@@ -13,18 +16,23 @@ const ImportButton = () => {
   };
 
   return (
-    <div>
-      <input
-        ref={fileInputRef}
-        type='file'
-        accept='.json'
-        onChange={handleFileSelect}
-        style={{ display: 'none' }}
-      />
-      <button onClick={() => fileInputRef.current?.click()}>
-        Wybierz plik do importu
-      </button>
-    </div>
+    <Stack gap={16}>
+      <div>
+        <input
+          ref={fileInputRef}
+          type='file'
+          accept='.json'
+          onChange={handleFileSelect}
+          style={{ display: 'none' }}
+        />
+      </div>
+      <div>
+        <Button onClick={() => fileInputRef.current?.click()}>
+          Wybierz plik do importu
+          <GrUploadOption size={24} />
+        </Button>
+      </div>
+    </Stack>
   );
 };
 
