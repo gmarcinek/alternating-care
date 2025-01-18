@@ -26,29 +26,6 @@
   }
 }
 
-@media (min-width: 626px) {
-  .dashboard {
-    grid-template-columns: 50% auto;
-    grid-template-rows: auto 1fr;
-    transition: grid-template-columns 0.5s;
-
-    &.isPlanVisible {
-      grid-template-columns: 50% auto;
-    }
-
-    .calendarContainer {
-      grid-column: span 1;
-    }
-
-    .formContainer {
-      display: block;
-      grid-column: span 1; /* Ta sekcja zajmuje 2 kolumny */
-      overflow-y: scroll;
-      padding: 1rem;
-    }
-  }
-}
-
 @media (min-width: 768px) {
   .dashboard {
     grid-template-columns: 50% auto;

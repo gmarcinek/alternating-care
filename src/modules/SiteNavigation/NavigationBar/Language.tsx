@@ -14,9 +14,11 @@ export function Language() {
   const { setLanguage, language } = useAppContext();
 
   return (
-    <Dropdown size='sm'>
+    <Dropdown size='lg'>
       <DropdownTrigger>
-        <Button variant='bordered'>{language.toUpperCase()}</Button>
+        <Button variant='bordered' size='sm'>
+          {language.toUpperCase()}
+        </Button>
       </DropdownTrigger>
       <DropdownMenu>
         {Object.values(SupportedLanguages).map((key) => {

@@ -15,7 +15,7 @@ export const useRowSize = (props: UseRowSizeProps) => {
 
   const automaticRowSize = useMemo<RowSizeType>(() => {
     if (isPlanVisible && is1920) {
-      return 21;
+      return 14;
     }
     if (isPlanVisible && is1671) {
       return 14;

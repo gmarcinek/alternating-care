@@ -65,7 +65,7 @@ export function Calendar(props: CalendarProps) {
     displayStrategy === 'separateMonths' && rowSize === 7;
   const [setRef, size] = useElementSize();
   const gap = useCalendarGap(rowSize, size.width);
-
+  console.log('rowSize', rowSize);
   const calendarDates =
     endDate !== undefined
       ? getDaysBetweenDates(startDate, endDate)
@@ -75,8 +75,7 @@ export function Calendar(props: CalendarProps) {
         });
 
   const { weeks, months } = useMemo(() => {
-    const weeks =
-      rowSize === 30 ? [calendarDates] : splitEvenly(calendarDates, rowSize);
+    const weeks = splitEvenly(calendarDates, rowSize);
     const months = segregateDatesMonthly(calendarDates, rowSize);
 
     return {

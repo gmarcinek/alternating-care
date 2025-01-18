@@ -51,7 +51,7 @@ export function CalendarWeek(props: CallendarWeekProps) {
             <CalendarDay
               day={day}
               key={`day-${day.date}-${weekDayIndex}`}
-              className={style.item}
+              className={isPlanVisible ? style.itemPlan : style.item}
               dayEvents={evensByDate[day.date]}
             />
           );

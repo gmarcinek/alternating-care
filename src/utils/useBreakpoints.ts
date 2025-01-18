@@ -48,6 +48,14 @@ export interface UseBreakpoints {
   is1671: boolean;
   is1920: boolean;
   is2560: boolean;
+  isMax768: boolean;
+  isMax1024: boolean;
+  isMax1280: boolean;
+  isMax1360: boolean;
+  isMax1440: boolean;
+  isMax1671: boolean;
+  isMax1920: boolean;
+  isMax2560: boolean;
 }
 export const useBreakpoints = (): UseBreakpoints => {
   // Używamy useMediaQuery do monitorowania punktów przerwania
@@ -69,6 +77,15 @@ export const useBreakpoints = (): UseBreakpoints => {
   const is1920 = useMediaQuery({ query: '(min-width: 1920px)' });
   const is2560 = useMediaQuery({ query: '(min-width: 2560px)' });
 
+  const isMax768 = useMediaQuery({ query: '(max-width: 767px)' });
+  const isMax1024 = useMediaQuery({ query: '(max-width: 1023px)' });
+  const isMax1280 = useMediaQuery({ query: '(max-width: 1279px)' });
+  const isMax1360 = useMediaQuery({ query: '(max-width: 1359px)' });
+  const isMax1440 = useMediaQuery({ query: '(max-width: 1439px)' });
+  const isMax1671 = useMediaQuery({ query: '(max-width: 1670px)' });
+  const isMax1920 = useMediaQuery({ query: '(max-width: 1919px)' });
+  const isMax2560 = useMediaQuery({ query: '(max-width: 2559px)' });
+
   const api = useMemo(() => {
     return {
       isMobile,
@@ -83,6 +100,14 @@ export const useBreakpoints = (): UseBreakpoints => {
       is1671,
       is1920,
       is2560,
+      isMax768,
+      isMax1024,
+      isMax1280,
+      isMax1360,
+      isMax1440,
+      isMax1671,
+      isMax1920,
+      isMax2560,
     };
   }, [
     isMobile,
@@ -97,6 +122,14 @@ export const useBreakpoints = (): UseBreakpoints => {
     is1671,
     is1920,
     is2560,
+    isMax768,
+    isMax1024,
+    isMax1280,
+    isMax1360,
+    isMax1440,
+    isMax1671,
+    isMax1920,
+    isMax2560,
   ]);
 
   return {

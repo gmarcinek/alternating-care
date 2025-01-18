@@ -4,6 +4,7 @@ import { useExportEvents } from '@api/db/export/useExportEvents';
 import { useAppContext } from '@app/AppContext';
 import { Stack } from '@components/Stack/Stack';
 import { Avatar } from '@nextui-org/react';
+import { useBreakpoints } from '@utils/useBreakpoints';
 import Link from 'next/link';
 import { PiExport } from 'react-icons/pi';
 import { AppUser } from '../../../api/db/types';
@@ -22,6 +23,7 @@ export const NavigationBar = (props: NavbarProps) => {
   const { exportEventsToFile } = useExportEvents();
   const { language } = useAppContext();
   const i18n = navigationBarI18n[language];
+  const { is768 } = useBreakpoints();
 
   return (
     <div
@@ -55,7 +57,7 @@ export const NavigationBar = (props: NavbarProps) => {
               contentAlignment='end'
               itemsAlignment='center'
             >
-              <PiExport size={24} onClick={exportEventsToFile} />
+              {is768 && <PiExport size={24} onClick={exportEventsToFile} />}
 
               <Language />
               {user.name && <Avatar name={user.name} />}

@@ -4,7 +4,8 @@ import { useAppContext } from '@app/AppContext';
 import { RangeNavigation } from '@components/RangeNavigation/RangeNavigation';
 import { Stack } from '@components/Stack/Stack';
 import { Switch } from '@nextui-org/react';
-import { useUpdateQueryParam } from '@utils/useUpdateQueryParam';
+import { useBreakpoints } from '@utils/useBreakpoints';
+import { useRowSize } from '../Dashboard/useRowSize';
 import { calendarSettingsSectionI18n } from './calendarSettingsSection.i18n';
 
 interface CalendarSettingsSectionProps {
@@ -29,9 +30,12 @@ export const CalendarSettingsSection = (
     isEventsVisible,
     setIsEventsVisible,
   } = props;
-  const updateQueryParam = useUpdateQueryParam();
   const { language } = useAppContext();
   const i18n = calendarSettingsSectionI18n[language];
+  const { isMax1280 } = useBreakpoints();
+  const { automaticRowSize } = useRowSize({
+    isPlanVisible,
+  });
 
   return (
     <Stack
@@ -67,7 +71,13 @@ export const CalendarSettingsSection = (
         )}
       </Stack>
 
-      <RangeNavigation />
+      <RangeNavigation
+        alignItems={'center'}
+        contentAlignment={isMax1280 ? 'between' : 'end'}
+        fastGranulation={isPlanVisible ? 'day' : 'year'}
+        slowGranulation={isPlanVisible ? 'day' : 'month'}
+        count={isPlanVisible ? automaticRowSize : 1}
+      />
     </Stack>
   );
 };

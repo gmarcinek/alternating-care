@@ -19,7 +19,6 @@ interface CalendarGridProps {
 }
 
 export const CalendarGrid = (props: CalendarGridProps) => {
-  const { startDate, endDate } = useAppSearchParams();
   const {
     data,
     isAlternatingVisible,
@@ -29,6 +28,7 @@ export const CalendarGrid = (props: CalendarGridProps) => {
     isEventsVisible,
   } = props;
 
+  const { startDate, endDate } = useAppSearchParams();
   const startingDate = dayjs(startDate).format(dateFormat);
   const gridLength = endDate
     ? Math.abs(dayjs(endDate).diff(startingDate, 'month')) + 1

@@ -23,8 +23,7 @@ interface DashboardProps {
 
 export const Dashboard = (props: DashboardProps) => {
   const { fetchEventsQuery } = props;
-  const { groupId } = useAppSearchParams();
-  const startDate = dayjs().format(dateFormat);
+  const { groupId, startDate, endDate } = useAppSearchParams();
   const {
     selection,
     handlers,
@@ -86,6 +85,9 @@ export const Dashboard = (props: DashboardProps) => {
     isPlanVisible,
   });
 
+  const startingDate = dayjs(startDate).format(dateFormat);
+  console.log('startingDate', startingDate);
+
   return (
     <div className={dashboardClasses} id='dashboard'>
       <div className={styles.calendarContainer}>
@@ -110,13 +112,13 @@ export const Dashboard = (props: DashboardProps) => {
           )}
           {isPlanVisible && (
             <Calendar
-              startDate={startDate}
+              startDate={startingDate}
               rowSize={automaticRowSize}
               isTodayVisible
               isPlanVisible={isPlanVisible}
               isAlternatingVisible={isAlternatingVisible}
               isEventsVisible={false}
-              displayStrategy={isPlanVisible ? 'continous' : 'separateMonths'}
+              displayStrategy={'continous'}
               events={sortedEvents}
               {...handlers}
               selection={Array.from(selection)}
