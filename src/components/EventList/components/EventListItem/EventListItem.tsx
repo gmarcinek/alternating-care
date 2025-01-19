@@ -22,7 +22,6 @@ interface EventListItemProps extends PropsWithChildren {
 
 export default function EventListItem(props: EventListItemProps) {
   const {
-    children,
     sideEndContent,
     event,
     paragraphClassName,

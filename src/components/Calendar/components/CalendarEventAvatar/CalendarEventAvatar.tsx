@@ -5,13 +5,9 @@ import { Avatar } from '@mui/material';
 import { getTextColor } from '@utils/color';
 import { PropsWithChildren } from 'react';
 import { BiTrip } from 'react-icons/bi';
+import { FaCampground } from 'react-icons/fa';
 import { IoMdCalendar } from 'react-icons/io';
-import {
-  MdCake,
-  MdLocalHospital,
-  MdSchool,
-  MdShoppingCart,
-} from 'react-icons/md';
+import { MdCake, MdLocalHospital, MdSchool } from 'react-icons/md';
 interface CalendarEventAvatarProps extends PropsWithChildren {
   event?: CalendarEvent;
   className?: string;
@@ -61,8 +57,8 @@ export default function CalendarEventAvatar(props: CalendarEventAvatarProps) {
           size={iconSize}
         />
       )}
-      {event.type === CalendarEventType.Shopping && (
-        <MdShoppingCart
+      {event.type === CalendarEventType.Camp && (
+        <FaCampground
           color={getTextColor(event.style?.background)}
           size={iconSize}
         />

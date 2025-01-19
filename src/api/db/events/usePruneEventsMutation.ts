@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { useDbContext } from '../DbContext';
 
-export const useDeleteEventsMutation = (
+export const usePruneEventsMutation = (
   props: {
     onSuccess?: () => void;
     onError?: (error: unknown) => void;
@@ -11,7 +11,7 @@ export const useDeleteEventsMutation = (
   const { db } = useDbContext(); // Pobieramy instancję bazy danych z kontekstu
 
   const mutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (eventIds: string[]) => {
       if (!db) {
         throw new Error('Database not available');
       }
@@ -20,7 +20,9 @@ export const useDeleteEventsMutation = (
         // Tworzymy transakcję do zapisu w obiekcie store 'events'
         const transaction = db.transaction('events', 'readwrite');
         const store = transaction.objectStore('events');
-        store.clear();
+
+        // Usuwamy wszystkie eventy w ramach jednej transakcji
+        eventIds.forEach((eventId) => store.delete(eventId));
 
         await transaction.done;
       } catch (error) {

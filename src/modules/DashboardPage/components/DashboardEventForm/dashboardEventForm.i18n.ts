@@ -19,6 +19,7 @@ export const dashboardEventFormI18n = {
     MEDICAL: 'Medyczne',
     SCHOOL: 'Szkoła',
     SHOPPING: 'Zakupy',
+    CAMP: 'Kolonie',
   },
   en: {
     eventName: 'Event Name',
@@ -40,5 +41,6 @@ export const dashboardEventFormI18n = {
     MEDICAL: 'Medical',
     SCHOOL: 'School',
     SHOPPING: 'Shopping',
+    CAMP: 'Camp',
   },
 };

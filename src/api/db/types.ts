@@ -11,7 +11,7 @@ export enum CalendarEventType {
   Birthday = 'BIRTHDAY',
   Medical = 'MEDICAL',
   School = 'SCHOOL',
-  Shopping = 'SHOPPING',
+  Camp = 'CAMP',
 }
 
 export interface CalendarEvent {

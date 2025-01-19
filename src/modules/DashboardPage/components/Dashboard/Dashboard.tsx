@@ -1,6 +1,6 @@
 'use client';
 
-import { CalendarEvent } from '@api/db/types';
+import { CalendarEvent, CalendarEventType } from '@api/db/types';
 import { Calendar } from '@components/Calendar/Calendar';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { UseQueryResult } from '@tanstack/react-query';
@@ -8,14 +8,19 @@ import { sortBy } from '@utils/array';
 import { useAppSearchParams } from '@utils/useAppSearchParams';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
+
 import { useCallback, useMemo, useState } from 'react';
 import { useLongPress } from 'use-long-press';
 import { CalendarFormSection } from '../CalendarFormSection/CalendarFormSection';
 import { CalendarGrid } from '../CalendarGrid/CalendarGrid';
 import { CalendarSettingsSection } from '../CalendarSettingsSection/CalendarSettingsSection';
-import styles from './Dashboard.module.scss';
 import { useRowSize } from './useRowSize';
 import { useSelection } from './useSelection';
+
+import { Stack } from '@components/Stack/Stack';
+import { useBreakpoints } from '@utils/useBreakpoints';
+import { useEventCounter } from '@utils/useEventCounter';
+import styles from './Dashboard.module.scss';
 
 interface DashboardProps {
   fetchEventsQuery: UseQueryResult<CalendarEvent[], Error>;
@@ -23,6 +28,7 @@ interface DashboardProps {
 
 export const Dashboard = (props: DashboardProps) => {
   const { fetchEventsQuery } = props;
+
   const { groupId, startDate, endDate } = useAppSearchParams();
   const {
     selection,
@@ -34,10 +40,13 @@ export const Dashboard = (props: DashboardProps) => {
   } = useSelection({
     isMultiSelectionAvailable: true,
   });
-
+  const { is1280 } = useBreakpoints();
   const [isPlanVisible, setIsPlanVisible] = useState(false);
   const [isAlternatingVisible, setIsAlternatingVisible] = useState(true);
   const [isEventsVisible, setIsEventsVisible] = useState(true);
+  const { countEvents } = useEventCounter({
+    events: fetchEventsQuery.data,
+  });
 
   const dashboardClasses = classNames(styles.dashboard, {
     [styles.isPlanVisible]: isPlanVisible,
@@ -87,6 +96,18 @@ export const Dashboard = (props: DashboardProps) => {
 
   const startingDate = dayjs(startDate).format(dateFormat);
 
+  const alternatingCount = countEvents({
+    endDate,
+    startDate,
+    eventType: CalendarEventType.Alternating,
+  });
+
+  const campCount = countEvents({
+    endDate,
+    startDate,
+    eventType: CalendarEventType.Camp,
+  });
+
   return (
     <div className={dashboardClasses} id='dashboard'>
       <div className={styles.calendarContainer}>
@@ -98,6 +119,32 @@ export const Dashboard = (props: DashboardProps) => {
           isEventsVisible={isEventsVisible}
           setIsEventsVisible={setIsEventsVisible}
         />
+
+        {is1280 && (
+          <Stack direction='horizontal' className='pb-4'>
+            <h4>Widoczne dni {alternatingCount.days}</h4>-
+            <h4>
+              Opieka Moja {alternatingCount.days - campCount.eventCount}/
+              <strong>
+                <small>{alternatingCount.eventCount} dni</small>
+              </strong>
+            </h4>
+            -
+            <h4>
+              Drugi rodzic {alternatingCount.days - campCount.eventCount}/
+              <strong>
+                <small>
+                  {alternatingCount.days -
+                    campCount.eventCount -
+                    alternatingCount.eventCount}{' '}
+                  dni
+                </small>
+              </strong>
+            </h4>
+            -<h4>Kolonie {campCount.eventCount} dni</h4>
+          </Stack>
+        )}
+
         <div {...bind()}>
           {!isPlanVisible && (
             <CalendarGrid
@@ -108,21 +155,8 @@ export const Dashboard = (props: DashboardProps) => {
               isEventsVisible={isEventsVisible}
               selection={selection}
             />
-            // <Calendar
-            //   startDate={startingDate}
-            //   endDate={endDate}
-            //   rowSize={automaticRowSize}
-            //   isTodayVisible
-            //   isPlanVisible={isPlanVisible}
-            //   isAlternatingVisible={isAlternatingVisible}
-            //   displayStrategy={'separateMonths'}
-            //   events={sortedEvents}
-            //   {...handlers}
-            //   isMultiSelectionMode={isMultiSelectionMode}
-            //   isEventsVisible={isEventsVisible}
-            //   selection={Array.from(selection)}
-            // />
           )}
+
           {isPlanVisible && (
             <Calendar
               startDate={startingDate}
