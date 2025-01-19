@@ -1,4 +1,6 @@
+import { useAppContext } from '@app/AppContext';
 import Link from 'next/link';
+import { siteNavigationI18n } from '../siteNavigation.i18n';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -7,14 +9,16 @@ interface SidebarProps {
 
 export const Sidebar = (props: SidebarProps) => {
   const { isOpen, toggle } = props;
-
+  const { language } = useAppContext();
+  const i18n = siteNavigationI18n[language];
   return (
     <>
       <div
-        className='sidebar-container fixed left-0 z-40 grid h-full w-full justify-center overflow-hidden bg-white pt-[120px]'
+        className='sidebar-container fixed left-0 z-50 grid h-full w-full justify-center overflow-hidden bg-white pt-[120px]'
         style={{
           opacity: `${isOpen ? '1' : '0'}`,
           top: ` ${isOpen ? '0' : '-100%'}`,
+          zIndex: 100,
         }}
       >
         <button className='absolute right-0 p-5' onClick={toggle}>
@@ -35,23 +39,23 @@ export const Sidebar = (props: SidebarProps) => {
         <ul className='sidebar-nav text-center text-xl leading-relaxed'>
           <li>
             <Link href='/' onClick={toggle}>
-              <h3>Start</h3>
+              <h3>{i18n.home}</h3>
             </Link>
           </li>
 
           <li>
             <Link href='/alternating' onClick={toggle}>
-              <h3>Opieka</h3>
+              <h3>{i18n.alternating}</h3>
             </Link>
           </li>
           <li>
             <Link href='/settings' onClick={toggle}>
-              <h3>Ustawienia</h3>
+              <h3>{i18n.settings}</h3>
             </Link>
           </li>
           <li>
             <Link href='/help' onClick={toggle}>
-              <h3>Help</h3>
+              <h3>{i18n.help}</h3>
             </Link>
           </li>
         </ul>

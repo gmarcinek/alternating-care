@@ -1,4 +1,4 @@
-export const navigationBarI18n = {
+export const siteNavigationI18n = {
   pl: {
     home: 'Start',
     alternating: 'Opieka',

@@ -108,6 +108,20 @@ export const Dashboard = (props: DashboardProps) => {
               isEventsVisible={isEventsVisible}
               selection={selection}
             />
+            // <Calendar
+            //   startDate={startingDate}
+            //   endDate={endDate}
+            //   rowSize={automaticRowSize}
+            //   isTodayVisible
+            //   isPlanVisible={isPlanVisible}
+            //   isAlternatingVisible={isAlternatingVisible}
+            //   displayStrategy={'separateMonths'}
+            //   events={sortedEvents}
+            //   {...handlers}
+            //   isMultiSelectionMode={isMultiSelectionMode}
+            //   isEventsVisible={isEventsVisible}
+            //   selection={Array.from(selection)}
+            // />
           )}
           {isPlanVisible && (
             <Calendar

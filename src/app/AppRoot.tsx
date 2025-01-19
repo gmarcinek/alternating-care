@@ -47,9 +47,14 @@ export default function AppRoot({ children }: PropsWithChildren) {
 
   if (!isDbReady) {
     return (
-      <div className='flex'>
+      <div
+        className='flex'
+        style={{
+          height: '100vh',
+        }}
+      >
         <Stack contentAlignment='center'>
-          <Spinner color='danger' />
+          <Spinner color='danger' size='md' />
         </Stack>
       </div>
     );

@@ -8,10 +8,10 @@ import { useBreakpoints } from '@utils/useBreakpoints';
 import Link from 'next/link';
 import { PiExport } from 'react-icons/pi';
 import { AppUser } from '../../../api/db/types';
+import { siteNavigationI18n } from '../siteNavigation.i18n';
 import { Language } from './Language';
 import { Logo } from './Logo';
 import { MenuButton } from './MenuButton';
-import { navigationBarI18n } from './navigationBar.i18n';
 
 interface NavbarProps {
   toggle: () => void;
@@ -22,7 +22,7 @@ export const NavigationBar = (props: NavbarProps) => {
   const { toggle, user } = props;
   const { exportEventsToFile } = useExportEvents();
   const { language } = useAppContext();
-  const i18n = navigationBarI18n[language];
+  const i18n = siteNavigationI18n[language];
   const { is768 } = useBreakpoints();
 
   return (

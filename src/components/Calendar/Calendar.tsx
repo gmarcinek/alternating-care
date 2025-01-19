@@ -15,8 +15,9 @@ import {
 } from './Calendar.context';
 import { getDaysBetweenDates, segregateDatesMonthly } from './Calendar.helpers';
 import { DisplayStrategy } from './Calendar.types';
-import { CalendarMonths } from './components/CalendarMonths/CalendarMonths';
 import { CalendarUngruped } from './components/CalendarUngruped/CalendarUngruped';
+
+import { CalendarMonths } from './components/CalendarMonths/CalendarMonths';
 import { useCalendarDates } from './hooks/useCalendarDates';
 import { useCalendarGap } from './hooks/useCalendarGap';
 
@@ -120,11 +121,7 @@ export function Calendar(props: CalendarProps) {
 
   return (
     <CalenderContext.Provider value={contextData}>
-      <div
-        ref={setRef}
-        style={{ display: 'flex', flex: 1 }}
-        className={className}
-      >
+      <div ref={setRef} className={className}>
         {isSeparateMonthsMode ? (
           <CalendarMonths gap={gap} months={months} />
         ) : (
