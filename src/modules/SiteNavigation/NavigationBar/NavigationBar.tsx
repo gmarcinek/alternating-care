@@ -43,6 +43,10 @@ export const NavigationBar = (props: NavbarProps) => {
                 <span>{i18n.alternating}</span>
               </Link>
 
+              <Link href='/analytics'>
+                <span>{i18n.analytics}</span>
+              </Link>
+
               <Link href='/settings'>
                 <span>{i18n.settings}</span>
               </Link>
