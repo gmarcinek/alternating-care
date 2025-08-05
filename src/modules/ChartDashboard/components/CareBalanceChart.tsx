@@ -252,8 +252,7 @@ export const CareBalanceChart = (props: CareBalanceChartProps) => {
 
       <div style={{ fontSize: '12px', color: '#666' }}>
         <p>
-          Wykres bilansowy: wartości dodatnie = przewaga Rodzica 2, ujemne =
-          przewaga Rodzica 1. Suwak pozwala dostosować skalę od minimum (
+          Wykres bilansowy: Suwak pozwala dostosować skalę od minimum (
           {maxAbsBalance}) do maksimum ({YEAR_HALF_DAYS}).
         </p>
       </div>
