@@ -8,6 +8,7 @@ import { Spinner } from '@nextui-org/react';
 import { AlternatingGradient } from './components/AlternatingGradient';
 import { AnalyticsWidget } from './components/AnalyticsWidget';
 import { CareBalanceChart } from './components/CareBalanceChart';
+import { CareBalanceChartWeighted } from './components/CareBalanceChartWeighted';
 import { CumulativeCareChart } from './components/CumulativeCareChart';
 
 export const ChartDashboard = () => {
@@ -34,6 +35,8 @@ export const ChartDashboard = () => {
       <Stack gap={32}>
         <div></div>
         <CareBalanceChart events={query.data} />
+        <div></div>
+        <CareBalanceChartWeighted events={query.data} />
         <div></div>
         <CumulativeCareChart events={query.data} />
         <div></div>

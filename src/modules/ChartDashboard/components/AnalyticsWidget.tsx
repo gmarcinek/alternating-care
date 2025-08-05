@@ -6,7 +6,7 @@ const WIDGET_CONFIG = {
     alternating: '#2196F3', // niebieska
     trip: '#FF9800', // pomarańczowa
     combined: '#9C27B0', // fioletowa (gdy oba)
-    empty: '#f5f5f5', // szara (brak eventów)
+    empty: '#ffffffff', // szara (brak eventów)
   },
   pieColors: [
     '#2196F3', // ALTERNATING - niebieska
@@ -201,8 +201,8 @@ export const AnalyticsWidget = (props: AnalyticsWidgetProps) => {
                     backgroundColor: day.color,
                     gridColumn: Math.floor(day.dayOfYear / 7) + 1,
                     gridRow: day.weekDay + 1,
-                    borderRadius: '2px',
-                    border: day.intensity > 0 ? '1px solid #ddd' : 'none',
+                    borderRadius: '1px',
+                    border: '1px solid #ccc',
                   }}
                   title={`${day.date}: ${day.hasAlternating ? 'Opieka ' : ''}${day.hasTrip ? 'Wyjazd' : ''}`}
                 />
