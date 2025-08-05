@@ -1,6 +1,7 @@
 'use client';
 
 import { CalendarEvent } from '@api/db/types';
+import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { Stack } from '@components/Stack/Stack';
 import { Button, ButtonGroup, Chip, Slider } from '@nextui-org/react';
 import dayjs from 'dayjs';
@@ -50,8 +51,8 @@ export const CareBalanceChart = (props: CareBalanceChartProps) => {
     const totalDays = lastDate.diff(firstDate, 'days') + 1;
 
     return {
-      start: firstDate.format('DD.MM.YYYY'),
-      end: lastDate.format('DD.MM.YYYY'),
+      start: firstDate.format(dateFormat),
+      end: lastDate.format(dateFormat),
       totalDays,
       totalWeeks: Math.ceil(totalDays / 7),
       totalMonths: Math.ceil(totalDays / 30.4),
@@ -134,29 +135,13 @@ export const CareBalanceChart = (props: CareBalanceChartProps) => {
 
   return (
     <Stack gap={16}>
-      {/* Przedział dat */}
-      {dateRange && (
-        <Stack direction='horizontal' contentAlignment='center' gap={8}>
-          <Chip size='sm' variant='flat'>
-            📅 {dateRange.start} - {dateRange.end}
-          </Chip>
-          <Chip size='sm' variant='flat'>
-            📊 {dateRange.totalDays} dni
-          </Chip>
-          <Chip size='sm' variant='flat'>
-            ⚖️ Bilans: {balanceResult.summary.currentBalance > 0 ? '+' : ''}
-            {balanceResult.summary.currentBalance}
-          </Chip>
-        </Stack>
-      )}
-
       <Stack
         direction='horizontal'
         contentAlignment='between'
         itemsAlignment='center'
       >
         <div>
-          <h3>Bilans Opieki (znormalizowany)</h3>
+          <h2>Bilans Opieki (znormalizowany)</h2>
           <small style={{ color: '#666' }}>
             Skala: -{scaleLimit} do +{scaleLimit} dni rocznie
           </small>
@@ -249,13 +234,20 @@ export const CareBalanceChart = (props: CareBalanceChartProps) => {
           </ComposedChart>
         </ResponsiveContainer>
       </div>
-
-      <div style={{ fontSize: '12px', color: '#666' }}>
-        <p>
-          Wykres bilansowy: Suwak pozwala dostosować skalę od minimum (
-          {maxAbsBalance}) do maksimum ({YEAR_HALF_DAYS}).
-        </p>
-      </div>
+      {dateRange && (
+        <Stack gap={8}>
+          <Chip size='sm' variant='flat'>
+            📅 {dateRange.start} - {dateRange.end}
+          </Chip>
+          <Chip size='sm' variant='flat'>
+            📊 {dateRange.totalDays} dni
+          </Chip>
+          <Chip size='sm' variant='flat'>
+            ⚖️ Bilans: {balanceResult.summary.currentBalance > 0 ? '+' : ''}
+            {balanceResult.summary.currentBalance}
+          </Chip>
+        </Stack>
+      )}
     </Stack>
   );
 };

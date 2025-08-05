@@ -16,16 +16,16 @@ export const BAR_COLORS = {
   parent2: '#fff',
   camp: '#ffeb3b',
 };
-export const BAR_HEIGHT_FACTOR = 0.7; // wysokość słupka względem wiersza
-export const MIN_ROW_HEIGHT = 200; // minimalna wysokość jednego wiersza (roku)
-export const BAR_LABEL_FONT = 16;
+export const BAR_HEIGHT_FACTOR = 48; // wysokość słupka względem wiersza
+export const MIN_ROW_HEIGHT = 120; // minimalna wysokość jednego wiersza (roku)
+export const BAR_LABEL_FONT = 24;
 export const MARGIN = { top: 36, right: 20, bottom: 40, left: 20 };
 export const BAR_PADDING = 0;
 export const MONTH_LABEL_FONT = 12;
 export const MONTH_LABEL_COLOR = '#888';
 export const AXIS_LINE_COLOR = '#acacacff';
-export const TODAY_LINE_COLOR = '#834b4bff';
-export const TODAY_TEXT_COLOR = '#ff4f4f';
+export const TODAY_LINE_COLOR = '#ff0000ff';
+export const TODAY_TEXT_COLOR = '#ff0000ff';
 
 interface AlternatingGradientProps {
   events: CalendarEvent[];
@@ -123,7 +123,7 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
         Math.floor(height / yearsData.length),
         MIN_ROW_HEIGHT
       );
-      const barHeight = rowHeight * BAR_HEIGHT_FACTOR;
+      const barHeight = rowHeight - BAR_HEIGHT_FACTOR;
       const barYOffset = 18; // Zostaw na label roku
       const g = svg
         .append('g')
@@ -131,8 +131,8 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
       yearsData.forEach((yearObj, i) => {
         // Label roku NAD barem
         g.append('text')
-          .attr('x', width / 2)
-          .attr('y', i * rowHeight)
+          .attr('x', 44)
+          .attr('y', i * rowHeight + 4)
           .attr('text-anchor', 'middle')
           .attr('font-size', BAR_LABEL_FONT)
           .attr('fill', '#444')
@@ -170,7 +170,7 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
         g.append('line')
           .attr('x1', x)
           .attr('x2', x)
-          .attr('y1', yearsData.length * rowHeight - MIN_ROW_HEIGHT + 20)
+          .attr('y1', 0)
           .attr('y2', yearsData.length * rowHeight)
           .attr('stroke', AXIS_LINE_COLOR)
           .attr('stroke-width', 1);
@@ -186,7 +186,7 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
           .attr('y1', todayYearIdx * rowHeight + barYOffset - 8)
           .attr('y2', todayYearIdx * rowHeight + barYOffset + barHeight + 8)
           .attr('stroke', TODAY_LINE_COLOR)
-          .attr('stroke-width', 2)
+          .attr('stroke-width', 3)
           .attr('stroke-dasharray', '3,3');
         g.append('text')
           .attr('x', todayX)
@@ -212,40 +212,7 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
   return (
     <Stack gap={16}>
       {/* Podsumowanie ogólne */}
-      <Stack direction='horizontal' contentAlignment='center' gap={8}>
-        <Chip size='sm' variant='flat'>
-          📅 Lata: {yearsData.map((y) => y.year).join(', ')}
-        </Chip>
-        <Chip size='sm' variant='flat'>
-          📊 Suma dni: {yearsData.reduce((a, y) => a + y.totalDays, 0)}
-        </Chip>
-        <Chip size='sm' variant='flat'>
-          ⚖️ Suma Bilans:{' '}
-          {yearsData.reduce(
-            (acc, y) => acc + (y.parent2Days - y.parent1Days),
-            0
-          ) > 0
-            ? '+'
-            : ''}
-          {yearsData.reduce(
-            (acc, y) => acc + (y.parent2Days - y.parent1Days),
-            0
-          )}
-        </Chip>
-        <Chip size='sm' variant='flat'>
-          🏕️ Kolonie (suma): {yearsData.reduce((a, y) => a + y.campDays, 0)}
-        </Chip>
-      </Stack>
-      {/* Podsumowanie per rok */}
-      <Stack direction='horizontal' contentAlignment='center' gap={12}>
-        {yearsData.map((y) => (
-          <Chip key={y.year} size='sm' variant='bordered'>
-            {y.year}: Bilans {y.parent2Days - y.parent1Days > 0 ? '+' : ''}
-            {y.parent2Days - y.parent1Days}, Rodzic1 {y.parent1Days}, Rodzic2{' '}
-            {y.parent2Days}, Kolonie {y.campDays}
-          </Chip>
-        ))}
-      </Stack>
+
       {/* Header */}
       <Stack
         direction='horizontal'
@@ -253,7 +220,7 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
         itemsAlignment='center'
       >
         <div>
-          <h3>Rozkład Opieki</h3>
+          <h2>Rozkład odbytej i zaplanowanej opieki</h2>
           <small style={{ color: '#666' }}>Wykres D3 z podziałem na lata</small>
         </div>
       </Stack>
@@ -310,6 +277,41 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
           ></div>
           <span>Kolonie</span>
         </div>
+      </Stack>
+
+      <Stack gap={8}>
+        <Chip size='sm' variant='flat'>
+          📅 Lata: {yearsData.map((y) => y.year).join(', ')}
+        </Chip>
+        <Chip size='sm' variant='flat'>
+          📊 Suma dni: {yearsData.reduce((a, y) => a + y.totalDays, 0)}
+        </Chip>
+        <Chip size='sm' variant='flat'>
+          ⚖️ Suma Bilans:{' '}
+          {yearsData.reduce(
+            (acc, y) => acc + (y.parent2Days - y.parent1Days),
+            0
+          ) > 0
+            ? '+'
+            : ''}
+          {yearsData.reduce(
+            (acc, y) => acc + (y.parent2Days - y.parent1Days),
+            0
+          )}
+        </Chip>
+        <Chip size='sm' variant='flat'>
+          🏕️ Kolonie (suma): {yearsData.reduce((a, y) => a + y.campDays, 0)}
+        </Chip>
+      </Stack>
+      {/* Podsumowanie per rok */}
+      <Stack gap={12}>
+        {yearsData.map((y) => (
+          <Chip key={y.year} size='sm' variant='bordered'>
+            {y.year}: Bilans {y.parent2Days - y.parent1Days > 0 ? '+' : ''}
+            {y.parent2Days - y.parent1Days}, Rodzic1 {y.parent1Days}, Rodzic2{' '}
+            {y.parent2Days}, Kolonie {y.campDays}
+          </Chip>
+        ))}
       </Stack>
     </Stack>
   );

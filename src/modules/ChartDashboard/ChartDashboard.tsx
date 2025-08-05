@@ -30,13 +30,14 @@ export const ChartDashboard = () => {
 
   return (
     <DashboardContainer>
-      <Stack>
+      <Stack gap={32}>
         <div></div>
         <CareBalanceChart events={query.data} />
         <div></div>
         <AlternatingGradient events={query.data} />
         <div></div>
         <CareBalanceChartD3 events={query.data} />
+        <div></div>
       </Stack>
     </DashboardContainer>
   );
