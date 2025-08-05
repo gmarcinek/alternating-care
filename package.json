@@ -24,6 +24,7 @@
     "@types/d3": "^7.4.3",
     "@types/react-color": "^3.0.12",
     "@types/react-date-range": "^1.4.9",
+    "@types/three": "^0.179.0",
     "classnames": "^2.5.1",
     "crypto": "^1.0.1",
     "d3": "^7.9.0",
@@ -41,6 +42,8 @@
     "react-toastify": "^10.0.5",
     "recharts": "^3.1.2",
     "sass": "^1.77.8",
+    "three": "^0.179.1",
+    "three-orbitcontrols": "^2.110.2",
     "typescript-eslint": "^8.1.0",
     "use-long-press": "^3.2.0",
     "uuid": "^10.0.0"

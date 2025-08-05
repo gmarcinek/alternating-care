@@ -22,6 +22,7 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
   const balanceData = balanceResult.data || [];
 
   const YEAR_HALF_DAYS = 182;
+
   const maxAbsBalance = useMemo(() => {
     if (balanceData.length === 0) return YEAR_HALF_DAYS;
     return Math.max(...balanceData.map((point) => Math.abs(point.balance)), 10);
@@ -44,44 +45,54 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
     };
   }, [balanceData]);
 
-  const normalizedData = balanceData.map((point) => {
-    const daysSinceStart =
-      dayjs(point.date).diff(dayjs(balanceData[0]?.date), 'days') + 1;
-    const totalDaysInDataset =
-      dayjs(balanceData[balanceData.length - 1]?.date).diff(
-        dayjs(balanceData[0]?.date),
-        'days'
-      ) + 1;
+  const normalizedData = useMemo(
+    () =>
+      balanceData.map((point) => {
+        const daysSinceStart =
+          dayjs(point.date).diff(dayjs(balanceData[0]?.date), 'days') + 1;
+        const totalDaysInDataset =
+          dayjs(balanceData[balanceData.length - 1]?.date).diff(
+            dayjs(balanceData[0]?.date),
+            'days'
+          ) + 1;
 
-    const MIN_DAYS_FOR_PROJECTION = 14;
-    let normalizedBalance: number;
+        const MIN_DAYS_FOR_PROJECTION = 14;
+        let normalizedBalance: number;
 
-    if (daysSinceStart < MIN_DAYS_FOR_PROJECTION) {
-      normalizedBalance = point.balance;
-    } else if (totalDaysInDataset < 365) {
-      const yearProgress = Math.min(daysSinceStart / 365, 1);
-      const projectedBalance = point.balance / yearProgress;
-      const confidenceFactor = Math.min(daysSinceStart / 90, 1);
-      normalizedBalance =
-        point.balance + (projectedBalance - point.balance) * confidenceFactor;
-    } else {
-      const balancePerYear = point.balance / (totalDaysInDataset / 365);
-      normalizedBalance = balancePerYear;
-    }
+        if (daysSinceStart < MIN_DAYS_FOR_PROJECTION) {
+          normalizedBalance = point.balance;
+        } else if (totalDaysInDataset < 365) {
+          const yearProgress = Math.min(daysSinceStart / 365, 1);
+          const projectedBalance = point.balance / yearProgress;
+          const confidenceFactor = Math.min(daysSinceStart / 90, 1);
+          normalizedBalance =
+            point.balance +
+            (projectedBalance - point.balance) * confidenceFactor;
+        } else {
+          const balancePerYear = point.balance / (totalDaysInDataset / 365);
+          normalizedBalance = balancePerYear;
+        }
 
-    normalizedBalance = Math.max(
-      -YEAR_HALF_DAYS,
-      Math.min(YEAR_HALF_DAYS, normalizedBalance)
-    );
+        normalizedBalance = Math.max(
+          -YEAR_HALF_DAYS,
+          Math.min(YEAR_HALF_DAYS, normalizedBalance)
+        );
 
-    return {
-      ...point,
-      normalizedBalance,
-      date: new Date(point.date),
-    };
-  });
+        return {
+          ...point,
+          normalizedBalance,
+          date: new Date(point.date),
+        };
+      }),
+    [balanceData]
+  );
 
-  const svgRef = useRef(null);
+  const uniqueClipId = useMemo(
+    () => `clip-path-d3-${Math.random().toString(36).substr(2, 9)}`,
+    []
+  );
+
+  const svgRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   useEffect(() => {
@@ -101,7 +112,7 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
         resizeObserver.disconnect();
       };
     }
-  }, [svgRef]);
+  }, []);
 
   useEffect(() => {
     if (
@@ -111,11 +122,11 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
     )
       return;
 
+    d3.select(svgRef.current).select('svg').remove();
+
     const margin = { top: 20, right: 30, bottom: 40, left: 50 };
     const width = dimensions.width - margin.left - margin.right;
     const height = dimensions.height - margin.top - margin.bottom;
-
-    d3.select(svgRef.current).select('svg').remove();
 
     const svg = d3
       .select(svgRef.current)
@@ -160,7 +171,6 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
         d3.axisLeft(y).tickFormat((d) => `${Number(d) > 0 ? '+' : ''}${d}`)
       );
 
-    // Linia referencyjna (0)
     svg
       .append('line')
       .attr('x1', 0)
@@ -170,37 +180,35 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
       .attr('stroke', '#666')
       .attr('stroke-width', 2);
 
-    // Generator obszaru
+    svg
+      .append('defs')
+      .append('clipPath')
+      .attr('id', uniqueClipId)
+      .append('rect')
+      .attr('width', width)
+      .attr('height', height);
+
+    // KLUCZOWA ZMIANA – użyj .curve
     const area = d3
       .area<{ date: Date; normalizedBalance: number }>()
       .x((d) => x(d.date))
       .y0(y(0))
-      .y1((d) => y(d.normalizedBalance));
+      .y1((d) => y(d.normalizedBalance))
+      .curve(d3.curveCatmullRom.alpha(0.5)); // płynna, miękka linia
 
-    // Rysowanie obszaru
     svg
       .append('path')
       .datum(normalizedData)
       .attr('fill', 'rgba(255, 79, 79, 0.4)')
       .attr('d', area)
-      .attr('clip-path', 'url(#clip-path-d3)');
+      .attr('clip-path', `url(#${uniqueClipId})`);
 
-    // Wycinek dla kolorowania obszaru
-    svg
-      .append('defs')
-      .append('clipPath')
-      .attr('id', 'clip-path-d3')
-      .append('rect')
-      .attr('width', width)
-      .attr('height', height);
-
-    // Generator linii
     const line = d3
       .line<{ date: Date; normalizedBalance: number }>()
       .x((d) => x(d.date))
-      .y((d) => y(d.normalizedBalance));
+      .y((d) => y(d.normalizedBalance))
+      .curve(d3.curveCatmullRom.alpha(0.5)); // płynna, miękka linia
 
-    // Rysowanie linii
     svg
       .append('path')
       .datum(normalizedData)
@@ -208,7 +216,7 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
       .attr('stroke', '#ff4f4f')
       .attr('stroke-width', 3)
       .attr('d', line);
-  }, [normalizedData, scaleLimit, granularity, dimensions]);
+  }, [normalizedData, scaleLimit, granularity, dimensions, uniqueClipId]);
 
   if (balanceData.length === 0) {
     return (
@@ -220,7 +228,6 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
 
   return (
     <Stack gap={16}>
-      {/* Reszta UI z ButtonGroup, Slider, etc. pozostaje bez zmian */}
       {dateRange && (
         <Stack direction='horizontal' contentAlignment='center' gap={8}>
           <Chip size='sm' variant='flat'>
@@ -235,7 +242,6 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
           </Chip>
         </Stack>
       )}
-
       <Stack
         direction='horizontal'
         contentAlignment='between'
@@ -247,7 +253,6 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
             Skala: -{scaleLimit} do +{scaleLimit} dni rocznie
           </small>
         </div>
-
         <ButtonGroup size='sm' variant='bordered'>
           <Button
             color={granularity === 'day' ? 'primary' : 'default'}
@@ -269,7 +274,6 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
           </Button>
         </ButtonGroup>
       </Stack>
-
       <Stack gap={8}>
         <div style={{ fontSize: '14px', fontWeight: '500' }}>
           Skala wykresu: ±{scaleLimit} dni
@@ -277,7 +281,7 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
         <Slider
           size='sm'
           step={10}
-          minValue={Math.max(maxAbsBalance, 10)}
+          minValue={10}
           maxValue={YEAR_HALF_DAYS}
           value={scaleLimit}
           onChange={(value) =>
@@ -290,15 +294,12 @@ export const CareBalanceChartD3 = (props: CareBalanceChartProps) => {
           ]}
         />
       </Stack>
-
-      {/* Kontener wykresu z ref */}
       <div ref={svgRef} style={{ width: '100%', height: '400px' }} />
-
       <div style={{ fontSize: '12px', color: '#666' }}>
         <p>
           Wykres bilansowy: wartości dodatnie = przewaga Rodzica 2, ujemne =
-          przewaga Rodzica 1. Suwak pozwala dostosować skalę od minimum (
-          {maxAbsBalance}) do maksimum ({YEAR_HALF_DAYS}).
+          przewaga Rodzica 1. Suwak pozwala dostosować skalę od minimum (10) do
+          maksimum ({YEAR_HALF_DAYS}).
         </p>
       </div>
     </Stack>
