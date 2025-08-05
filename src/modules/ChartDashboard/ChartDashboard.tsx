@@ -5,7 +5,9 @@ import DashboardContainer from '@components/DashboardContainer/DashboardContaine
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 import { Stack } from '@components/Stack/Stack';
 import { Spinner } from '@nextui-org/react';
+import { AlternatingGradient } from './components/AlternatingGradient';
 import { CareBalanceChart } from './components/CareBalanceChart';
+import { CareBalanceChartD3 } from './components/CareBalanceChartD3';
 
 export const ChartDashboard = () => {
   const { query } = useGetAllEventsQuery();
@@ -32,6 +34,9 @@ export const ChartDashboard = () => {
         <div></div>
         <CareBalanceChart events={query.data} />
         <div></div>
+        <AlternatingGradient events={query.data} />
+        <div></div>
+        <CareBalanceChartD3 events={query.data} />
       </Stack>
     </DashboardContainer>
   );
