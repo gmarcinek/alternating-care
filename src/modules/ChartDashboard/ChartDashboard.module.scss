@@ -15,6 +15,11 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
+  .chartIteDual {
+    @extend .chartItem;
+    min-height: 300px;
+  }
+
   .chartItemWide {
     @extend .chartItem;
     min-height: 300px;
@@ -26,6 +31,10 @@
   .chartGrid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+
+    .chartIteDual {
+      grid-column: span 2;
+    }
 
     .chartItemWide {
       grid-column: span 2;
@@ -39,6 +48,10 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 
+    .chartIteDual {
+      grid-column: span 2;
+    }
+
     .chartItemWide {
       grid-column: span 3;
     }
@@ -50,6 +63,10 @@
   .chartGrid {
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
+
+    .chartIteDual {
+      grid-column: span 2;
+    }
 
     .chartItemWide {
       grid-column: span 3;

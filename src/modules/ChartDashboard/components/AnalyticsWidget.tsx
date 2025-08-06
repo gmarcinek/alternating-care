@@ -4,19 +4,22 @@ import { CalendarEvent, CalendarEventType } from '@api/db/types';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { Stack } from '@components/Stack/Stack';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 import { Key, useMemo } from 'react';
 import { BsSearch } from 'react-icons/bs';
 
 interface AnalyticsWidgetProps {
   events: CalendarEvent[];
+  eventType: CalendarEventType[];
+  label: string;
 }
 
 export const AnalyticsWidget = (props: AnalyticsWidgetProps) => {
-  const { events } = props;
+  const { events, eventType, label } = props;
 
   const tripGroups = useMemo(() => {
     // Filtruj tylko eventy typu TRIP
-    const tripEvents = events.filter((e) => e.type === CalendarEventType.Trip);
+    const tripEvents = events.filter((e) => eventType.includes(e.type));
 
     if (tripEvents.length === 0) return [];
 
@@ -59,7 +62,7 @@ export const AnalyticsWidget = (props: AnalyticsWidgetProps) => {
   if (tripGroups.length === 0) {
     return (
       <Stack contentAlignment='center' style={{ minHeight: '200px' }}>
-        <p>Brak wyjazdów</p>
+        <p>Brak {label}</p>
       </Stack>
     );
   }
@@ -67,8 +70,10 @@ export const AnalyticsWidget = (props: AnalyticsWidgetProps) => {
   return (
     <Stack gap={16} style={{ height: '100%', overflow: 'auto' }}>
       <div>
-        <h3>Wyjazdy ({tripGroups.length})</h3>
-        <small style={{ color: '#666' }}>Każdy kwadracik = dzień wyjazdu</small>
+        <h3>
+          {label} ({tripGroups.length})
+        </h3>
+        <small style={{ color: '#666' }}>Każdy kwadracik = dzień </small>
       </div>
 
       <Stack gap={12}>
@@ -82,7 +87,7 @@ export const AnalyticsWidget = (props: AnalyticsWidgetProps) => {
               border: '1px solid #eee',
             }}
           >
-            <Stack gap={8}>
+            <Stack gap={4}>
               <div
                 style={{
                   display: 'flex',
@@ -99,8 +104,8 @@ export const AnalyticsWidget = (props: AnalyticsWidgetProps) => {
                   </small>
                 </div>
 
-                <button
-                  onClick={() => {
+                <Link
+                  href={(() => {
                     const startCalendarDate = dayjs(trip.startDate)
                       .startOf('month')
                       .format(dateFormat);
@@ -109,9 +114,8 @@ export const AnalyticsWidget = (props: AnalyticsWidgetProps) => {
                       .add(11, 'month')
                       .endOf('month')
                       .format(dateFormat);
-                    const url = `/?groupId=${trip.groupId}&startDate=${startCalendarDate}&endDate=${endCalendarDate}`;
-                    window.location.href = url;
-                  }}
+                    return `/?groupId=${trip.groupId}&startDate=${startCalendarDate}&endDate=${endCalendarDate}`;
+                  })()}
                   style={{
                     background: 'none',
                     border: '1px solid #ccc',
@@ -121,11 +125,12 @@ export const AnalyticsWidget = (props: AnalyticsWidgetProps) => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    textDecoration: 'none',
                   }}
                   title='Pokaż w kalendarzu'
                 >
-                  <BsSearch size={22} />
-                </button>
+                  <BsSearch size={18} />
+                </Link>
               </div>
 
               <div
@@ -147,7 +152,6 @@ export const AnalyticsWidget = (props: AnalyticsWidgetProps) => {
                       date: dayjs.ConfigType;
                       id: Key | null | undefined;
                       description: string;
-                      name: string;
                     }) => {
                       const isToday = dayjs(event.date).isSame(dayjs(), 'day');
                       const isFuture = dayjs(event.date).isAfter(
@@ -169,7 +173,7 @@ export const AnalyticsWidget = (props: AnalyticsWidgetProps) => {
                             opacity: isFuture ? 0.3 : 1,
                             cursor: 'pointer',
                           }}
-                          title={`${dayjs(event.date).format('DD.MM.YYYY')}${event.description ? ': ' + event.description : ''} ${event.name ? ': ' + event.name : ''}`}
+                          title={`${dayjs(event.date).format('DD.MM.YYYY')}${event.description ? ': ' + event.description : ''}`}
                         />
                       );
                     }

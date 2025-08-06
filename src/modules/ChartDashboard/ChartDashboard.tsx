@@ -1,6 +1,7 @@
 'use client';
 
 import { useGetAllEventsQuery } from '@api/db/events/useGetAllEventsQuery';
+import { CalendarEventType } from '@api/db/types';
 import DashboardContainer from '@components/DashboardContainer/DashboardContainer';
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 import { Stack } from '@components/Stack/Stack';
@@ -8,8 +9,6 @@ import { Spinner } from '@nextui-org/react';
 import styles from './ChartDashboard.module.scss';
 import { AlternatingGradient } from './components/AlternatingGradient';
 import { AnalyticsWidget } from './components/AnalyticsWidget';
-import { CareBalanceChart } from './components/CareBalanceChart';
-import { CareBalanceChartD3 } from './components/CareBalanceChartD3';
 import { CareBalanceChartWeighted } from './components/CareBalanceChartWeighted';
 import { CumulativeCareChart } from './components/CumulativeCareChart';
 import { RadialTripChart } from './components/RadialTripChart';
@@ -57,15 +56,25 @@ export const ChartDashboard = () => {
         </div>
 
         <div className={styles.chartItem}>
-          <CareBalanceChartD3 events={events} />
+          <AnalyticsWidget
+            events={events}
+            eventType={[CalendarEventType.Trip]}
+            label='Wyjazdy'
+          />
         </div>
-
         <div className={styles.chartItem}>
-          <AnalyticsWidget events={events} />
+          <AnalyticsWidget
+            events={events}
+            eventType={[CalendarEventType.Camp]}
+            label='Obozy/Wycieczki'
+          />
         </div>
-
         <div className={styles.chartItem}>
-          <CareBalanceChart events={events} />
+          <AnalyticsWidget
+            events={events}
+            eventType={[CalendarEventType.Event, CalendarEventType.Medical]}
+            label='Inne'
+          />
         </div>
       </div>
     </DashboardContainer>

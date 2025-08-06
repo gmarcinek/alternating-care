@@ -408,7 +408,7 @@ export const RadialTripChart = ({
       <div
         style={{
           width: '100%',
-          height: '600px',
+          height: '50vh',
           position: 'relative',
         }}
       >
