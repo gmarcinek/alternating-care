@@ -5,11 +5,12 @@ import DashboardContainer from '@components/DashboardContainer/DashboardContaine
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 import { Stack } from '@components/Stack/Stack';
 import { Spinner } from '@nextui-org/react';
+import styles from './ChartDashboard.module.scss';
 import { AlternatingGradient } from './components/AlternatingGradient';
-import { AnalyticsWidget } from './components/AnalyticsWidget';
 import { CareBalanceChart } from './components/CareBalanceChart';
 import { CareBalanceChartWeighted } from './components/CareBalanceChartWeighted';
 import { CumulativeCareChart } from './components/CumulativeCareChart';
+import { RadialTripChart } from './components/RadialTripChart';
 
 export const ChartDashboard = () => {
   const { query } = useGetAllEventsQuery();
@@ -32,19 +33,27 @@ export const ChartDashboard = () => {
 
   return (
     <DashboardContainer>
-      <Stack gap={32}>
-        <div></div>
-        <CareBalanceChart events={query.data} />
-        <div></div>
-        <CareBalanceChartWeighted events={query.data} />
-        <div></div>
-        <CumulativeCareChart events={query.data} />
-        <div></div>
-        <AnalyticsWidget events={query.data} />
-        <div></div>
-        <AlternatingGradient events={query.data} />
-        <div></div>
-      </Stack>
+      <div className={styles.chartGrid}>
+        <div className={styles.chartItem}>
+          <CareBalanceChartWeighted events={events} />
+        </div>
+
+        <div className={styles.chartItem}>
+          <CumulativeCareChart events={events} />
+        </div>
+
+        <div className={styles.chartItem}>
+          <RadialTripChart events={events} />
+        </div>
+
+        <div className={styles.chartItemWide}>
+          <AlternatingGradient events={events} />
+        </div>
+
+        <div className={styles.chartItem}>
+          <CareBalanceChart events={events} />
+        </div>
+      </div>
     </DashboardContainer>
   );
 };

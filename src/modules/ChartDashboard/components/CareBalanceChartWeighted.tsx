@@ -164,12 +164,7 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
 
   return (
     <Stack gap={16}>
-      <Stack
-        direction='horizontal'
-        contentAlignment='between'
-        itemsAlignment='center'
-        gap={16}
-      >
+      <Stack gap={16}>
         <div>
           <h2>Bilans Opieki ({balancePeriod})</h2>
           <small style={{ color: '#666' }}>
@@ -235,7 +230,10 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
       {/* Wykres */}
       <div style={{ width: '100%', height: '400px' }}>
         <ResponsiveContainer>
-          <ComposedChart data={normalizedData}>
+          <ComposedChart
+            data={normalizedData}
+            margin={{ top: 20, right: 30, bottom: 20, left: 0 }}
+          >
             <CartesianGrid strokeDasharray='3 3' />
             <XAxis
               dataKey='date'
@@ -244,7 +242,39 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
             />
             <YAxis
               domain={[-chartScale, chartScale]}
-              tickFormatter={(value) => `${value > 0 ? '+' : ''}${value}`}
+              tickFormatter={(value) => {
+                // Definiuj symetryczne wartości
+                const step = chartScale / 4;
+                const validTicks = [
+                  -3 * step,
+                  -2 * step,
+                  -step,
+                  0,
+                  step,
+                  2 * step,
+                  3 * step,
+                ];
+
+                // Pokaż tylko wartości z naszej listy
+                const closest = validTicks.find(
+                  (tick) => Math.abs(tick - value) < 1
+                );
+                if (!closest) return '';
+
+                if (closest === 0) return '0';
+                return `${closest > 0 ? '+' : ''}${Math.round(closest)}`;
+              }}
+              axisLine={false}
+              tickLine={false}
+              width={1}
+              tick={{
+                fontSize: 12,
+                fill: '#000',
+                dx: 8,
+                dy: 3,
+                textAnchor: 'start',
+              }}
+              tickCount={7}
             />
 
             {/* Czerwony obszar dla wartości dodatnich (pod linią, powyżej zera) */}
@@ -264,6 +294,20 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
             />
 
             <ReferenceLine y={0} stroke='#666' strokeWidth={2} />
+
+            {/* Przerywane linie dla min/max */}
+            <ReferenceLine
+              y={chartScale}
+              stroke='#ccc'
+              strokeWidth={1}
+              strokeDasharray='5,5'
+            />
+            <ReferenceLine
+              y={-chartScale}
+              stroke='#ccc'
+              strokeWidth={1}
+              strokeDasharray='5,5'
+            />
 
             <Line
               type='monotone'

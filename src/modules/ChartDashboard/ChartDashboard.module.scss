@@ -1,0 +1,58 @@
+.chartGrid {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem 0;
+
+  // Mobile: 1 column
+  grid-template-columns: 1fr;
+
+  .chartItem {
+    min-height: 400px;
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .chartItemWide {
+    @extend .chartItem;
+    min-height: 300px;
+  }
+}
+
+// Tablet: 2 columns
+@media (min-width: 768px) {
+  .chartGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+
+    .chartItemWide {
+      grid-column: span 2;
+    }
+  }
+}
+
+// Desktop: 3 columns
+@media (min-width: 1280px) {
+  .chartGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    .chartItemWide {
+      grid-column: span 3;
+    }
+  }
+}
+
+// Large desktop: 4 columns for smaller charts
+@media (min-width: 1920px) {
+  .chartGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    .chartItemWide {
+      grid-column: span 3;
+    }
+  }
+}
