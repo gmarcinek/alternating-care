@@ -128,6 +128,9 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
       const g = svg
         .append('g')
         .attr('transform', `translate(${MARGIN.left},${MARGIN.top})`);
+
+      const today = dayjs();
+
       yearsData.forEach((yearObj, i) => {
         // Label roku NAD barem
         g.append('text')
@@ -145,6 +148,10 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
           if (seg.isCamp) fillColor = BAR_COLORS.camp;
           else if (seg.isParent1) fillColor = BAR_COLORS.parent1;
           const barW = width / 366;
+
+          // Sprawdź czy dzień jest w przyszłości
+          const isInFuture = seg.dayjs.isAfter(today, 'day');
+
           g.append('rect')
             .attr('x', xScale(d))
             .attr('y', i * rowHeight + barYOffset)
@@ -152,7 +159,19 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
             .attr('height', barHeight)
             .attr('fill', fillColor)
             .attr('stroke', '#666')
-            .attr('stroke-width', 0.1);
+            .attr('stroke-width', 0.1)
+            .attr('opacity', isInFuture ? 0.7 : 1)
+            .style('cursor', 'pointer')
+            .append('title')
+            .text(() => {
+              const careType = seg.isCamp
+                ? 'Kolonie'
+                : seg.isParent1
+                  ? 'Rodzic 1'
+                  : 'Rodzic 2';
+              const futureText = isInFuture ? ' (zaplanowane)' : '';
+              return `${seg.date} - ${careType}${futureText}`;
+            });
         }
       });
       // Oś X — miesiące (na dole)
@@ -176,7 +195,6 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
           .attr('stroke-width', 1);
       });
       // Linia "dziś" na swoim roku
-      const today = dayjs();
       const todayYearIdx = yearsData.findIndex((y) => y.year === today.year());
       if (todayYearIdx !== -1) {
         const todayX = xScale(dayOfYear(today));

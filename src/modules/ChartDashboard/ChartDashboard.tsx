@@ -7,7 +7,9 @@ import { Stack } from '@components/Stack/Stack';
 import { Spinner } from '@nextui-org/react';
 import styles from './ChartDashboard.module.scss';
 import { AlternatingGradient } from './components/AlternatingGradient';
+import { AnalyticsWidget } from './components/AnalyticsWidget';
 import { CareBalanceChart } from './components/CareBalanceChart';
+import { CareBalanceChartD3 } from './components/CareBalanceChartD3';
 import { CareBalanceChartWeighted } from './components/CareBalanceChartWeighted';
 import { CumulativeCareChart } from './components/CumulativeCareChart';
 import { RadialTripChart } from './components/RadialTripChart';
@@ -52,6 +54,14 @@ export const ChartDashboard = () => {
 
         <div className={styles.chartItemWide}>
           <AlternatingGradient events={events} />
+        </div>
+
+        <div className={styles.chartItem}>
+          <CareBalanceChartD3 events={events} />
+        </div>
+
+        <div className={styles.chartItem}>
+          <AnalyticsWidget events={events} />
         </div>
 
         <div className={styles.chartItem}>

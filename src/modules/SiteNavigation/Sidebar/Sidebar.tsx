@@ -1,4 +1,5 @@
 import { useAppContext } from '@app/AppContext';
+import { Stack } from '@components/Stack/Stack';
 import Link from 'next/link';
 import { siteNavigationI18n } from '../siteNavigation.i18n';
 
@@ -37,32 +38,34 @@ export const Sidebar = (props: SidebarProps) => {
         </button>
 
         <ul className='sidebar-nav text-center text-xl leading-relaxed'>
-          <li>
-            <Link href='/' onClick={toggle}>
-              <h3>{i18n.home}</h3>
-            </Link>
-          </li>
+          <Stack>
+            <li>
+              <Link href='/' onClick={toggle}>
+                <h2>{i18n.home}</h2>
+              </Link>
+            </li>
 
-          <li>
-            <Link href='/alternating' onClick={toggle}>
-              <h3>{i18n.alternating}</h3>
-            </Link>
-          </li>
-          <li>
-            <Link href='/analytics' onClick={toggle}>
-              <h3>{i18n.analytics}</h3>
-            </Link>
-          </li>
-          <li>
-            <Link href='/settings' onClick={toggle}>
-              <h3>{i18n.settings}</h3>
-            </Link>
-          </li>
-          <li>
-            <Link href='/help' onClick={toggle}>
-              <h3>{i18n.help}</h3>
-            </Link>
-          </li>
+            <li>
+              <Link href='/alternating' onClick={toggle}>
+                <h2>{i18n.alternating}</h2>
+              </Link>
+            </li>
+            <li>
+              <Link href='/analytics' onClick={toggle}>
+                <h2>{i18n.analytics}</h2>
+              </Link>
+            </li>
+            <li>
+              <Link href='/settings' onClick={toggle}>
+                <h2>{i18n.settings}</h2>
+              </Link>
+            </li>
+            <li>
+              <Link href='/help' onClick={toggle}>
+                <h2>{i18n.help}</h2>
+              </Link>
+            </li>
+          </Stack>
         </ul>
       </div>
     </>
