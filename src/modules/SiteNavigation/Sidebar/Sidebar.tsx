@@ -50,7 +50,7 @@ export const Sidebar = (props: SidebarProps) => {
           </li>
           <li>
             <Link href='/analytics' onClick={toggle}>
-              <h3>{i18n.alternating}</h3>
+              <h3>{i18n.analytics}</h3>
             </Link>
           </li>
           <li>
