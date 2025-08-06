@@ -43,7 +43,11 @@ export const ChartDashboard = () => {
         </div>
 
         <div className={styles.chartItem}>
-          <RadialTripChart events={events} />
+          <RadialTripChart
+            events={events}
+            isPending={query.isPending}
+            refetch={query.refetch}
+          />
         </div>
 
         <div className={styles.chartItemWide}>
