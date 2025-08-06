@@ -13,6 +13,7 @@ import {
   Line,
   ReferenceLine,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
@@ -232,7 +233,7 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
         <ResponsiveContainer>
           <ComposedChart
             data={normalizedData}
-            margin={{ top: 20, right: 30, bottom: 20, left: 0 }}
+            margin={{ top: 20, right: 0, bottom: 20, left: 0 }}
           >
             <CartesianGrid strokeDasharray='3 3' />
             <XAxis
@@ -242,28 +243,7 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
             />
             <YAxis
               domain={[-chartScale, chartScale]}
-              tickFormatter={(value) => {
-                // Definiuj symetryczne wartości
-                const step = chartScale / 4;
-                const validTicks = [
-                  -3 * step,
-                  -2 * step,
-                  -step,
-                  0,
-                  step,
-                  2 * step,
-                  3 * step,
-                ];
-
-                // Pokaż tylko wartości z naszej listy
-                const closest = validTicks.find(
-                  (tick) => Math.abs(tick - value) < 1
-                );
-                if (!closest) return '';
-
-                if (closest === 0) return '0';
-                return `${closest > 0 ? '+' : ''}${Math.round(closest)}`;
-              }}
+              tickFormatter={(value) => `${value > 0 ? '+' : ''}${value}`}
               axisLine={false}
               tickLine={false}
               width={1}
@@ -274,7 +254,7 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
                 dy: 3,
                 textAnchor: 'start',
               }}
-              tickCount={7}
+              tickCount={9}
             />
 
             {/* Czerwony obszar dla wartości dodatnich (pod linią, powyżej zera) */}
@@ -295,26 +275,20 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
 
             <ReferenceLine y={0} stroke='#666' strokeWidth={2} />
 
-            {/* Przerywane linie dla min/max */}
-            <ReferenceLine
-              y={chartScale}
-              stroke='#ccc'
-              strokeWidth={1}
-              strokeDasharray='5,5'
-            />
-            <ReferenceLine
-              y={-chartScale}
-              stroke='#ccc'
-              strokeWidth={1}
-              strokeDasharray='5,5'
-            />
-
             <Line
               type='monotone'
               dataKey='normalizedBalance'
               stroke='#ff4f4f'
               strokeWidth={3}
               dot={false}
+            />
+
+            <Tooltip
+              labelFormatter={(value) => dayjs(value).format('DD.MM.YYYY')}
+              formatter={(value, name) => [
+                `${Number(value) > 0 ? '+' : ''}${Number(value)} dni`,
+                'Bilans',
+              ]}
             />
           </ComposedChart>
         </ResponsiveContainer>
