@@ -3,11 +3,11 @@
 import { CalendarEvent } from '@api/db/types';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { Stack } from '@components/Stack/Stack';
+import { useCareBalance } from '@modules/ChartDashboard/hooks/useCareBalance';
 import { Button, ButtonGroup, Chip, Slider } from '@nextui-org/react';
 import * as d3 from 'd3';
 import dayjs from 'dayjs';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useCareBalance } from '../hooks/useCareBalance';
 
 interface CareBalanceChartProps {
   events: CalendarEvent[];
