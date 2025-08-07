@@ -8,10 +8,11 @@ type WidgetSize = 1 | 2 | 3 | 4 | 5 | 6;
 interface WidgetProps extends PropsWithChildren {
   className?: string;
   size?: WidgetSize;
+  bgImg?: string;
 }
 
 export const Widget = (props: WidgetProps) => {
-  const { children, className, size } = props;
+  const { children, className, size, bgImg } = props;
 
   return (
     <div
