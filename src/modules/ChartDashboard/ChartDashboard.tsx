@@ -10,6 +10,7 @@ import styles from './ChartDashboard.module.scss';
 import { AlternatingGradient } from './components/AlternatingGradient';
 import { AnalyticsWidget } from './components/AnalyticsWidget';
 import { CareBalanceChartWeighted } from './components/CareBalanceChartWeighted';
+import { CarePatternWidget } from './components/CarePatternWidget';
 import { CumulativeCareChart } from './components/CumulativeCareChart';
 import { RadialTripChart } from './components/RadialTripChart';
 
@@ -53,6 +54,10 @@ export const ChartDashboard = () => {
 
         <div className={styles.chartItemWide}>
           <AlternatingGradient events={events} />
+        </div>
+
+        <div className={styles.chartItemWide}>
+          <CarePatternWidget events={events} />
         </div>
 
         <div className={styles.chartItem}>
