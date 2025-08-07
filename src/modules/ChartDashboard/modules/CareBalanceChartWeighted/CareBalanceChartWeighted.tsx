@@ -17,7 +17,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { useCareBalanceWeighted } from '../hooks/useCareBalanceWeighted';
+import { useCareBalanceWeighted } from '../../hooks/useCareBalanceWeighted';
 
 interface CareBalanceChartProps {
   events: CalendarEvent[];

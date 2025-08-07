@@ -1,0 +1,32 @@
+'use client';
+
+import classNames from 'classnames';
+import { PropsWithChildren } from 'react';
+import styles from './Widget.module.scss';
+
+interface WidgetProps extends PropsWithChildren {
+  className?: string;
+  size?: 1 | 2 | 3 | 4 | 5 | 6;
+}
+
+export const Widget = (props: WidgetProps) => {
+  const { children, className, size } = props;
+
+  return (
+    <div
+      className={classNames(
+        {
+          [styles.chartItem1]: size === 1,
+          [styles.chartItem2]: size === 2,
+          [styles.chartItem3]: size === 3,
+          [styles.chartItem4]: size === 4,
+          [styles.chartItem5]: size === 5,
+          [styles.chartItem6]: size === 6,
+        },
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+};

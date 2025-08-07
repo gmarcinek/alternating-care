@@ -16,8 +16,8 @@ import {
 } from '@nextui-org/react';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
-import { useCarePatternAnalysis } from '../hooks/useCarePatternAnalysis';
-import { CarePattern } from '../utils/carePatternAnalysis';
+import { useCarePatternAnalysis } from './useCarePatternAnalysis';
+import { CarePattern } from './utils/types';
 
 type DateRangeOption =
   | 'all'

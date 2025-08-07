@@ -1,12 +1,12 @@
 import { CalendarEvent } from '@api/db/types';
 import { useMemo } from 'react';
+import { analyzeCarePatterns } from './utils/carePatternAnalysis';
 import {
-  analyzeCarePatterns,
   CareBreak,
   CarePattern,
   CarePeriod,
   PatternStatistics,
-} from '../utils/carePatternAnalysis';
+} from './utils/types';
 
 interface UseCarePatternAnalysisProps {
   events: CalendarEvent[];

@@ -29,7 +29,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { useCumulativeCare } from '../hooks/useCumulativeCare';
+import { useCumulativeCare } from '../../hooks/useCumulativeCare';
 
 interface CumulativeCareChartProps {
   events: CalendarEvent[];

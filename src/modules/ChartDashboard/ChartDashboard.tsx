@@ -7,17 +7,20 @@ import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 import { Stack } from '@components/Stack/Stack';
 import { Spinner } from '@nextui-org/react';
 import { useMediaQuery } from 'react-responsive';
-import styles from './ChartDashboard.module.scss';
-import { AlternatingGradient } from './components/AlternatingGradient';
-import { AnalyticsWidget } from './components/AnalyticsWidget';
-import { CareBalanceChartWeighted } from './components/CareBalanceChartWeighted';
-import { CarePatternWidget } from './components/CarePatternWidget';
-import { CumulativeCareChart } from './components/CumulativeCareChart';
-import { RadialTripChart } from './components/RadialTripChart';
+import { AlternatingGradient } from './modules/AlternatingGradient/AlternatingGradient';
+import { AnalyticsWidget } from './modules/AnalyticsWidget/AnalyticsWidget';
+import { CareBalanceChartWeighted } from './modules/CareBalanceChartWeighted/CareBalanceChartWeighted';
+
+import { Widget } from '@components/Widget/Widget';
+import { WidgetContainer } from '@components/WidgetContainer/WidgetContainer';
+import { CarePatternWidget } from './modules/CarePatternWidget/CarePatternWidget';
+import { CumulativeCareChart } from './modules/CumulativeCareChart/CumulativeCareChart';
+import { RadialTripChart } from './modules/RadialTripChart/RadialTripChart';
 
 export const ChartDashboard = () => {
   const { query } = useGetAllEventsQuery();
   const isMax768 = useMediaQuery({ query: '(max-width: 767px)' });
+  const isMin1440 = useMediaQuery({ query: '(min-width: 1440px)' });
 
   if (query.isError) {
     return <ErrorMessage message={'Unexpected error occurred'} />;
@@ -37,55 +40,55 @@ export const ChartDashboard = () => {
 
   return (
     <DashboardContainer thin={isMax768}>
-      <div className={styles.chartGrid}>
-        <div className={styles.chartItem23}>
+      <WidgetContainer>
+        <Widget size={isMin1440 ? 4 : 3}>
           <CarePatternWidget events={events} />
-        </div>
+        </Widget>
 
-        <div className={styles.chartItem}>
+        <Widget size={isMin1440 ? 2 : 3}>
           <CareBalanceChartWeighted events={events} />
-        </div>
+        </Widget>
 
-        <div className={styles.chartItemDual}>
+        <Widget size={3}>
           <CumulativeCareChart events={events} />
-        </div>
+        </Widget>
 
-        <div className={styles.chartItemDual}>
+        <Widget size={3}>
           <RadialTripChart
             events={events}
             isPending={query.isPending}
             refetch={query.refetch}
           />
-        </div>
+        </Widget>
 
-        <div className={styles.chartItemWide}>
+        <Widget size={6}>
           <AlternatingGradient events={events} />
-        </div>
+        </Widget>
 
-        <div className={styles.chartItem}>
+        <Widget size={2}>
           <AnalyticsWidget
             events={events}
             eventType={[CalendarEventType.Trip]}
             label='Wyjazdy'
           />
-        </div>
+        </Widget>
 
-        <div className={styles.chartItem}>
+        <Widget size={2}>
           <AnalyticsWidget
             events={events}
             eventType={[CalendarEventType.Event, CalendarEventType.Medical]}
             label='Inne'
           />
-        </div>
+        </Widget>
 
-        <div className={styles.chartItem}>
+        <Widget size={2}>
           <AnalyticsWidget
             events={events}
             eventType={[CalendarEventType.Camp]}
             label='Obozy/Wycieczki'
           />
-        </div>
-      </div>
+        </Widget>
+      </WidgetContainer>
     </DashboardContainer>
   );
 };
