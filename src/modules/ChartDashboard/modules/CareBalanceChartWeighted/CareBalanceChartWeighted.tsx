@@ -18,6 +18,7 @@ import {
   YAxis,
 } from 'recharts';
 import { useCareBalanceWeighted } from '../../hooks/useCareBalanceWeighted';
+import styles from './CareBalanceChartWeighted.module.scss';
 
 interface CareBalanceChartProps {
   events: CalendarEvent[];
@@ -164,7 +165,7 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
   }
 
   return (
-    <Stack gap={16}>
+    <Stack gap={16} className={styles.fillAvailable}>
       <Stack gap={16}>
         <div>
           <h2>Bilans Opieki ({balancePeriod})</h2>
@@ -223,7 +224,10 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
       </Stack>
 
       {/* Wykres */}
-      <div style={{ width: '100%', height: '400px' }}>
+      <div
+        className={styles.fillAvailable}
+        style={{ width: '100%', height: '400px' }}
+      >
         <ResponsiveContainer>
           <ComposedChart
             data={normalizedData}

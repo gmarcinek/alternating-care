@@ -59,19 +59,19 @@
 
 @media (min-width: 1024px) {
   .chartItem1 {
-    grid-column: span 2;
+    grid-column: span 6;
     padding: 1rem;
   }
   .chartItem2 {
-    grid-column: span 3;
+    grid-column: span 6;
     padding: 1rem;
   }
   .chartItem3 {
-    grid-column: span 3;
+    grid-column: span 6;
     padding: 1rem;
   }
   .chartItem4 {
-    grid-column: span 3;
+    grid-column: span 6;
     padding: 1rem;
   }
   .chartItem5 {
@@ -84,13 +84,13 @@
   }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1280px) {
   .chartItem1 {
-    grid-column: span 2;
+    grid-column: span 3;
     padding: 1rem;
   }
   .chartItem2 {
-    grid-column: span 2;
+    grid-column: span 3;
     padding: 1rem;
   }
   .chartItem3 {
@@ -98,7 +98,7 @@
     padding: 1rem;
   }
   .chartItem4 {
-    grid-column: span 4;
+    grid-column: span 3;
     padding: 1rem;
   }
   .chartItem5 {

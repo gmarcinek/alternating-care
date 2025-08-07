@@ -20,7 +20,8 @@ import { RadialTripChart } from './modules/RadialTripChart/RadialTripChart';
 export const ChartDashboard = () => {
   const { query } = useGetAllEventsQuery();
   const isMax768 = useMediaQuery({ query: '(max-width: 767px)' });
-  const isMin1440 = useMediaQuery({ query: '(min-width: 1440px)' });
+  const isMin1280 = useMediaQuery({ query: '(min-width: 1280px)' });
+  const isMin1920 = useMediaQuery({ query: '(min-width: 1920px)' });
 
   if (query.isError) {
     return <ErrorMessage message={'Unexpected error occurred'} />;
@@ -41,28 +42,26 @@ export const ChartDashboard = () => {
   return (
     <DashboardContainer thin={isMax768}>
       <WidgetContainer>
-        <Widget size={isMin1440 ? 4 : 3}>
+        <Widget size={isMin1280 ? 2 : 6}>
+          <CareBalanceChartWeighted events={events} />
+        </Widget>
+        <Widget size={isMin1280 ? 4 : 6}>
           <CarePatternWidget events={events} />
         </Widget>
 
-        <Widget size={isMin1440 ? 2 : 3}>
-          <CareBalanceChartWeighted events={events} />
+        <Widget size={isMin1920 ? 4 : 6}>
+          <AlternatingGradient events={events} />
         </Widget>
-
-        <Widget size={3}>
+        <Widget size={isMin1920 ? 2 : 3}>
           <CumulativeCareChart events={events} />
         </Widget>
 
-        <Widget size={3}>
+        <Widget size={isMin1920 ? 6 : 3}>
           <RadialTripChart
             events={events}
             isPending={query.isPending}
             refetch={query.refetch}
           />
-        </Widget>
-
-        <Widget size={6}>
-          <AlternatingGradient events={events} />
         </Widget>
 
         <Widget size={2}>

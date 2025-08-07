@@ -4,9 +4,10 @@ import classNames from 'classnames';
 import { PropsWithChildren } from 'react';
 import styles from './Widget.module.scss';
 
+type WidgetSize = 1 | 2 | 3 | 4 | 5 | 6;
 interface WidgetProps extends PropsWithChildren {
   className?: string;
-  size?: 1 | 2 | 3 | 4 | 5 | 6;
+  size?: WidgetSize;
 }
 
 export const Widget = (props: WidgetProps) => {

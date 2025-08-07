@@ -14,8 +14,10 @@ import {
   SelectItem,
   Spinner,
 } from '@nextui-org/react';
+import classNames from 'classnames';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { useCarePatternAnalysis } from './useCarePatternAnalysis';
 import { CarePattern } from './utils/types';
 
@@ -40,6 +42,9 @@ export const CarePatternWidget = ({
     start: string;
     end: string;
   } | null>(null);
+
+  const isMin1280 = useMediaQuery({ query: '(min-width: 1280px)' });
+  const isMin1378 = useMediaQuery({ query: '(min-width: 1378px)' });
 
   const filteredEvents = useMemo(() => {
     if (dateRange === 'all') return events;
@@ -148,32 +153,32 @@ export const CarePatternWidget = ({
         {/* Statystyki ogólne */}
         <div>
           <h4 className='mb-2 text-sm font-semibold'>Podstawowe Statystyki</h4>
-          <div className='grid grid-cols-2 gap-3 text-sm'>
+          <div className='grid grid-cols-2 gap-1 text-sm'>
             <div className='space-y-1'>
-              <div className='flex justify-between'>
-                <span>Średnia opieka:</span>
+              <div>
+                <span>Średnia opieka: </span>{' '}
                 <strong>{statistics.averageCareDuration} dni</strong>
               </div>
-              <div className='flex justify-between'>
-                <span>Średnia przerwa:</span>
+              <div>
+                <span>Średnia przerwa: </span>{' '}
                 <strong>{statistics.averageBreakDuration} dni</strong>
               </div>
-              <div className='flex justify-between'>
-                <span>Stosunek opieka:przerwa:</span>
+              <div>
+                <span>Stosunek opieka:przerwa: </span>{' '}
                 <strong>{statistics.careToBreakRatio}:1</strong>
               </div>
             </div>
             <div className='space-y-1'>
-              <div className='flex justify-between'>
-                <span>Najdłuższa opieka:</span>
+              <div>
+                <span>Najdłuższa opieka:</span>{' '}
                 <strong>{statistics.longestCarePeriod} dni</strong>
               </div>
-              <div className='flex justify-between'>
-                <span>Najkrótsza opieka:</span>
+              <div>
+                <span>Najkrótsza opieka:</span>{' '}
                 <strong>{statistics.shortestCarePeriod} dni</strong>
               </div>
-              <div className='flex justify-between'>
-                <span>Najdłuższa przerwa:</span>
+              <div>
+                <span>Najdłuższa przerwa:</span>{' '}
                 <strong>{statistics.longestBreak} dni</strong>
               </div>
             </div>
@@ -182,18 +187,28 @@ export const CarePatternWidget = ({
 
         {/* Okres analizy */}
         <div>
-          <h4 className='mb-2 text-sm font-semibold'>Okres Analizy</h4>
+          <h4 className='mb-2 text-sm font-semibold'>
+            Okres Analizy ({statistics.analysisDateRange.totalDays} dni)
+          </h4>
           <div className='text-sm text-gray-600'>
-            <div>Od: {statistics.analysisDateRange.start}</div>
-            <div>Do: {statistics.analysisDateRange.end}</div>
-            <div>Łącznie: {statistics.analysisDateRange.totalDays} dni</div>
+            <span>Od: {statistics.analysisDateRange.start}</span>
+            <span>Do: {statistics.analysisDateRange.end}</span>
           </div>
         </div>
 
         {/* Wykryte wzorce */}
         <div>
           <h4 className='mb-3 text-sm font-semibold'>Wykryte Wzorce</h4>
-          <div className='grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-3'>
+          <div
+            className={classNames({
+              'grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-3':
+                !isMin1378,
+              'grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-3':
+                isMin1280,
+              'grid grid-cols-[repeat(auto-fit,minmax(295px,0.5fr))] gap-3':
+                isMin1378,
+            })}
+          >
             {patterns.map((pattern, index) => (
               <PatternCard key={index} pattern={pattern} />
             ))}
@@ -282,19 +297,19 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
   return (
     <div className='space-y-3 rounded-lg border p-4'>
       {/* Header wzorca */}
-      <div className='flex items-start justify-between'>
-        <div className='flex items-center gap-2'>
-          <Chip size='sm' variant='flat' color={getPatternColor(pattern.type)}>
-            {getPatternTypeLabel(pattern.type)}
-          </Chip>
-          <span className='text-sm font-medium'>{pattern.description}</span>
-        </div>
+      <div className='flex items-center justify-between gap-2'>
+        <Chip size='sm' variant='flat' color={getPatternColor(pattern.type)}>
+          {getPatternTypeLabel(pattern.type)}
+        </Chip>
         <div className='text-right'>
           <div className='text-xs text-gray-500'>Pewność</div>
           <div className='text-sm font-medium'>
             {Math.round(pattern.confidence * 100)}%
           </div>
         </div>
+      </div>
+      <div className='flex items-start justify-between'>
+        <span className='text-sm font-medium'>{pattern.description}</span>
       </div>
 
       {/* Progress bar */}

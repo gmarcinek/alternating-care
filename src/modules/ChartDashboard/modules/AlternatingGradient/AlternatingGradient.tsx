@@ -17,7 +17,7 @@ export const BAR_COLORS = {
   camp: '#ffeb3b',
 };
 export const BAR_HEIGHT_FACTOR = 48; // wysokość słupka względem wiersza
-export const MIN_ROW_HEIGHT = 120; // minimalna wysokość jednego wiersza (roku)
+export const MIN_ROW_HEIGHT = 100; // minimalna wysokość jednego wiersza (roku)
 export const BAR_LABEL_FONT = 24;
 export const MARGIN = { top: 36, right: 20, bottom: 40, left: 20 };
 export const BAR_PADDING = 0;
@@ -297,7 +297,7 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
         </div>
       </Stack>
 
-      <Stack gap={8}>
+      <div>
         <Chip size='sm' variant='flat'>
           📅 Lata: {yearsData.map((y) => y.year).join(', ')}
         </Chip>
@@ -320,17 +320,17 @@ export const AlternatingGradient = (props: AlternatingGradientProps) => {
         <Chip size='sm' variant='flat'>
           🏕️ Kolonie (suma): {yearsData.reduce((a, y) => a + y.campDays, 0)}
         </Chip>
-      </Stack>
+      </div>
       {/* Podsumowanie per rok */}
-      <Stack gap={12}>
+      <div>
         {yearsData.map((y) => (
           <Chip key={y.year} size='sm' variant='bordered'>
-            {y.year}: Bilans {y.parent2Days - y.parent1Days > 0 ? '+' : ''}
-            {y.parent2Days - y.parent1Days}, Rodzic1 {y.parent1Days}, Rodzic2{' '}
+            {y.year}: Bil {y.parent2Days - y.parent1Days > 0 ? '+' : ''}
+            {y.parent2Days - y.parent1Days}, R1 {y.parent1Days}, R2{' '}
             {y.parent2Days}, Kolonie {y.campDays}
           </Chip>
         ))}
-      </Stack>
+      </div>
     </Stack>
   );
 };
