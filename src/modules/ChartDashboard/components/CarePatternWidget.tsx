@@ -2,16 +2,29 @@
 
 import { CalendarEvent } from '@api/db/types';
 import { Stack } from '@components/Stack/Stack';
+import { parseDate } from '@internationalized/date';
 import {
   Card,
   CardBody,
   CardHeader,
   Chip,
+  DateRangePicker,
   Progress,
+  Select,
+  SelectItem,
   Spinner,
 } from '@nextui-org/react';
+import dayjs from 'dayjs';
+import { useMemo, useState } from 'react';
 import { useCarePatternAnalysis } from '../hooks/useCarePatternAnalysis';
 import { CarePattern } from '../utils/carePatternAnalysis';
+
+type DateRangeOption =
+  | 'all'
+  | 'last12months'
+  | 'last6months'
+  | 'currentYear'
+  | 'custom';
 
 interface CarePatternWidgetProps {
   events: CalendarEvent[];
@@ -22,8 +35,49 @@ export const CarePatternWidget = ({
   events,
   isPending,
 }: CarePatternWidgetProps) => {
+  const [dateRange, setDateRange] = useState<DateRangeOption>('all');
+  const [customRange, setCustomRange] = useState<{
+    start: string;
+    end: string;
+  } | null>(null);
+
+  const filteredEvents = useMemo(() => {
+    if (dateRange === 'all') return events;
+
+    const now = dayjs();
+    let startDate: dayjs.Dayjs;
+    let endDate: dayjs.Dayjs = now;
+
+    switch (dateRange) {
+      case 'last12months':
+        startDate = now.subtract(12, 'months');
+        break;
+      case 'last6months':
+        startDate = now.subtract(6, 'months');
+        break;
+      case 'currentYear':
+        startDate = now.startOf('year');
+        break;
+      case 'custom':
+        if (!customRange) return events;
+        startDate = dayjs(customRange.start);
+        endDate = dayjs(customRange.end);
+        break;
+      default:
+        return events;
+    }
+
+    return events.filter((event) => {
+      const eventDate = dayjs(event.date);
+      return (
+        eventDate.isAfter(startDate) &&
+        eventDate.isBefore(endDate.add(1, 'day'))
+      );
+    });
+  }, [events, dateRange, customRange]);
+
   const { patterns, statistics, isAnalyzing } = useCarePatternAnalysis({
-    events,
+    events: filteredEvents,
   });
 
   if (isPending || isAnalyzing) {
@@ -46,7 +100,15 @@ export const CarePatternWidget = ({
     return (
       <Card className='w-full'>
         <CardHeader>
-          <h3>Wzorce Opieki</h3>
+          <div className='flex w-full items-center justify-between'>
+            <h3>Wzorce Opieki</h3>
+            <DateRangeSelect
+              value={dateRange}
+              onChange={setDateRange}
+              customRange={customRange}
+              onCustomRangeChange={setCustomRange}
+            />
+          </div>
         </CardHeader>
         <CardBody>
           <Stack contentAlignment='center' style={{ minHeight: '200px' }}>
@@ -65,9 +127,17 @@ export const CarePatternWidget = ({
       <div className='w-full'>
         <div className='mb-1 flex items-center justify-between'>
           <h2>Wykryte Wzorce Opieki</h2>
-          <Chip size='sm' variant='flat' color='primary'>
-            {patterns.length} wzorców
-          </Chip>
+          <div className='flex items-center gap-2'>
+            <Chip size='sm' variant='flat' color='primary'>
+              {patterns.length} wzorców
+            </Chip>
+            <DateRangeSelect
+              value={dateRange}
+              onChange={setDateRange}
+              customRange={customRange}
+              onCustomRangeChange={setCustomRange}
+            />
+          </div>
         </div>
         <small className='text-gray-500'>
           Analiza {statistics.totalCarePeriods} okresów opieki
@@ -131,6 +201,75 @@ export const CarePatternWidget = ({
         </div>
       </div>
     </Stack>
+  );
+};
+
+// Komponent do wyboru zakresu dat
+interface DateRangeSelectProps {
+  value: DateRangeOption;
+  onChange: (value: DateRangeOption) => void;
+  customRange: { start: string; end: string } | null;
+  onCustomRangeChange: (range: { start: string; end: string } | null) => void;
+}
+
+const DateRangeSelect = ({
+  value,
+  onChange,
+  customRange,
+  onCustomRangeChange,
+}: DateRangeSelectProps) => {
+  const options = [
+    { key: 'all', label: 'Całość' },
+    { key: 'last12months', label: 'Ostatnie 12 miesięcy' },
+    { key: 'last6months', label: 'Ostatnie 6 miesięcy' },
+    { key: 'currentYear', label: 'Bieżący rok' },
+    { key: 'custom', label: 'Zakres własny' },
+  ];
+
+  return (
+    <div className='flex items-center gap-2'>
+      <Select
+        size='sm'
+        selectedKeys={[value]}
+        onSelectionChange={(keys) => {
+          const selectedValue = Array.from(keys)[0] as DateRangeOption;
+          onChange(selectedValue);
+        }}
+        className='w-48'
+        aria-label='Wybierz zakres dat'
+      >
+        {options.map((option) => (
+          <SelectItem key={option.key} value={option.key}>
+            {option.label}
+          </SelectItem>
+        ))}
+      </Select>
+
+      {value === 'custom' && (
+        <DateRangePicker
+          size='sm'
+          value={
+            customRange
+              ? {
+                  start: parseDate(customRange.start),
+                  end: parseDate(customRange.end),
+                }
+              : undefined
+          }
+          onChange={(range) => {
+            if (range && range.start && range.end) {
+              onCustomRangeChange({
+                start: range.start.toString(),
+                end: range.end.toString(),
+              });
+            } else {
+              onCustomRangeChange(null);
+            }
+          }}
+          aria-label='Wybierz zakres dat'
+        />
+      )}
+    </div>
   );
 };
 
