@@ -11,11 +11,16 @@
     min-height: 400px;
     background: white;
     border-radius: 12px;
-    padding: 1.5rem;
+    padding: 0.5rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   .chartItemDual {
+    @extend .chartItem;
+    min-height: 300px;
+  }
+
+  .chartItem23 {
     @extend .chartItem;
     min-height: 300px;
   }
@@ -29,15 +34,23 @@
 // Tablet: 2 columns
 @media (min-width: 768px) {
   .chartGrid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 1rem;
 
+    .chartItem {
+      grid-column: span 6;
+    }
+
     .chartItemDual {
-      grid-column: span 2;
+      grid-column: span 6;
+    }
+
+    .chartItem23 {
+      grid-column: span 6;
     }
 
     .chartItemWide {
-      grid-column: span 2;
+      grid-column: span 6;
     }
   }
 }
@@ -45,15 +58,23 @@
 // Desktop: 3 columns
 @media (min-width: 1280px) {
   .chartGrid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 1rem;
 
+    .chartItem {
+      grid-column: span 3;
+    }
+
     .chartItemDual {
-      grid-column: span 2;
+      grid-column: span 3;
+    }
+
+    .chartItem23 {
+      grid-column: span 3;
     }
 
     .chartItemWide {
-      grid-column: span 3;
+      grid-column: span 6;
     }
   }
 }
@@ -61,15 +82,23 @@
 // Large desktop: 4 columns for smaller charts
 @media (min-width: 1920px) {
   .chartGrid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 1rem;
 
-    .chartItemDual {
+    .chartItem {
       grid-column: span 2;
     }
 
-    .chartItemWide {
+    .chartItemDual {
       grid-column: span 3;
+    }
+
+    .chartItem23 {
+      grid-column: span 4;
+    }
+
+    .chartItemWide {
+      grid-column: span 6;
     }
   }
 }

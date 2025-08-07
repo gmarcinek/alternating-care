@@ -180,12 +180,6 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
             </div>
             <ButtonGroup size='sm' variant='bordered'>
               <Button
-                color={granularity === 'day' ? 'primary' : 'default'}
-                onClick={() => setGranularity('day')}
-              >
-                Dzień
-              </Button>
-              <Button
                 color={granularity === 'week' ? 'primary' : 'default'}
                 onClick={() => setGranularity('week')}
               >
@@ -294,7 +288,7 @@ export const CareBalanceChartWeighted = (props: CareBalanceChartProps) => {
         </ResponsiveContainer>
       </div>
       {dateRange && (
-        <Stack gap={8}>
+        <Stack gap={8} direction='horizontal'>
           <Chip size='sm' variant='flat'>
             📅 {dateRange.start} - {dateRange.end}
           </Chip>

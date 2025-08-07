@@ -3,6 +3,11 @@
 
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+
+  &.thin {
+    padding-left: 0rem;
+    padding-right: 0rem;
+  }
 }
 
 @media (min-width: 768px) {

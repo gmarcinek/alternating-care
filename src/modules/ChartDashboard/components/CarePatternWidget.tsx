@@ -64,7 +64,7 @@ export const CarePatternWidget = ({
     <Stack>
       <div className='w-full'>
         <div className='mb-1 flex items-center justify-between'>
-          <h3>Wykryte Wzorce Opieki</h3>
+          <h2>Wykryte Wzorce Opieki</h2>
           <Chip size='sm' variant='flat' color='primary'>
             {patterns.length} wzorców
           </Chip>
@@ -187,7 +187,7 @@ const PatternCharacteristics = ({ pattern }: PatternCharacteristicsProps) => {
           <div className='font-medium'>
             Wzorzec długości ({pattern.category}):
           </div>
-          <div className='text-lg font-bold text-blue-600'>
+          <div className='text-grey-600 text-lg font-bold'>
             {pattern.characteristics.mostCommonDuration} dni
           </div>
           <div>
@@ -224,7 +224,7 @@ const PatternCharacteristics = ({ pattern }: PatternCharacteristicsProps) => {
           <div>
             <div className='mb-1 font-medium'>Dni rozpoczęcia:</div>
             {pattern.characteristics.preferredStartDays
-              .slice(0, 3)
+              .slice(0, 1)
               .map((day, i) => (
                 <div key={i} className='flex justify-between'>
                   <span>{day.dayName}</span>
@@ -235,7 +235,7 @@ const PatternCharacteristics = ({ pattern }: PatternCharacteristicsProps) => {
           <div>
             <div className='mb-1 font-medium'>Dni zakończenia:</div>
             {pattern.characteristics.preferredEndDays
-              .slice(0, 3)
+              .slice(0, 1)
               .map((day, i) => (
                 <div key={i} className='flex justify-between'>
                   <span>{day.dayName}</span>

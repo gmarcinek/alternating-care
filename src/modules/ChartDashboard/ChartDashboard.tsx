@@ -6,6 +6,7 @@ import DashboardContainer from '@components/DashboardContainer/DashboardContaine
 import { ErrorMessage } from '@components/ErrorMessage/ErrorMessage';
 import { Stack } from '@components/Stack/Stack';
 import { Spinner } from '@nextui-org/react';
+import { useMediaQuery } from 'react-responsive';
 import styles from './ChartDashboard.module.scss';
 import { AlternatingGradient } from './components/AlternatingGradient';
 import { AnalyticsWidget } from './components/AnalyticsWidget';
@@ -16,6 +17,7 @@ import { RadialTripChart } from './components/RadialTripChart';
 
 export const ChartDashboard = () => {
   const { query } = useGetAllEventsQuery();
+  const isMax768 = useMediaQuery({ query: '(max-width: 767px)' });
 
   if (query.isError) {
     return <ErrorMessage message={'Unexpected error occurred'} />;
@@ -34,17 +36,21 @@ export const ChartDashboard = () => {
   const events = query.data || [];
 
   return (
-    <DashboardContainer>
+    <DashboardContainer thin={isMax768}>
       <div className={styles.chartGrid}>
+        <div className={styles.chartItem23}>
+          <CarePatternWidget events={events} />
+        </div>
+
         <div className={styles.chartItem}>
           <CareBalanceChartWeighted events={events} />
         </div>
 
-        <div className={styles.chartItem}>
+        <div className={styles.chartItemDual}>
           <CumulativeCareChart events={events} />
         </div>
 
-        <div className={styles.chartItem}>
+        <div className={styles.chartItemDual}>
           <RadialTripChart
             events={events}
             isPending={query.isPending}
@@ -56,16 +62,6 @@ export const ChartDashboard = () => {
           <AlternatingGradient events={events} />
         </div>
 
-        <div className={styles.chartItemWide}>
-          <CarePatternWidget events={events} />
-        </div>
-        <div className={styles.chartItem}>
-          <AnalyticsWidget
-            events={events}
-            eventType={[CalendarEventType.Event, CalendarEventType.Medical]}
-            label='Inne'
-          />
-        </div>
         <div className={styles.chartItem}>
           <AnalyticsWidget
             events={events}
@@ -73,6 +69,15 @@ export const ChartDashboard = () => {
             label='Wyjazdy'
           />
         </div>
+
+        <div className={styles.chartItem}>
+          <AnalyticsWidget
+            events={events}
+            eventType={[CalendarEventType.Event, CalendarEventType.Medical]}
+            label='Inne'
+          />
+        </div>
+
         <div className={styles.chartItem}>
           <AnalyticsWidget
             events={events}
