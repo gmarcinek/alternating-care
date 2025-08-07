@@ -59,7 +59,13 @@ export const ChartDashboard = () => {
         <div className={styles.chartItemWide}>
           <CarePatternWidget events={events} />
         </div>
-
+        <div className={styles.chartItem}>
+          <AnalyticsWidget
+            events={events}
+            eventType={[CalendarEventType.Event, CalendarEventType.Medical]}
+            label='Inne'
+          />
+        </div>
         <div className={styles.chartItem}>
           <AnalyticsWidget
             events={events}
@@ -72,13 +78,6 @@ export const ChartDashboard = () => {
             events={events}
             eventType={[CalendarEventType.Camp]}
             label='Obozy/Wycieczki'
-          />
-        </div>
-        <div className={styles.chartItem}>
-          <AnalyticsWidget
-            events={events}
-            eventType={[CalendarEventType.Event, CalendarEventType.Medical]}
-            label='Inne'
           />
         </div>
       </div>
