@@ -61,105 +61,99 @@ export const CarePatternWidget = ({
   }
 
   return (
-    <Card>
-      <CardHeader>
+    <Stack>
+      <div>
+        <div className='mb-1 flex items-center'>
+          <h3>Wykryte Wzorce Opieki</h3>
+          <Chip size='sm' variant='flat' color='primary'>
+            {patterns.length} wzorców
+          </Chip>
+        </div>
+        <small className='text-gray-500'>
+          Analiza {statistics.totalCarePeriods} okresów opieki
+        </small>
+      </div>
+
+      <div className='space-y-8'>
+        {/* Statystyki ogólne */}
         <div>
-          <div className='mb-1 flex items-center'>
-            <h3>Wykryte Wzorce Opieki</h3>
-            <Chip size='sm' variant='flat' color='primary'>
-              {patterns.length} wzorców
-            </Chip>
+          <h4 className='mb-2 text-sm font-semibold'>Podstawowe Statystyki</h4>
+          <div className='grid grid-cols-4 gap-3 text-sm'>
+            <div className='space-y-1'>
+              <div className='flex'>
+                <span>Średnia opieka:</span>
+                <strong>{statistics.averageCareDuration} dni</strong>
+              </div>
+              <div className='flex'>
+                <span>Średnia przerwa:</span>
+                <strong>{statistics.averageBreakDuration} dni</strong>
+              </div>
+              <div className='flex'>
+                <span>Stosunek opieka:przerwa:</span>
+                <strong>{statistics.careToBreakRatio}:1</strong>
+              </div>
+            </div>
+            <div className='space-y-1'>
+              <div className='flex'>
+                <span>Najdłuższa opieka:</span>
+                <strong>{statistics.longestCarePeriod} dni</strong>
+              </div>
+              <div className='flex'>
+                <span>Najkrótsza opieka:</span>
+                <strong>{statistics.shortestCarePeriod} dni</strong>
+              </div>
+              <div className='flex'>
+                <span>Całkowite okresy:</span>
+                <strong>{statistics.totalCarePeriods}</strong>
+              </div>
+            </div>
           </div>
-          <small className='text-gray-500'>
-            Analiza {statistics.totalCarePeriods} okresów opieki
-          </small>
         </div>
-      </CardHeader>
 
-      <CardBody className='pt-0'>
-        <div className='space-y-8'>
-          {/* Statystyki ogólne */}
+        {/* Preferowane dni */}
+        {(statistics.preferredStartDay || statistics.preferredEndDay) && (
           <div>
-            <h4 className='mb-2 text-sm font-semibold'>
-              Podstawowe Statystyki
+            <h4 className='mb-3 text-sm font-semibold'>
+              Preferowane Dni Tygodnia
             </h4>
-            <div className='grid grid-cols-4 gap-3 text-sm'>
-              <div className='space-y-1'>
-                <div className='flex'>
-                  <span>Średnia opieka:</span>
-                  <strong>{statistics.averageCareDuration} dni</strong>
-                </div>
-                <div className='flex'>
-                  <span>Średnia przerwa:</span>
-                  <strong>{statistics.averageBreakDuration} dni</strong>
-                </div>
-                <div className='flex'>
-                  <span>Stosunek opieka:przerwa:</span>
-                  <strong>{statistics.careToBreakRatio}:1</strong>
-                </div>
+            <div className='grid grid-cols-4 gap-4'>
+              <div className='flex items-center'>
+                <span className='text-sm'>Rozpoczęcie opieki:</span>
+                <Chip size='sm' variant='flat' color='secondary'>
+                  {statistics.preferredStartDay}
+                </Chip>
               </div>
-              <div className='space-y-1'>
-                <div className='flex'>
-                  <span>Najdłuższa opieka:</span>
-                  <strong>{statistics.longestCarePeriod} dni</strong>
-                </div>
-                <div className='flex'>
-                  <span>Najkrótsza opieka:</span>
-                  <strong>{statistics.shortestCarePeriod} dni</strong>
-                </div>
-                <div className='flex'>
-                  <span>Całkowite okresy:</span>
-                  <strong>{statistics.totalCarePeriods}</strong>
-                </div>
+              <div className='flex items-center'>
+                <span className='text-sm'>Zakończenie opieki:</span>
+                <Chip size='sm' variant='flat' color='secondary'>
+                  {statistics.preferredEndDay}
+                </Chip>
               </div>
             </div>
           </div>
+        )}
 
-          {/* Preferowane dni */}
-          {(statistics.preferredStartDay || statistics.preferredEndDay) && (
-            <div>
-              <h4 className='mb-3 text-sm font-semibold'>
-                Preferowane Dni Tygodnia
-              </h4>
-              <div className='grid grid-cols-4 gap-4'>
-                <div className='flex items-center'>
-                  <span className='text-sm'>Rozpoczęcie opieki:</span>
-                  <Chip size='sm' variant='flat' color='secondary'>
-                    {statistics.preferredStartDay}
-                  </Chip>
-                </div>
-                <div className='flex items-center'>
-                  <span className='text-sm'>Zakończenie opieki:</span>
-                  <Chip size='sm' variant='flat' color='secondary'>
-                    {statistics.preferredEndDay}
-                  </Chip>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Okres analizy */}
-          <div>
-            <h4 className='mb-2 text-sm font-semibold'>Okres Analizy</h4>
-            <div className='text-sm text-gray-600'>
-              <div>Od: {statistics.analysisDateRange.start}</div>
-              <div>Do: {statistics.analysisDateRange.end}</div>
-              <div>Łącznie: {statistics.analysisDateRange.totalDays} dni</div>
-            </div>
-          </div>
-
-          {/* Wykryte wzorce */}
-          <div>
-            <h4 className='mb-3 text-sm font-semibold'>Wykryte Wzorce</h4>
-            <div className='grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-3'>
-              {patterns.map((pattern, index) => (
-                <PatternCard key={index} pattern={pattern} />
-              ))}
-            </div>
+        {/* Okres analizy */}
+        <div>
+          <h4 className='mb-2 text-sm font-semibold'>Okres Analizy</h4>
+          <div className='text-sm text-gray-600'>
+            <div>Od: {statistics.analysisDateRange.start}</div>
+            <div>Do: {statistics.analysisDateRange.end}</div>
+            <div>Łącznie: {statistics.analysisDateRange.totalDays} dni</div>
           </div>
         </div>
-      </CardBody>
-    </Card>
+
+        {/* Wykryte wzorce */}
+        <div>
+          <h4 className='mb-3 text-sm font-semibold'>Wykryte Wzorce</h4>
+          <div className='grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-3'>
+            {patterns.map((pattern, index) => (
+              <PatternCard key={index} pattern={pattern} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </Stack>
   );
 };
 
