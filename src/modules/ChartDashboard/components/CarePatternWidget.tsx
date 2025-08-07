@@ -103,35 +103,12 @@ export const CarePatternWidget = ({
                 <strong>{statistics.shortestCarePeriod} dni</strong>
               </div>
               <div className='flex justify-between'>
-                <span>Całkowite okresy:</span>
-                <strong>{statistics.totalCarePeriods}</strong>
+                <span>Najdłuższa przerwa:</span>
+                <strong>{statistics.longestBreak} dni</strong>
               </div>
             </div>
           </div>
         </div>
-
-        {/* Preferowane dni */}
-        {(statistics.preferredStartDay || statistics.preferredEndDay) && (
-          <div>
-            <h4 className='mb-3 text-sm font-semibold'>
-              Preferowane Dni Tygodnia
-            </h4>
-            <div className='grid grid-cols-2 gap-4'>
-              <div className='flex items-center justify-between'>
-                <span className='text-sm'>Rozpoczęcie opieki:</span>
-                <Chip size='sm' variant='flat' color='secondary'>
-                  {statistics.preferredStartDay}
-                </Chip>
-              </div>
-              <div className='flex items-center justify-between'>
-                <span className='text-sm'>Zakończenie opieki:</span>
-                <Chip size='sm' variant='flat' color='secondary'>
-                  {statistics.preferredEndDay}
-                </Chip>
-              </div>
-            </div>
-          </div>
-        )}
 
         {/* Okres analizy */}
         <div>
@@ -191,13 +168,13 @@ const PatternCard = ({ pattern }: PatternCardProps) => {
       {/* Szczegóły wzorca */}
       <div className='text-xs text-gray-600'>{pattern.details}</div>
 
-      {/* Charakterystyki specyficzne dla typu wzorca */}
+      {/* Charakterystyki wzorca */}
       <PatternCharacteristics pattern={pattern} />
     </div>
   );
 };
 
-// Komponent dla charakterystyk wzorca
+// Charakterystyki wzorca
 interface PatternCharacteristicsProps {
   pattern: CarePattern;
 }
@@ -227,12 +204,16 @@ const PatternCharacteristics = ({ pattern }: PatternCharacteristicsProps) => {
       return (
         <div className='space-y-1 rounded bg-gray-50 p-2 text-xs'>
           <div className='font-medium'>Charakterystyki cyklu:</div>
-          <div>Długość cyklu: {pattern.characteristics.cycleLength} dni</div>
+          <div className='text-lg font-bold text-blue-600'>
+            Długość cyklu: {pattern.characteristics.cycleLength} dni
+          </div>
           <div>
             Stosunek opieka:przerwa: {pattern.characteristics.careToBreakRatio}
             :1
           </div>
-          <div>Regularność: {pattern.characteristics.regularity * 100}%</div>
+          <div>
+            Regularność: {Math.round(pattern.characteristics.regularity * 100)}%
+          </div>
         </div>
       );
 
@@ -265,23 +246,6 @@ const PatternCharacteristics = ({ pattern }: PatternCharacteristicsProps) => {
         </div>
       );
 
-    case 'seasonal':
-      return (
-        <div className='space-y-2 rounded bg-gray-50 p-2 text-xs'>
-          <div className='font-medium'>Trendy sezonowe:</div>
-          {pattern.characteristics.seasonalTrends.map((trend, i) => (
-            <div key={i} className='border-l-2 border-gray-300 pl-2'>
-              <div className='font-medium capitalize'>
-                {getSeasonName(trend.season)}
-              </div>
-              <div>Średnia opieka: {trend.averageCareDuration} dni</div>
-              <div>Średnia przerwa: {trend.averageBreakDuration} dni</div>
-              <div>Częstość: {Math.round(trend.frequency * 100)}%</div>
-            </div>
-          ))}
-        </div>
-      );
-
     default:
       return null;
   }
@@ -291,9 +255,8 @@ const PatternCharacteristics = ({ pattern }: PatternCharacteristicsProps) => {
 function getPatternTypeLabel(type: CarePattern['type']): string {
   const labels: Record<CarePattern['type'], string> = {
     duration: 'Długość',
-    cycle: 'Cykliczny',
     weekly: 'Tygodniowy',
-    seasonal: 'Sezonowy',
+    cycle: 'Cykliczny',
   };
   return labels[type];
 }
@@ -306,21 +269,8 @@ function getPatternColor(
     'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'danger'
   > = {
     duration: 'default',
-    cycle: 'primary',
     weekly: 'success',
-    seasonal: 'secondary',
+    cycle: 'primary',
   };
   return colors[type];
-}
-
-function getSeasonName(
-  season: 'spring' | 'summer' | 'autumn' | 'winter'
-): string {
-  const names = {
-    spring: 'wiosna',
-    summer: 'lato',
-    autumn: 'jesień',
-    winter: 'zima',
-  };
-  return names[season];
 }
