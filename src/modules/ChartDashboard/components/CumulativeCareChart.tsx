@@ -8,7 +8,7 @@ const CHART_COLORS = {
 };
 
 const CHART_CONFIG = {
-  height: 400,
+  height: 450,
   strokeWidth: 3,
   defaultGranularity: 'month' as const,
 };
