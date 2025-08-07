@@ -359,37 +359,60 @@ export function detectDurationPatterns(
   // Analiza wzorców długości opieki
   if (periods.length >= 3) {
     const durations = periods.map((p) => p.duration);
-    const avgDuration =
-      durations.reduce((sum, d) => sum + d, 0) / durations.length;
-    const variance =
-      durations.reduce((sum, d) => sum + Math.pow(d - avgDuration, 2), 0) /
-      durations.length;
-    const stdDev = Math.sqrt(variance);
 
-    // Znajdź najczęstszą długość
+    // Znajdź najczęstszą długość (MODA - to jest prawdziwy wzorzec!)
     const durationCounts: Record<number, number> = {};
     durations.forEach((d) => {
       durationCounts[d] = (durationCounts[d] || 0) + 1;
     });
-    const mostCommonEntry = Object.entries(durationCounts).sort(
+
+    const sortedByFrequency = Object.entries(durationCounts).sort(
       ([, a], [, b]) => b - a
-    )[0];
+    );
+    const mostCommonEntry = sortedByFrequency[0];
 
-    if (mostCommonEntry && avgDuration > 0) {
-      const consistency = 1 - stdDev / avgDuration;
-      const confidence = Math.min(Math.max(consistency, 0), 1);
+    if (mostCommonEntry) {
+      const mostCommonDuration = parseInt(mostCommonEntry[0]);
+      const mostCommonCount = mostCommonEntry[1];
+      const totalPeriods = durations.length;
 
-      if (confidence > 0.3) {
+      // Confidence = jak często występuje najczęstsza wartość
+      const frequency = mostCommonCount / totalPeriods;
+      const confidence = frequency;
+
+      // Dodatkowe punkty jeśli druga najczęstsza wartość jest blisko
+      const secondMostCommon = sortedByFrequency[1];
+      let bonusConfidence = 0;
+      if (secondMostCommon) {
+        const secondDuration = parseInt(secondMostCommon[0]);
+        const secondCount = secondMostCommon[1];
+        // Jeśli druga wartość różni się o 1-2 dni, to też wskazuje na wzorzec
+        if (Math.abs(secondDuration - mostCommonDuration) <= 2) {
+          bonusConfidence = (secondCount / totalPeriods) * 0.5;
+        }
+      }
+
+      const finalConfidence = Math.min(confidence + bonusConfidence, 1);
+
+      if (finalConfidence > 0.3) {
+        // Średnia tylko dla kontekstu
+        const avgDuration =
+          durations.reduce((sum, d) => sum + d, 0) / durations.length;
+        const variance =
+          durations.reduce((sum, d) => sum + Math.pow(d - avgDuration, 2), 0) /
+          durations.length;
+        const stdDev = Math.sqrt(variance);
+
         patterns.push({
           type: 'duration',
           category: 'care',
-          description: `Preferowana długość opieki: ${Math.round(avgDuration)} dni`,
-          details: `Najczęściej: ${mostCommonEntry[0]} dni (${mostCommonEntry[1]} razy). Odchylenie: ±${Math.round(stdDev * 10) / 10} dni`,
-          confidence,
+          description: `Najczęściej: ${mostCommonDuration} dni opieki`,
+          details: `${mostCommonCount} z ${totalPeriods} okresów (${Math.round(frequency * 100)}%). ${secondMostCommon ? `Druga częsta: ${secondMostCommon[0]} dni` : ''}`,
+          confidence: finalConfidence,
           characteristics: {
             averageDuration: Math.round(avgDuration * 10) / 10,
             standardDeviation: Math.round(stdDev * 10) / 10,
-            mostCommonDuration: parseInt(mostCommonEntry[0]),
+            mostCommonDuration,
             durationRange: {
               min: Math.min(...durations),
               max: Math.max(...durations),
@@ -403,36 +426,55 @@ export function detectDurationPatterns(
   // Analiza wzorców długości przerw
   if (breaks.length >= 3) {
     const durations = breaks.map((b) => b.duration);
-    const avgDuration =
-      durations.reduce((sum, d) => sum + d, 0) / durations.length;
-    const variance =
-      durations.reduce((sum, d) => sum + Math.pow(d - avgDuration, 2), 0) /
-      durations.length;
-    const stdDev = Math.sqrt(variance);
 
     const durationCounts: Record<number, number> = {};
     durations.forEach((d) => {
       durationCounts[d] = (durationCounts[d] || 0) + 1;
     });
-    const mostCommonEntry = Object.entries(durationCounts).sort(
+
+    const sortedByFrequency = Object.entries(durationCounts).sort(
       ([, a], [, b]) => b - a
-    )[0];
+    );
+    const mostCommonEntry = sortedByFrequency[0];
 
-    if (mostCommonEntry && avgDuration > 0) {
-      const consistency = 1 - stdDev / avgDuration;
-      const confidence = Math.min(Math.max(consistency, 0), 1);
+    if (mostCommonEntry) {
+      const mostCommonDuration = parseInt(mostCommonEntry[0]);
+      const mostCommonCount = mostCommonEntry[1];
+      const totalBreaks = durations.length;
 
-      if (confidence > 0.3) {
+      const frequency = mostCommonCount / totalBreaks;
+      const confidence = frequency;
+
+      const secondMostCommon = sortedByFrequency[1];
+      let bonusConfidence = 0;
+      if (secondMostCommon) {
+        const secondDuration = parseInt(secondMostCommon[0]);
+        const secondCount = secondMostCommon[1];
+        if (Math.abs(secondDuration - mostCommonDuration) <= 2) {
+          bonusConfidence = (secondCount / totalBreaks) * 0.5;
+        }
+      }
+
+      const finalConfidence = Math.min(confidence + bonusConfidence, 1);
+
+      if (finalConfidence > 0.3) {
+        const avgDuration =
+          durations.reduce((sum, d) => sum + d, 0) / durations.length;
+        const variance =
+          durations.reduce((sum, d) => sum + Math.pow(d - avgDuration, 2), 0) /
+          durations.length;
+        const stdDev = Math.sqrt(variance);
+
         patterns.push({
           type: 'duration',
           category: 'break',
-          description: `Preferowana długość przerwy: ${Math.round(avgDuration)} dni`,
-          details: `Najczęściej: ${mostCommonEntry[0]} dni (${mostCommonEntry[1]} razy). Odchylenie: ±${Math.round(stdDev * 10) / 10} dni`,
-          confidence,
+          description: `Najczęściej: ${mostCommonDuration} dni przerwy`,
+          details: `${mostCommonCount} z ${totalBreaks} przerw (${Math.round(frequency * 100)}%). ${secondMostCommon ? `Druga częsta: ${secondMostCommon[0]} dni` : ''}`,
+          confidence: finalConfidence,
           characteristics: {
             averageDuration: Math.round(avgDuration * 10) / 10,
             standardDeviation: Math.round(stdDev * 10) / 10,
-            mostCommonDuration: parseInt(mostCommonEntry[0]),
+            mostCommonDuration,
             durationRange: {
               min: Math.min(...durations),
               max: Math.max(...durations),
@@ -448,11 +490,133 @@ export function detectDurationPatterns(
 
 export function detectCyclicPatterns(
   periods: CarePeriod[],
-  breaks: CareBreak[]
+  breaks: CareBreak[],
+  durationPatterns: DurationPattern[]
 ): CyclicPattern[] {
   const patterns: CyclicPattern[] = [];
 
-  if (periods.length >= 3 && breaks.length >= 2) {
+  if (
+    periods.length >= 3 &&
+    breaks.length >= 2 &&
+    durationPatterns.length >= 2
+  ) {
+    // KROK 1: Znajdź wzorce długości opieki i przerw
+    const carePattern = durationPatterns.find((p) => p.category === 'care');
+    const breakPattern = durationPatterns.find((p) => p.category === 'break');
+
+    if (carePattern && breakPattern) {
+      // KROK 2: Oblicz teoretyczny cykl z wzorców
+      const theoreticalCycle =
+        carePattern.characteristics.mostCommonDuration +
+        breakPattern.characteristics.mostCommonDuration;
+
+      // KROK 3: Sprawdź rzeczywiste cykle
+      const actualCycleLengths: number[] = [];
+
+      for (let i = 0; i < Math.min(periods.length - 1, breaks.length); i++) {
+        const actualCycle = periods[i].duration + breaks[i].duration;
+        actualCycleLengths.push(actualCycle);
+      }
+
+      if (actualCycleLengths.length > 0) {
+        // KROK 4: Sprawdź ile rzeczywistych cykli pasuje do teoretycznego (±3 dni tolerancja)
+        const tolerance = 3;
+        const matchingCycles = actualCycleLengths.filter(
+          (cycle) => Math.abs(cycle - theoreticalCycle) <= tolerance
+        );
+
+        const matchRate = matchingCycles.length / actualCycleLengths.length;
+
+        // KROK 5: Confidence = jak dobrze rzeczywistość pasuje do wzorca
+        const patternStrength = Math.min(
+          carePattern.confidence,
+          breakPattern.confidence
+        );
+        const cycleConsistency = matchRate;
+        const confidence = (patternStrength + cycleConsistency) / 2;
+
+        if (confidence > 0.3) {
+          // Obniżony próg z 0.4 na 0.3
+          const totalCareDays = periods.reduce((sum, p) => sum + p.duration, 0);
+          const totalBreakDays = breaks.reduce((sum, b) => sum + b.duration, 0);
+          const careToBreakRatio =
+            totalBreakDays > 0 ? totalCareDays / totalBreakDays : 0;
+
+          patterns.push({
+            type: 'cycle',
+            description: `Cykl: ${carePattern.characteristics.mostCommonDuration}+${breakPattern.characteristics.mostCommonDuration} = ${theoreticalCycle} dni`,
+            details: `${matchingCycles.length} z ${actualCycleLengths.length} cykli pasuje do wzorca (${Math.round(matchRate * 100)}%). Stosunek ${Math.round(careToBreakRatio * 100) / 100}:1`,
+            confidence,
+            characteristics: {
+              cycleLength: theoreticalCycle, // Z WZORCÓW, nie ze średniej!
+              careToBreakRatio: Math.round(careToBreakRatio * 100) / 100,
+              regularity: Math.round(cycleConsistency * 100) / 100,
+            },
+          });
+        }
+      }
+    }
+  }
+
+  // FALLBACK: Jeśli wzorce są za słabe ale istnieją, spróbuj i tak
+  if (
+    patterns.length === 0 &&
+    durationPatterns.length >= 1 &&
+    periods.length >= 3 &&
+    breaks.length >= 2
+  ) {
+    const carePattern = durationPatterns.find((p) => p.category === 'care');
+    const breakPattern = durationPatterns.find((p) => p.category === 'break');
+
+    if (carePattern || breakPattern) {
+      console.log('Używam fallback dla słabych wzorców...');
+      // Użyj dostępnych wzorców nawet jeśli słabe
+      const careDuration =
+        carePattern?.characteristics.mostCommonDuration || 10; // domyślna
+      const breakDuration =
+        breakPattern?.characteristics.mostCommonDuration || 10; // domyślna
+      const theoreticalCycle = careDuration + breakDuration;
+
+      const actualCycleLengths: number[] = [];
+      for (let i = 0; i < Math.min(periods.length - 1, breaks.length); i++) {
+        const actualCycle = periods[i].duration + breaks[i].duration;
+        actualCycleLengths.push(actualCycle);
+      }
+
+      if (actualCycleLengths.length > 0) {
+        const tolerance = 4; // większa tolerancja dla słabych wzorców
+        const matchingCycles = actualCycleLengths.filter(
+          (cycle) => Math.abs(cycle - theoreticalCycle) <= tolerance
+        );
+
+        const matchRate = matchingCycles.length / actualCycleLengths.length;
+        const confidence = matchRate * 0.8; // penalty za słabe wzorce
+
+        if (confidence > 0.25) {
+          // jeszcze niższy próg
+          const totalCareDays = periods.reduce((sum, p) => sum + p.duration, 0);
+          const totalBreakDays = breaks.reduce((sum, b) => sum + b.duration, 0);
+          const careToBreakRatio =
+            totalBreakDays > 0 ? totalCareDays / totalBreakDays : 0;
+
+          patterns.push({
+            type: 'cycle',
+            description: `Możliwy cykl: ${careDuration}+${breakDuration} = ${theoreticalCycle} dni`,
+            details: `${matchingCycles.length} z ${actualCycleLengths.length} cykli podobnych (${Math.round(matchRate * 100)}%). Stosunek ${Math.round(careToBreakRatio * 100) / 100}:1`,
+            confidence,
+            characteristics: {
+              cycleLength: theoreticalCycle,
+              careToBreakRatio: Math.round(careToBreakRatio * 100) / 100,
+              regularity: Math.round(matchRate * 100) / 100,
+            },
+          });
+        }
+      }
+    }
+  }
+
+  // FALLBACK OSTATECZNY: Jeśli nie ma wzorców długości, użyj starej metody
+  if (patterns.length === 0 && periods.length >= 3 && breaks.length >= 2) {
     const cycleLengths: number[] = [];
 
     for (let i = 0; i < Math.min(periods.length - 1, breaks.length); i++) {
@@ -461,35 +625,41 @@ export function detectCyclicPatterns(
     }
 
     if (cycleLengths.length > 0) {
-      const avgCycleLength =
-        cycleLengths.reduce((sum, len) => sum + len, 0) / cycleLengths.length;
-      const variance =
-        cycleLengths.reduce(
-          (sum, len) => sum + Math.pow(len - avgCycleLength, 2),
-          0
-        ) / cycleLengths.length;
-      const stdDev = Math.sqrt(variance);
+      const cycleCounts: Record<number, number> = {};
+      cycleLengths.forEach((len) => {
+        const rounded = Math.round(len / 2) * 2;
+        cycleCounts[rounded] = (cycleCounts[rounded] || 0) + 1;
+      });
 
-      const regularity = avgCycleLength > 0 ? 1 - stdDev / avgCycleLength : 0;
-      const confidence = Math.min(Math.max(regularity, 0), 1);
+      const sortedByFrequency = Object.entries(cycleCounts).sort(
+        ([, a], [, b]) => b - a
+      );
+      const mostCommonEntry = sortedByFrequency[0];
 
-      const totalCareDays = periods.reduce((sum, p) => sum + p.duration, 0);
-      const totalBreakDays = breaks.reduce((sum, b) => sum + b.duration, 0);
-      const careToBreakRatio =
-        totalBreakDays > 0 ? totalCareDays / totalBreakDays : 0;
+      if (mostCommonEntry) {
+        const mostCommonCycle = parseInt(mostCommonEntry[0]);
+        const mostCommonCount = mostCommonEntry[1];
+        const totalCycles = cycleLengths.length;
+        const frequency = mostCommonCount / totalCycles;
 
-      if (confidence > 0.4) {
-        patterns.push({
-          type: 'cycle',
-          description: `Cykliczny wzorzec opieki: ${Math.round(avgCycleLength)} dni`,
-          details: `Regularność: ${Math.round(regularity * 100)}%. Stosunek opieka:przerwa = ${Math.round(careToBreakRatio * 100) / 100}:1`,
-          confidence,
-          characteristics: {
-            cycleLength: Math.round(avgCycleLength * 10) / 10,
-            careToBreakRatio: Math.round(careToBreakRatio * 100) / 100,
-            regularity: Math.round(regularity * 100) / 100,
-          },
-        });
+        if (frequency > 0.4) {
+          const totalCareDays = periods.reduce((sum, p) => sum + p.duration, 0);
+          const totalBreakDays = breaks.reduce((sum, b) => sum + b.duration, 0);
+          const careToBreakRatio =
+            totalBreakDays > 0 ? totalCareDays / totalBreakDays : 0;
+
+          patterns.push({
+            type: 'cycle',
+            description: `Najczęstszy cykl: ${mostCommonCycle} dni`,
+            details: `${mostCommonCount} z ${totalCycles} cykli. Stosunek opieka:przerwa = ${Math.round(careToBreakRatio * 100) / 100}:1`,
+            confidence: frequency,
+            characteristics: {
+              cycleLength: mostCommonCycle,
+              careToBreakRatio: Math.round(careToBreakRatio * 100) / 100,
+              regularity: Math.round(frequency * 100) / 100,
+            },
+          });
+        }
       }
     }
   }
@@ -699,11 +869,25 @@ export function analyzeCarePatterns(events: CalendarEvent[]): {
   const careBreaks = calculateBreaks(carePeriods);
   const statistics = calculateStatistics(carePeriods, careBreaks);
 
+  // KROK 1: Wykryj wzorce długości NAJPIERW
+  const durationPatterns = detectDurationPatterns(carePeriods, careBreaks);
+
+  // KROK 2: Potem wykryj cykliczność na bazie wzorców długości
+  const cyclicPatterns = detectCyclicPatterns(
+    carePeriods,
+    careBreaks,
+    durationPatterns
+  );
+
+  // KROK 3: Pozostałe wzorce
+  const weeklyPatterns = detectWeeklyPatterns(carePeriods);
+  const seasonalPatterns = detectSeasonalPatterns(carePeriods, careBreaks);
+
   const allPatterns: CarePattern[] = [
-    ...detectDurationPatterns(carePeriods, careBreaks),
-    ...detectCyclicPatterns(carePeriods, careBreaks),
-    ...detectWeeklyPatterns(carePeriods),
-    ...detectSeasonalPatterns(carePeriods, careBreaks),
+    ...durationPatterns,
+    ...cyclicPatterns, // Teraz bazują na wzorcach długości!
+    ...weeklyPatterns,
+    ...seasonalPatterns,
   ];
 
   // Sortuj wzorce według pewności

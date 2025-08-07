@@ -62,8 +62,8 @@ export const CarePatternWidget = ({
 
   return (
     <Stack>
-      <div>
-        <div className='mb-1 flex items-center'>
+      <div className='w-full'>
+        <div className='mb-1 flex items-center justify-between'>
           <h3>Wykryte Wzorce Opieki</h3>
           <Chip size='sm' variant='flat' color='primary'>
             {patterns.length} wzorców
@@ -78,31 +78,31 @@ export const CarePatternWidget = ({
         {/* Statystyki ogólne */}
         <div>
           <h4 className='mb-2 text-sm font-semibold'>Podstawowe Statystyki</h4>
-          <div className='grid grid-cols-4 gap-3 text-sm'>
+          <div className='grid grid-cols-2 gap-3 text-sm'>
             <div className='space-y-1'>
-              <div className='flex'>
+              <div className='flex justify-between'>
                 <span>Średnia opieka:</span>
                 <strong>{statistics.averageCareDuration} dni</strong>
               </div>
-              <div className='flex'>
+              <div className='flex justify-between'>
                 <span>Średnia przerwa:</span>
                 <strong>{statistics.averageBreakDuration} dni</strong>
               </div>
-              <div className='flex'>
+              <div className='flex justify-between'>
                 <span>Stosunek opieka:przerwa:</span>
                 <strong>{statistics.careToBreakRatio}:1</strong>
               </div>
             </div>
             <div className='space-y-1'>
-              <div className='flex'>
+              <div className='flex justify-between'>
                 <span>Najdłuższa opieka:</span>
                 <strong>{statistics.longestCarePeriod} dni</strong>
               </div>
-              <div className='flex'>
+              <div className='flex justify-between'>
                 <span>Najkrótsza opieka:</span>
                 <strong>{statistics.shortestCarePeriod} dni</strong>
               </div>
-              <div className='flex'>
+              <div className='flex justify-between'>
                 <span>Całkowite okresy:</span>
                 <strong>{statistics.totalCarePeriods}</strong>
               </div>
@@ -116,14 +116,14 @@ export const CarePatternWidget = ({
             <h4 className='mb-3 text-sm font-semibold'>
               Preferowane Dni Tygodnia
             </h4>
-            <div className='grid grid-cols-4 gap-4'>
-              <div className='flex items-center'>
+            <div className='grid grid-cols-2 gap-4'>
+              <div className='flex items-center justify-between'>
                 <span className='text-sm'>Rozpoczęcie opieki:</span>
                 <Chip size='sm' variant='flat' color='secondary'>
                   {statistics.preferredStartDay}
                 </Chip>
               </div>
-              <div className='flex items-center'>
+              <div className='flex items-center justify-between'>
                 <span className='text-sm'>Zakończenie opieki:</span>
                 <Chip size='sm' variant='flat' color='secondary'>
                   {statistics.preferredEndDay}
@@ -208,18 +208,17 @@ const PatternCharacteristics = ({ pattern }: PatternCharacteristicsProps) => {
       return (
         <div className='space-y-1 rounded bg-gray-50 p-2 text-xs'>
           <div className='font-medium'>
-            Charakterystyki długości ({pattern.category}):
+            Wzorzec długości ({pattern.category}):
           </div>
-          <div>Średnia: {pattern.characteristics.averageDuration} dni</div>
-          <div>
-            Najczęściej: {pattern.characteristics.mostCommonDuration} dni
+          <div className='text-lg font-bold text-blue-600'>
+            {pattern.characteristics.mostCommonDuration} dni
           </div>
           <div>
             Zakres: {pattern.characteristics.durationRange.min}-
             {pattern.characteristics.durationRange.max} dni
           </div>
-          <div>
-            Odchylenie: ±{pattern.characteristics.standardDeviation} dni
+          <div className='text-gray-500'>
+            Średnia: {pattern.characteristics.averageDuration} dni
           </div>
         </div>
       );
