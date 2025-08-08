@@ -44,7 +44,7 @@ export const useDashboardEventForm = (props: useDashboardEventFormProps) => {
   const [backgroundColor, setBackgroundColor] = useState('#009688');
   const [textColor, setTextColor] = useState(defaultTextColor);
 
-  const { language } = useAppContext();
+  const { language, user } = useAppContext();
   const i18n = dashboardEventFormI18n[language];
 
   const exampleDate = {
@@ -65,9 +65,9 @@ export const useDashboardEventForm = (props: useDashboardEventFormProps) => {
       creationTime: 0,
       groupId: '',
       id: '',
-      issuer: '',
+      issuer: user.id,
     };
-  }, [backgroundColor, description, name, type, exampleDate.date]);
+  }, [backgroundColor, description, name, type, exampleDate.date, user.id]);
 
   const formPutEventMutation = useFormPutEventMutation({
     onSuccess: (data) => {
@@ -110,7 +110,7 @@ export const useDashboardEventForm = (props: useDashboardEventFormProps) => {
         creationTime: new Date().getTime(),
         date,
         type: typeToSave,
-        issuer: 'Admin',
+        issuer: user.id,
         name,
         description,
         style: {
@@ -139,6 +139,7 @@ export const useDashboardEventForm = (props: useDashboardEventFormProps) => {
       formPutEventMutation.mutateAsync,
       selection,
       language,
+      user.id,
     ]
   );
 

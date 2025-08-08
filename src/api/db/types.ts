@@ -1,6 +1,10 @@
 export interface AppUser {
   id: string;
   name: string;
+  email?: string;
+  passwordHash?: string;
+  startDate?: string;
+  countingRange?: string;
 }
 
 export enum CalendarEventType {

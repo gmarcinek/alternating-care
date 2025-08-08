@@ -1,2 +1,2 @@
-export const dbVersion = 7;
+export const dbVersion = 8;
 export const dbName = 'alternatingCareDatabase';

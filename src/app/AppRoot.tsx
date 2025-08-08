@@ -8,7 +8,7 @@ import { Stack } from '@components/Stack/Stack';
 import { SiteNavigation } from '@modules/SiteNavigation/SiteNavigation';
 import { Spinner } from '@nextui-org/react';
 import { SupportedLanguages } from '@utils/lang';
-import { PropsWithChildren, useMemo, useState } from 'react';
+import { PropsWithChildren, useEffect, useMemo, useState } from 'react';
 import { AppConfigurationEffect } from './AppConfigurationEffect';
 import { AppContext, AppContextData, defaultUser } from './AppContext';
 
@@ -29,14 +29,22 @@ export default function AppRoot({ children }: PropsWithChildren) {
   const [language, setLanguage] = useState<SupportedLanguages>(
     (defaultLanguage as SupportedLanguages) ?? SupportedLanguages.Pl
   );
+  const [user, setUser] = useState(defaultUser);
+
+  useEffect(() => {
+    if (usersFetched) {
+      setUser(usersData[0] ?? defaultUser);
+    }
+  }, [usersFetched, usersData]);
 
   const contextData: AppContextData = useMemo(
     () => ({
-      user: usersFetched ? (usersData[0] ?? defaultUser) : defaultUser,
+      user,
+      setUser,
       language,
       setLanguage,
     }),
-    [usersFetched, usersData, language]
+    [user, language]
   );
 
   if (isDbError) {

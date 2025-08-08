@@ -98,6 +98,12 @@ export const useInitDb = () => {
           if (!userStore.indexNames.contains('by-countingRange')) {
             userStore.createIndex('by-countingRange', 'countingRange');
           }
+          if (!userStore.indexNames.contains('by-email')) {
+            userStore.createIndex('by-email', 'email', { unique: true });
+          }
+          if (!userStore.indexNames.contains('by-passwordHash')) {
+            userStore.createIndex('by-passwordHash', 'passwordHash');
+          }
 
           // EVENT
           if (!eventStore.indexNames.contains('by-id')) {
