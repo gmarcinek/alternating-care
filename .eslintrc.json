@@ -4,13 +4,11 @@
     "es2021": true
   },
   "extends": [
-    "next",
-    "prettier",
+    "next/core-web-vitals",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "next/core-web-vitals",
-    "plugin:@next/next/recommended"
+    "prettier"
   ],
   "settings": {
     "next": {
@@ -39,6 +37,8 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-no-undef": "warn",
     "react-hooks/rules-of-hooks": "warn",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "react/prop-types": "off",
+    "no-useless-catch": "warn"
   }
 }

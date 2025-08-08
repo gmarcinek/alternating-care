@@ -134,14 +134,17 @@ export const AuthForm = () => {
       });
       const btn = document.getElementById('googleSignInBtn');
       if (btn) {
-        google.accounts.id.renderButton(btn, { theme: 'outline', size: 'large' });
+        google.accounts.id.renderButton(btn, {
+          theme: 'outline',
+          size: 'large',
+        });
       }
     };
     document.body.appendChild(script);
   }, [handleGoogleResponse]);
 
   return (
-    <form onSubmit={handleSubmit} className='py-8 max-w-md mx-auto'>
+    <form onSubmit={handleSubmit} className='mx-auto max-w-md py-8'>
       <Stack gap={16}>
         {mode === 'register' && (
           <Input
@@ -165,7 +168,7 @@ export const AuthForm = () => {
           onValueChange={setPassword}
           variant='bordered'
         />
-        {error && <p className='text-red-500 text-sm'>{error}</p>}
+        {error && <p className='text-sm text-red-500'>{error}</p>}
         <Button type='submit' color='danger' radius='sm'>
           {mode === 'login' ? 'Zaloguj' : 'Zarejestruj'}
         </Button>
@@ -185,4 +188,3 @@ export const AuthForm = () => {
 };
 
 export default AuthForm;
-
