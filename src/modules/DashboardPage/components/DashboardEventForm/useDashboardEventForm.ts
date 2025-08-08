@@ -3,7 +3,7 @@ import { CalendarEventType } from '@api/db/types';
 import { useAppContext } from '@app/AppContext';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { colorBlueGreen700, getTextColor, white } from '@utils/color';
-import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import { useRouter } from 'next/navigation';
 import {
@@ -100,10 +100,10 @@ export const useDashboardEventForm = (props: useDashboardEventFormProps) => {
       }
 
       const typeToSave = type?.toUpperCase() as CalendarEventType;
-      const groupId = crypto.randomBytes(16).toString('hex');
+      const groupId = uuidv4();
 
       const newEvents = selection.map((date) => ({
-        id: crypto.randomBytes(16).toString('hex'),
+        id: uuidv4(),
 
         groupId:
           typeToSave === CalendarEventType.Alternating ? typeToSave : groupId,

@@ -8,7 +8,7 @@ import { useAppContext } from '@app/AppContext';
 import { useDbContext } from '@api/db/DbContext';
 import { useFormPutUserMutation } from '@api/db/users/useFormPutUserMutation';
 import { AppUser } from '@api/db/types';
-import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 
 const decodeJwt = (token: string) => {
   const base64Url = token.split('.')[1];
@@ -34,20 +34,38 @@ export const AuthForm = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
 
+  const hashPassword = useCallback(async (pwd: string) => {
+    const data = new TextEncoder().encode(pwd);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(hashBuffer))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
+  }, []);
+
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
       if (!db) return;
       setError(null);
 
+      const transaction = db.transaction('users', 'readonly');
+      const store = transaction.objectStore('users');
+      const index = store.index('by-email');
+
       if (mode === 'register') {
         if (!email || !password || !name) {
           setError('Wypełnij wszystkie pola');
           return;
         }
-        const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+        const existing = (await index.get(email)) as AppUser | undefined;
+        await transaction.done;
+        if (existing) {
+          setError('Użytkownik z takim e-mailem już istnieje');
+          return;
+        }
+        const passwordHash = await hashPassword(password);
         const newUser: AppUser = {
-          id: crypto.randomBytes(16).toString('hex'),
+          id: uuidv4(),
           name,
           email,
           passwordHash,
@@ -59,16 +77,13 @@ export const AuthForm = () => {
           setError('Wypełnij wszystkie pola');
           return;
         }
-        const transaction = db.transaction('users', 'readonly');
-        const store = transaction.objectStore('users');
-        const index = store.index('by-email');
         const existing = (await index.get(email)) as AppUser | undefined;
         await transaction.done;
         if (!existing) {
           setError('Nie znaleziono użytkownika');
           return;
         }
-        const passwordHash = crypto.createHash('sha256').update(password).digest('hex');
+        const passwordHash = await hashPassword(password);
         if (existing.passwordHash !== passwordHash) {
           setError('Błędne hasło');
           return;
@@ -76,7 +91,7 @@ export const AuthForm = () => {
         setUser(existing);
       }
     },
-    [db, email, mode, name, password, saveUser, setUser]
+    [db, email, hashPassword, mode, name, password, saveUser, setUser]
   );
 
   const handleGoogleResponse = useCallback(
@@ -98,19 +113,29 @@ export const AuthForm = () => {
   );
 
   useEffect(() => {
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      console.warn('Missing NEXT_PUBLIC_GOOGLE_CLIENT_ID');
+      return;
+    }
+
+    if (document.getElementById('gsi-client')) return;
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
     script.defer = true;
+    script.id = 'gsi-client';
     script.onload = () => {
-      (window as any).google?.accounts.id.initialize({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      const google = (window as any).google;
+      if (!google) return;
+      google.accounts.id.initialize({
+        client_id: clientId,
         callback: handleGoogleResponse,
       });
-      (window as any).google?.accounts.id.renderButton(
-        document.getElementById('googleSignInBtn'),
-        { theme: 'outline', size: 'large' }
-      );
+      const btn = document.getElementById('googleSignInBtn');
+      if (btn) {
+        google.accounts.id.renderButton(btn, { theme: 'outline', size: 'large' });
+      }
     };
     document.body.appendChild(script);
   }, [handleGoogleResponse]);

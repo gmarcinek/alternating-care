@@ -1,7 +1,7 @@
 import { CalendarEvent, CalendarEventType } from '@api/db/types';
 import { CalendarDayType } from '@components/Calendar/Calendar.types';
 import { useMutation } from '@tanstack/react-query';
-import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
 import { useAppContext } from '@app/AppContext';
 import { useDbContext } from '../../../api/db/DbContext';
 
@@ -56,7 +56,7 @@ export const useUpsertEventsMutation = (
 
           if (!existingEventsDates.includes(date.date)) {
             const newEvent: CalendarEvent = {
-              id: crypto.randomBytes(16).toString('hex'),
+              id: uuidv4(),
               date: date.date,
               groupId, // edytowana grupa
               type,
