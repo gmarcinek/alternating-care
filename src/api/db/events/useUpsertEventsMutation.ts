@@ -1,7 +1,8 @@
 import { CalendarEvent, CalendarEventType } from '@api/db/types';
 import { CalendarDayType } from '@components/Calendar/Calendar.types';
 import { useMutation } from '@tanstack/react-query';
-import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
+import { useAppContext } from '@app/AppContext';
 import { useDbContext } from '../../../api/db/DbContext';
 
 export const useUpsertEventsMutation = (
@@ -13,6 +14,7 @@ export const useUpsertEventsMutation = (
 ) => {
   const { onSuccess = () => {}, onError = () => {} } = props;
   const { db } = useDbContext(); // Pobieramy instancję bazy danych z kontekstu
+  const { user } = useAppContext();
 
   const mutation = useMutation({
     mutationFn: async (dates: CalendarDayType[]) => {
@@ -54,14 +56,14 @@ export const useUpsertEventsMutation = (
 
           if (!existingEventsDates.includes(date.date)) {
             const newEvent: CalendarEvent = {
-              id: crypto.randomBytes(16).toString('hex'),
+              id: uuidv4(),
               date: date.date,
               groupId, // edytowana grupa
               type,
               name,
               description,
               creationTime: Date.now(),
-              issuer: 'Admin',
+              issuer: user.id,
               style,
             };
             await store.put(newEvent);

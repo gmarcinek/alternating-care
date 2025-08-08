@@ -10,6 +10,8 @@ export interface AlternatingCareDBSchema extends DBSchema {
       'by-name': string;
       'by-startDate': string;
       'by-countingRange': string;
+      'by-email': string;
+      'by-passwordHash': string;
     };
   };
   events: {
