@@ -34,3 +34,21 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Local PouchDB with Docker
+
+This repository includes a minimal configuration for running a local [PouchDB](https://pouchdb.com/) server using Docker.
+
+Start the database with:
+
+```bash
+docker-compose up -d pouchdb
+```
+
+The server will be available at [http://localhost:5984](http://localhost:5984) and stores its data in the `pouchdb-data/` directory.
+
+Stop the database with:
+
+```bash
+docker-compose down
+```
