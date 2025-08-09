@@ -9,6 +9,7 @@ import { SiteNavigation } from '@modules/SiteNavigation/SiteNavigation';
 import { Spinner } from '@nextui-org/react';
 import { SupportedLanguages } from '@utils/lang';
 import { PropsWithChildren, useMemo, useState } from 'react';
+import { AuthProvider } from '../auth/AuthContext';
 import { AppConfigurationEffect } from './AppConfigurationEffect';
 import { AppContext, AppContextData, defaultUser } from './AppContext';
 
@@ -62,11 +63,13 @@ export default function AppRoot({ children }: PropsWithChildren) {
 
   return (
     <DbProvider db={dbInstance}>
-      <AppContext.Provider value={contextData}>
-        <AppConfigurationEffect />
-        <SiteNavigation />
-        {children}
-      </AppContext.Provider>
+      <AuthProvider>
+        <AppContext.Provider value={contextData}>
+          <AppConfigurationEffect />
+          <SiteNavigation />
+          {children}
+        </AppContext.Provider>
+      </AuthProvider>
     </DbProvider>
   );
 }

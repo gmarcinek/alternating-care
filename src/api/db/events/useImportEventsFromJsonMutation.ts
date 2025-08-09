@@ -3,66 +3,90 @@ import { useMutation } from '@tanstack/react-query';
 import { useDbContext } from '../../../api/db/DbContext';
 
 export const useImportEventsFromJsonMutation = (
-  groupId: string, // Dodanie groupId jako parametru
+  groupId: string,
   props: {
     onSuccess?: () => void;
     onError?: (error: unknown) => void;
   } = {}
 ) => {
   const { onSuccess = () => {}, onError = () => {} } = props;
-  const { db } = useDbContext(); // Pobieramy instancję bazy danych z kontekstu
+  const { db } = useDbContext();
 
   const mutation = useMutation({
     mutationFn: async (events: CalendarEvent[]) => {
-      // Zmiana na CalendarEvent[] żeby przyjmować gotowe wydarzenia
       if (!db) {
         throw new Error('Database not available');
       }
 
       try {
-        // Tworzymy transakcję do odczytu z obiektu store 'events'
         const transaction = db.transaction('events', 'readwrite');
         const store = transaction.objectStore('events');
 
-        // Sprawdzamy czy istnieje indeks 'by-groupId' (na wszelki wypadek)
         if (!store.indexNames.contains('by-groupId')) {
           throw new Error('Index "by-groupId" not found');
         }
 
-        // Używamy indeksu 'by-groupId' do filtrowania zdarzeń po określonym groupId
         const index = store.index('by-groupId');
         const keyRange = IDBKeyRange.only(groupId);
         const allEvents = await index.getAll(keyRange);
 
-        // Sprawdzamy, które wydarzenia z importu mają już swoje ID w bazie
+        let updatedCount = 0;
+        let addedCount = 0;
+        let skippedCount = 0;
+
+        // Process each imported event
         for (const event of events) {
           const existingEvent = allEvents.find(
             (existing) => existing.id === event.id
           );
 
           if (existingEvent) {
-            // Jeśli istnieje, aktualizujemy istniejące wydarzenie
-            await store.put({
-              ...existingEvent, // zachowujemy wszystkie istniejące dane
-              ...event, // nadpisujemy te, które przyszły w importowanych danych
-            });
+            // Event exists - check if safe to update
+            if (existingEvent.unsynced) {
+              // Skip updating unsynced events - user has local changes
+              skippedCount++;
+              console.log(
+                `Skipped unsynced event: ${existingEvent.name || existingEvent.id}`
+              );
+            } else {
+              // Safe to update - no local changes
+              const updatedEvent = {
+                ...existingEvent,
+                ...event,
+                // Don't mark imported updates as unsynced
+                unsynced: false,
+                lastEditTime: Date.now(),
+              };
+              await store.put(updatedEvent);
+              updatedCount++;
+            }
           } else {
-            // Jeśli nie istnieje, dodajemy nowe wydarzenie
-            await store.put(event);
+            // New event - add it
+            const newEvent = {
+              ...event,
+              unsynced: false, // Imported events are not local changes
+              lastEditTime: Date.now(),
+            };
+            await store.put(newEvent);
+            addedCount++;
           }
         }
 
         await transaction.done;
+
+        console.log(
+          `Import complete: ${addedCount} added, ${updatedCount} updated, ${skippedCount} skipped (unsynced)`
+        );
       } catch (error) {
         throw error;
       }
     },
     onSuccess: () => {
-      onSuccess(); // Wywołanie callbacka po pomyślnym zapisaniu
+      onSuccess();
     },
     onError: (error) => {
       console.log('error', error);
-      onError(error); // Wywołanie callbacka w przypadku błędu
+      onError(error);
     },
   });
 

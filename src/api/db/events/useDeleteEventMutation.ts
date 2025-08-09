@@ -9,7 +9,7 @@ export const useDeleteEventMutation = (
   } = {}
 ) => {
   const { onSuccess = () => {}, onError = () => {} } = props;
-  const { db } = useDbContext(); // Pobieramy instancję bazy danych z kontekstu
+  const { db } = useDbContext();
 
   const mutation = useMutation({
     mutationFn: async (calendarEvent: CalendarEvent) => {
@@ -18,19 +18,33 @@ export const useDeleteEventMutation = (
       }
 
       try {
-        // Tworzymy transakcję do zapisu w obiekcie store 'events'
         const transaction = db.transaction('events', 'readwrite');
         const store = transaction.objectStore('events');
 
-        // Sprawdzamy, czy event o podanym id istnieje
+        // Check if event exists
         const event = await store.get(calendarEvent.id);
 
         if (!event) {
           throw new Error(`Event with id "${calendarEvent.id}" not found`);
         }
 
-        // Usuwamy event
-        await store.delete(calendarEvent.id);
+        // If event came from remote, mark as deleted (tombstone)
+        // If event is local-only, actually delete it
+        if (event.issuer === 'remote') {
+          // Mark as deleted but keep for sync
+          const deletedEvent = {
+            ...event,
+            deleted: true,
+            unsynced: true,
+            deletedAt: Date.now(),
+          };
+          await store.put(deletedEvent);
+          console.log(`Marked remote event ${event.id} as deleted`);
+        } else {
+          // Local-only event - safe to delete completely
+          await store.delete(calendarEvent.id);
+          console.log(`Deleted local-only event ${event.id}`);
+        }
 
         await transaction.done;
       } catch (error) {
@@ -38,10 +52,10 @@ export const useDeleteEventMutation = (
       }
     },
     onSuccess: () => {
-      onSuccess(); // Wywołanie callbacka po pomyślnym usunięciu
+      onSuccess();
     },
     onError: (error) => {
-      onError(error); // Wywołanie callbacka w przypadku błędu
+      onError(error);
     },
   });
 
