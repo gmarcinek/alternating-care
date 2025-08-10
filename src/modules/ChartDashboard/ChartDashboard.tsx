@@ -15,6 +15,7 @@ import { Widget } from '@components/Widget/Widget';
 import { WidgetContainer } from '@components/WidgetContainer/WidgetContainer';
 import { CarePatternWidget } from './modules/CarePatternWidget/CarePatternWidget';
 import { CumulativeCareChart } from './modules/CumulativeCareChart/CumulativeCareChart';
+import { CumulativeGradientAlternating } from './modules/CumulativeGradientAlternating/CumulativeGradientAlternating';
 import { RadialTripChart } from './modules/RadialTripChart/RadialTripChart';
 
 export const ChartDashboard = () => {
@@ -45,13 +46,19 @@ export const ChartDashboard = () => {
         <Widget size={isMin1280 ? 2 : 6}>
           <CareBalanceChartWeighted events={events} />
         </Widget>
+
         <Widget size={isMin1280 ? 4 : 6}>
           <CarePatternWidget events={events} />
+        </Widget>
+
+        <Widget size={6}>
+          <CumulativeGradientAlternating events={events} />
         </Widget>
 
         <Widget size={isMin1920 ? 4 : 6}>
           <AlternatingGradient events={events} />
         </Widget>
+
         <Widget size={isMin1920 ? 2 : 3}>
           <CumulativeCareChart events={events} />
         </Widget>
