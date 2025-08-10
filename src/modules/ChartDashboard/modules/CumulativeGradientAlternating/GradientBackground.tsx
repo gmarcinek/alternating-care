@@ -25,7 +25,7 @@ export const GradientBackground = ({
         width: '100%',
         height: '100%',
         display: 'flex',
-        opacity: 0.35,
+        opacity: 0.6,
         zIndex: 1,
       }}
       className={className}

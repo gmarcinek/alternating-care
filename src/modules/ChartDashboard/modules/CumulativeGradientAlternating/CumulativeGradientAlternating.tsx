@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 
 const BACKGROUND_COLORS = {
-  parent1: '#2d5465',
+  parent1: '#4f4f4fff',
   parent2: '#ffffff',
   camp: '#ffeb3b',
 };
@@ -135,12 +135,11 @@ export const CumulativeGradientAlternating = (
     let calcDate = fullDateRange.start.clone();
     while (calcDate.isBefore(startDate, 'day')) {
       const dateStr = calcDate.format(dateFormat);
-      const isCamp = campDates.has(dateStr);
       const isParent1 = alternatingDates.has(dateStr);
       const isBeforeToday =
         calcDate.isBefore(today, 'day') || calcDate.isSame(today, 'day');
 
-      if (isBeforeToday && !isCamp) {
+      if (isBeforeToday) {
         if (isParent1) {
           parent1Cumulative++;
         } else {
@@ -161,7 +160,7 @@ export const CumulativeGradientAlternating = (
       const isBeforeToday =
         currentDate.isBefore(today, 'day') || currentDate.isSame(today, 'day');
 
-      if (isBeforeToday && !isCamp) {
+      if (isBeforeToday) {
         if (isParent1) {
           parent1Cumulative++;
         } else {
