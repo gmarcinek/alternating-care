@@ -1,6 +1,7 @@
 'use client';
 
 import { useExportEvents } from '@api/db/export/useExportEvents';
+import { AppUser } from '@api/db/types';
 import { useAppContext } from '@app/AppContext';
 import { Stack } from '@components/Stack/Stack';
 import { useBreakpoints } from '@utils/useBreakpoints';
@@ -15,6 +16,7 @@ import { MenuButton } from './MenuButton';
 
 interface NavbarProps {
   toggle: () => void;
+  user: AppUser;
 }
 
 export const NavigationBar = (props: NavbarProps) => {
