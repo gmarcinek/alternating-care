@@ -81,7 +81,12 @@ export const CumulativeChart = ({
             )}
 
           <Tooltip
-            labelFormatter={(value) => dayjs(value).format()}
+            labelFormatter={(label, payload) => {
+              if (payload?.[0]?.payload?.date) {
+                return dayjs(payload[0].payload.date).format('DD.MM.YYYY');
+              }
+              return '';
+            }}
             formatter={(value, name) => {
               const displayName =
                 name === 'parent1Cumulative' ? 'Rodzic 1' : 'Rodzic 2';
@@ -100,7 +105,7 @@ export const CumulativeChart = ({
             dataKey='parent1Cumulative'
             stroke={CHART_COLORS.parent1}
             strokeWidth={3}
-            dot={chartData.length < 100}
+            dot={chartData.length < 50}
             name='parent1Cumulative'
             isAnimationActive={false}
           />
@@ -109,7 +114,7 @@ export const CumulativeChart = ({
             dataKey='parent2Cumulative'
             stroke={CHART_COLORS.parent2}
             strokeWidth={3}
-            dot={chartData.length < 100}
+            dot={chartData.length < 50}
             name='parent2Cumulative'
             isAnimationActive={false}
           />

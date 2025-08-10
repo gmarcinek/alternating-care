@@ -267,6 +267,7 @@ export const CumulativeGradientAlternating = (
             onRangeChange={setSelectedRange}
             totalDays={totalDays}
             todayIndex={todayIndex}
+            fullDateRange={fullDateRange}
           />
         </div>
 
