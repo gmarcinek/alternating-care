@@ -1,6 +1,5 @@
 import { Stack } from '@components/Stack/Stack';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import styles from './CumulativeGradientAlternating.module.scss';
 
 interface TimelineDataPoint {
   date: string;
@@ -25,7 +24,14 @@ export const TimelineSlider = ({
   totalDays,
   todayIndex,
 }: TimelineSliderProps) => {
-  const [isDragging, setIsDragging] = useState<'left' | 'right' | null>(null);
+  const [isDragging, setIsDragging] = useState<
+    'left' | 'right' | 'middle' | null
+  >(null);
+  const [dragStartPosition, setDragStartPosition] = useState(0);
+  const [dragStartRange, setDragStartRange] = useState<[number, number]>([
+    0, 0,
+  ]);
+  const [isMiddleHovered, setIsMiddleHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const getPositionFromEvent = useCallback(
@@ -40,11 +46,16 @@ export const TimelineSlider = ({
   );
 
   const handleMouseDown = useCallback(
-    (handle: 'left' | 'right') => (e: React.MouseEvent) => {
+    (handle: 'left' | 'right' | 'middle') => (e: React.MouseEvent) => {
       e.preventDefault();
       setIsDragging(handle);
+
+      if (handle === 'middle') {
+        setDragStartPosition(getPositionFromEvent(e));
+        setDragStartRange([...selectedRange]);
+      }
     },
-    []
+    [selectedRange, getPositionFromEvent]
   );
 
   const handleMouseMove = useCallback(
@@ -56,11 +67,37 @@ export const TimelineSlider = ({
 
       if (isDragging === 'left') {
         onRangeChange([Math.min(newPosition, right - 1), right]);
-      } else {
+      } else if (isDragging === 'right') {
         onRangeChange([left, Math.max(newPosition, left + 1)]);
+      } else if (isDragging === 'middle') {
+        const deltaPosition = newPosition - dragStartPosition;
+        const rangeSize = dragStartRange[1] - dragStartRange[0];
+
+        let newLeft = dragStartRange[0] + deltaPosition;
+        let newRight = dragStartRange[1] + deltaPosition;
+
+        // Ograniczenia
+        if (newLeft < 0) {
+          newLeft = 0;
+          newRight = rangeSize;
+        }
+        if (newRight > totalDays) {
+          newRight = totalDays;
+          newLeft = totalDays - rangeSize;
+        }
+
+        onRangeChange([newLeft, newRight]);
       }
     },
-    [isDragging, selectedRange, onRangeChange, getPositionFromEvent]
+    [
+      isDragging,
+      selectedRange,
+      onRangeChange,
+      getPositionFromEvent,
+      dragStartPosition,
+      dragStartRange,
+      totalDays,
+    ]
   );
 
   const handleMouseUp = useCallback(() => {
@@ -151,10 +188,10 @@ export const TimelineSlider = ({
           left: 0,
           width: `${leftPosition}%`,
           height: '100%',
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          background:
+            'linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.7) 100%)',
           zIndex: 2,
         }}
-        className={styles.selected}
       />
 
       {/* Zaciemniony obszar po prawej */}
@@ -165,10 +202,32 @@ export const TimelineSlider = ({
           right: 0,
           width: `${100 - rightPosition}%`,
           height: '100%',
-          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          background:
+            'linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.7) 100%)',
           zIndex: 2,
         }}
-        className={styles.selected}
+      />
+
+      {/* Środkowa część - zaznaczony obszar z hover i drag */}
+      <div
+        onMouseDown={handleMouseDown('middle')}
+        onMouseEnter={() => setIsMiddleHovered(true)}
+        onMouseLeave={() => setIsMiddleHovered(false)}
+        style={{
+          position: 'absolute',
+          left: `${leftPosition}%`,
+          top: 0,
+          width: `${selectedWidth}%`,
+          height: '100%',
+          zIndex: 3,
+          cursor: isDragging === 'middle' ? 'grabbing' : 'grab',
+          border: isMiddleHovered
+            ? '3px solid #0099ffff'
+            : '2px solid transparent',
+          boxSizing: 'border-box',
+          transition: 'border-color 0.2s ease',
+        }}
+        title='Przeciągnij aby przesunąć zakres'
       />
 
       {/* Lewy kontroler 3D */}

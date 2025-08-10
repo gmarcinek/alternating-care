@@ -12,12 +12,12 @@
 }
 
 .selected {
-  color: $neutral-gray-100 !important;
+  color: rgba(53, 53, 53, 0.2) !important;
 
   background-image: repeating-linear-gradient(
     135deg,
-    rgba(53, 53, 53, 0.8),
-    rgba(53, 53, 53, 0.8) 10px,
+    rgba(53, 53, 53, 0.2),
+    rgba(53, 53, 53, 0.2) 10px,
     $turquoise-600 10px,
     $turquoise-600 20px
   ) !important;

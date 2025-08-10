@@ -261,13 +261,15 @@ export const CumulativeGradientAlternating = (
           />
         </div>
 
-        <TimelineSlider
-          fullTimelineData={fullTimelineData}
-          selectedRange={selectedRange}
-          onRangeChange={setSelectedRange}
-          totalDays={totalDays}
-          todayIndex={todayIndex}
-        />
+        <div style={{ marginTop: '12px' }}>
+          <TimelineSlider
+            fullTimelineData={fullTimelineData}
+            selectedRange={selectedRange}
+            onRangeChange={setSelectedRange}
+            totalDays={totalDays}
+            todayIndex={todayIndex}
+          />
+        </div>
 
         <DateScale
           chartData={chartData}
