@@ -102,12 +102,6 @@ export const Dashboard = (props: DashboardProps) => {
     eventType: CalendarEventType.Alternating,
   });
 
-  const campCount = countEvents({
-    endDate,
-    startDate,
-    eventType: CalendarEventType.Camp,
-  });
-
   return (
     <div className={dashboardClasses} id='dashboard'>
       <div className={styles.calendarContainer}>
@@ -124,24 +118,20 @@ export const Dashboard = (props: DashboardProps) => {
           <Stack direction='horizontal' className='pb-4'>
             <h4>Widoczne dni {alternatingCount.days}</h4>-
             <h4>
-              Opieka Moja {alternatingCount.days - campCount.eventCount}/
+              Opieka Moja {alternatingCount.days}/
               <strong>
                 <small>{alternatingCount.eventCount} dni</small>
               </strong>
             </h4>
             -
             <h4>
-              Drugi rodzic {alternatingCount.days - campCount.eventCount}/
+              Drugi rodzic {alternatingCount.days}/
               <strong>
                 <small>
-                  {alternatingCount.days -
-                    campCount.eventCount -
-                    alternatingCount.eventCount}{' '}
-                  dni
+                  {alternatingCount.days - alternatingCount.eventCount} dni
                 </small>
               </strong>
             </h4>
-            -<h4>Kolonie {campCount.eventCount} dni</h4>
           </Stack>
         )}
 

@@ -7,7 +7,6 @@ interface CumulativeCarePoint {
   date: string;
   parent1Cumulative: number;
   parent2Cumulative: number;
-  campCumulative: number;
   totalDays: number;
 }
 
@@ -22,7 +21,6 @@ interface CumulativeCareResult {
     totalDays: number;
     parent1Days: number;
     parent2Days: number;
-    campDays: number;
   };
 }
 
@@ -34,40 +32,32 @@ export const useCumulativeCare = ({
     const alternatingEvents = events.filter(
       (e) => e.type === CalendarEventType.Alternating
     );
-    const campEvents = events.filter((e) => e.type === CalendarEventType.Camp);
-
-    const emptySummary = {
-      totalDays: 0,
-      parent1Days: 0,
-      parent2Days: 0,
-      campDays: 0,
-    };
 
     if (events.length === 0) {
       return {
         data: [],
-        summary: emptySummary,
+        summary: {
+          totalDays: 0,
+          parent1Days: 0,
+          parent2Days: 0,
+        },
       };
     }
 
-    // Znajdź zakres dat do analizy
     const sortedEvents = events.sort(
       (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix()
     );
     const firstDate = dayjs(sortedEvents[0].date);
     const lastDate = dayjs(sortedEvents[sortedEvents.length - 1].date);
 
-    // Analizuj do dziś lub do ostatniego eventu (co wcześniejsze)
     const today = dayjs();
     const analysisEndDate = lastDate.isAfter(today) ? today : lastDate;
 
     const alternatingDates = new Set(alternatingEvents.map((e) => e.date));
-    const campDates = new Set(campEvents.map((e) => e.date));
 
     const cumulativeData: CumulativeCarePoint[] = [];
     let parent1Cumulative = 0;
     let parent2Cumulative = 0;
-    let campCumulative = 0;
     let currentDate = firstDate.clone();
 
     while (
@@ -75,34 +65,26 @@ export const useCumulativeCare = ({
       currentDate.isSame(analysisEndDate)
     ) {
       const dateStr = currentDate.format(dateFormat);
-
-      // Sprawdź typ dnia
       const isParent1Day = alternatingDates.has(dateStr);
-      const isCampDay = campDates.has(dateStr);
 
-      // Aktualizuj liczniki
-      if (isCampDay) {
-        campCumulative++;
-      } else if (isParent1Day) {
+      if (isParent1Day) {
         parent1Cumulative++;
       } else {
         parent2Cumulative++;
       }
 
-      const totalDays = parent1Cumulative + parent2Cumulative + campCumulative;
+      const totalDays = parent1Cumulative + parent2Cumulative;
 
-      // Dodaj punkt tylko dla odpowiedniej granularności
       const shouldAddPoint =
         granularity === 'day' ||
-        (granularity === 'week' && currentDate.day() === 0) || // Niedziela
-        (granularity === 'month' && currentDate.date() === 1); // Pierwszy dzień miesiąca
+        (granularity === 'week' && currentDate.day() === 0) ||
+        (granularity === 'month' && currentDate.date() === 1);
 
       if (shouldAddPoint) {
         cumulativeData.push({
           date: dateStr,
           parent1Cumulative,
           parent2Cumulative,
-          campCumulative,
           totalDays,
         });
       }
@@ -110,7 +92,6 @@ export const useCumulativeCare = ({
       currentDate = currentDate.add(1, 'day');
     }
 
-    // Zawsze dodaj ostatni punkt analizy
     if (
       cumulativeData.length === 0 ||
       !dayjs(cumulativeData[cumulativeData.length - 1].date).isSame(
@@ -121,21 +102,17 @@ export const useCumulativeCare = ({
         date: analysisEndDate.format(dateFormat),
         parent1Cumulative,
         parent2Cumulative,
-        campCumulative,
-        totalDays: parent1Cumulative + parent2Cumulative + campCumulative,
+        totalDays: parent1Cumulative + parent2Cumulative,
       });
     }
 
-    const finalSummary = {
-      totalDays: parent1Cumulative + parent2Cumulative + campCumulative,
-      parent1Days: parent1Cumulative,
-      parent2Days: parent2Cumulative,
-      campDays: campCumulative,
-    };
-
     return {
       data: cumulativeData,
-      summary: finalSummary,
+      summary: {
+        totalDays: parent1Cumulative + parent2Cumulative,
+        parent1Days: parent1Cumulative,
+        parent2Days: parent2Cumulative,
+      },
     };
   }, [events, granularity]);
 };

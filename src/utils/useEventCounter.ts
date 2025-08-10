@@ -26,6 +26,9 @@ export const useEventCounter = (props: UseEventCounterProps) => {
         .startOf('day');
       const days = getDaysBetweenDates(startDate, endDate);
 
+      console.log('startDate', startDate.format());
+      console.log('endDate', endDate.format());
+
       if (
         !props.endDate ||
         !props.startDate ||

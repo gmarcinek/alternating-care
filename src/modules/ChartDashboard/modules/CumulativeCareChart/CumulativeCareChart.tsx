@@ -1,18 +1,5 @@
 'use client';
 
-// ---- KONFIGURACJA KOMPONENTU ----
-const CHART_COLORS = {
-  parent1: '#2196F3', // niebieska
-  parent2: '#E91E63', // różowa
-  camp: '#ffcc00ff', // żółta
-};
-
-const CHART_CONFIG = {
-  height: 450,
-  strokeWidth: 3,
-  defaultGranularity: 'month' as const,
-};
-
 import { CalendarEvent } from '@api/db/types';
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { Stack } from '@components/Stack/Stack';
@@ -30,6 +17,17 @@ import {
   YAxis,
 } from 'recharts';
 import { useCumulativeCare } from '../../hooks/useCumulativeCare';
+
+const CHART_COLORS = {
+  parent1: '#2196F3',
+  parent2: '#E91E63',
+};
+
+const CHART_CONFIG = {
+  height: 450,
+  strokeWidth: 3,
+  defaultGranularity: 'month' as const,
+};
 
 interface CumulativeCareChartProps {
   events: CalendarEvent[];
@@ -141,14 +139,6 @@ export const CumulativeCareChart = (props: CumulativeCareChartProps) => {
               dot={false}
               name='Rodzic 2'
             />
-            <Line
-              type='monotone'
-              dataKey='campCumulative'
-              stroke={CHART_COLORS.camp}
-              strokeWidth={CHART_CONFIG.strokeWidth}
-              dot={false}
-              name='Kolonie'
-            />
 
             <Legend />
             <Tooltip
@@ -180,9 +170,6 @@ export const CumulativeCareChart = (props: CumulativeCareChartProps) => {
             style={{ color: CHART_COLORS.parent2 }}
           >
             👩‍👦 Rodzic 2: {cumulativeResult.summary.parent2Days} dni
-          </Chip>
-          <Chip size='sm' variant='flat' style={{ color: CHART_COLORS.camp }}>
-            🏕️ Kolonie: {cumulativeResult.summary.campDays} dni
           </Chip>
         </Stack>
       )}
