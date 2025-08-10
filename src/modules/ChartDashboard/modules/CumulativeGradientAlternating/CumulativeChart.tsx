@@ -44,7 +44,13 @@ export const CumulativeChart = ({
           margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
         >
           <XAxis hide />
-          <YAxis hide />
+          <YAxis
+            hide
+            domain={[
+              (dataMin: number) => dataMin - 10,
+              (dataMax: number) => dataMax + 40,
+            ]}
+          />
 
           {/* Poziome linie co 100 dni kumulacji */}
           {showGridLines &&
@@ -75,7 +81,12 @@ export const CumulativeChart = ({
             )}
 
           <Tooltip
-            labelFormatter={(value) => dayjs(value).format('DD.MM.YYYY')}
+            labelFormatter={(label, payload) => {
+              if (payload?.[0]?.payload?.date) {
+                return dayjs(payload[0].payload.date).format('DD.MM.YYYY');
+              }
+              return '';
+            }}
             formatter={(value, name) => {
               const displayName =
                 name === 'parent1Cumulative' ? 'Rodzic 1' : 'Rodzic 2';
@@ -94,16 +105,18 @@ export const CumulativeChart = ({
             dataKey='parent1Cumulative'
             stroke={CHART_COLORS.parent1}
             strokeWidth={3}
-            dot={false}
+            dot={chartData.length < 50}
             name='parent1Cumulative'
+            isAnimationActive={false}
           />
           <Line
             type='monotone'
             dataKey='parent2Cumulative'
             stroke={CHART_COLORS.parent2}
             strokeWidth={3}
-            dot={false}
+            dot={chartData.length < 50}
             name='parent2Cumulative'
+            isAnimationActive={false}
           />
         </LineChart>
       </ResponsiveContainer>

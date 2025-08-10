@@ -8,7 +8,7 @@ export const useDeleteEventsMutation = (
   } = {}
 ) => {
   const { onSuccess = () => {}, onError = () => {} } = props;
-  const { db } = useDbContext(); // Pobieramy instancję bazy danych z kontekstu
+  const { db } = useDbContext();
 
   const mutation = useMutation({
     mutationFn: async () => {
@@ -17,21 +17,42 @@ export const useDeleteEventsMutation = (
       }
 
       try {
-        // Tworzymy transakcję do zapisu w obiekcie store 'events'
         const transaction = db.transaction('events', 'readwrite');
         const store = transaction.objectStore('events');
-        store.clear();
+
+        // DON'T use store.clear() - it wipes everything!
+        // Instead, get all events and selectively delete
+        const allEvents = await store.getAll();
+
+        let deletedCount = 0;
+        let preservedCount = 0;
+
+        for (const event of allEvents) {
+          if (event.unsynced) {
+            // Preserve unsynced events - user wants to keep them
+            preservedCount++;
+            console.log(`Preserved unsynced event: ${event.name}`);
+          } else {
+            // Safe to delete - not locally modified
+            await store.delete(event.id);
+            deletedCount++;
+          }
+        }
 
         await transaction.done;
+
+        console.log(
+          `Mass delete: ${deletedCount} deleted, ${preservedCount} preserved`
+        );
       } catch (error) {
         throw error;
       }
     },
     onSuccess: () => {
-      onSuccess(); // Wywołanie callbacka po pomyślnym usunięciu
+      onSuccess();
     },
     onError: (error) => {
-      onError(error); // Wywołanie callbacka w przypadku błędu
+      onError(error);
     },
   });
 

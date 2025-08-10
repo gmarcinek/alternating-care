@@ -1,21 +1,18 @@
-interface ChartDataPoint {
+interface TimelineDataPoint {
   date: string;
-  parent1Cumulative: number;
-  parent2Cumulative: number;
+  dayIndex: number;
   backgroundType: string;
   backgroundColor: string;
   isBeforeToday: boolean;
 }
 
-interface GradientBackgroundProps {
-  chartData: ChartDataPoint[];
-  className?: string;
+interface TimelineBackgroundProps {
+  fullTimelineData: TimelineDataPoint[];
 }
 
-export const GradientBackground = ({
-  chartData,
-  className,
-}: GradientBackgroundProps) => {
+export const TimelineBackground = ({
+  fullTimelineData,
+}: TimelineBackgroundProps) => {
   return (
     <div
       style={{
@@ -25,13 +22,10 @@ export const GradientBackground = ({
         width: '100%',
         height: '100%',
         display: 'flex',
-        opacity: 0.4,
-        zIndex: 1,
       }}
-      className={className}
     >
-      {chartData.map((day, index) => {
-        const width = `${100 / chartData.length}%`;
+      {fullTimelineData.map((day, index) => {
+        const width = `${100 / fullTimelineData.length}%`;
         return (
           <div
             key={index}
@@ -39,7 +33,7 @@ export const GradientBackground = ({
               width,
               height: '100%',
               backgroundColor: day.backgroundColor,
-              opacity: day.isBeforeToday ? 1 : 0.2,
+              opacity: day.isBeforeToday ? 0.8 : 0.3,
             }}
             title={`${day.date} - ${day.backgroundType === 'camp' ? 'Kolonie' : day.backgroundType === 'parent1' ? 'Rodzic 1' : 'Rodzic 2'}`}
           />

@@ -30,4 +30,11 @@ export interface CalendarEvent {
     background: string;
     color: string;
   };
+  // Sync-related fields
+  unsynced?: boolean; // User edited offline
+  lastEditTime?: number; // When last edited locally
+  hasConflict?: boolean; // Conflict detected
+  conflictData?: any; // Remote conflict data
+  deleted?: boolean; // Tombstone for deleted events
+  deletedAt?: number; // When deleted locally
 }

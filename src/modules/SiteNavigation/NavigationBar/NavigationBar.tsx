@@ -1,13 +1,14 @@
 'use client';
 
 import { useExportEvents } from '@api/db/export/useExportEvents';
+import { AppUser } from '@api/db/types';
 import { useAppContext } from '@app/AppContext';
 import { Stack } from '@components/Stack/Stack';
-import { Avatar } from '@nextui-org/react';
 import { useBreakpoints } from '@utils/useBreakpoints';
 import Link from 'next/link';
 import { PiExport } from 'react-icons/pi';
-import { AppUser } from '../../../api/db/types';
+import { AuthButton } from '../../../auth/AuthButton';
+import { SyncButton } from '../../../components/SyncButton/SyncButton';
 import { siteNavigationI18n } from '../siteNavigation.i18n';
 import { Language } from './Language';
 import { Logo } from './Logo';
@@ -19,7 +20,7 @@ interface NavbarProps {
 }
 
 export const NavigationBar = (props: NavbarProps) => {
-  const { toggle, user } = props;
+  const { toggle } = props;
   const { exportEventsToFile } = useExportEvents();
   const { language } = useAppContext();
   const i18n = siteNavigationI18n[language];
@@ -64,7 +65,8 @@ export const NavigationBar = (props: NavbarProps) => {
               {is768 && <PiExport size={24} onClick={exportEventsToFile} />}
 
               <Language />
-              {user.name && <Avatar name={user.name} />}
+              <SyncButton />
+              <AuthButton />
               <MenuButton onClick={toggle}>{i18n.menu}</MenuButton>
             </Stack>
           </div>
