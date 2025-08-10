@@ -1,4 +1,6 @@
-import { Slider } from '@nextui-org/react';
+import { Stack } from '@components/Stack/Stack';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import styles from './CumulativeGradientAlternating.module.scss';
 
 interface TimelineDataPoint {
   date: string;
@@ -23,14 +25,78 @@ export const TimelineSlider = ({
   totalDays,
   todayIndex,
 }: TimelineSliderProps) => {
+  const [isDragging, setIsDragging] = useState<'left' | 'right' | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const getPositionFromEvent = useCallback(
+    (e: MouseEvent | React.MouseEvent) => {
+      if (!containerRef.current) return 0;
+      const rect = containerRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const percentage = Math.max(0, Math.min(1, x / rect.width));
+      return Math.round(percentage * totalDays);
+    },
+    [totalDays]
+  );
+
+  const handleMouseDown = useCallback(
+    (handle: 'left' | 'right') => (e: React.MouseEvent) => {
+      e.preventDefault();
+      setIsDragging(handle);
+    },
+    []
+  );
+
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (!isDragging) return;
+
+      const newPosition = getPositionFromEvent(e);
+      const [left, right] = selectedRange;
+
+      if (isDragging === 'left') {
+        onRangeChange([Math.min(newPosition, right - 1), right]);
+      } else {
+        onRangeChange([left, Math.max(newPosition, left + 1)]);
+      }
+    },
+    [isDragging, selectedRange, onRangeChange, getPositionFromEvent]
+  );
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(null);
+  }, []);
+
+  // Global mouse events
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const handleGlobalMouseMove = (e: MouseEvent) => handleMouseMove(e);
+    const handleGlobalMouseUp = () => handleMouseUp();
+
+    document.addEventListener('mousemove', handleGlobalMouseMove);
+    document.addEventListener('mouseup', handleGlobalMouseUp);
+
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mouseup', handleGlobalMouseUp);
+    };
+  }, [isDragging, handleMouseMove, handleMouseUp]);
+
+  const leftPosition = (selectedRange[0] / totalDays) * 100;
+  const rightPosition = (selectedRange[1] / totalDays) * 100;
+  const selectedWidth = rightPosition - leftPosition;
+
   return (
     <div
+      ref={containerRef}
       style={{
         position: 'relative',
         border: '1px solid #ccc',
         height: '40px',
         borderTop: 'none',
         borderBottom: 'none',
+        cursor: 'crosshair',
       }}
     >
       {/* Gradient pełnego zakresu */}
@@ -77,55 +143,110 @@ export const TimelineSlider = ({
         />
       )}
 
-      {/* Zaciemnione obszary poza zakresem */}
+      {/* Zaciemniony obszar po lewej */}
       <div
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
-          width: `${(selectedRange[0] / totalDays) * 100}%`,
+          width: `${leftPosition}%`,
           height: '100%',
-          backgroundColor: 'rgba(0,0,0,0.5)',
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
           zIndex: 2,
         }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          width: `${((totalDays - selectedRange[1]) / totalDays) * 100}%`,
-          height: '100%',
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          zIndex: 2,
-        }}
+        className={styles.selected}
       />
 
-      {/* Suwak */}
+      {/* Zaciemniony obszar po prawej */}
       <div
         style={{
           position: 'absolute',
-          top: '50%',
-          left: 0,
+          top: 0,
           right: 0,
-          transform: 'translateY(-50%)',
+          width: `${100 - rightPosition}%`,
+          height: '100%',
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          zIndex: 2,
+        }}
+        className={styles.selected}
+      />
+
+      {/* Lewy kontroler 3D */}
+      <div
+        onMouseDown={handleMouseDown('left')}
+        style={{
+          position: 'absolute',
+          left: `${leftPosition}%`,
+          top: 0,
+          transform: 'translateX(-50%)',
+          width: '16px',
+          height: '100%',
           zIndex: 4,
-          paddingLeft: '12px',
-          paddingRight: '12px',
+          cursor: 'ew-resize',
+          background:
+            'linear-gradient(135deg, #f0f0f0 0%, #d0d0d0 50%, #b0b0b0 100%)',
+          border: '1px solid #999',
+          borderRadius: '2px',
+          boxShadow: `
+            inset 1px 1px 2px rgba(255,255,255,0.8),
+            inset -1px -1px 2px rgba(0,0,0,0.3),
+            2px 2px 4px rgba(0,0,0,0.2)
+          `,
         }}
       >
-        <Slider
-          size='md'
-          step={1}
-          minValue={0}
-          maxValue={totalDays}
-          value={selectedRange}
-          onChange={(value) => onRangeChange(value as [number, number])}
-          classNames={{
-            track: 'bg-transparent',
-            filler: 'bg-transparent',
+        <Stack
+          direction='horizontal'
+          contentAlignment='center'
+          itemsAlignment='center'
+          style={{
+            height: '100%',
+            margin: 0,
+            padding: 0,
+            color: '#7a7979ff',
+            fontSize: 'smaller',
           }}
-        />
+        >
+          <div>||</div>
+        </Stack>
+      </div>
+
+      {/* Prawy kontroler 3D */}
+      <div
+        onMouseDown={handleMouseDown('right')}
+        style={{
+          position: 'absolute',
+          left: `${rightPosition}%`,
+          top: 0,
+          transform: 'translateX(-50%)',
+          width: '16px',
+          height: '100%',
+          zIndex: 4,
+          cursor: 'ew-resize',
+          background:
+            'linear-gradient(135deg, #f0f0f0 0%, #d0d0d0 50%, #b0b0b0 100%)',
+          border: '1px solid #999',
+          borderRadius: '2px',
+          boxShadow: `
+            inset 1px 1px 2px rgba(255,255,255,0.8),
+            inset -1px -1px 2px rgba(0,0,0,0.3),
+            2px 2px 4px rgba(0,0,0,0.2)
+          `,
+        }}
+      >
+        <Stack
+          direction='horizontal'
+          contentAlignment='center'
+          itemsAlignment='center'
+          style={{
+            height: '100%',
+            margin: 0,
+            padding: 0,
+            color: '#7a7979ff',
+            fontSize: 'smaller',
+          }}
+        >
+          <div>||</div>
+        </Stack>
       </div>
     </div>
   );

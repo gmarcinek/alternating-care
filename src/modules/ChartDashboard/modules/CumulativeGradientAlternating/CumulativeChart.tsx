@@ -65,10 +65,10 @@ export const CumulativeChart = ({
                   <ReferenceLine
                     key={i}
                     y={value}
-                    stroke='#ddd'
+                    stroke='#5a5a5aff'
                     strokeWidth={1}
                     strokeDasharray='2 2'
-                    strokeOpacity={0.5}
+                    strokeOpacity={1}
                   />
                 );
               }

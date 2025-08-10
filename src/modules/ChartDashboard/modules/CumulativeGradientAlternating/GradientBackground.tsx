@@ -25,7 +25,7 @@ export const GradientBackground = ({
         width: '100%',
         height: '100%',
         display: 'flex',
-        opacity: 0.3,
+        opacity: 0.35,
         zIndex: 1,
       }}
       className={className}
@@ -39,7 +39,7 @@ export const GradientBackground = ({
               width,
               height: '100%',
               backgroundColor: day.backgroundColor,
-              opacity: day.isBeforeToday ? 1 : 0.3,
+              opacity: day.isBeforeToday ? 1 : 0.2,
             }}
             title={`${day.date} - ${day.backgroundType === 'camp' ? 'Kolonie' : day.backgroundType === 'parent1' ? 'Rodzic 1' : 'Rodzic 2'}`}
           />

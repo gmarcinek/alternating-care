@@ -50,10 +50,22 @@ export const CumulativeGradientAlternating = (
     ? today.diff(fullDateRange.start, 'days')
     : 0;
 
-  // Range suwaka - domyślnie cały zakres
+  // Defaultowy widok: start roku aktualnego do końca roku aktualnego
+  const currentYear = today.year();
+  const yearStart = dayjs(`${currentYear}-01-01`);
+  const yearEnd = dayjs(`${currentYear}-12-31`);
+
+  const defaultStartIndex = fullDateRange
+    ? Math.max(0, yearStart.diff(fullDateRange.start, 'days'))
+    : 0;
+  const defaultEndIndex = fullDateRange
+    ? Math.min(totalDays, yearEnd.diff(fullDateRange.start, 'days'))
+    : totalDays;
+
+  // Range suwaka - defaultowo aktualny rok
   const [selectedRange, setSelectedRange] = useState<[number, number]>([
-    0,
-    totalDays,
+    defaultStartIndex,
+    defaultEndIndex,
   ]);
 
   // Pełne dane dla suwaka (cały zakres dat)
@@ -178,75 +190,96 @@ export const CumulativeGradientAlternating = (
 
   if (!fullDateRange || events.length === 0) {
     return (
-      <Stack contentAlignment='center' style={{ minHeight: '400px' }}>
+      <Stack contentAlignment='center'>
         <p>Brak danych do analizy</p>
       </Stack>
     );
   }
 
   return (
-    <div style={{ padding: 0, margin: 0 }}>
-      <div style={{ marginBottom: '16px' }}>
+    <div
+      style={{
+        padding: 0,
+        margin: 0,
+        height: '60vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <div style={{ marginBottom: '16px', flexShrink: 0 }}>
         <h2 style={{ margin: '0 0 4px 0' }}>Skumulowana Opieka</h2>
         <small style={{ color: '#666' }}>
           Przyrostowe dni opieki z okresami opieki jako tło
         </small>
       </div>
 
-      <DateScale chartData={chartData} position='top' />
-
-      {/* Główny wykres */}
       <div
         style={{
-          width: '100%',
-          height: '300px',
-          position: 'relative',
-          border: '1px solid #ccc',
-          borderBottom: 'none',
-          borderTop: 'none',
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: 0,
         }}
       >
-        <GradientBackground chartData={chartData} />
+        <DateScale chartData={chartData} position='top' />
 
-        {/* Linia DZIŚ na głównym wykresie */}
-        {chartData.some((d) => d.date === today.format(dateFormat)) && (
-          <div
-            style={{
-              position: 'absolute',
-              left: `${(chartData.findIndex((d) => d.date === today.format(dateFormat)) / chartData.length) * 100}%`,
-              top: 0,
-              width: '2px',
-              height: '100%',
-              backgroundColor: 'red',
-              zIndex: 3,
-              background:
-                'repeating-linear-gradient(to bottom, red 0px, red 5px, transparent 5px, transparent 10px)',
-            }}
+        {/* Główny wykres */}
+        <div
+          style={{
+            width: '100%',
+            flex: 1,
+            position: 'relative',
+            border: '1px solid #ccc',
+            borderBottom: 'none',
+            borderTop: 'none',
+            minHeight: 0,
+          }}
+        >
+          <GradientBackground chartData={chartData} />
+
+          {/* Linia DZIŚ na głównym wykresie */}
+          {chartData.some((d) => d.date === today.format(dateFormat)) && (
+            <div
+              style={{
+                position: 'absolute',
+                left: `${(chartData.findIndex((d) => d.date === today.format(dateFormat)) / chartData.length) * 100}%`,
+                top: 0,
+                width: '2px',
+                height: '100%',
+                backgroundColor: 'red',
+                zIndex: 3,
+                background:
+                  'repeating-linear-gradient(to bottom, red 0px, red 5px, transparent 5px, transparent 10px)',
+              }}
+            />
+          )}
+
+          <CumulativeChart
+            chartData={chartData}
+            showGridLines={true}
+            todayDate={today.format(dateFormat)}
           />
-        )}
+        </div>
 
-        <CumulativeChart
+        <TimelineSlider
+          fullTimelineData={fullTimelineData}
+          selectedRange={selectedRange}
+          onRangeChange={setSelectedRange}
+          totalDays={totalDays}
+          todayIndex={todayIndex}
+        />
+
+        <DateScale
           chartData={chartData}
-          showGridLines={true}
-          todayDate={today.format(dateFormat)}
+          position='bottom'
+          fullDateRange={fullDateRange}
+        />
+
+        <ChartLegend
+          chartData={chartData}
+          backgroundColors={BACKGROUND_COLORS}
         />
       </div>
-
-      <TimelineSlider
-        fullTimelineData={fullTimelineData}
-        selectedRange={selectedRange}
-        onRangeChange={setSelectedRange}
-        totalDays={totalDays}
-        todayIndex={todayIndex}
-      />
-
-      <DateScale
-        chartData={chartData}
-        position='bottom'
-        fullDateRange={fullDateRange}
-      />
-
-      <ChartLegend chartData={chartData} backgroundColors={BACKGROUND_COLORS} />
     </div>
   );
 };
