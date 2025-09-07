@@ -3,7 +3,7 @@
 import { dateFormat } from '@components/Calendar/Calendar.helpers';
 import { Stack } from '@components/Stack/Stack';
 import { CalendarDate, parseDate } from '@internationalized/date';
-import { DateRangePicker, RangeValue } from '@nextui-org/react';
+import { Button, DateRangePicker, RangeValue } from '@nextui-org/react';
 import { useAppSearchParams } from '@utils/useAppSearchParams';
 import { useBreakpoints } from '@utils/useBreakpoints';
 import { useUpdateQueryParam } from '@utils/useUpdateQueryParam';
@@ -99,6 +99,19 @@ export const RangeNavigation = (props: RangeNavigationProps) => {
     });
   }, [updateQueryParam, setParsedDates]);
 
+  const handleCurrentYear = useCallback(() => {
+    const startDate = dayjs().startOf('year').format(dateFormat);
+    const endDate = dayjs().endOf('year').format(dateFormat);
+
+    updateQueryParam('startDate', startDate);
+    updateQueryParam('endDate', endDate);
+
+    setParsedDates({
+      start: parseDate(startDate),
+      end: parseDate(endDate),
+    });
+  }, [updateQueryParam, setParsedDates]);
+
   const handleUpdateRange = (
     direction: 'back' | 'forward',
     granular: 'month' | 'year' | 'week' | 'day',
@@ -162,6 +175,18 @@ export const RangeNavigation = (props: RangeNavigationProps) => {
           size={buttonSize}
         />
       )}
+
+      {!isMax1024 && (
+        <Button
+          size='sm'
+          variant='ghost'
+          onClick={handleCurrentYear}
+          className='min-w-unit-12 px-2'
+        >
+          {dayjs().year()}
+        </Button>
+      )}
+
       {!isMax1024 && (
         <MdClose onClick={() => handleResetDates()} size={buttonSize} />
       )}
