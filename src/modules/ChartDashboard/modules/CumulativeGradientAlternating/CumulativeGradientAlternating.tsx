@@ -13,9 +13,9 @@ import dayjs from 'dayjs';
 import { useEffect, useMemo, useState } from 'react';
 
 const BACKGROUND_COLORS = {
-  parent1: '#4f4f4fff',
-  parent2: '#ffffff',
-  camp: '#ffeb3b',
+  parent1: '#4f8bb0ff',
+  parent2: '#ffffffff',
+  camp: '#ffe600ff',
 };
 
 type CumulationStrategy = 'fromStart' | 'selectedPeriod';
