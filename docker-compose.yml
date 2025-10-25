@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  pouchdb:
+    build: ./docker/pouchdb
+    container_name: pouchdb
+    ports:
+      - '5984:5984'
+    volumes:
+      - ./pouchdb-data:/data
+    restart: unless-stopped
