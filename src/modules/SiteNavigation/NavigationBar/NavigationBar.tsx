@@ -4,6 +4,7 @@ import { useExportEvents } from '@api/db/export/useExportEvents';
 import { AppUser } from '@api/db/types';
 import { useAppContext } from '@app/AppContext';
 import { Stack } from '@components/Stack/Stack';
+import { SyncStatusIndicator } from '@components/SyncStatusIndicator/SyncStatusIndicator';
 import { useBreakpoints } from '@utils/useBreakpoints';
 import Link from 'next/link';
 import { PiExport } from 'react-icons/pi';
@@ -65,6 +66,7 @@ export const NavigationBar = (props: NavbarProps) => {
               {is768 && <PiExport size={24} onClick={exportEventsToFile} />}
 
               <Language />
+              <SyncStatusIndicator compact />
               <SyncButton />
               <AuthButton />
               <MenuButton onClick={toggle}>{i18n.menu}</MenuButton>

@@ -1,13 +1,24 @@
 import { useDbContext } from '@api/db/DbContext';
 import { CalendarEvent, CalendarEventType } from '@api/db/types';
-import { useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../auth/AuthContext';
 import { apiClient } from './apiClient';
+import { BackgroundSyncWorker, SyncWorkerState } from './BackgroundSyncWorker';
+import { SyncOperationType } from './SyncQueue';
 
 interface SyncStatus {
   isLoading: boolean;
   error: string | null;
   lastSync: Date | null;
+  workerState: SyncWorkerState;
+  queueSize: number;
+  syncStats: {
+    totalSyncs: number;
+    successfulSyncs: number;
+    failedSyncs: number;
+    eventsUploaded: number;
+    eventsDownloaded: number;
+  };
 }
 
 export const useSyncEvents = () => {
@@ -17,8 +28,185 @@ export const useSyncEvents = () => {
     isLoading: false,
     error: null,
     lastSync: null,
+    workerState: SyncWorkerState.IDLE,
+    queueSize: 0,
+    syncStats: {
+      totalSyncs: 0,
+      successfulSyncs: 0,
+      failedSyncs: 0,
+      eventsUploaded: 0,
+      eventsDownloaded: 0,
+    },
   });
 
+  // Background sync worker instance (singleton per hook instance)
+  const workerRef = useRef<BackgroundSyncWorker | null>(null);
+  const groupIdRef = useRef<string | null>(null);
+
+  /**
+   * Initialize background sync worker
+   */
+  useEffect(() => {
+    if (!db || !isAuthenticated) {
+      // Stop worker if not authenticated
+      if (workerRef.current) {
+        workerRef.current.stop();
+        workerRef.current = null;
+      }
+      return;
+    }
+
+    // Create worker if it doesn't exist
+    if (!workerRef.current) {
+      workerRef.current = new BackgroundSyncWorker({
+        intervalMs: 7000, // 7 seconds - balance between real-time and performance
+        batchSize: 20,
+        enabled: true,
+        syncOnVisibilityChange: true,
+        syncOnNetworkReconnect: true,
+      });
+
+      // Initialize worker with database and sync callback
+      workerRef.current.init(db, async (type, event) => {
+        const groupId = groupIdRef.current;
+        if (!groupId) {
+          console.error('❌ No group ID set for sync!');
+          throw new Error('No group ID set for sync');
+        }
+
+        console.log(`🔄 Syncing ${type} event: ${event.name || event.id} to group: ${groupId}`);
+
+        // Execute sync operation based on type
+        try {
+          switch (type) {
+            case SyncOperationType.CREATE:
+              await apiClient.createEvent(groupId, {
+                date: event.date,
+                type: event.type,
+                payload: {
+                  name: event.name,
+                  description: event.description,
+                  style: event.style,
+                },
+              });
+              console.log(`✓ Created event: ${event.name}`);
+              break;
+
+            case SyncOperationType.UPDATE:
+              await apiClient.updateEvent(groupId, event.id, {
+                date: event.date,
+                type: event.type,
+                payload: {
+                  name: event.name,
+                  description: event.description,
+                  style: event.style,
+                },
+              });
+              console.log(`✓ Updated event: ${event.name}`);
+              break;
+
+            case SyncOperationType.DELETE:
+              await apiClient.deleteEvent(groupId, event.id);
+              console.log(`✓ Deleted event: ${event.id}`);
+              break;
+          }
+        } catch (error) {
+          console.error(`❌ Failed to sync ${type} event:`, error);
+          throw error;
+        }
+      });
+
+      // Subscribe to worker stats
+      workerRef.current.onStats((stats) => {
+        setStatus((prev) => ({
+          ...prev,
+          workerState: stats.state,
+          queueSize: stats.queueSize,
+          lastSync: stats.lastSyncTime ? new Date(stats.lastSyncTime) : null,
+          syncStats: {
+            totalSyncs: stats.totalSyncs,
+            successfulSyncs: stats.successfulSyncs,
+            failedSyncs: stats.failedSyncs,
+            eventsUploaded: stats.eventsUploaded,
+            eventsDownloaded: stats.eventsDownloaded,
+          },
+        }));
+      });
+    }
+
+    return () => {
+      // Cleanup on unmount
+      if (workerRef.current) {
+        workerRef.current.stop();
+        workerRef.current = null;
+      }
+    };
+  }, [db, isAuthenticated]);
+
+  /**
+   * Start background sync for a specific group
+   */
+  const startBackgroundSync = useCallback((groupId: string) => {
+    console.log(`📍 Setting groupId: ${groupId}`);
+    groupIdRef.current = groupId;
+
+    if (!workerRef.current) {
+      console.error('❌ Worker not initialized!');
+      return;
+    }
+
+    const stats = workerRef.current.getStats();
+    console.log('📊 Worker stats before start:', stats);
+
+    if (!stats.nextSyncTime) {
+      workerRef.current.start();
+      console.log(`🔄 Background sync started for group: ${groupId}`);
+    } else {
+      console.log('ℹ️ Background sync already running');
+    }
+  }, []);
+
+  /**
+   * Stop background sync
+   */
+  const stopBackgroundSync = useCallback(() => {
+    if (workerRef.current) {
+      workerRef.current.stop();
+      console.log('⏸️ Background sync stopped');
+    }
+  }, []);
+
+  /**
+   * Pause background sync
+   */
+  const pauseBackgroundSync = useCallback(() => {
+    if (workerRef.current) {
+      workerRef.current.pause();
+    }
+  }, []);
+
+  /**
+   * Resume background sync
+   */
+  const resumeBackgroundSync = useCallback(() => {
+    if (workerRef.current) {
+      workerRef.current.resume();
+    }
+  }, []);
+
+  /**
+   * Force immediate sync
+   */
+  const forceSyncNow = useCallback(async () => {
+    if (workerRef.current) {
+      await workerRef.current.forceSyncNow();
+    }
+  }, []);
+
+  /**
+   * Manual upload to remote (legacy method - now handled by background worker)
+   * Kept for backwards compatibility
+   */
   const syncToRemote = async (groupId: string) => {
     if (!db || !isAuthenticated) {
       throw new Error('Database or authentication not available');
@@ -27,47 +215,10 @@ export const useSyncEvents = () => {
     setStatus((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
-      // 1. Get all local events
-      const localEvents = await db.getAll('events');
-
-      // 2. Upload events in batches to avoid overwhelming backend
-      const BATCH_SIZE = 10;
-      const batches = [];
-      for (let i = 0; i < localEvents.length; i += BATCH_SIZE) {
-        batches.push(localEvents.slice(i, i + BATCH_SIZE));
-      }
-
-      console.log(
-        `Uploading ${localEvents.length} events in ${batches.length} batches...`
-      );
-
-      for (let i = 0; i < batches.length; i++) {
-        const batch = batches[i];
-        console.log(
-          `Processing batch ${i + 1}/${batches.length} (${batch.length} events)`
-        );
-
-        for (const event of batch) {
-          try {
-            await apiClient.createEvent(groupId, {
-              date: event.date,
-              type: event.type,
-              payload: {
-                name: event.name,
-                description: event.description,
-                style: event.style,
-              },
-            });
-          } catch (error: any) {
-            console.warn(`Failed to sync event ${event.id}:`, error.message);
-            // Continue with other events
-          }
-        }
-
-        // Small delay between batches
-        if (i < batches.length - 1) {
-          await new Promise((resolve) => setTimeout(resolve, 100));
-        }
+      // Use background worker for sync instead
+      groupIdRef.current = groupId;
+      if (workerRef.current) {
+        await workerRef.current.forceSyncNow();
       }
 
       setStatus((prev) => ({
@@ -85,6 +236,9 @@ export const useSyncEvents = () => {
     }
   };
 
+  /**
+   * Smart download from remote with conflict resolution
+   */
   const smartSyncDown = async (groupId: string) => {
     if (!db || !isAuthenticated) {
       throw new Error('Database or authentication not available');
@@ -164,6 +318,11 @@ export const useSyncEvents = () => {
         lastSync: new Date(),
       }));
 
+      // Update worker's change detector
+      if (workerRef.current && db) {
+        await workerRef.current.getChangeDetector().takeSnapshot(db);
+      }
+
       return { added, removed, preserved };
     } catch (error: any) {
       setStatus((prev) => ({
@@ -190,16 +349,44 @@ export const useSyncEvents = () => {
   };
 
   const fullSync = async (groupId: string) => {
-    await syncToRemote(groupId);
-    await smartSyncDown(groupId);
+    await smartSyncDown(groupId); // Download first
+    await syncToRemote(groupId); // Then upload any local changes
   };
 
+  /**
+   * Get current sync worker stats
+   */
+  const getSyncStats = useCallback(() => {
+    return workerRef.current?.getStats() || null;
+  }, []);
+
+  /**
+   * Get pending operations count
+   */
+  const getPendingOperations = useCallback(() => {
+    return workerRef.current?.getQueue().getPending() || [];
+  }, []);
+
   return {
+    // Legacy methods (for backwards compatibility)
     syncToRemote,
     syncFromRemote: smartSyncDown,
     fullSync,
     autoSyncIfEmpty,
+
+    // New background sync methods
+    startBackgroundSync,
+    stopBackgroundSync,
+    pauseBackgroundSync,
+    resumeBackgroundSync,
+    forceSyncNow,
+    getSyncStats,
+    getPendingOperations,
+
+    // Status
     status,
     canSync: isAuthenticated && !!db,
+    isBackgroundSyncActive:
+      workerRef.current?.getStats().state !== SyncWorkerState.IDLE,
   };
 };

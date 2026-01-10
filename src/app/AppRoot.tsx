@@ -12,6 +12,7 @@ import { PropsWithChildren, useMemo, useState } from 'react';
 import { AuthProvider } from '../auth/AuthContext';
 import { AppConfigurationEffect } from './AppConfigurationEffect';
 import { AppContext, AppContextData, defaultUser } from './AppContext';
+import { SyncIntegration } from './SyncIntegration';
 
 export default function AppRoot({ children }: PropsWithChildren) {
   const {
@@ -66,6 +67,7 @@ export default function AppRoot({ children }: PropsWithChildren) {
       <AuthProvider>
         <AppContext.Provider value={contextData}>
           <AppConfigurationEffect />
+          <SyncIntegration />
           <SiteNavigation />
           {children}
         </AppContext.Provider>

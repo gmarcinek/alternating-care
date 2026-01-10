@@ -24,18 +24,29 @@ class ApiClient {
       headers,
     };
 
+    console.log(`📡 API Request: ${options.method || 'GET'} ${url}`);
+
     const response = await fetch(url, config);
+
+    console.log(`📡 API Response: ${response.status} ${response.statusText}`);
 
     if (!response.ok) {
       if (response.status === 401) {
-        // Token expired - could trigger logout here
+        console.error('🔒 UNAUTHORIZED - Token may be expired');
         throw new Error('UNAUTHORIZED');
+      }
+
+      if (response.status === 404) {
+        console.error('🔍 NOT FOUND - Endpoint does not exist:', url);
       }
 
       const error = await response
         .json()
         .catch(() => ({ error: { code: 'UNKNOWN' } }));
-      throw new Error(error.error?.code || `HTTP ${response.status}`);
+
+      const errorMessage = error.error?.code || `HTTP ${response.status}`;
+      console.error('❌ API Error:', errorMessage, 'URL:', url);
+      throw new Error(errorMessage);
     }
 
     return response.json();

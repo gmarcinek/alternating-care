@@ -1,83 +1,91 @@
 import { Button, Tooltip } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
 import { PiCloudArrowDown, PiCloudArrowUp, PiSpinner } from 'react-icons/pi';
-import { apiClient } from '../../api/sync/apiClient';
 import { useSyncEvents } from '../../api/sync/useSyncEvents';
 import { useAuth } from '../../auth/AuthContext';
 
 export const SyncButton = () => {
   const { isAuthenticated } = useAuth();
-  const { syncToRemote, syncFromRemote, autoSyncIfEmpty, status, canSync } =
+  const { syncToRemote, syncFromRemote, forceSyncNow, status, canSync } =
     useSyncEvents();
   const [groupId, setGroupId] = useState<string | null>(null);
 
-  // Get user's group (should exist after register)
+  // Get groupId from localStorage (set by SyncIntegration)
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated) {
+      setGroupId(null);
+      return;
+    }
 
-    const getGroup = async () => {
-      try {
-        console.log('Fetching groups for authenticated user...');
-        const groups = await apiClient.getMyGroups();
-        console.log('Groups found:', groups);
+    // Check localStorage for groupId set by SyncIntegration
+    const storedGroupId = localStorage.getItem('currentGroupId');
+    if (storedGroupId) {
+      setGroupId(storedGroupId);
+    }
 
-        if (groups.length > 0) {
-          setGroupId(groups[0].id);
-          console.log('Set groupId:', groups[0].id);
-        } else {
-          console.warn('No group found - user should register first');
-        }
-      } catch (error) {
-        console.error('Failed to get groups:', error);
-      }
+    // Listen for storage changes (when SyncIntegration sets the groupId)
+    const handleStorageChange = () => {
+      const updatedGroupId = localStorage.getItem('currentGroupId');
+      setGroupId(updatedGroupId);
     };
 
-    getGroup();
-  }, [isAuthenticated]);
+    window.addEventListener('storage', handleStorageChange);
 
-  // Auto-sync ONLY if group already exists and calendar empty
-  useEffect(() => {
-    if (!groupId || !canSync) return;
-
-    let isCancelled = false;
-
-    const doAutoSync = async () => {
-      try {
-        const didAutoSync = await autoSyncIfEmpty(groupId);
-        if (!isCancelled && didAutoSync) {
-          console.log('Auto-sync completed for returning user');
-        }
-      } catch (error) {
-        if (!isCancelled) {
-          console.error('Auto-sync failed:', error);
-        }
+    // Also check periodically in case storage event doesn't fire
+    const interval = setInterval(() => {
+      const updatedGroupId = localStorage.getItem('currentGroupId');
+      if (updatedGroupId !== groupId) {
+        setGroupId(updatedGroupId);
       }
-    };
-
-    doAutoSync();
+    }, 1000);
 
     return () => {
-      isCancelled = true;
+      window.removeEventListener('storage', handleStorageChange);
+      clearInterval(interval);
     };
-  }, [groupId, canSync]);
+  }, [isAuthenticated, groupId]);
 
   const handleUpload = async () => {
-    if (!canSync || !groupId) return;
+    console.log('🔼 Upload clicked - canSync:', canSync, 'groupId:', groupId);
+
+    if (!canSync) {
+      console.error('❌ Cannot sync - not authenticated or DB not ready');
+      return;
+    }
+
+    if (!groupId) {
+      console.error('❌ Cannot sync - no groupId');
+      return;
+    }
 
     try {
-      await syncToRemote(groupId);
+      console.log('🚀 Forcing sync now...');
+      await forceSyncNow();
+      console.log('✅ Force sync completed');
     } catch (error) {
-      console.error('Upload failed:', error);
+      console.error('❌ Upload failed:', error);
     }
   };
 
   const handleDownload = async () => {
-    if (!canSync || !groupId) return;
+    console.log('🔽 Download clicked - canSync:', canSync, 'groupId:', groupId);
+
+    if (!canSync) {
+      console.error('❌ Cannot sync - not authenticated or DB not ready');
+      return;
+    }
+
+    if (!groupId) {
+      console.error('❌ Cannot sync - no groupId');
+      return;
+    }
 
     try {
+      console.log('📥 Downloading from group:', groupId);
       await syncFromRemote(groupId);
+      console.log('✅ Download completed');
     } catch (error) {
-      console.error('Download failed:', error);
+      console.error('❌ Download failed:', error);
     }
   };
 
